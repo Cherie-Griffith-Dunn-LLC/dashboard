@@ -1,1 +1,15 @@
-# dashboard
+# Dashboard
+
+## Development Enviroment
+### Requirements
+- Node.js
+- [VS Code Extension (optional)](https://marketplace.visualstudio.com/items?itemName=byCedric.vscode-expo)
+
+### Running Development Server
+- `npm install`
+- `npx expo start`
+
+#### To open the app:
+- On your Android device, press "Scan QR Code" on the "Home" tab of the Expo Go app and scan the QR code you see in the terminal.
+- On your iPhone or iPad, open the default Apple "Camera" app and scan the QR code you see in the terminal.
+- For web, press "w" in terminal then navigate to http://localhost:19006
