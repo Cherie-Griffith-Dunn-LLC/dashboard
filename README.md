@@ -3,6 +3,8 @@
 ## Development Enviroment
 ### Requirements
 - Node.js
+- Android Studio (for Android) or [Expo Go Client](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
+- XCode (for iOS) or [Expo Go Client](https://itunes.apple.com/app/apple-store/id982107779)
 - [VS Code Extension (optional)](https://marketplace.visualstudio.com/items?itemName=byCedric.vscode-expo)
 
 ### Running Development Server
