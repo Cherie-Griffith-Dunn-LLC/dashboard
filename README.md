@@ -15,3 +15,9 @@
 - On your Android device, press "Scan QR Code" on the "Home" tab of the Expo Go app and scan the QR code you see in the terminal.
 - On your iPhone or iPad, open the default Apple "Camera" app and scan the QR code you see in the terminal.
 - For web, press "w" in terminal then navigate to http://localhost:19006
+
+### Technology Stack Documentation
+- [React Native](https://reactnative.dev/docs/getting-started)
+- [Expo](https://docs.expo.io/)
+- [React Navigation](https://reactnavigation.org/docs/getting-started)
+- [UI Kitten](https://akveo.github.io/react-native-ui-kitten/docs/getting-started/what-is-ui-kitten#what-is-ui-kitten)
