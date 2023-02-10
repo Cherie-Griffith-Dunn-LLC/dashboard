@@ -1,6 +1,7 @@
 import React from 'react';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { Appearance, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -23,6 +24,7 @@ function App() {
   if (colorScheme === 'dark') {
     return (
       <NavigationContainer>
+        <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="dark" />
         <ApplicationProvider {...eva} theme={eva.dark}>
           <Stack.Navigator initialRouteName="Login Form" screenOptions={{headerShown: false}}>
@@ -34,6 +36,7 @@ function App() {
   } else {
     return (
       <NavigationContainer>
+        <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="light" />
         <ApplicationProvider {...eva} theme={eva.light}>
           <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: false}}>
