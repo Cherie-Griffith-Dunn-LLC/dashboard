@@ -35,7 +35,7 @@ const loginHeader = (props) => (
             ],
             redirectUri: makeRedirectUri({
                 // change this to our own redirect URI
-                scheme: 'cyproteckredirect'
+                scheme: 'cyproteck'
             }),
         },
         discovery

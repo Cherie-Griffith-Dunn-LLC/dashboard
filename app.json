@@ -5,9 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    // redirect for OAuth
-    // change in the future
-    "scheme": "cyproteckredirect",
+    "scheme": "cyproteck",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,13 +19,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cyproteck.cyproteck",
+      "buildNumber": "0.0.1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.cyproteck.cyproteck",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -37,6 +39,11 @@
             "@ui-kitten/components"
           ]
         }
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8c5fc950-3942-4d7f-aa66-43e0f9e77cef"
       }
     }
   }
