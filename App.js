@@ -9,41 +9,62 @@ import { StatusBar } from 'expo-status-bar';
 
 // import screens
 import  LoginScreen  from './screens/LoginScreen';
+import DashboardScreen from './screens/DashboardScreen';
 
 function Login({navigation, route}) {
   return <LoginScreen navigation={navigation} route={route} />;
 }
 
+export const TokenContext = React.createContext();
 
 const Stack = createNativeStackNavigator();
 
 function App() {
+  // create state for user token
+  const [token, setToken] = React.useState(null);
+
   const colorScheme = useColorScheme();
   // use system color scheme for dark or light mode
   // changes made must be done for both dark and light mode
   if (colorScheme === 'dark') {
     return (
+      <TokenContext.Provider value={{ token, setToken }}>
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="dark" />
         <ApplicationProvider {...eva} theme={eva.dark}>
-          <Stack.Navigator initialRouteName="Login Form" screenOptions={{headerShown: false}}>
-            <Stack.Screen name="login" component={Login} />
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            {token == null ? (
+              // no token found, user isn't signed in
+              <Stack.Screen name="login" component={Login} />
+            ) : (
+              // user is signed in
+              <Stack.Screen name="dashboard" component={DashboardScreen} />
+            )}
           </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>
+      </TokenContext.Provider>
     );
   } else {
     return (
+      <TokenContext.Provider value={{ token, setToken }}>
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="light" />
         <ApplicationProvider {...eva} theme={eva.light}>
-          <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Login" component={Login} />
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            {token == null ? (
+              // no token found, user isn't signed in
+              <Stack.Screen name="login" component={Login} />
+            ) : (
+              // user is signed in
+              <Stack.Screen name="dashboard" component={DashboardScreen} />
+            )}
           </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>
+      </TokenContext.Provider>
     );
   }
 }

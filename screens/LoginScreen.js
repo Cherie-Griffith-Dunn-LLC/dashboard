@@ -4,6 +4,7 @@ import { Text, Layout, Card, Input, Button, Divider, Icon } from '@ui-kitten/com
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
+import { TokenContext } from '../App';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
@@ -20,6 +21,8 @@ const loginHeader = (props) => (
   );
 
   export default function LoginScreen() {
+
+    const { token, setToken } = React.useContext(TokenContext);
     
     const discovery = useAutoDiscovery('https://login.microsoftonline.com/0d9acab6-2b9d-4883-8617-f3fdea4b02d6/v2.0');
 
@@ -34,12 +37,21 @@ const loginHeader = (props) => (
                 'email'
             ],
             redirectUri: makeRedirectUri({
-                // change this to our own redirect URI
                 scheme: 'cyproteck'
             }),
         },
         discovery
     );
+
+    // handle response
+    React.useEffect(() => {
+        if (response?.type === 'success') {
+            const { code } = response.params;
+            // set token
+            setToken(code);
+        }
+    }, [response]);
+
         return (
             <SafeAreaView style={{ flex: 1}}>
                 <Layout style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
