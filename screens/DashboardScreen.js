@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar } from '@ui-kitten/components';
+import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar, Menu, MenuItem, IndexPath } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const dashboardHeader = (props) => (
@@ -19,19 +19,24 @@ const DashboardScreen = () => {
             style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : '#fff' }}
         />
     );
+    // index for menu
+    const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
-                <Layout style={{ width: 200, backgroundColor: '#333', color: '#fff', padding: 20 }}>
-                    <Text category='h4' style={{ color: '#fff', textAlign: 'center', marginBottom: 20 }}>
+                <Layout style={{ width: 200 }}>
+                    <Text category='h4' style={{ textAlign: 'center', marginBottom: 20 }}>
                         Menu
                     </Text>
-                    <List
-                        data={menuData}
-                        renderItem={renderItem}
-                        style={{ padding: 20 }}
-                    />
+                    <Menu
+                    selectedInex={selectedIndex}
+                    onSelect={index => setSelectedIndex(index)}>
+                        <MenuItem title='Home'/>
+                        <MenuItem title='Alerts'/>
+                        <MenuItem title='Tickets'/>
+                        <MenuItem title='Courses'/>
+                    </Menu>
                 </Layout>
                 <Layout style={{ flex: 1, padding: 20 }}>
                     <Card header={dashboardHeader}>
