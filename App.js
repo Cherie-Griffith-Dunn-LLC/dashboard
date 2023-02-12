@@ -7,6 +7,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 
+// import our custom theme colors
+import { default as theme } from './assets/theme.json'
+
 // import screens
 import  LoginScreen  from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
@@ -32,9 +35,9 @@ function App() {
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="dark" />
-        <ApplicationProvider {...eva} theme={eva.dark}>
+        <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            {token == null ? (
+            {token === null ? (
               // no token found, user isn't signed in
               <Stack.Screen name="login" component={Login} />
             ) : (
@@ -52,9 +55,9 @@ function App() {
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="light" />
-        <ApplicationProvider {...eva} theme={eva.light}>
+        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            {token == null ? (
+            {token === null ? (
               // no token found, user isn't signed in
               <Stack.Screen name="login" component={Login} />
             ) : (
