@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar, Menu, MenuItem, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
+import CustomPieChart from '../components/pieChart';
 
 const dashboardHeader = (props) => (
     <Text {...props} style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
@@ -73,28 +74,34 @@ const DashboardScreen = () => {
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
                 <Layout style={{ width: menuWidth, textAlign: 'center' }}>
                     {// only show menu if expanded
-                    menuWidth !== 50 &&
+                    // should be replaced with branding once we have one
+                    menuWidth !== 50 ? (
                         <Text category='h4' style={{ marginBottom: 20 }}>
                             Menu
                         </Text>
+                    ) : (
+                        <Text category='h4' style={{ marginBottom: 20 }}>
+                            M
+                        </Text>
+                    )
                     }
                     {menuWidth === 50 ? (
                         <Menu
                     selectedInex={selectedIndex}
                     onSelect={index => setSelectedIndex(index)}>
-                        <MenuItem title='H' accessoryLeft={HomeIcon}/>
-                        <MenuItem title='A' accessoryLeft={AlertsIcon}/>
-                        <MenuItem title='T' accessoryLeft={TicketsIcon}/>
-                        <MenuItem title='C' accessoryLeft={CoursesIcon}/>
+                        <MenuItem accessoryLeft={HomeIcon}/>
+                        <MenuItem accessoryLeft={AlertsIcon}/>
+                        <MenuItem accessoryLeft={TicketsIcon}/>
+                        <MenuItem accessoryLeft={CoursesIcon}/>
                     </Menu>
                     ) : (
                         <Menu
                     selectedInex={selectedIndex}
                     onSelect={index => setSelectedIndex(index)}>
-                        <MenuItem title='Home'/>
-                        <MenuItem title='Alerts'/>
-                        <MenuItem title='Tickets'/>
-                        <MenuItem title='Courses'/>
+                        <MenuItem title='Home' accessoryLeft={HomeIcon}/>
+                        <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
+                        <MenuItem title='Tickets' accessoryLeft={TicketsIcon}/>
+                        <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
                     </Menu>
                     )}
                 </Layout>
@@ -104,11 +111,13 @@ const DashboardScreen = () => {
                             <Card style={{ width: '48%', marginRight: '2%' }}>
                                 <Text category='h6'>Threat Detection</Text>
                                 <Text>Total Threats: 12</Text>
+                                <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
                             <Card style={{ width: '48%', marginLeft: '2%' }}>
                                 <Text category='h6'>Vulnerability Scanning</Text>
                                 <Text>Total Vulnerabilities: 7</Text>
+                                <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
                         </Layout>
@@ -116,11 +125,13 @@ const DashboardScreen = () => {
                             <Card style={{ width: '48%', marginRight: '2%' }}>
                                 <Text category='h6'>Behavioral Monitoring</Text>
                                 <Text>Total Alerts: 5</Text>
+                                <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
-                            <Card style={{ width: '48%', marginLeft: '2%', marginTop: '2%' }}>
+                            <Card style={{ width: '48%', marginLeft: '2%' }}>
                              <Text category='h6'>Log Management</Text>
                              <Text>Total Logs: 100</Text>
+                             <CustomPieChart />
                              <Button>View Details</Button>
                          </Card>
                      </Layout>
