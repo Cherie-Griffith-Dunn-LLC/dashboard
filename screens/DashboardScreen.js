@@ -73,18 +73,6 @@ const DashboardScreen = () => {
             />
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
                 <Layout style={{ width: menuWidth, textAlign: 'center' }}>
-                    {// only show menu if expanded
-                    // should be replaced with branding once we have one
-                    menuWidth !== 50 ? (
-                        <Text category='h4' style={{ marginBottom: 20 }}>
-                            Menu
-                        </Text>
-                    ) : (
-                        <Text category='h4' style={{ marginBottom: 20 }}>
-                            M
-                        </Text>
-                    )
-                    }
                     {menuWidth === 50 ? (
                         <Menu
                     selectedInex={selectedIndex}
