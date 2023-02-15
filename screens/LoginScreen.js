@@ -46,7 +46,7 @@ const loginHeader = (props) => (
                 'User.Read'
             ],
             redirectUri: makeRedirectUri({
-                scheme: 'cyproteck://login',
+                scheme: 'com.cyproteck.cyproteck',
                 path: 'login'
             }),
             usePKCE: true
@@ -62,8 +62,7 @@ const loginHeader = (props) => (
                     code: code,
                     clientId: clientId,
                     redirectUri: makeRedirectUri({
-                        scheme: 'cyproteck://login',
-                        preferLocalhost: true,
+                        scheme: 'com.cyproteck.cyproteck',
                         path: 'login'
                     }),
                     extraParams: {
@@ -74,13 +73,15 @@ const loginHeader = (props) => (
             )
 
             const { accessToken, refreshToken, issuedAt, expiresIn } = tokenResult;
-            //console.log(accessToken, refreshToken, issuedAt, expiresIn);
+            console.log(accessToken, refreshToken, issuedAt, expiresIn);
             // store the token
             if (Platform.OS !== 'web') {
                 SecureStore.setItemAsync('token', accessToken);
+                SecureStore.setItemAsync('expireTime', issuedAt + expiresIn);
                 setToken(accessToken);
             } else {
                 await AsyncStorage.setItem('token', accessToken);
+                await AsyncStorage.setItem('expireTime', issuedAt + expiresIn);
                 setToken(accessToken);
             }
         }

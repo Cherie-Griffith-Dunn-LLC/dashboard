@@ -33,10 +33,28 @@ function App() {
     const getToken = async () => {
       if (Platform.OS !== 'web') {
         const storedToken = await SecureStore.getItemAsync('token');
-        setToken(storedToken);
+        const expireTime = await SecureStore.getItemAsync('expireTime');
+        // check if token is expired
+        if (expireTime < Math.floor(Date.now() / 1000)) {
+          // token is expired, remove it
+          await SecureStore.deleteItemAsync('token');
+          await SecureStore.deleteItemAsync('expireTime');
+        } else {
+          // token is valid, set it
+          setToken(storedToken);
+        }
       } else {
         const storedToken = await AsyncStorage.getItem('token');
-        setToken(storedToken);
+        const expireTime = await AsyncStorage.getItem('expireTime');
+        // check if token is expired
+        if (expireTime < Math.floor(Date.now() / 1000)) {
+          // token is expired, remove it
+          await AsyncStorage.removeItem('token');
+          await AsyncStorage.removeItem('expireTime');
+        } else {
+          // token is valid, set it
+          setToken(storedToken);
+        }
       }
     };
     getToken();
