@@ -3,6 +3,8 @@ import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avata
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import CustomPieChart from '../components/pieChart';
+import CustomLineChart from '../components/lineChart';
+import CustomBarChart from '../components/barChart';
 
 import { TokenContext } from '../App';
 
@@ -128,7 +130,7 @@ const DashboardScreen = () => {
                             <Card style={{ width: '48%', marginLeft: '2%' }}>
                                 <Text category='h6'>Vulnerability Scanning</Text>
                                 <Text>Total Vulnerabilities: 7</Text>
-                                <CustomPieChart />
+                                <CustomLineChart />
                                 <Button>View Details</Button>
                             </Card>
                         </Layout>
@@ -142,7 +144,7 @@ const DashboardScreen = () => {
                             <Card style={{ width: '48%', marginLeft: '2%' }}>
                              <Text category='h6'>Log Management</Text>
                              <Text>Total Logs: 100</Text>
-                             <CustomPieChart />
+                             <CustomBarChart />
                              <Button>View Details</Button>
                          </Card>
                      </Layout>
