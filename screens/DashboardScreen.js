@@ -4,11 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import CustomPieChart from '../components/pieChart';
 
-const dashboardHeader = (props) => (
-    <Text {...props} style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
-        CYPROTECK Dashboard
-    </Text>
-);
+import { TokenContext } from '../App';
+
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
@@ -31,6 +28,10 @@ const CoursesIcon = (props) => (
 );
 
 const DashboardScreen = () => {
+    const { token, setToken } = React.useContext(TokenContext);
+    
+
+
     // dashboard navigation
     // menu collapsed or expanded
     const [menuWidth, setMenuWidth] = React.useState(50);
@@ -48,6 +49,27 @@ const DashboardScreen = () => {
         />
     );
 
+    // get user info from api
+    const [userInfo, setUserInfo] = React.useState({});
+    const getUserInfo = async () => {
+        // Get user's information from Microsoft Graph API
+        const userInfoResponse = await fetch('https://graph.microsoft.com/v1.0/me', {
+            headers: {
+            Authorization: `Bearer ${token}`,
+            },
+        });
+        
+        // Parse response and get user's name
+        const userInfo = await userInfoResponse.json();
+        console.log(userInfo);
+        setUserInfo(userInfo);
+    };
+
+    React.useEffect(() => {
+        getUserInfo();
+    }, []);
+
+    
 
     const menuData = [        { title: 'Home', icon: 'home' },        { title: 'Threat Detection', icon: 'alert-triangle-outline' },        { title: 'Vulnerability Scanning', icon: 'shield-outline' },        { title: 'Behavioral Monitoring', icon: 'activity-outline' },        { title: 'Log Management', icon: 'file-text-outline' },    ];
 
@@ -67,7 +89,8 @@ const DashboardScreen = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
             <TopNavigation
-                title={dashboardHeader}
+                title='CYPROTECK Dashboard'
+                subtitle={'Welcome, ' + userInfo.givenName + '!'}
                 alignment='center'
                 accessoryLeft={renderDrawerAction}
             />

@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { Text, Layout, Card, Input, Button, Divider, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
+import { makeRedirectUri, useAuthRequest, useAutoDiscovery, exchangeCodeAsync, AccessTokenRequest } from 'expo-auth-session';
 import { TokenContext } from '../App';
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
@@ -20,7 +22,13 @@ const loginHeader = (props) => (
     <Icon name='wifi' {...props} />
   );
 
+  // app keys
+  const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
+
   export default function LoginScreen() {
+
+    // create email
+    const [email, setEmail] = React.useState('');
 
     const { token, setToken } = React.useContext(TokenContext);
     
@@ -29,26 +37,57 @@ const loginHeader = (props) => (
     // build request
     const [request, response, promptAsync] = useAuthRequest(
         {
-            clientId: '94a4d08f-e078-45f2-a42a-ceb9ad7439ec',
+            clientId: clientId,
             scopes: [
                 'openid',
                 'profile',
                 'offline_access',
-                'email'
+                'email',
+                'User.Read'
             ],
             redirectUri: makeRedirectUri({
-                scheme: 'cyproteck'
+                scheme: 'cyproteck://login',
+                path: 'login'
             }),
+            usePKCE: true
         },
         discovery
     );
 
     // handle response
     React.useEffect(() => {
+        const getCodeExchange = async (code) => {
+            const tokenResult = await exchangeCodeAsync(
+                {
+                    code: code,
+                    clientId: clientId,
+                    redirectUri: makeRedirectUri({
+                        scheme: 'cyproteck://login',
+                        preferLocalhost: true,
+                        path: 'login'
+                    }),
+                    extraParams: {
+                        code_verifier: request.codeVerifier
+                    }
+                },
+                discovery
+            )
+
+            const { accessToken, refreshToken, issuedAt, expiresIn } = tokenResult;
+            //console.log(accessToken, refreshToken, issuedAt, expiresIn);
+            // store the token
+            if (Platform.OS !== 'web') {
+                SecureStore.setItemAsync('token', accessToken);
+                setToken(accessToken);
+            } else {
+                await AsyncStorage.setItem('token', accessToken);
+                setToken(accessToken);
+            }
+        }
         if (response?.type === 'success') {
-            const { code } = response.params;
-            // set token
-            setToken(code);
+            console.log(response);
+            // exchange code for session
+            getCodeExchange(response.params.code);
         }
     }, [response]);
 
@@ -58,11 +97,13 @@ const loginHeader = (props) => (
                     <Text category='h1'>Cyproteck</Text>
                     <Card header={loginHeader}>
                         <Input
-                            value=''
+                            value={email}
                             label='Email'
                             placeholder='email@example.com'
                             textContentType='emailAddress'
                             autoCompleteType='email'
+                            keyboardType='email-address'
+                            onChangeText={nextValue => setEmail(nextValue)}
                         />
                         <Button
                         title='Login'

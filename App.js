@@ -2,16 +2,18 @@ import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { Appearance, useColorScheme } from 'react-native';
+import { Appearance, useColorScheme, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import our custom theme colors
 import { default as theme } from './assets/theme.json'
 
 // import screens
-import  LoginScreen  from './screens/LoginScreen';
+import LoginScreen from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
 
 function Login({navigation, route}) {
@@ -25,6 +27,20 @@ const Stack = createNativeStackNavigator();
 function App() {
   // create state for user token
   const [token, setToken] = React.useState(null);
+
+  // check if token is stored in secure storage
+  React.useEffect(() => {
+    const getToken = async () => {
+      if (Platform.OS !== 'web') {
+        const storedToken = await SecureStore.getItemAsync('token');
+        setToken(storedToken);
+      } else {
+        const storedToken = await AsyncStorage.getItem('token');
+        setToken(storedToken);
+      }
+    };
+    getToken();
+  }, []);
 
   const colorScheme = useColorScheme();
   // use system color scheme for dark or light mode
