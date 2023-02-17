@@ -5,6 +5,9 @@ import { useNavigation, DrawerActions } from "@react-navigation/native";
 import CustomPieChart from '../components/pieChart';
 import CustomLineChart from '../components/lineChart';
 import CustomBarChart from '../components/barChart';
+import { DashboardAlertsList } from '../components/alertsList';
+import { DashboardTicketsList } from '../components/ticketsList';
+import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 
 import { TokenContext } from '../App';
 
@@ -118,37 +121,58 @@ const DashboardScreen = () => {
                     </Menu>
                     )}
                 </Layout>
-                <Layout style={{ flex: 1, padding: 20 }}>
+                {selectedIndex.row === 0 && (
+                    <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Home</Text>
-                        <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Card style={{ width: '48%', marginRight: '2%' }}>
+                        <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                            <Card style={{ width: '48%' }}>
                                 <Text category='h6'>Threat Detection</Text>
                                 <Text>Total Threats: 12</Text>
                                 <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
-                            <Card style={{ width: '48%', marginLeft: '2%' }}>
+                            <Card style={{ width: '48%' }}>
                                 <Text category='h6'>Vulnerability Scanning</Text>
                                 <Text>Total Vulnerabilities: 7</Text>
                                 <CustomLineChart />
                                 <Button>View Details</Button>
                             </Card>
-                        </Layout>
-                        <Layout style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                            <Card style={{ width: '48%', marginRight: '2%' }}>
+                            <Card style={{ width: '48%' }}>
                                 <Text category='h6'>Behavioral Monitoring</Text>
                                 <Text>Total Alerts: 5</Text>
                                 <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
-                            <Card style={{ width: '48%', marginLeft: '2%' }}>
-                             <Text category='h6'>Log Management</Text>
-                             <Text>Total Logs: 100</Text>
-                             <CustomBarChart />
-                             <Button>View Details</Button>
-                         </Card>
-                     </Layout>
-             </Layout>
+                            <Card style={{ width: '48%' }}>
+                            <Text category='h6'>Log Management</Text>
+                            <Text>Total Logs: 100</Text>
+                            <CustomBarChart />
+                            <Button>View Details</Button>
+                        </Card>
+                    </Layout>
+                </Layout>
+                )}
+                {selectedIndex.row === 1 && (
+                    <Layout style={{ flex: 1, padding: 20 }}>
+                        <Text category='h3'>Alerts</Text>
+                        <DashboardAlertsList />
+                    </Layout>
+                )}
+                {selectedIndex.row === 2 && (
+                    <Layout style={{ flex: 1, padding: 20 }}>
+                        <Text category='h3'>Tickets</Text>
+                        <DashboardTicketsList />
+                    </Layout>
+                )}
+                {selectedIndex.row === 3 && (
+                    <Layout style={{ flex: 1, padding: 20 }}>
+                        <Text category='h3'>Courses</Text>
+                        <Text category='h6'>Required</Text>
+                        <RequiredCourses />
+                        <Text category='h6'>All Courses</Text>
+                        <AllCourses />
+                    </Layout>
+                )}
          </Layout>
      </SafeAreaView>
  );
