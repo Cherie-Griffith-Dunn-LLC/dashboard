@@ -2,7 +2,7 @@ import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import { Appearance, useColorScheme, Platform } from 'react-native';
+import { Appearance, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
@@ -60,10 +60,6 @@ function App() {
     getToken();
   }, []);
 
-  const colorScheme = useColorScheme();
-  // use system color scheme for dark or light mode
-  // changes made must be done for both dark and light mode
-  if (colorScheme === 'dark') {
     return (
       <TokenContext.Provider value={{ token, setToken }}>
       <NavigationContainer>
@@ -83,27 +79,6 @@ function App() {
       </NavigationContainer>
       </TokenContext.Provider>
     );
-  } else {
-    return (
-      <TokenContext.Provider value={{ token, setToken }}>
-      <NavigationContainer>
-        <IconRegistry icons={EvaIconsPack} />
-        <StatusBar style="light" />
-        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            {token === null ? (
-              // no token found, user isn't signed in
-              <Stack.Screen name="login" component={Login} />
-            ) : (
-              // user is signed in
-              <Stack.Screen name="dashboard" component={DashboardScreen} />
-            )}
-          </Stack.Navigator>
-        </ApplicationProvider>
-      </NavigationContainer>
-      </TokenContext.Provider>
-    );
-  }
 }
 
 export default App;
