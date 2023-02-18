@@ -23,13 +23,13 @@ const renderItemIcon = (props) => (
 export const RequiredCourses = () => {
     // return a card for each course in RequiredCourses
     return (
-        <Layout style={{ flex: 'auto', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
+        <Layout style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
             {requiredCourses.map((course, index) => (
                 <Card
                 key={index}
                 header={props => <Text {...props}>{course.title}</Text>}
-                style={{ margin: 5 }}
-                status='primary'
+                style={styles.courseCard}
+                status='danger'
                 >
                 <Text>{course.description}</Text>
             </Card>
@@ -41,12 +41,12 @@ export const RequiredCourses = () => {
 export const AllCourses = () => {
     // return a card for each course in RequiredCourses
     return (
-        <Layout style={{ flex: 'auto', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
+        <Layout style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
             {allCourses.map((course, index) => (
                 <Card
                     key={index}
                     header={props => <Text {...props}>{course.title } {index + 1}</Text>}
-                    style={{ margin: 5 }}
+                    style={styles.courseCard}
                     status='info'
                 >
                     <Text>{course.description}</Text>
@@ -59,5 +59,10 @@ export const AllCourses = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    courseCard: {
+        width: 260,
+        height: 260,
+        margin: 5,
     }
 });

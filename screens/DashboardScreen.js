@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar, Menu, MenuItem, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import CustomPieChart from '../components/pieChart';
 import CustomLineChart from '../components/lineChart';
@@ -92,7 +93,8 @@ const DashboardScreen = () => {
     
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
             <TopNavigation
                 title='CYPROTECK Dashboard'
                 subtitle={'Welcome, ' + userInfo.givenName + '!'}
@@ -121,29 +123,30 @@ const DashboardScreen = () => {
                     </Menu>
                     )}
                 </Layout>
+                <ScrollView>
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Home</Text>
                         <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                            <Card style={{ width: '48%' }}>
+                            <Card style={styles.dashboardCard}>
                                 <Text category='h6'>Threat Detection</Text>
                                 <Text>Total Threats: 12</Text>
                                 <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
-                            <Card style={{ width: '48%' }}>
+                            <Card style={styles.dashboardCard}>
                                 <Text category='h6'>Vulnerability Scanning</Text>
                                 <Text>Total Vulnerabilities: 7</Text>
                                 <CustomLineChart />
                                 <Button>View Details</Button>
                             </Card>
-                            <Card style={{ width: '48%' }}>
+                            <Card style={styles.dashboardCard}>
                                 <Text category='h6'>Behavioral Monitoring</Text>
                                 <Text>Total Alerts: 5</Text>
                                 <CustomPieChart />
                                 <Button>View Details</Button>
                             </Card>
-                            <Card style={{ width: '48%' }}>
+                            <Card style={styles.dashboardCard}>
                             <Text category='h6'>Log Management</Text>
                             <Text>Total Logs: 100</Text>
                             <CustomBarChart />
@@ -173,9 +176,20 @@ const DashboardScreen = () => {
                         <AllCourses />
                     </Layout>
                 )}
+                </ScrollView>
          </Layout>
+            </View>
      </SafeAreaView>
  );
 };
 
 export default DashboardScreen;
+
+const styles = StyleSheet.create({
+    dashboardCard: {
+        maxWidth: '45%',
+        width: 500,
+        minWidth: 300,
+        height: 400,
+    }
+  });
