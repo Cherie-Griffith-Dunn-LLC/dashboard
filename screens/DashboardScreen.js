@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar, Menu, MenuItem, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import CustomPieChart from '../components/pieChart';
 import CustomLineChart from '../components/lineChart';
@@ -10,11 +10,17 @@ import { DashboardAlertsList } from '../components/alertsList';
 import { DashboardTicketsList } from '../components/ticketsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext } from '../App';
 
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
+);
+
+const LogOutIcon = (props) => (
+    <Icon {...props} name='log-out-outline' />
 );
 
 const HomeIcon = (props) => (
@@ -35,6 +41,24 @@ const CoursesIcon = (props) => (
 
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
+
+    // logout user
+    const logOut = async () => {
+        // check if on mobile or web
+        if (Platform.OS !== 'web') {
+            // clear token from secure storage
+            await SecureStore.deleteItemAsync('token');
+            await SecureStore.deleteItemAsync('expireTime');
+            // clear token from context
+            setToken(null);
+        } else {
+            // clear token from local storage
+            await AsyncStorage.removeItem('token');
+            await AsyncStorage.removeItem('expireTime');
+            // clear token from context
+            setToken(null);
+        }
+    };
     
 
 
@@ -52,6 +76,13 @@ const DashboardScreen = () => {
         <TopNavigationAction
             icon={MenuIcon}
             onPress={() => toggleDrawer()}
+        />
+    );
+
+    const singOutAction = () => (
+        <TopNavigationAction
+            icon={LogOutIcon}
+            onPress={() => logOut()}
         />
     );
 
@@ -100,6 +131,7 @@ const DashboardScreen = () => {
                 subtitle={'Welcome, ' + userInfo.givenName + '!'}
                 alignment='center'
                 accessoryLeft={renderDrawerAction}
+                accessoryRight={singOutAction}
             />
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
                 <Layout style={{ width: menuWidth, textAlign: 'center' }}>
