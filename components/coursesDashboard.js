@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
 
 const requiredCourses = new Array(1).fill({
@@ -27,12 +27,13 @@ export const RequiredCourses = () => {
             {requiredCourses.map((course, index) => (
                 <Card
                 key={index}
-                header={props => <Text {...props}>{course.title}</Text>}
+                header={props => <Image {...props} source={require('../assets/courses/course-thumbnail.jpg')} style={styles.courseThumbnail} />}
                 style={styles.courseCard}
                 status='danger'
                 >
-                <Text>{course.description}</Text>
-            </Card>
+                    <Text category='h6'>{course.title } {index + 1}</Text>
+                    <Text>{course.description}</Text>
+                </Card>
             ))}
         </Layout>
     );
@@ -45,10 +46,11 @@ export const AllCourses = () => {
             {allCourses.map((course, index) => (
                 <Card
                     key={index}
-                    header={props => <Text {...props}>{course.title } {index + 1}</Text>}
+                    header={props => <Image {...props} source={require('../assets/courses/course-thumbnail.jpg')} style={styles.courseThumbnail} />}
                     style={styles.courseCard}
                     status='info'
                 >
+                    <Text category='h6'>{course.title } {index + 1}</Text>
                     <Text>{course.description}</Text>
                 </Card>
             ))}
@@ -64,5 +66,10 @@ const styles = StyleSheet.create({
         width: 260,
         height: 260,
         margin: 5,
+    },
+    courseThumbnail: {
+        width: 260,
+        height: 150,
+        marginLeft: 0,
     }
 });
