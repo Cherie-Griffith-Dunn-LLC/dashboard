@@ -8,6 +8,9 @@ import { TokenContext, UsmContext } from '../App';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// usm api functions
+import { getOauth } from '../services/usmApi';
+
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
 
@@ -25,25 +28,16 @@ const loginHeader = (props) => (
   // app keys
   const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
   // USM API credntials. Replace with your own.
-  const usmCredentials = "user:secret";
+  const usmCredentials = "development:8Pm98bUvZRvdqWiMYwzqjLXoWgKXA0Uh";
 
   export default function LoginScreen() {
-
-    const usmEndpoint = 'http://localhost:3000/api/2.0';
 
     const { token, setToken } = React.useContext(TokenContext);
     const { usmToken, setUsmToken } = React.useContext(UsmContext);
 
     // make post request to usm endpoint with basic auth to get token
     const usmLogin = async () => {
-        const response = await fetch(usmEndpoint + '/oauth/token?grant_type=client_credentials', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic '  + btoa(usmCredentials)
-            }
-        });
-        const data = await response.json();
+        const data = await getOauth(usmCredentials);
         console.log(data);
         // get current unix time
         const issuedAt = Math.floor(Date.now() / 1000);

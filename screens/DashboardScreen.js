@@ -13,7 +13,8 @@ import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext, UsmContext } from '../App';
-
+// usm api functions
+import { getAlerts, getEvents } from '../services/usmApi';
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
@@ -111,6 +112,8 @@ const DashboardScreen = () => {
 
     React.useEffect(() => {
         getUserInfo();
+        getAlerts(usmToken);
+        getEvents(usmToken);
     }, []);
 
     
