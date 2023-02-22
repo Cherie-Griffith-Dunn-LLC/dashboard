@@ -15,6 +15,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext, UsmContext } from '../App';
 // usm api functions
 import { getAlerts, getEvents } from '../services/usmApi';
+// azure api functions
+import { getMe } from '../services/azureApi';
+
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
@@ -98,14 +101,9 @@ const DashboardScreen = () => {
     const [userInfo, setUserInfo] = React.useState({});
     const getUserInfo = async () => {
         // Get user's information from Microsoft Graph API
-        const userInfoResponse = await fetch('https://graph.microsoft.com/v1.0/me', {
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-        });
+        const userInfo = await getMe(token);
         
         // Parse response and get user's name
-        const userInfo = await userInfoResponse.json();
         console.log(userInfo);
         setUserInfo(userInfo);
     };
