@@ -12,7 +12,7 @@ import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TokenContext } from '../App';
+import { TokenContext, UsmContext } from '../App';
 
 
 const MenuIcon = (props) => (
@@ -41,6 +41,7 @@ const CoursesIcon = (props) => (
 
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
+    const { usmToken, setUsmToken } = React.useContext(UsmContext);
 
     // logout user
     const logOut = async () => {
@@ -49,14 +50,20 @@ const DashboardScreen = () => {
             // clear token from secure storage
             await SecureStore.deleteItemAsync('token');
             await SecureStore.deleteItemAsync('expireTime');
+            await SecureStore.deleteItemAsync('usm-token');
+            await SecureStore.deleteItemAsync('usmExpireTime');
             // clear token from context
             setToken(null);
+            setUsmToken(null);
         } else {
             // clear token from local storage
             await AsyncStorage.removeItem('token');
             await AsyncStorage.removeItem('expireTime');
+            await AsyncStorage.removeItem('usm-token');
+            await AsyncStorage.removeItem('usmExpireTime');
             // clear token from context
             setToken(null);
+            setUsmToken(null);
         }
     };
     
