@@ -16,7 +16,7 @@ import { TokenContext, UsmContext } from '../App';
 // usm api functions
 import { getAlerts, getEvents } from '../services/usmApi';
 // azure api functions
-import { getMe } from '../services/azureApi';
+import { getMe, getRole } from '../services/azureApi';
 
 
 const MenuIcon = (props) => (
@@ -99,13 +99,17 @@ const DashboardScreen = () => {
 
     // get user info from api
     const [userInfo, setUserInfo] = React.useState({});
+    const [userRoles, setUserRoles] = React.useState({});
     const getUserInfo = async () => {
         // Get user's information from Microsoft Graph API
         const userInfo = await getMe(token);
-        
+        const userRoles = await getRole(token);
+
         // Parse response and get user's name
         console.log(userInfo);
         setUserInfo(userInfo);
+        console.log(userRoles);
+        setUserRoles(userRoles);
     };
 
     React.useEffect(() => {
@@ -136,7 +140,7 @@ const DashboardScreen = () => {
             <View style={{ flex: 1 }}>
             <TopNavigation
                 title='CYPROTECK Dashboard'
-                subtitle={'Welcome, ' + userInfo.givenName + '!'}
+                subtitle={'Welcome, ' + (userInfo.givenName || "User") + '!'}
                 alignment='center'
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}
