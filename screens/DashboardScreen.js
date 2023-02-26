@@ -3,20 +3,20 @@ import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avata
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import CustomPieChart from '../components/pieChart';
-import CustomLineChart from '../components/lineChart';
-import CustomBarChart from '../components/barChart';
+import CustomPieChart from '../components/charts/pieChart';
+import CustomLineChart from '../components/charts/lineChart';
+import CustomBarChart from '../components/charts/barChart';
 import { DashboardAlertsList } from '../components/alertsList';
 import { DashboardTicketsList } from '../components/ticketsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TokenContext, UsmContext } from '../App';
-// usm api functions
-import { getAlerts, getEvents } from '../services/usmApi';
+import { TokenContext } from '../App';
 // azure api functions
 import { getMe, getRole } from '../services/azureApi';
+// menus
+import { AdminMenu, UserMenu } from '../components/customMenus';
 
 
 const MenuIcon = (props) => (
@@ -45,7 +45,6 @@ const CoursesIcon = (props) => (
 
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
-    const { usmToken, setUsmToken } = React.useContext(UsmContext);
 
     // logout user
     const logOut = async () => {
@@ -54,20 +53,14 @@ const DashboardScreen = () => {
             // clear token from secure storage
             await SecureStore.deleteItemAsync('token');
             await SecureStore.deleteItemAsync('expireTime');
-            await SecureStore.deleteItemAsync('usm-token');
-            await SecureStore.deleteItemAsync('usmExpireTime');
             // clear token from context
             setToken(null);
-            setUsmToken(null);
         } else {
             // clear token from local storage
             await AsyncStorage.removeItem('token');
             await AsyncStorage.removeItem('expireTime');
-            await AsyncStorage.removeItem('usm-token');
-            await AsyncStorage.removeItem('usmExpireTime');
             // clear token from context
             setToken(null);
-            setUsmToken(null);
         }
     };
     
@@ -114,8 +107,6 @@ const DashboardScreen = () => {
 
     React.useEffect(() => {
         getUserInfo();
-        getAlerts(usmToken);
-        getEvents(usmToken);
     }, []);
 
     
@@ -146,27 +137,11 @@ const DashboardScreen = () => {
                 accessoryRight={singOutAction}
             />
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
-                <Layout style={{ width: menuWidth, textAlign: 'center' }}>
-                    {menuWidth === 50 ? (
-                        <Menu
-                    selectedInex={selectedIndex}
-                    onSelect={index => setSelectedIndex(index)}>
-                        <MenuItem accessoryLeft={HomeIcon}/>
-                        <MenuItem accessoryLeft={AlertsIcon}/>
-                        <MenuItem accessoryLeft={TicketsIcon}/>
-                        <MenuItem accessoryLeft={CoursesIcon}/>
-                    </Menu>
-                    ) : (
-                        <Menu
-                    selectedInex={selectedIndex}
-                    onSelect={index => setSelectedIndex(index)}>
-                        <MenuItem title='Home' accessoryLeft={HomeIcon}/>
-                        <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
-                        <MenuItem title='Tickets' accessoryLeft={TicketsIcon}/>
-                        <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
-                    </Menu>
-                    )}
-                </Layout>
+                {userRoles.role === 'admin' ? (
+                    <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+                ) : (
+                    <UserMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+                )}
                 <ScrollView>
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
@@ -199,11 +174,13 @@ const DashboardScreen = () => {
                     </Layout>
                 </Layout>
                 )}
-                {selectedIndex.row === 1 && (
-                    <Layout style={{ flex: 1, padding: 20 }}>
-                        <Text category='h3'>Alerts</Text>
-                        <DashboardAlertsList />
-                    </Layout>
+                {userRoles.role === 'admin' && (
+                    selectedIndex.row === 1 && (
+                        <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>Alerts</Text>
+                            <DashboardAlertsList />
+                        </Layout>
+                    )
                 )}
                 {selectedIndex.row === 2 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
@@ -211,14 +188,21 @@ const DashboardScreen = () => {
                         <DashboardTicketsList />
                     </Layout>
                 )}
-                {selectedIndex.row === 3 && (
-                    <Layout style={{ flex: 1, padding: 20 }}>
-                        <Text category='h3'>Courses</Text>
-                        <Text category='h6'>Required</Text>
-                        <RequiredCourses />
-                        <Text category='h6'>All Courses</Text>
-                        <AllCourses />
-                    </Layout>
+                {userRoles.role === 'admin' ? (
+                    selectedIndex.row === 3 && (
+                        <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>All Courses</Text>
+                            <AllCourses />
+                        </Layout>
+                    )
+                ) : (
+                    selectedIndex.row === 1 && (
+                            <Layout style={{ flex: 1, padding: 20 }}>
+                                <Text category='h3'>Courses</Text>
+                                <Text category='h3'>Required</Text>
+                                <RequiredCourses />
+                            </Layout>
+                        )
                 )}
                 </ScrollView>
          </Layout>
