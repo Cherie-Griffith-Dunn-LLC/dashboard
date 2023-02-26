@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { PieChart, Pie, Sector } from 'react-native-svg-charts'
+import { PieChart, Pie, Sector } from 'react-native-svg-charts';
 
 export default class CustomPieChart extends React.Component {
 
