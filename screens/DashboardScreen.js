@@ -212,8 +212,6 @@ const DashboardScreen = () => {
                         <Text category='h3'>Courses</Text>
                         <Text category='h6'>Required</Text>
                         <RequiredCourses />
-                        <Text category='h6'>All Courses</Text>
-                        <AllCourses />
                     </Layout>
                 )}
                 </ScrollView>

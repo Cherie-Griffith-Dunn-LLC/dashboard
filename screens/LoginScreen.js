@@ -28,7 +28,7 @@ const loginHeader = (props) => (
   // app keys
   const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
   // USM API credntials. Replace with your own.
-  const usmCredentials = "user:secret";
+  const usmCredentials = "development:8Pm98bUvZRvdqWiMYwzqjLXoWgKXA0Uh";
 
   export default function LoginScreen() {
 
