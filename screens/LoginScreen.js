@@ -4,12 +4,9 @@ import { Text, Layout, Card, Input, Button, Divider, Icon } from '@ui-kitten/com
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, useAutoDiscovery, exchangeCodeAsync, AccessTokenRequest } from 'expo-auth-session';
-import { TokenContext, UsmContext } from '../App';
+import { TokenContext } from '../App';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// usm api functions
-import { getOauth } from '../services/usmApi';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
@@ -28,32 +25,11 @@ const loginHeader = (props) => (
   // app keys
   const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
   // USM API credntials. Replace with your own.
-  const usmCredentials = "development:8Pm98bUvZRvdqWiMYwzqjLXoWgKXA0Uh";
+  const usmCredentials = "user:secret";
 
   export default function LoginScreen() {
 
     const { token, setToken } = React.useContext(TokenContext);
-    const { usmToken, setUsmToken } = React.useContext(UsmContext);
-
-    // make post request to usm endpoint with basic auth to get token
-    const usmLogin = async () => {
-        const data = await getOauth(usmCredentials);
-        console.log(data);
-        // get current unix time
-        const issuedAt = Math.floor(Date.now() / 1000);
-        // store usm token
-        if (Platform.OS !== 'web') {
-            SecureStore.setItemAsync('usm-token', data.access_token);
-            SecureStore.setItemAsync('usmExpireTime', issuedAt + data.expire_in);
-            // set usm token
-            setUsmToken(data.access_token);
-        } else {
-            await AsyncStorage.setItem('usm-token', data.access_token);
-            await AsyncStorage.setItem('usmExpireTime', issuedAt + data.expire_in);
-            // set usm token
-            setUsmToken(data.access_token);
-        }
-    };
 
     // create email
     const [email, setEmail] = React.useState('');
@@ -69,7 +45,8 @@ const loginHeader = (props) => (
                 'profile',
                 'offline_access',
                 'email',
-                'User.Read'
+                'User.Read',
+                'Directory.Read.All'
             ],
             redirectUri: makeRedirectUri({
                 scheme: 'com.cyproteck.cyproteck',
@@ -99,7 +76,6 @@ const loginHeader = (props) => (
             )
 
             const { accessToken, refreshToken, issuedAt, expiresIn } = tokenResult;
-            console.log(accessToken, refreshToken, issuedAt, expiresIn);
             // store the token
             if (Platform.OS !== 'web') {
                 SecureStore.setItemAsync('token', accessToken);
@@ -112,13 +88,9 @@ const loginHeader = (props) => (
             }
         }
         if (response?.type === 'success') {
-            console.log(response);
             // exchange code for session
             getCodeExchange(response.params.code);
         }
-
-         // call usmLogin
-        usmLogin();
     }, [response]);
 
         return (
