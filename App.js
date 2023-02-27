@@ -15,12 +15,16 @@ import { default as theme } from './assets/theme.json'
 // import screens
 import LoginScreen from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
+import OauthScreen from './screens/OauthScreen';
+
+// create context for token
+import { TokenContext } from './contexts/tokenContext';
 
 function Login({navigation, route}) {
   return <LoginScreen navigation={navigation} route={route} />;
 }
 
-export const TokenContext = React.createContext();
+
 export const UsmContext = React.createContext();
 
 const Stack = createNativeStackNavigator();
@@ -69,15 +73,16 @@ function App() {
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="dark" />
         <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
             {(token === null) ? (
-              // no token found, user isn't signed in
-              <Stack.Screen name="login" component={Login} />
+              <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="login">
+                <Stack.Screen name="login" component={Login} />
+                <Stack.Screen name="oauth" component={OauthScreen} />
+              </Stack.Navigator>
             ) : (
-              // user is signed in
-              <Stack.Screen name="dashboard" component={DashboardScreen} />
+              <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="dashboard" component={DashboardScreen} />
+              </Stack.Navigator>
             )}
-          </Stack.Navigator>
         </ApplicationProvider>
       </NavigationContainer>
       </TokenContext.Provider>
