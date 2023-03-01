@@ -24,7 +24,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install --legacy-peer-deps
-          npx serve web-build
+          npx expo export:web
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
