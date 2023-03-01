@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Text, Button } from '@ui-kitten/components';
-import CustomPieChart from '../components/charts/pieChart';
-import CustomLineChart from '../components/charts/lineChart';
-import CustomBarChart from '../components/charts/barChart';
+import CustomPieChart from '../charts/pieChart';
+import CustomLineChart from '../charts/lineChart';
+import CustomBarChart from '../charts/barChart';
 
 export class UserAlertsCard extends Component {
     render() {

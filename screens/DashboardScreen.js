@@ -7,9 +7,9 @@ import { DashboardAlertsList } from '../components/alertsList';
 import { DashboardTicketsList } from '../components/ticketsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 // admin cards
-import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/adminCards';
+import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
 // user cards
-import { UserAlertsCard, UserCoursesCard } from '../components/userCards';
+import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards';
 
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,22 +26,6 @@ const MenuIcon = (props) => (
 
 const LogOutIcon = (props) => (
     <Icon {...props} name='log-out-outline' />
-);
-
-const HomeIcon = (props) => (
-    <Icon {...props} name='home-outline' />
-);
-
-const AlertsIcon = (props) => (
-    <Icon {...props} name='alert-triangle-outline' />
-);
-
-const TicketsIcon = (props) => (
-    <Icon {...props} name='question-mark-circle-outline' />
-);
-
-const CoursesIcon = (props) => (
-    <Icon {...props} name='book-open-outline' />
 );
 
 const DashboardScreen = () => {
@@ -112,17 +96,7 @@ const DashboardScreen = () => {
 
     
 
-    const menuData = [        { title: 'Home', icon: 'home' },        { title: 'Threat Detection', icon: 'alert-triangle-outline' },        { title: 'Vulnerability Scanning', icon: 'shield-outline' },        { title: 'Behavioral Monitoring', icon: 'activity-outline' },        { title: 'Log Management', icon: 'file-text-outline' },    ];
-
-
-    const renderItem = ({ item, index }) => (
-        <ListItem
-            title={item.title}
-            titleStyle={{ fontSize: 16, fontWeight: 'bold', color: '#1e1e1e' }}
-            accessoryLeft={() => <Icon name={item.icon} fill='#1e1e1e' />}
-            style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : '#fff' }}
-        />
-    );
+    
     // index for menu
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     
