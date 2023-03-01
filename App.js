@@ -67,8 +67,8 @@ function App() {
       <TokenContext.Provider value={{ token, setToken }}>
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
-        <StatusBar style="dark" />
-        <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+        <StatusBar style="light" />
+        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
           <Stack.Navigator screenOptions={{headerShown: false}}>
             {(token === null) ? (
               // no token found, user isn't signed in
