@@ -3,12 +3,13 @@ import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avata
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import CustomPieChart from '../components/charts/pieChart';
-import CustomLineChart from '../components/charts/lineChart';
-import CustomBarChart from '../components/charts/barChart';
 import { DashboardAlertsList } from '../components/alertsList';
 import { DashboardTicketsList } from '../components/ticketsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
+// admin cards
+import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/adminCards';
+// user cards
+import { UserAlertsCard, UserCoursesCard } from '../components/userCards';
 
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -147,32 +148,21 @@ const DashboardScreen = () => {
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Home</Text>
                         <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                            <Card style={styles.dashboardCard}>
-                                <Text category='h6'>Threat Detection</Text>
-                                <Text>Total Threats: 12</Text>
-                                <CustomPieChart />
-                                <Button>View Details</Button>
-                            </Card>
-                            <Card style={styles.dashboardCard}>
-                                <Text category='h6'>Vulnerability Scanning</Text>
-                                <Text>Total Vulnerabilities: 7</Text>
-                                <CustomLineChart />
-                                <Button>View Details</Button>
-                            </Card>
-                            <Card style={styles.dashboardCard}>
-                                <Text category='h6'>Behavioral Monitoring</Text>
-                                <Text>Total Alerts: 5</Text>
-                                <CustomPieChart />
-                                <Button>View Details</Button>
-                            </Card>
-                            <Card style={styles.dashboardCard}>
-                            <Text category='h6'>Log Management</Text>
-                            <Text>Total Logs: 100</Text>
-                            <CustomBarChart />
-                            <Button>View Details</Button>
-                        </Card>
+                            {userRoles.role === 'admin' ? (
+                                <>
+                                <ThreatDetectionCard />
+                                <VulnScanCard />
+                                <BehavioralMonitoringCard />
+                                <LogManagementCard />
+                                </>
+                            ) : (
+                                <>
+                                <UserAlertsCard />
+                                <UserCoursesCard />
+                                </>
+                            )}
+                        </Layout>
                     </Layout>
-                </Layout>
                 )}
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 1 && (
