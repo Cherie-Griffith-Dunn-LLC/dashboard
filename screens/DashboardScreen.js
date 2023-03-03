@@ -3,12 +3,14 @@ import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avata
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import CustomPieChart from '../components/charts/pieChart';
-import CustomLineChart from '../components/charts/lineChart';
-import CustomBarChart from '../components/charts/barChart';
 import { DashboardAlertsList } from '../components/alertsList';
 import { DashboardTicketsList } from '../components/ticketsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
+import { ThemeContext } from '../contexts/theme-context';
+// admin cards
+import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
+// user cards
+import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards';
 
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,24 +29,11 @@ const LogOutIcon = (props) => (
     <Icon {...props} name='log-out-outline' />
 );
 
-const HomeIcon = (props) => (
-    <Icon {...props} name='home-outline' />
-);
-
-const AlertsIcon = (props) => (
-    <Icon {...props} name='alert-triangle-outline' />
-);
-
-const TicketsIcon = (props) => (
-    <Icon {...props} name='question-mark-circle-outline' />
-);
-
-const CoursesIcon = (props) => (
-    <Icon {...props} name='book-open-outline' />
-);
-
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
+
+    // theme context
+    const themeContext = React.useContext(ThemeContext);
 
     // logout user
     const logOut = async () => {
@@ -111,17 +100,7 @@ const DashboardScreen = () => {
 
     
 
-    const menuData = [        { title: 'Home', icon: 'home' },        { title: 'Threat Detection', icon: 'alert-triangle-outline' },        { title: 'Vulnerability Scanning', icon: 'shield-outline' },        { title: 'Behavioral Monitoring', icon: 'activity-outline' },        { title: 'Log Management', icon: 'file-text-outline' },    ];
-
-
-    const renderItem = ({ item, index }) => (
-        <ListItem
-            title={item.title}
-            titleStyle={{ fontSize: 16, fontWeight: 'bold', color: '#1e1e1e' }}
-            accessoryLeft={() => <Icon name={item.icon} fill='#1e1e1e' />}
-            style={{ backgroundColor: index % 2 === 0 ? '#f2f2f2' : '#fff' }}
-        />
-    );
+    
     // index for menu
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
     
@@ -138,41 +117,30 @@ const DashboardScreen = () => {
             />
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
                 {userRoles.role === 'admin' ? (
-                    <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+                    <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 ) : (
-                    <UserMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+                    <UserMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 )}
                 <ScrollView>
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Home</Text>
                         <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                            <Card style={styles.dashboardCard}>
-                                <Text category='h6'>Threat Detection</Text>
-                                <Text>Total Threats: 12</Text>
-                                <CustomPieChart />
-                                <Button>View Details</Button>
-                            </Card>
-                            <Card style={styles.dashboardCard}>
-                                <Text category='h6'>Vulnerability Scanning</Text>
-                                <Text>Total Vulnerabilities: 7</Text>
-                                <CustomLineChart />
-                                <Button>View Details</Button>
-                            </Card>
-                            <Card style={styles.dashboardCard}>
-                                <Text category='h6'>Behavioral Monitoring</Text>
-                                <Text>Total Alerts: 5</Text>
-                                <CustomPieChart />
-                                <Button>View Details</Button>
-                            </Card>
-                            <Card style={styles.dashboardCard}>
-                            <Text category='h6'>Log Management</Text>
-                            <Text>Total Logs: 100</Text>
-                            <CustomBarChart />
-                            <Button>View Details</Button>
-                        </Card>
+                            {userRoles.role === 'admin' ? (
+                                <>
+                                <ThreatDetectionCard />
+                                <VulnScanCard />
+                                <BehavioralMonitoringCard />
+                                <LogManagementCard />
+                                </>
+                            ) : (
+                                <>
+                                <UserAlertsCard />
+                                <UserCoursesCard />
+                                </>
+                            )}
+                        </Layout>
                     </Layout>
-                </Layout>
                 )}
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 1 && (
