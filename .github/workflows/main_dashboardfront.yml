@@ -51,5 +51,5 @@ jobs:
         with:
           app-name: 'DashboardFront'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9203FF3A888441748B28A605A92D54E2 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1BE3700458E84D3CA89C8E0F63C11EDE }}
           package: .
