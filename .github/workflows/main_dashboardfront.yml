@@ -24,13 +24,13 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install --legacy-peer-deps
-          npx expo export:web
+          npm run buildweb
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./web-build/
+          path: web-build
 
   deploy:
     runs-on: ubuntu-latest
