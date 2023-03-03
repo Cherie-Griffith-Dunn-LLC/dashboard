@@ -4,9 +4,10 @@ import { Text, Layout, Card, Input, Button, Divider, Icon } from '@ui-kitten/com
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, useAutoDiscovery, exchangeCodeAsync, AccessTokenRequest } from 'expo-auth-session';
-import { TokenContext } from '../App';
+import { TokenContext } from '../contexts/tokenContext';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getTenantId } from '../services/azureApi';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
@@ -24,74 +25,34 @@ const loginHeader = (props) => (
 
   // app keys
   const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
-  // USM API credntials. Replace with your own.
-  const usmCredentials = "user:secret";
 
-  export default function LoginScreen() {
-
-    const { token, setToken } = React.useContext(TokenContext);
+  export default function LoginScreen({ navigation }) {
 
     // create email
     const [email, setEmail] = React.useState('');
     
-    const discovery = useAutoDiscovery('https://login.microsoftonline.com/0d9acab6-2b9d-4883-8617-f3fdea4b02d6/v2.0');
 
-    // build request
-    const [request, response, promptAsync] = useAuthRequest(
-        {
-            clientId: clientId,
-            scopes: [
-                'openid',
-                'profile',
-                'offline_access',
-                'email',
-                'User.Read',
-                'Directory.Read.All'
-            ],
-            redirectUri: makeRedirectUri({
-                scheme: 'com.cyproteck.cyproteck',
-                path: 'login'
-            }),
-            usePKCE: true
-        },
-        discovery
-    );
 
-    // handle response
-    React.useEffect(() => {
-        const getCodeExchange = async (code) => {
-            const tokenResult = await exchangeCodeAsync(
-                {
-                    code: code,
-                    clientId: clientId,
-                    redirectUri: makeRedirectUri({
-                        scheme: 'com.cyproteck.cyproteck',
-                        path: 'login'
-                    }),
-                    extraParams: {
-                        code_verifier: request.codeVerifier
-                    }
-                },
-                discovery
-            )
-
-            const { accessToken, refreshToken, issuedAt, expiresIn } = tokenResult;
-            // store the token
-            if (Platform.OS !== 'web') {
-                SecureStore.setItemAsync('token', accessToken);
-                SecureStore.setItemAsync('expireTime', issuedAt + expiresIn);
-                setToken(accessToken);
-            } else {
-                await AsyncStorage.setItem('token', accessToken);
-                await AsyncStorage.setItem('expireTime', issuedAt + expiresIn);
-                setToken(accessToken);
-            }
-        }
-        if (response?.type === 'success') {
-            // exchange code for session
-            getCodeExchange(response.params.code);
-        }
-    }, [response]);
+    // login function
+    const login = async (userEmail) => {
+        // get tenant id from email
+        // test@cgdgovsolutions.com
+        getTenantId(userEmail) // returns tenant id
+            .then((res) => {
+                // check if we got an error
+                if (!res.error) {
+                // get tenant id from email
+                const tenantId = res.tenantId;
+                navigation.navigate('oauth', { tenantId: tenantId });
+                } else {
+                // show error
+                console.log(res.error);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
         return (
             <SafeAreaView style={{ flex: 1}}>
@@ -109,9 +70,9 @@ const loginHeader = (props) => (
                         />
                         <Button
                         title='Login'
-                        disabled={!request}
+                        disabled={!email}
                         onPress={() => {
-                            promptAsync();
+                            login(email);
                         }}
                         >
                             Login

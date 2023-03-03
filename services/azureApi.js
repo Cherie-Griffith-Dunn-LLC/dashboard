@@ -1,4 +1,7 @@
-const apiEndpoint = 'http://localhost:3000';
+import Constants from 'expo-constants';
+
+
+const apiEndpoint = Constants.expoConfig.extra.apiUrl;
 
 export const getMe = async (token) => {
     const response = await fetch(apiEndpoint + '/user', {
@@ -21,3 +24,16 @@ export const getRole = async (bearerToken) => {
     const data = await response.json();
     return data;
 };
+
+// make post request with email in body
+export const getTenantId = async (email) => {
+    const response = await fetch(apiEndpoint + '/tenant', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email }),
+    });
+    const data = await response.json();
+    return data;
+}

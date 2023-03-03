@@ -13,7 +13,7 @@ import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards
 
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TokenContext } from '../App';
+import { TokenContext } from '../contexts/tokenContext';
 // azure api functions
 import { getMe, getRole } from '../services/azureApi';
 // menus
