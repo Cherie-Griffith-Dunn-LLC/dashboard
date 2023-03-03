@@ -46,8 +46,7 @@ const loginHeader = (props) => (
                 'profile',
                 'offline_access',
                 'email',
-                'User.Read',
-                'Directory.Read.All'
+                'User.Read'
             ],
             redirectUri: makeRedirectUri({
                 scheme: 'com.cyproteck.cyproteck',
