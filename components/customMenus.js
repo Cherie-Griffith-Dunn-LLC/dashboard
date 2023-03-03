@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Menu, MenuItem, Icon, Layout } from '@ui-kitten/components';
+import { Menu, MenuItem, Icon, Layout, Button } from '@ui-kitten/components';
 
 const HomeIcon = (props) => (
     <Icon {...props} name='home-outline' />
@@ -18,21 +18,35 @@ const CoursesIcon = (props) => (
     <Icon {...props} name='book-open-outline' />
 );
 
+const LightIcon = (props) => (
+    <Icon {...props} name='sun-outline' />
+);
+
+const DarkIcon = (props) => (
+    <Icon {...props} name='moon-outline' />
+);
+
 // admin sidebar menu
 export class AdminMenu extends Component {
     render() {
         return (
             <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
                 {this.props.menuWidth === 50 ? (
+                    <>
                     <CollapsedAdminMenu
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
+                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
+                    </>
                 ) : (
+                    <>
                     <ExpandedAdminMenu
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
+                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    </>
                 )}
             </Layout>
         );
@@ -115,6 +129,7 @@ class ExpandedUserMenu extends Component {
             onSelect={index => this.props.setSelectedIndex(index)}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
+                <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme}>TOGGLE THEME</Button>
             </Menu>
         )
     }
