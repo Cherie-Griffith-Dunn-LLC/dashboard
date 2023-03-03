@@ -50,7 +50,7 @@ const loginHeader = (props) => (
             ],
             redirectUri: makeRedirectUri({
                 scheme: 'com.cyproteck.cyproteck',
-                path: 'login'
+                path: '/'
             }),
             usePKCE: true
         },
@@ -73,7 +73,7 @@ const loginHeader = (props) => (
                     clientId: clientId,
                     redirectUri: makeRedirectUri({
                         scheme: 'com.cyproteck.cyproteck',
-                        path: 'login'
+                        path: '/'
                     }),
                     extraParams: {
                         code_verifier: request.codeVerifier
