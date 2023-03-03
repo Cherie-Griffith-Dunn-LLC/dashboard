@@ -6,6 +6,7 @@ import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { DashboardAlertsList } from '../components/alertsList';
 import { DashboardTicketsList } from '../components/ticketsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
+import { ThemeContext } from '../contexts/theme-context';
 // admin cards
 import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
 // user cards
@@ -30,6 +31,9 @@ const LogOutIcon = (props) => (
 
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
+
+    // theme context
+    const themeContext = React.useContext(ThemeContext);
 
     // logout user
     const logOut = async () => {
@@ -113,9 +117,9 @@ const DashboardScreen = () => {
             />
             <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
                 {userRoles.role === 'admin' ? (
-                    <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+                    <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 ) : (
-                    <UserMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+                    <UserMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 )}
                 <ScrollView>
                 {selectedIndex.row === 0 && (
