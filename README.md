@@ -1,5 +1,11 @@
 # Dashboard
 
+## Deployment
+### Web Deployment ![Web Deployment Workflow](https://github.com/Cherie-Griffith-Dunn-LLC/dashboard/actions/workflows/azure-static-web-apps-thankful-desert-05ea0e50f.yml/badge.svg?branch=main)
+Commiting to the `main` branch will automatically deploy the web app to https://thankful-desert-05ea0e50f.2.azurestaticapps.net/
+
+- To manually build and deploy the web app, run `npm run build`. Static files will be generated in the `web-build` directory.
+
 ## Development Enviroment
 ### Requirements
 - Node.js
@@ -9,9 +15,9 @@
 
 ### Running Development Server
 - `npm install`
-- `npx expo start`
+- `npm run start` or `npm run web`
 
-Run the API on port 3000.
+Run the API locally by default on port 3000.
 
 #### To open the app:
 - On your Android device, press "Scan QR Code" on the "Home" tab of the Expo Go app and scan the QR code you see in the terminal.
