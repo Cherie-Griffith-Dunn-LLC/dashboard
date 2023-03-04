@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { Text, Layout, Card, Input, Button, Divider, Icon } from '@ui-kitten/components';
+import { Text, Layout, Card, Button, Divider, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, useAuthRequest, useAutoDiscovery, exchangeCodeAsync, AccessTokenRequest } from 'expo-auth-session';
 import { TokenContext } from '../contexts/tokenContext';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getTenantId } from '../services/azureApi';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();

@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { Text, Layout, Card, Input, Button, Tooltip, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as WebBrowser from 'expo-web-browser';
 import { getTenantId } from '../services/azureApi';
 
 
