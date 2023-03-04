@@ -1,16 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { Text, Layout, Card, Input, Button, Divider, Icon } from '@ui-kitten/components';
+import { Text, Layout, Card, Input, Button, Tooltip, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri, useAuthRequest, useAutoDiscovery, exchangeCodeAsync, AccessTokenRequest } from 'expo-auth-session';
-import { TokenContext } from '../contexts/tokenContext';
-import * as SecureStore from 'expo-secure-store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getTenantId } from '../services/azureApi';
 
-// authentication via Azure AD
-WebBrowser.maybeCompleteAuthSession();
+
 
 
 const loginHeader = (props) => (
@@ -23,13 +17,15 @@ const loginHeader = (props) => (
     <Icon name='wifi' {...props} />
   );
 
-  // app keys
-  const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
 
   export default function LoginScreen({ navigation }) {
 
     // create email
     const [email, setEmail] = React.useState('');
+
+    // create error & tooltip
+    const [error, setError] = React.useState(null);
+    const [errorVisible, setErrorVisible] = React.useState(false);
     
 
 
@@ -46,6 +42,8 @@ const loginHeader = (props) => (
                 navigation.navigate('oauth', { tenantId: tenantId });
                 } else {
                 // show error
+                setError(res.error);
+                setErrorVisible(true);
                 console.log(res.error);
                 }
             })
@@ -54,20 +52,30 @@ const loginHeader = (props) => (
             });
     };
 
+    const renderInputEmail = () => (
+        <Input
+            value={email}
+            label='Email'
+            placeholder='email@example.com'
+            textContentType='emailAddress'
+            autoCompleteType='email'
+            keyboardType='email-address'
+            onChangeText={nextValue => setEmail(nextValue)}
+        />
+    );
+
         return (
             <SafeAreaView style={{ flex: 1}}>
                 <Layout style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text category='h1'>Cyproteck</Text>
                     <Card header={loginHeader}>
-                        <Input
-                            value={email}
-                            label='Email'
-                            placeholder='email@example.com'
-                            textContentType='emailAddress'
-                            autoCompleteType='email'
-                            keyboardType='email-address'
-                            onChangeText={nextValue => setEmail(nextValue)}
-                        />
+                    <Tooltip
+                    anchor={renderInputEmail}
+                    visible={errorVisible}
+                    placement='top'
+                    onBackdropPress={() => setErrorVisible(false)}>
+                        {error}
+                    </Tooltip>
                         <Button
                         title='Login'
                         disabled={!email}
