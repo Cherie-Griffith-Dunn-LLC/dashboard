@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { ThemeContext } from './contexts/theme-context';
 // import our custom theme colors
 import { default as theme } from './assets/theme.json'
 
@@ -32,6 +32,14 @@ const Stack = createNativeStackNavigator();
 function App() {
   // create state for user token
   const [token, setToken] = React.useState(null);
+
+  // theme state
+  const [themeMode, setTheme] = React.useState('light');
+
+  const toggleTheme = () => {
+    const nextTheme = themeMode === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  };
 
   // check if token is stored in secure storage
   React.useEffect(() => {
@@ -71,19 +79,21 @@ function App() {
       <TokenContext.Provider value={{ token, setToken }}>
       <NavigationContainer>
         <IconRegistry icons={EvaIconsPack} />
-        <StatusBar style="dark" />
-        <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
-            {(token === null) ? (
-              <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="login">
-                <Stack.Screen name="login" component={Login} />
-                <Stack.Screen name="oauth" component={OauthScreen} />
-              </Stack.Navigator>
-            ) : (
-              <Stack.Navigator screenOptions={{headerShown: false}}>
-                <Stack.Screen name="dashboard" component={DashboardScreen} />
-              </Stack.Navigator>
-            )}
-        </ApplicationProvider>
+        <StatusBar style="light" />
+        <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
+          <ApplicationProvider {...eva} theme={{...eva[themeMode], ...theme}}>
+              {(token === null) ? (
+                <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="login">
+                  <Stack.Screen name="login" component={Login} />
+                  <Stack.Screen name="oauth" component={OauthScreen} />
+                </Stack.Navigator>
+              ) : (
+                <Stack.Navigator screenOptions={{headerShown: false}}>
+                  <Stack.Screen name="dashboard" component={DashboardScreen} />
+                </Stack.Navigator>
+              )}
+          </ApplicationProvider>
+        </ThemeContext.Provider>
       </NavigationContainer>
       </TokenContext.Provider>
     );

@@ -1,5 +1,7 @@
 // api endpoint
-const usmEndpoint = 'http://localhost:3000/api/2.0';
+import Constants from 'expo-constants';
+
+const usmEndpoint = Constants.expoConfig.extra.apiUrl;
 
 // oauth login
 export const getOauth = async (authString) => {

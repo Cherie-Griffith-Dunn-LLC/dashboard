@@ -1,4 +1,7 @@
-const apiEndpoint = 'http://localhost:3000';
+import Constants from 'expo-constants';
+
+
+const apiEndpoint = Constants.expoConfig.extra.apiUrl;
 
 export const getMe = async (token) => {
     const response = await fetch(apiEndpoint + '/user', {
