@@ -3,18 +3,18 @@ import { StyleSheet } from 'react-native';
 import { List, ListItem, Button, Icon } from '@ui-kitten/components';
 
 const data = new Array(8).fill({
-  title: 'Alert',
-  description: 'Alert Description',
+  title: 'Event',
+  description: 'Event Description',
 });
 
-export const DashboardAlertsList = () => {
+export const DashboardEventsList = () => {
 
     const renderItemAccessory = (props) => (
         <Button {...props} size='tiny'>VIEW</Button>
     );
 
     const renderItemIcon = (props) => (
-        <Icon {...props} name='alert-circle-outline' />
+        <Icon {...props} name='question-mark-circle-outline' />
     );
 
   const renderItem = ({ item, index }) => (

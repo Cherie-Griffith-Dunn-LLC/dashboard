@@ -5,14 +5,27 @@ import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
 import CustomBarChart from '../charts/barChart';
 
+// set IndexPath and return it
+// we have to do this since we dont have ts with IndexPath type
+
+var IndexPath = {
+    row: 0,
+    section: undefined
+  };
+
+function setIndexPathRow(row) {
+    IndexPath.row = row;
+    return IndexPath;
+}
+
 export class ThreatDetectionCard extends Component {
     render() {
         return (
             <Card style={styles.dashboardCard}>
-                <Text category='h6'>Threat Detection</Text>
-                <Text>Total Threats: 12</Text>
+                <Text category='h6'>Alarms</Text>
+                <Text>Total Alarms: 12</Text>
                 <CustomPieChart />
-                <Button>View Details</Button>
+                <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))} >View Details</Button>
             </Card>
         );
     }
@@ -22,10 +35,10 @@ export class VulnScanCard extends Component {
     render() {
         return (
             <Card style={styles.dashboardCard}>
-                <Text category='h6'>Vulnerability Scanning</Text>
-                <Text>Total Vulnerabilities: 7</Text>
+                <Text category='h6'>Events</Text>
+                <Text>Total Events: 7</Text>
                 <CustomLineChart />
-                <Button>View Details</Button>
+                <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
             </Card>
         );
     }
@@ -35,8 +48,8 @@ export class BehavioralMonitoringCard extends Component {
     render() {
         return (
             <Card style={styles.dashboardCard}>
-                <Text category='h6'>Behavioral Monitoring</Text>
-                <Text>Total Alerts: 5</Text>
+                <Text category='h6'>Dark Web Monitoring</Text>
+                <Text>Total Dark Web Alerts: 5</Text>
                 <CustomPieChart />
                 <Button>View Details</Button>
             </Card>
@@ -48,10 +61,10 @@ export class LogManagementCard extends Component {
     render() {
         return (
             <Card style={styles.dashboardCard}>
-                <Text category='h6'>Log Management</Text>
-                <Text>Total Logs: 100</Text>
+                <Text category='h6'>Learning Management System</Text>
+                <Text>Total Required Courses: 100</Text>
                 <CustomBarChart />
-                <Button>View Details</Button>
+                <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(3))}>View Details</Button>
             </Card>
         );
     }

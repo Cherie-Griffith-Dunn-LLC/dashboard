@@ -3,8 +3,8 @@ import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avata
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import { DashboardAlertsList } from '../components/alertsList';
-import { DashboardTicketsList } from '../components/ticketsList';
+import { DashboardAlarmsList } from '../components/alarmsList';
+import { DashboardEventsList } from '../components/eventsList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
@@ -128,15 +128,15 @@ const DashboardScreen = () => {
                         <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
-                                <ThreatDetectionCard />
-                                <VulnScanCard />
-                                <BehavioralMonitoringCard />
-                                <LogManagementCard />
+                                <ThreatDetectionCard setSelectedIndex={setSelectedIndex} />
+                                <VulnScanCard setSelectedIndex={setSelectedIndex} />
+                                <BehavioralMonitoringCard setSelectedIndex={setSelectedIndex} />
+                                <LogManagementCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
                                 <>
-                                <UserAlertsCard />
-                                <UserCoursesCard />
+                                <UserAlertsCard setSelectedIndex={setSelectedIndex} />
+                                <UserCoursesCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             )}
                         </Layout>
@@ -145,15 +145,15 @@ const DashboardScreen = () => {
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 1 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
-                            <Text category='h3'>Alerts</Text>
-                            <DashboardAlertsList />
+                            <Text category='h3'>Alarms</Text>
+                            <DashboardAlarmsList />
                         </Layout>
                     )
                 )}
                 {selectedIndex.row === 2 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
-                        <Text category='h3'>Tickets</Text>
-                        <DashboardTicketsList />
+                        <Text category='h3'>Events</Text>
+                        <DashboardEventsList />
                     </Layout>
                 )}
                 {userRoles.role === 'admin' ? (
