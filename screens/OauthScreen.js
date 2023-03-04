@@ -26,7 +26,7 @@ const loginHeader = (props) => (
   // app keys
   const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
 
-  export default function OauthScreen({ route }) {
+  export default function OauthScreen({ route, navigation }) {
 
     const { token, setToken } = React.useContext(TokenContext);
     
@@ -106,6 +106,8 @@ const loginHeader = (props) => (
                     <Text category='h1'>Cyproteck</Text>
                     <Card header={loginHeader}>
                         <Text category='s1'>Please login using your Microsoft Organization account in the popup. You will be redirected automatically.</Text>
+                        <Divider style={{ marginVertical: 10 }} />
+                        <Button onPress={() => navigation.navigate('login')}>Cancel</Button>
                     </Card>
                 </Layout>
             </SafeAreaView>
