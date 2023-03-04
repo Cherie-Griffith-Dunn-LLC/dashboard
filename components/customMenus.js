@@ -58,6 +58,33 @@ export class AdminMenu extends Component {
     }
 }
 
+// user sidebar menu
+export class UserMenu extends Component {
+    render() {
+        return (
+            <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
+                {this.props.menuWidth === 50 ? (
+                    <>
+                    <CollapsedUserMenu
+                        selectedIndex={this.props.selectedIndex}
+                        setSelectedIndex={this.props.setSelectedIndex}
+                    />
+                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
+                    </>
+                ) : (
+                    <>
+                    <ExpandedUserMenu
+                        selectedIndex={this.props.selectedIndex}
+                        setSelectedIndex={this.props.setSelectedIndex}
+                    />
+                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    </>
+                )}
+            </Layout>
+        );
+    }
+}
+
 // collapsed admin menu
 class CollapsedAdminMenu extends Component {
     render() {
@@ -70,6 +97,20 @@ class CollapsedAdminMenu extends Component {
             <MenuItem accessoryLeft={TicketsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
             <MenuItem accessoryLeft={DWMIcon}/>
+        </Menu>
+        )
+    }
+}
+
+// collapsed user menu
+class CollapsedUserMenu extends Component {
+    render() {
+        return (
+            <Menu
+        selectedInex={this.props.selectedIndex}
+        onSelect={index => this.props.setSelectedIndex(index)}>
+            <MenuItem accessoryLeft={HomeIcon}/>
+            <MenuItem accessoryLeft={CoursesIcon}/>
         </Menu>
         )
     }
@@ -92,41 +133,6 @@ class ExpandedAdminMenu extends Component {
     }
 }
 
-// user sidebar menu
-export class UserMenu extends Component {
-    render() {
-        return (
-            <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
-                {this.props.menuWidth === 50 ? (
-                    <CollapsedUserMenu
-                        selectedIndex={this.props.selectedIndex}
-                        setSelectedIndex={this.props.setSelectedIndex}
-                    />
-                ) : (
-                    <ExpandedUserMenu
-                        selectedIndex={this.props.selectedIndex}
-                        setSelectedIndex={this.props.setSelectedIndex}
-                    />
-                )}
-            </Layout>
-        );
-    }
-}
-
-// collapsed user menu
-class CollapsedUserMenu extends Component {
-    render() {
-        return (
-            <Menu
-        selectedInex={this.props.selectedIndex}
-        onSelect={index => this.props.setSelectedIndex(index)}>
-            <MenuItem accessoryLeft={HomeIcon}/>
-            <MenuItem accessoryLeft={CoursesIcon}/>
-        </Menu>
-        )
-    }
-}
-
 // expanded user menu
 class ExpandedUserMenu extends Component {
     render() {
@@ -136,7 +142,6 @@ class ExpandedUserMenu extends Component {
             onSelect={index => this.props.setSelectedIndex(index)}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
-                <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme}>TOGGLE THEME</Button>
             </Menu>
         )
     }
