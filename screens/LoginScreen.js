@@ -23,6 +23,10 @@ const loginHeader = (props) => (
 
     // create email
     const [email, setEmail] = React.useState('');
+
+    // create error & tooltip
+    const [error, setError] = React.useState(null);
+    const [errorVisible, setErrorVisible] = React.useState(false);
     
 
 
@@ -39,6 +43,8 @@ const loginHeader = (props) => (
                 navigation.navigate('oauth', { tenantId: tenantId });
                 } else {
                 // show error
+                setError(res.error);
+                setErrorVisible(true);
                 console.log(res.error);
                 }
             })
@@ -47,20 +53,30 @@ const loginHeader = (props) => (
             });
     };
 
+    const renderInputEmail = () => (
+        <Input
+            value={email}
+            label='Email'
+            placeholder='email@example.com'
+            textContentType='emailAddress'
+            autoCompleteType='email'
+            keyboardType='email-address'
+            onChangeText={nextValue => setEmail(nextValue)}
+        />
+    );
+
         return (
             <SafeAreaView style={{ flex: 1}}>
                 <Layout style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text category='h1'>Cyproteck</Text>
                     <Card header={loginHeader}>
-                        <Input
-                            value={email}
-                            label='Email'
-                            placeholder='email@example.com'
-                            textContentType='emailAddress'
-                            autoCompleteType='email'
-                            keyboardType='email-address'
-                            onChangeText={nextValue => setEmail(nextValue)}
-                        />
+                    <Tooltip
+                    anchor={renderInputEmail}
+                    visible={errorVisible}
+                    placement='top'
+                    onBackdropPress={() => setErrorVisible(false)}>
+                        {error}
+                    </Tooltip>
                         <Button
                         title='Login'
                         disabled={!email}
