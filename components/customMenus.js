@@ -18,6 +18,11 @@ const CoursesIcon = (props) => (
     <Icon {...props} name='book-open-outline' />
 );
 
+const DWMIcon = (props) => (
+    <Icon {...props} name='unlock-outline' />
+);
+
+
 const LightIcon = (props) => (
     <Icon {...props} name='sun-outline' />
 );
@@ -64,6 +69,7 @@ class CollapsedAdminMenu extends Component {
             <MenuItem accessoryLeft={AlertsIcon}/>
             <MenuItem accessoryLeft={TicketsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
+            <MenuItem accessoryLeft={DWMIcon}/>
         </Menu>
         )
     }
@@ -80,6 +86,7 @@ class ExpandedAdminMenu extends Component {
                 <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
                 <MenuItem title='Tickets' accessoryLeft={TicketsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
+                <MenuItem title='Dark Web Monitoring' accessoryLeft={DWMIcon}/>
             </Menu>
         )
     }

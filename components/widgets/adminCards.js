@@ -51,7 +51,7 @@ export class BehavioralMonitoringCard extends Component {
                 <Text category='h6'>Dark Web Monitoring</Text>
                 <Text>Total Dark Web Alerts: 5</Text>
                 <CustomPieChart />
-                <Button>View Details</Button>
+                <Button  onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
             </Card>
         );
     }

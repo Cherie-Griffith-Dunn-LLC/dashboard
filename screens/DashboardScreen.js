@@ -5,6 +5,7 @@ import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { DashboardAlarmsList } from '../components/alarmsList';
 import { DashboardEventsList } from '../components/eventsList';
+import { DWMList } from '../components/dwmList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
@@ -171,6 +172,14 @@ const DashboardScreen = () => {
                                 <RequiredCourses />
                             </Layout>
                         )
+                )}
+                {userRoles.role === 'admin' && (
+                    selectedIndex.row === 4 && (
+                        <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>Dark Web Monitoring</Text>
+                            <DWMList />
+                        </Layout>
+                    )
                 )}
                 </ScrollView>
          </Layout>
