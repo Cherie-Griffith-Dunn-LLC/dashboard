@@ -124,8 +124,8 @@ class ExpandedAdminMenu extends Component {
             selectedInex={this.props.selectedIndex}
             onSelect={index => this.props.setSelectedIndex(index)}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
-                <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
-                <MenuItem title='Tickets' accessoryLeft={TicketsIcon}/>
+                <MenuItem title='Alarms' accessoryLeft={AlertsIcon}/>
+                <MenuItem title='Events' accessoryLeft={TicketsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
                 <MenuItem title='Dark Web Monitoring' accessoryLeft={DWMIcon}/>
             </Menu>
