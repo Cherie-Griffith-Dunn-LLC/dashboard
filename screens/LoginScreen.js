@@ -58,8 +58,11 @@ const loginHeader = (props) => (
             label='Email'
             placeholder='email@example.com'
             textContentType='emailAddress'
-            autoCompleteType='email'
+            autoComplete='email'
             keyboardType='email-address'
+            autoCapitalize='none'
+            autoCorrect={false}
+            autoFocus={true}
             onChangeText={nextValue => setEmail(nextValue)}
         />
     );
