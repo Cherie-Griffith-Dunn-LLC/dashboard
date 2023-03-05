@@ -62,8 +62,27 @@ export const DashboardAlarmsList = () => {
         backdropStyle={styles.backdrop}
         >
         <Card>
-          <Text>{data[currentData]?.title} {currentData + 1}</Text>
-          <Text>{data[currentData]?.description}</Text>
+          <Text>Title: {data[currentData]?.title} {currentData + 1}</Text>
+          <Text>Description: {data[currentData]?.description}</Text>
+          <Text>Priority: {data[currentData]?.priority_label}</Text>
+          <Text>Rule Intent: {data[currentData]?.rule_intent}</Text>
+          <Text>App Type: {data[currentData]?.app_type}</Text>
+          <Text>Source Username: {data[currentData]?.source_username}</Text>
+          <Text>Security Group ID: {data[currentData]?.security_group_id}</Text>
+          <Text>Destination Name: {data[currentData]?.destination_name}</Text>
+          <Text>Timestamp Occured: {data[currentData]?.timestamp_occured}</Text>
+          <Text>Authentication Type: {data[currentData]?.authentication_type}</Text>
+          <Text>Ruled Method: {data[currentData]?.ruled_method}</Text>
+          <Text>App ID: {data[currentData]?.app_id}</Text>
+          <Text>Source Name: {data[currentData]?.source_name}</Text>
+          <Text>Timestamp Received: {data[currentData]?.timestamp_received}</Text>
+          <Text>Rule Strategy: {data[currentData]?.rule_strategy}</Text>
+          <Text>Request User Agent: {data[currentData]?.request_user_agent}</Text>
+          <Text>Rule ID: {data[currentData]?.rule_id}</Text>
+          <Text>Sensor UUID: {data[currentData]?.sensor_uuid}</Text>
+          <Text>Transient: {data[currentData]?.transient}</Text>
+          <Text>Event Name: {data[currentData]?.event_name}</Text>
+          <Text>Status: {data[currentData]?.status}</Text>
           <Button onPress={() => setVisible(false)}>Close</Button>
         </Card>
     </Modal>
