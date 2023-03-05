@@ -3,6 +3,7 @@
     "name": "cyproteck",
     "slug": "cyproteck",
     "version": "1.0.0",
+    "owner": "msaleem",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "cyproteck",
