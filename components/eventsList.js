@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
 
-const data = new Array(8).fill({
+const data = new Array(20).fill({
   title: 'Event',
   event_description: "Action for uploading an object (PUT or POST).",
   account_name: "generic-account",
