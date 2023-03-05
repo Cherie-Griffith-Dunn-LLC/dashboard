@@ -39,7 +39,7 @@ const loginHeader = (props) => (
                 if (!res.error) {
                 // get tenant id from email
                 const tenantId = res.tenantId;
-                navigation.navigate('oauth', { tenantId: tenantId });
+                navigation.navigate('OAuth', { tenantId: tenantId });
                 } else {
                 // show error
                 setError(res.error);

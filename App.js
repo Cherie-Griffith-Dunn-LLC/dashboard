@@ -84,12 +84,12 @@ function App() {
           <ApplicationProvider {...eva} theme={{...eva[themeMode], ...theme}}>
               {(token === null) ? (
                 <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="login">
-                  <Stack.Screen name="login" component={Login} />
-                  <Stack.Screen name="oauth" component={OauthScreen} />
+                  <Stack.Screen  name="Login" component={Login} />
+                  <Stack.Screen name="OAuth" component={OauthScreen} />
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator screenOptions={{headerShown: false}}>
-                  <Stack.Screen name="dashboard" component={DashboardScreen} />
+                  <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 </Stack.Navigator>
               )}
           </ApplicationProvider>
