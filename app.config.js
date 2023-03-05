@@ -2,7 +2,7 @@ module.exports = () => {
     if (process.env.MY_ENVIRONMENT === 'production') {
       return {
         /* your production config */
-        owner: 'msaleem',
+        owner: 'cyproteck',
         extra: {
             apiUrl: 'https://cyproteckapi.azurewebsites.net',
             eas: {
@@ -13,7 +13,7 @@ module.exports = () => {
     } else {
       return {
         /* your development config */
-        owner: 'msaleem',
+        owner: 'cyproteck',
         extra: {
             apiUrl: 'http://localhost:3000',
             eas: {
