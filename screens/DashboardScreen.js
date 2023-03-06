@@ -160,6 +160,8 @@ const DashboardScreen = () => {
                 {userRoles.role === 'admin' ? (
                     selectedIndex.row === 3 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>Required</Text>
+                            <RequiredCourses />
                             <Text category='h3'>All Courses</Text>
                             <AllCourses />
                         </Layout>
