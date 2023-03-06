@@ -110,6 +110,7 @@ class CollapsedUserMenu extends Component {
         selectedInex={this.props.selectedIndex}
         onSelect={index => this.props.setSelectedIndex(index)}>
             <MenuItem accessoryLeft={HomeIcon}/>
+            <MenuItem accessoryLeft={AlertsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
         </Menu>
         )
@@ -141,6 +142,7 @@ class ExpandedUserMenu extends Component {
             selectedInex={this.props.selectedIndex}
             onSelect={index => this.props.setSelectedIndex(index)}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
+                <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
             </Menu>
         )

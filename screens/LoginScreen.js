@@ -39,7 +39,7 @@ const loginHeader = (props) => (
                 if (!res.error) {
                 // get tenant id from email
                 const tenantId = res.tenantId;
-                navigation.navigate('oauth', { tenantId: tenantId });
+                navigation.navigate('OAuth', { tenantId: tenantId });
                 } else {
                 // show error
                 setError(res.error);
@@ -58,8 +58,11 @@ const loginHeader = (props) => (
             label='Email'
             placeholder='email@example.com'
             textContentType='emailAddress'
-            autoCompleteType='email'
+            autoComplete='email'
             keyboardType='email-address'
+            autoCapitalize='none'
+            autoCorrect={false}
+            autoFocus={true}
             onChangeText={nextValue => setEmail(nextValue)}
         />
     );

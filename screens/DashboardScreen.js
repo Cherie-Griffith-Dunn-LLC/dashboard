@@ -143,19 +143,28 @@ const DashboardScreen = () => {
                         </Layout>
                     </Layout>
                 )}
-                {userRoles.role === 'admin' && (
+                {userRoles.role === 'admin' ? (
                     selectedIndex.row === 1 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Alarms</Text>
                             <DashboardAlarmsList />
                         </Layout>
                     )
+                ) : (
+                    selectedIndex.row === 1 && (
+                        <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>Alerts</Text>
+                            <DashboardAlarmsList />
+                        </Layout>
+                    )
                 )}
-                {selectedIndex.row === 2 && (
+                {userRoles.role === 'admin' && (
+                    selectedIndex.row === 2 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Events</Text>
                         <DashboardEventsList />
                     </Layout>
+                    )
                 )}
                 {userRoles.role === 'admin' ? (
                     selectedIndex.row === 3 && (
@@ -167,7 +176,7 @@ const DashboardScreen = () => {
                         </Layout>
                     )
                 ) : (
-                    selectedIndex.row === 1 && (
+                    selectedIndex.row === 2 && (
                             <Layout style={{ flex: 1, padding: 20 }}>
                                 <Text category='h3'>Courses</Text>
                                 <Text category='h3'>Required</Text>
