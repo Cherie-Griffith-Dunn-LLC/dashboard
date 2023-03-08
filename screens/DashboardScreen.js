@@ -147,7 +147,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 1 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Alarms</Text>
-                            <DashboardAlarmsList />
+                            <DashboardAlarmsList token={token} />
                         </Layout>
                     )
                 ) : (

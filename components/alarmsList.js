@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
+// usm api function
+import { getAlarms } from '../services/usmApi';
 
+/**
 const data = new Array(20).fill({
   title: 'Alarm',
   description: 'Alarm Description',
@@ -26,8 +29,20 @@ const data = new Array(20).fill({
   event_name: 'Add inbound network traffic rule to security group',
   status: 'open'
 });
+*/
 
-export const DashboardAlarmsList = () => {
+
+export const DashboardAlarmsList = (props) => {
+  // store data
+  const [data, setData] = React.useState([]);
+  // get alarms from api
+  React.useEffect(() => {
+    getAlarms(props.token).then((response) => {
+      // replace empty data array with response data
+      setData(response._embedded.alarms);
+    });
+  }, []);
+
   // control modal visibility
   const [visible, setVisible] = React.useState(false);
   // store current data to pass to modal
@@ -43,12 +58,18 @@ export const DashboardAlarmsList = () => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
-    title={`${item.title} ${index + 1}`}
-    description={`${item.description}`}
+    title={`${item.rule_strategy}`}
+    description={`${item.rule_method}`}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
   );
 
+  // if loading data, show loading text
+  if (data.length === 0) {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
   return (
     <>
     <List
@@ -62,8 +83,8 @@ export const DashboardAlarmsList = () => {
         backdropStyle={styles.backdrop}
         >
         <Card>
-          <Text>Title: {data[currentData]?.title} {currentData + 1}</Text>
-          <Text>Description: {data[currentData]?.description}</Text>
+          <Text>Title: {data[currentData]?.rule_strategy}</Text>
+          <Text>Description: {data[currentData]?.rule_method}</Text>
           <Text>Priority: {data[currentData]?.priority_label}</Text>
           <Text>Rule Intent: {data[currentData]?.rule_intent}</Text>
           <Text>App Type: {data[currentData]?.app_type}</Text>
