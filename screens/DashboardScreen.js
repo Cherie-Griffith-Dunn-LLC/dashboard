@@ -162,7 +162,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 2 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Events</Text>
-                        <DashboardEventsList />
+                        <DashboardEventsList token={token} />
                     </Layout>
                     )
                 )}

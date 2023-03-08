@@ -4,33 +4,6 @@ import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/comp
 // usm api function
 import { getAlarms } from '../services/usmApi';
 
-/**
-const data = new Array(20).fill({
-  title: 'Alarm',
-  description: 'Alarm Description',
-  priority: 20,
-  priority_label: 'low',
-  rule_intent: 'Environmental Awareness',
-  app_type: 'amazon-aws',
-  source_username: 'user@cgdgovsolutions.com',
-  security_group_id: 'sg-xxxxx',
-  destination_name: 'ec2.amazonaws.com',
-  timestamp_occured: '1517932134000',
-  authentication_type: 'IAMUser',
-  ruled_method: 'AWS EC2 Security Group Modified',
-  app_id: 'amazon-aws',
-  source_name: 'x.xx.xx.xxxx',
-  timestamp_received: '1517933139670',
-  rule_strategy: 'Network Access Control Modification',
-  request_user_agent: 'signin.amazonaws.com',
-  rule_id: 'AWSEC2SecurityGroupMod',
-  sensor_uuid: '433152d2-10ee-4645-8c04-9f8269a447e7',
-  transient: false,
-  event_name: 'Add inbound network traffic rule to security group',
-  status: 'open'
-});
-*/
-
 
 export const DashboardAlarmsList = (props) => {
   // store data
