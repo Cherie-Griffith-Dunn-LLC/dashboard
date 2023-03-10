@@ -27,7 +27,6 @@ export const getAlarms = async (bearerToken) => {
         }
     });
     const data = await response.json();
-    console.log(data);
 
     return data;
 };
@@ -42,7 +41,6 @@ export const getEvents = async (bearerToken) => {
         }
     });
     const data = await response.json();
-    console.log(data);
 
     return data;
 };

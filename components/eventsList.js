@@ -35,7 +35,7 @@ export const DashboardEventsList = (props) => {
   const renderItem = ({ item, index }) => (
     <ListItem
     title={`${item.event_name}`}
-    description={`${item.event_description}`}
+    description={`${item.event_category ? item.event_category : item.event_type}`}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
   );
