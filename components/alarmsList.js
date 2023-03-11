@@ -8,11 +8,14 @@ import { getAlarms } from '../services/usmApi';
 export const DashboardAlarmsList = (props) => {
   // store data
   const [data, setData] = React.useState([]);
+  // store loading state
+  const [loading, setLoading] = React.useState(true);
   // get alarms from api
   React.useEffect(() => {
     getAlarms(props.token).then((response) => {
       // replace empty data array with response data
       setData(response._embedded.alarms);
+      setLoading(false);
     });
   }, []);
 
@@ -38,11 +41,18 @@ export const DashboardAlarmsList = (props) => {
   );
 
   // if loading data, show loading text
-  if (data.length === 0) {
+  if (loading) {
     return (
       <Text>Loading...</Text>
     )
   }
+  // if not loading and no adata, show no data text
+  if (!loading && data.length === 0) {
+    return (
+      <Text>No data</Text>
+    )
+  }
+  
   return (
     <>
     <List

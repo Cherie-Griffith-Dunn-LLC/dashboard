@@ -10,12 +10,15 @@ export const DashboardEventsList = (props) => {
 
   // store data
   const [data, setData] = React.useState([]);
+  // store loading state
+  const [loading, setLoading] = React.useState(true);
   // get alarms from api
   React.useEffect(() => {
     getEvents(props.token).then((response) => {
       console.log(response);
       // replace empty data array with response data
       setData(response._embedded.eventResources);
+      setLoading(false);
     });
   }, []);
 
@@ -41,12 +44,17 @@ export const DashboardEventsList = (props) => {
   );
 
   // if loading data, show loading text
-  if (data.length === 0) {
+  if (loading) {
     return (
       <Text>Loading...</Text>
     )
   }
-
+  // if not loading and no adata, show no data text
+  if (!loading && data.length === 0) {
+    return (
+      <Text>No data</Text>
+    )
+  }
   return (
   <>
   <List

@@ -89,9 +89,7 @@ const DashboardScreen = () => {
         const userRoles = await getRole(token);
 
         // Parse response and get user's name
-        console.log(userInfo);
         setUserInfo(userInfo);
-        console.log(userRoles);
         setUserRoles(userRoles);
     };
 
