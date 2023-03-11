@@ -89,9 +89,7 @@ const DashboardScreen = () => {
         const userRoles = await getRole(token);
 
         // Parse response and get user's name
-        console.log(userInfo);
         setUserInfo(userInfo);
-        console.log(userRoles);
         setUserRoles(userRoles);
     };
 
@@ -147,7 +145,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 1 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Alarms</Text>
-                            <DashboardAlarmsList />
+                            <DashboardAlarmsList token={token} />
                         </Layout>
                     )
                 ) : (
@@ -162,7 +160,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 2 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Events</Text>
-                        <DashboardEventsList />
+                        <DashboardEventsList token={token} />
                     </Layout>
                     )
                 )}

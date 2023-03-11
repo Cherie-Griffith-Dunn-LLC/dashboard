@@ -1,33 +1,24 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
+// usm api function
+import { getAlarms } from '../services/usmApi';
 
-const data = new Array(20).fill({
-  title: 'Alarm',
-  description: 'Alarm Description',
-  priority: 20,
-  priority_label: 'low',
-  rule_intent: 'Environmental Awareness',
-  app_type: 'amazon-aws',
-  source_username: 'user@cgdgovsolutions.com',
-  security_group_id: 'sg-xxxxx',
-  destination_name: 'ec2.amazonaws.com',
-  timestamp_occured: '1517932134000',
-  authentication_type: 'IAMUser',
-  ruled_method: 'AWS EC2 Security Group Modified',
-  app_id: 'amazon-aws',
-  source_name: 'x.xx.xx.xxxx',
-  timestamp_received: '1517933139670',
-  rule_strategy: 'Network Access Control Modification',
-  request_user_agent: 'signin.amazonaws.com',
-  rule_id: 'AWSEC2SecurityGroupMod',
-  sensor_uuid: '433152d2-10ee-4645-8c04-9f8269a447e7',
-  transient: false,
-  event_name: 'Add inbound network traffic rule to security group',
-  status: 'open'
-});
 
-export const DashboardAlarmsList = () => {
+export const DashboardAlarmsList = (props) => {
+  // store data
+  const [data, setData] = React.useState([]);
+  // store loading state
+  const [loading, setLoading] = React.useState(true);
+  // get alarms from api
+  React.useEffect(() => {
+    getAlarms(props.token).then((response) => {
+      // replace empty data array with response data
+      setData(response._embedded.alarms);
+      setLoading(false);
+    });
+  }, []);
+
   // control modal visibility
   const [visible, setVisible] = React.useState(false);
   // store current data to pass to modal
@@ -43,12 +34,25 @@ export const DashboardAlarmsList = () => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
-    title={`${item.title} ${index + 1}`}
-    description={`${item.description}`}
+    title={`${item.rule_strategy}`}
+    description={`${item.rule_method}`}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
   );
 
+  // if loading data, show loading text
+  if (loading) {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+  // if not loading and no adata, show no data text
+  if (!loading && data.length === 0) {
+    return (
+      <Text>No data</Text>
+    )
+  }
+  
   return (
     <>
     <List
@@ -62,8 +66,8 @@ export const DashboardAlarmsList = () => {
         backdropStyle={styles.backdrop}
         >
         <Card>
-          <Text>Title: {data[currentData]?.title} {currentData + 1}</Text>
-          <Text>Description: {data[currentData]?.description}</Text>
+          <Text>Title: {data[currentData]?.rule_strategy}</Text>
+          <Text>Description: {data[currentData]?.rule_method}</Text>
           <Text>Priority: {data[currentData]?.priority_label}</Text>
           <Text>Rule Intent: {data[currentData]?.rule_intent}</Text>
           <Text>App Type: {data[currentData]?.app_type}</Text>

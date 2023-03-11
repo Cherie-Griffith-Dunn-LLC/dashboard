@@ -17,8 +17,8 @@ export const getOauth = async (authString) => {
     return data;
 };
 
-// get alerts
-export const getAlerts = async (bearerToken) => {
+// get alarms
+export const getAlarms = async (bearerToken) => {
     const response = await fetch(usmEndpoint + '/alarms', {
         method: 'GET',
         headers: {
@@ -27,7 +27,6 @@ export const getAlerts = async (bearerToken) => {
         }
     });
     const data = await response.json();
-    console.log(data);
 
     return data;
 };
@@ -42,7 +41,6 @@ export const getEvents = async (bearerToken) => {
         }
     });
     const data = await response.json();
-    console.log(data);
 
     return data;
 };

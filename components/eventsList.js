@@ -1,48 +1,26 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
+// usm api function
+import { getEvents } from '../services/usmApi';
 
-const data = new Array(20).fill({
-  title: 'Event',
-  event_description: "Action for uploading an object (PUT or POST).",
-  account_name: "generic-account",
-  plugin_device_type: "Cloud Infrastructure",
-  destination_canonical: "s3.amazonaws.com",
-  destination_name: "s3.amazonaws.com",
-  has_alarm: false,
-  request_user_agent: "s3.amazonaws.com",
-  packet_type: "log",
-  source_canonical: "s3.amazonaws.com",
-  event_name: "PutObject",
-  timestamp_occured: "1528817037000",
-  source_service_name: "s3.amazonaws.com",
-  event_type: "AwsApiCall",
-  app_name: "amazon-aws",
-  timestamp_received: "1528817107938",
-  destination_hostname: "s3.amazonaws.com",
-  source_infrastructure_name: "Amazon Global",
-  plugin: "Amazon AWS CloudTrail",
-  app_type: "amazon-aws",
-  authentication_type: "AWSService",
-  access_control_outcome: "Allow",
-  suppressed: "false",
-  plugin_device: "CloudTrail",
-  destination_infrastructure_type: "Cloud Service",
-  source_infrastructure_type: "Cloud Service",
-  destination_zone: "us-east-1",
-  needs_enrichment: true,
-  source_hostname: "s3.amazonaws.com",
-  app_id: "amazon-aws",
-  plugin_family: "Amazon",
-  plugin_version: "0.24",
-  destination_userid: "101720206348",
-  event_action: "Create",
-  destination_infrastructure_name: "Amazon Global",
-  source_name: "s3.amazonaws.com",
-  received_from: "s3.amazonaws.com"
-});
 
-export const DashboardEventsList = () => {
+
+export const DashboardEventsList = (props) => {
+
+  // store data
+  const [data, setData] = React.useState([]);
+  // store loading state
+  const [loading, setLoading] = React.useState(true);
+  // get alarms from api
+  React.useEffect(() => {
+    getEvents(props.token).then((response) => {
+      console.log(response);
+      // replace empty data array with response data
+      setData(response._embedded.eventResources);
+      setLoading(false);
+    });
+  }, []);
 
   // control modal visibility
   const [visible, setVisible] = React.useState(false);
@@ -59,12 +37,24 @@ export const DashboardEventsList = () => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
-    title={`${item.title} ${index + 1}`}
-    description={`${item.event_description}`}
+    title={`${item.event_name}`}
+    description={`${item.event_category ? item.event_category : item.event_type}`}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
   );
 
+  // if loading data, show loading text
+  if (loading) {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+  // if not loading and no adata, show no data text
+  if (!loading && data.length === 0) {
+    return (
+      <Text>No data</Text>
+    )
+  }
   return (
   <>
   <List
@@ -78,7 +68,7 @@ export const DashboardEventsList = () => {
         backdropStyle={styles.backdrop}
         >
         <Card>
-          <Text>Title: {data[currentData]?.title} {currentData + 1}</Text>
+          <Text>Title: {data[currentData]?.event_name}</Text>
           <Text>Description: {data[currentData]?.event_description}</Text>
           <Text>Account Name: {data[currentData]?.account_name}</Text>
           <Text>Plugin Device Type: {data[currentData]?.plugin_device_type}</Text>
