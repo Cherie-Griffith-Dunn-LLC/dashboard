@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Menu, MenuItem, Icon, Layout, Button } from '@ui-kitten/components';
+import { Menu, MenuItem, Icon, Layout, Button, SettingsIcon } from '@ui-kitten/components';
 
 const HomeIcon = (props) => (
     <Icon {...props} name='home-outline' />
@@ -22,6 +22,9 @@ const DWMIcon = (props) => (
     <Icon {...props} name='unlock-outline' />
 );
 
+const SettingIcon = (props) => (
+    <Icon {...props} name='settings-2-outline' />
+);
 
 const LightIcon = (props) => (
     <Icon {...props} name='sun-outline' />
@@ -97,6 +100,7 @@ class CollapsedAdminMenu extends Component {
             <MenuItem accessoryLeft={TicketsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
             <MenuItem accessoryLeft={DWMIcon}/>
+            <MenuItem accessoryLeft={SettingIcon}/>
         </Menu>
         )
     }
@@ -128,6 +132,7 @@ class ExpandedAdminMenu extends Component {
                 <MenuItem title='Events' accessoryLeft={TicketsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
                 <MenuItem title='Dark Web Monitoring' accessoryLeft={DWMIcon}/>
+                <MenuItem title='Settings' accessoryLeft={SettingIcon}/>
             </Menu>
         )
     }

@@ -25,6 +25,19 @@ export const getRole = async (bearerToken) => {
     return data;
 };
 
+// get all users
+export const getUsers = async (bearerToken) => {
+    const response = await fetch(apiEndpoint + '/users', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer '  + bearerToken
+        }
+    });
+    const data = await response.json();
+    return data;
+};
+
+
 // make post request with email in body
 export const getTenantId = async (email) => {
     const response = await fetch(apiEndpoint + '/tenant', {

@@ -17,7 +17,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext } from '../contexts/tokenContext';
 // azure api functions
-import { getMe, getRole } from '../services/azureApi';
+import { getMe, getRole, getUsers } from '../services/azureApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 
@@ -83,16 +83,23 @@ const DashboardScreen = () => {
     // get user info from api
     const [userInfo, setUserInfo] = React.useState({});
     const [userRoles, setUserRoles] = React.useState({});
+    const [allUsers, setAllUsers] = React.useState([]);
     const getUserInfo = async () => {
         // Get user's information from Microsoft Graph API
         const userInfo = await getMe(token);
         const userRoles = await getRole(token);
+        const allUsers = await getUsers(token);
 
         // Parse response and get user's name
         console.log(userInfo);
         setUserInfo(userInfo);
         console.log(userRoles);
         setUserRoles(userRoles);
+        //only call this if the user is an admin
+        if (userRoles.role === 'admin') {
+            setAllUsers(allUsers);
+            console.log(allUsers);
+        }    
     };
 
     React.useEffect(() => {
