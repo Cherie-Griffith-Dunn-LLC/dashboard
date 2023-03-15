@@ -20,7 +20,7 @@ import { TokenContext } from '../contexts/tokenContext';
 import { getMe, getRole, getUsers } from '../services/azureApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
-
+import { UsersList } from '../components/settingUI';
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
@@ -187,6 +187,14 @@ const DashboardScreen = () => {
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Dark Web Monitoring</Text>
                             <DWMList />
+                        </Layout>
+                    )
+                )}
+                {userRoles.role === 'admin' && (
+                    selectedIndex.row === 5 && (
+                        <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>Settings</Text>
+                            <UsersList token={token} />
                         </Layout>
                     )
                 )}
