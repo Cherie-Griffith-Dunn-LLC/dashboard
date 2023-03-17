@@ -27,7 +27,7 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: 0</Text>
                     <Text>No data</Text>
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -36,7 +36,7 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
                 </Card>
             );
         }
@@ -52,7 +52,7 @@ export class EventsCard extends Component {
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: 0</Text>
                     <Text>No data</Text>
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -61,7 +61,7 @@ export class EventsCard extends Component {
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: {this.props.data.page.totalElements}</Text>
                     <CustomLineChart data={this.props.data._embedded.eventResources} />
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
                 </Card>
             );
         }
@@ -77,7 +77,7 @@ export class BehavioralMonitoringCard extends Component {
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: 0</Text>
                     <Text>No data</Text>
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -86,7 +86,7 @@ export class BehavioralMonitoringCard extends Component {
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
                 </Card>
             );
         }
@@ -100,7 +100,7 @@ export class LogManagementCard extends Component {
                 <Text category='h6'>Learning Management System</Text>
                 <Text>Total Required Courses: 100</Text>
                 <CustomBarChart />
-                <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(3))}>View Details</Button>
+                <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(3))}>View Details</Button>
             </Card>
         );
     }
@@ -114,5 +114,24 @@ const styles = StyleSheet.create({
         width: 500,
         minWidth: 300,
         height: 400,
-    }
+        shadowColor: '#171717',
+        shadowOffset: {width: -2, height: 4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
+    Input: {
+        borderRadius: '12px'
+      },
+      Button: {
+        borderRadius: '20px',
+        width: '180px'
+      },
+      BackImage: {
+        flex: 1,
+        resizeMode: 'cover'
+      },
+      logo: {
+        height: '40px',
+        width: '265px'
+      }
 });

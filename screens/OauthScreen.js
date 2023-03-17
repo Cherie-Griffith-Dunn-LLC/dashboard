@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Image } from 'react-native';
 import { Text, Layout, Card, Button, Divider, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
@@ -7,6 +7,7 @@ import { makeRedirectUri, useAuthRequest, useAutoDiscovery, exchangeCodeAsync, A
 import { TokenContext } from '../contexts/tokenContext';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GlobalStyles from '../constants/styles';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
@@ -17,7 +18,9 @@ const loginHeader = (props) => (
     Login using organization email.
     </Text>
   );
-
+  const logo = (props) => (
+    <Image {...props} source={require('../assets/cyplogo-blk.png')} style={styles.logo} />
+  );
   const AzureIcon = (props) => (
     <Icon name='wifi' {...props} />
   );
@@ -102,13 +105,40 @@ const loginHeader = (props) => (
         return (
             <SafeAreaView style={{ flex: 1}}>
                 <Layout style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text category='h1'>Cyproteck</Text>
-                    <Card header={loginHeader}>
+                    <Card header={logo} style={GlobalStyles.card}>
                         <Text category='s1'>Please login using your Microsoft Organization account in the popup. You will be redirected automatically.</Text>
                         <Divider style={{ marginVertical: 10 }} />
-                        <Button onPress={() => navigation.navigate('Login')}>Cancel</Button>
+                        <Button style={GlobalStyles.button} onPress={() => navigation.navigate('Login')}>Cancel</Button>
                     </Card>
                 </Layout>
             </SafeAreaView>
           );
     };
+
+    const styles = StyleSheet.create({
+        BackImage: {
+          flex: 1,
+          resizeMode: 'cover'
+        },
+        logo: {
+          height: '40px',
+          width: '265px',
+          display: 'block',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        },
+        loginLeftCard: {
+          maxWidth: '45%',
+          width: 300,
+          minWidth: 200,
+          height: 400,
+      },
+      loginRightCard: {
+          maxWidth: '45%',
+          width: 300,
+          minWidth: 200,
+          height: 400,
+          borderTopRightRadius: '15px',
+          textAlign: 'center'
+      }
+    })

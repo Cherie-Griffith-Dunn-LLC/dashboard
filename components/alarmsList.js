@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
 // usm api function
 import { getAlarms } from '../services/usmApi';
-
+import GlobalStyles from '../constants/styles';
 
 export const DashboardAlarmsList = (props) => {
   // store data
@@ -25,7 +25,7 @@ export const DashboardAlarmsList = (props) => {
   const [currentData, setCurrentData] = React.useState(null);
 
     const renderItemAccessory = (props, index) => (
-        <Button {...props} onPress={() => {setVisible(true); setCurrentData(index)}} size='tiny'>VIEW</Button>
+        <Button style={GlobalStyles.button} {...props} onPress={() => {setVisible(true); setCurrentData(index)}} size='tiny'>VIEW</Button>
     );
 
     const renderItemIcon = (props) => (

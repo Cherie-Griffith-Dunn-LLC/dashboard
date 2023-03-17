@@ -3,14 +3,24 @@ import { StyleSheet, View, Platform, ImageBackground, Image } from 'react-native
 import { Text, Layout, Card, Input, Button, Tooltip, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getTenantId } from '../services/azureApi';
-
+import GlobalStyles from '../constants/styles';
 
 
 
 const loginHeader = (props) => (
-    <Text {...props} category='h6'>
+    <Text {...props} category='p1' style={{textAlign: 'center'}}>
     Login using organization email.
     </Text>
+  );
+
+  const loginFooter = (props) => (
+    <Text {...props} category='c1' style={{textAlign: 'center'}}>
+    Don't have an account? Sign Up.
+    </Text>
+  );
+
+  const logo = (props) => (
+    <Image {...props} source={require('../assets/cyplogo-blk.png')} style={styleguideUIcomponents1Styles.logo} />
   );
 
   const AzureIcon = (props) => (
@@ -63,61 +73,85 @@ const loginHeader = (props) => (
             autoCapitalize='none'
             autoCorrect={false}
             autoFocus={true}
+            style={GlobalStyles.input}
             onChangeText={nextValue => setEmail(nextValue)}
         />
     );
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <Layout style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <ImageBackground
+                    imageStyle={styleguideUIcomponents1Styles.BackImage}
+                    style={{flex: 1}}
+                    source={require('../assets/backgrounds/waves.png')}
+                    >
+                <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.75)', paddingTop: '200px' }}>
+                        <View style={styleguideUIcomponents1Styles.loginLeftCard}>
                         <Image source={require('../assets/cyplogo-blk.png')} style={styleguideUIcomponents1Styles.logo} />
-                        <Card header={loginHeader}>
-                        <Tooltip
-                        anchor={renderInputEmail}
-                        visible={errorVisible}
-                        placement='top'
-                        onBackdropPress={() => setErrorVisible(false)}>
-                            {error}
-                        </Tooltip>
+                        </View>
+                        <View
+                        style={styleguideUIcomponents1Styles.loginRightCard}
+                        >
+                            <Text category='p1' style={{textAlign: 'center'}}>
+                            Login using organization email.
+                            </Text>
+                            <Tooltip
+                            anchor={renderInputEmail}
+                            visible={errorVisible}
+                            placement='top'
+                            onBackdropPress={() => setErrorVisible(false)}>
+                                {error}
+                            </Tooltip>
                             <Button
                             title='Login'
                             disabled={!email}
+                            style={GlobalStyles.button}
                             onPress={() => {
                                 login(email);
                             }}
                             >
                                 Login
                             </Button>
-                        </Card>
+                            <Text category='c1' style={{textAlign: 'center'}}>
+                            Don't have an account? Sign Up.
+                            </Text>
+                        </View>
                 </Layout>
+                </ImageBackground>
             </SafeAreaView>
           );
     };
 
 
     const styleguideUIcomponents1Styles = StyleSheet.create({
-        Input: {
-            color: '#d9e1e7',
-            fontFamily: 'Proxima Nova, sans-serif',
-            fontSize: 1,
-            lineHeight: 1.22,
-          },
-          Button: {
-            margin: '3.94 1.31',
-            height: '33.33%',
-            color: '#ffffff',
-            fontFamily: 'Proxima Nova, sans-serif',
-            fontSize: 1.13,
-            lineHeight: 1.37,
-          },
           BackImage: {
             flex: 1,
-            justifyContent: 'center',
             resizeMode: 'cover'
           },
           logo: {
             height: '40px',
-            width: '265px'
-          }
+            width: '265px',
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          },
+          loginLeftCard: {
+            maxWidth: '45%',
+            width: 300,
+            minWidth: 200,
+            height: 400,
+            backgroundColor: 'white',
+            borderBottomLeftRadius: '15px',
+            textAlign: 'center'
+        },
+        loginRightCard: {
+            maxWidth: '45%',
+            width: 300,
+            minWidth: 200,
+            height: 400,
+            backgroundColor: 'white',
+            borderTopRightRadius: '15px',
+            textAlign: 'center'
+        }
       })
       

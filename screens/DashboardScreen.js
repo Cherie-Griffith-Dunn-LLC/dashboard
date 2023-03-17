@@ -216,12 +216,3 @@ const DashboardScreen = () => {
 };
 
 export default DashboardScreen;
-
-const styles = StyleSheet.create({
-    dashboardCard: {
-        maxWidth: '45%',
-        width: 500,
-        minWidth: 300,
-        height: 400,
-    }
-  });
