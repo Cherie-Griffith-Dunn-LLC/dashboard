@@ -27,7 +27,7 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: 0</Text>
                     <Text>No data</Text>
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -36,7 +36,7 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
                 </Card>
             );
         }
@@ -74,19 +74,19 @@ export class BehavioralMonitoringCard extends Component {
         if (this.props.data.length === 0) {
             return (
                 <Card style={styles.dashboardCard}>
-                    <Text category='h6'>Alarms</Text>
+                    <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: 0</Text>
                     <Text>No data</Text>
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
                 </Card>
             );
         } else {
             return (
                 <Card style={styles.dashboardCard}>
-                    <Text category='h6'>Alarms</Text>
+                    <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
                 </Card>
             );
         }
