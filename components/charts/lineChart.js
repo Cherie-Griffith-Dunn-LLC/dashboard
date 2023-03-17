@@ -57,7 +57,7 @@ export default class CustomLineChart extends React.Component {
                 xMin={0}
                 xMax={24}
                 curve={ shape.curveNatural }
-                svg={{ stroke: 'rgb(51, 102, 255)' }}
+                svg={{ stroke: 'rgb(0, 144, 255)' }}
                 contentInset={{ top: 20, bottom: 20 }}
             >
                 <Grid />

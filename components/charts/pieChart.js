@@ -15,13 +15,13 @@ export default class CustomPieChart extends React.Component {
         const getColor = (priority) => {
             if (priority <= 25) {
                 // return green
-                return 'rgb(155, 193, 188)';
+                return 'rgb(26, 213, 152)';
             } else if (priority > 25 && priority <= 50) {
                 // return yellow
-                return 'rgb(244, 241, 187)';
+                return 'rgb(0, 144, 255)';
             } else if (priority > 50 && priority <= 100) {
                 // return red
-                return 'rgb(237, 106, 90)';
+                return 'rgb(219, 90, 238)';
             }
         }
        
