@@ -18,42 +18,78 @@ function setIndexPathRow(row) {
     return IndexPath;
 }
 
-export class ThreatDetectionCard extends Component {
+export class AlarmsCard extends Component {
     render() {
-        return (
-            <Card style={styles.dashboardCard}>
-                <Text category='h6'>Alarms</Text>
-                <Text>Total Alarms: 12</Text>
-                <CustomPieChart />
-                <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))} >View Details</Button>
-            </Card>
-        );
+        // check if data is empty
+        if (this.props.data.length === 0) {
+            return (
+                <Card style={styles.dashboardCard}>
+                    <Text category='h6'>Alarms</Text>
+                    <Text>Total Alarms: 0</Text>
+                    <Text>No data</Text>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                </Card>
+            );
+        } else {
+            return (
+                <Card style={styles.dashboardCard}>
+                    <Text category='h6'>Alarms</Text>
+                    <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
+                    <CustomPieChart data={this.props.data._embedded.alarms} />
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                </Card>
+            );
+        }
     }
 }
 
-export class VulnScanCard extends Component {
+export class EventsCard extends Component {
     render() {
-        return (
-            <Card style={styles.dashboardCard}>
-                <Text category='h6'>Events</Text>
-                <Text>Total Events: 7</Text>
-                <CustomLineChart />
-                <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
-            </Card>
-        );
+        // check if data is empty
+        if (this.props.data.length === 0) {
+            return (
+                <Card style={styles.dashboardCard}>
+                    <Text category='h6'>Events</Text>
+                    <Text>Total Events: 0</Text>
+                    <Text>No data</Text>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                </Card>
+            );
+        } else {
+            return (
+                <Card style={styles.dashboardCard}>
+                    <Text category='h6'>Events</Text>
+                    <Text>Total Events: {this.props.data.page.totalElements}</Text>
+                    <CustomLineChart data={this.props.data._embedded.eventResources} />
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                </Card>
+            );
+        }
     }
 }
 
 export class BehavioralMonitoringCard extends Component {
     render() {
-        return (
-            <Card style={styles.dashboardCard}>
-                <Text category='h6'>Dark Web Monitoring</Text>
-                <Text>Total Dark Web Alerts: 5</Text>
-                <CustomPieChart />
-                <Button  onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
-            </Card>
-        );
+        // check if data is empty
+        if (this.props.data.length === 0) {
+            return (
+                <Card style={styles.dashboardCard}>
+                    <Text category='h6'>Alarms</Text>
+                    <Text>Total Alarms: 0</Text>
+                    <Text>No data</Text>
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                </Card>
+            );
+        } else {
+            return (
+                <Card style={styles.dashboardCard}>
+                    <Text category='h6'>Alarms</Text>
+                    <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
+                    <CustomPieChart data={this.props.data._embedded.alarms} />
+                    <Button onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                </Card>
+            );
+        }
     }
 }
 

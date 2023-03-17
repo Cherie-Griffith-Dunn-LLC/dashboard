@@ -10,23 +10,73 @@ export default class CustomPieChart extends React.Component {
         // fake data
         const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80]
 
-        // color each slice
-        const randomColor = () => ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(0, 7)
 
-        const pieData = data
-        .filter((value) => value > 0)
+        // color each slice
+        const getColor = (priority) => {
+            if (priority <= 25) {
+                // return green
+                return 'rgb(155, 193, 188)';
+            } else if (priority > 25 && priority <= 50) {
+                // return yellow
+                return 'rgb(244, 241, 187)';
+            } else if (priority > 50 && priority <= 100) {
+                // return red
+                return 'rgb(237, 106, 90)';
+            }
+        }
+       
+        if (!this.props.data) {
+            var newData = data;
+        } else {
+            var tempData = this.props.data;
+            var newData = [];
+            // loop through data
+            tempData.forEach((item) => {
+                const priority = item.priority;
+                // check if date already exists in newData
+                var result = newData.find(obj => {
+                    return obj.priority === priority
+                });
+
+                // if date doesnt exist in newData, add it
+                if (!result) {
+                    newData.push({
+                        priority: priority,
+                        occurences: 0
+                    });
+                }
+
+                // add occurences to result
+                for (var i = 0; i < newData.length; i++) {
+                    if (newData[i].priority === priority) {
+                        newData[i].occurences += 1;
+                    }
+                }
+            });
+            console.log(newData);
+        }
+        const pieData = newData
+        .filter((value) => value.priority > 0)
         .map((value, index) => ({
-            value,
+            value: value.priority,
             svg: {
-                fill: randomColor(),
+                fill: getColor(value.priority),
                 onPress: () => console.log('press', index),
             },
             key: `pie-${index}`,
         }))
-        
+        console.log(this.props.data);
+        console.log(pieData);
 
         return (
-            <PieChart style={{ height: 200 }} data={pieData} />
+            <PieChart
+            style={{ height: 200 }}
+            data={pieData}
+            xAccessor={({ item }) => item.key}
+            yAccessor={({ item }) => item.value.priority}
+            innerRadius={'0%'}
+            padAngle={0}
+            />
          );
     }
 }

@@ -9,7 +9,7 @@ import { DWMList } from '../components/dwmList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
-import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
+import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
 // user cards
 import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards';
 
@@ -20,6 +20,8 @@ import { TokenContext } from '../contexts/tokenContext';
 import { getMe, getRole } from '../services/azureApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
+// data for charts
+import { getAlarms, getEvents, getDWM } from '../services/usmApi';
 
 
 const MenuIcon = (props) => (
@@ -35,6 +37,11 @@ const DashboardScreen = () => {
 
     // theme context
     const themeContext = React.useContext(ThemeContext);
+    // data for charts
+    const [alarms, setAlarms] = React.useState([]);
+    const [events, setEvents] = React.useState([]);
+    const [dwm, setDwm] = React.useState([]);
+    const [courses, setCourses] = React.useState([]);
 
     // logout user
     const logOut = async () => {
@@ -93,8 +100,19 @@ const DashboardScreen = () => {
         setUserRoles(userRoles);
     };
 
+    // get data for charts
+    const getChartData = async () => {
+        getEvents(token).then((response) => {
+            setEvents(response);
+          });
+        getAlarms(token).then((response) => {
+            setAlarms(response);
+          });
+    }
+
     React.useEffect(() => {
         getUserInfo();
+        getChartData();
     }, []);
 
     
@@ -127,9 +145,9 @@ const DashboardScreen = () => {
                         <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
-                                <ThreatDetectionCard setSelectedIndex={setSelectedIndex} />
-                                <VulnScanCard setSelectedIndex={setSelectedIndex} />
-                                <BehavioralMonitoringCard setSelectedIndex={setSelectedIndex} />
+                                <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
+                                <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
+                                <BehavioralMonitoringCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
