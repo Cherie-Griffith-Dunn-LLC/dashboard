@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { LineChart, Grid } from 'react-native-svg-charts';
+import { LineChart, XAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 
 export default class CustomLineChart extends React.Component {
@@ -47,8 +47,10 @@ export default class CustomLineChart extends React.Component {
             // sort newData by date
             newData.sort((a, b) => (a.date > b.date) ? 1 : -1);
         }
+        const contentInset = { top: 20, bottom: 20 }
 
         return (
+            <>
             <LineChart
                 style={{ height: 200 }}
                 data={ newData }
@@ -57,11 +59,19 @@ export default class CustomLineChart extends React.Component {
                 xMin={0}
                 xMax={24}
                 curve={ shape.curveNatural }
-                svg={{ stroke: 'rgb(0, 144, 255)' }}
-                contentInset={{ top: 20, bottom: 20 }}
+                svg={{ stroke: 'rgb(0, 144, 255)', strokeWidth: "5" }}
+                contentInset={contentInset}
             >
-                <Grid />
             </LineChart>
+            <XAxis
+                data={newData}
+                xAccessor={({ item }) => item.date}
+                formatLabel={(value, index) => value}
+                svg={{ fontSize: 10, fill: 'black' }}
+                max={24}
+                contentInset={contentInset}
+            />
+            </>
          );
     }
 }
