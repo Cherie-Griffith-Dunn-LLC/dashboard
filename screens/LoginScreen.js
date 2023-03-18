@@ -4,7 +4,7 @@ import { Text, Layout, Card, Input, Button, Tooltip, Icon } from '@ui-kitten/com
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getTenantId } from '../services/azureApi';
 import GlobalStyles from '../constants/styles';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const loginHeader = (props) => (
@@ -73,27 +73,39 @@ const loginHeader = (props) => (
             autoCapitalize='none'
             autoCorrect={false}
             autoFocus={true}
-            style={GlobalStyles.input}
+            style={[GlobalStyles.input, styleguideUIcomponents1Styles.input]}
             onChangeText={nextValue => setEmail(nextValue)}
         />
     );
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <ImageBackground
-                    imageStyle={styleguideUIcomponents1Styles.BackImage}
-                    style={{flex: 1}}
-                    source={require('../assets/backgrounds/waves.png')}
-                    >
-                <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.75)', paddingTop: '200px' }}>
+              <LinearGradient
+                  colors={['rgba(34,160,233,1)', 'rgba(0,0,0,1)']}
+                  locations={[0, 0.4]}
+                  style={styleguideUIcomponents1Styles.background}
+                  />
+                <Layout style={styleguideUIcomponents1Styles.container}>
                         <View style={styleguideUIcomponents1Styles.loginLeftCard}>
-                        <Image source={require('../assets/cyplogo-blk.png')} style={styleguideUIcomponents1Styles.logo} />
+                            <ImageBackground
+                        imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
+                        style={{flex: 1}}
+                        source={require('../assets/backgrounds/login_lock_graphic.png')}
+                        >
+                                <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
+                                <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
+                                Don't have an account? Sign Up.
+                                </Text>
+                            </ImageBackground>
                         </View>
                         <View
                         style={styleguideUIcomponents1Styles.loginRightCard}
                         >
-                            <Text category='p1' style={{textAlign: 'center'}}>
-                            Login using organization email.
+                            <Text status='info' category='h6' style={{textAlign: 'left', marginTop: 40}}>
+                            Welcome back,
+                            </Text>
+                            <Text status='info' category='h6' style={{textAlign: 'left'}}>
+                            Log in to continue
                             </Text>
                             <Tooltip
                             anchor={renderInputEmail}
@@ -104,20 +116,19 @@ const loginHeader = (props) => (
                             </Tooltip>
                             <Button
                             title='Login'
-                            disabled={!email}
-                            style={GlobalStyles.button}
+                            status='info'
+                            style={[GlobalStyles.button, styleguideUIcomponents1Styles.button]}
                             onPress={() => {
                                 login(email);
                             }}
                             >
                                 Login
                             </Button>
-                            <Text category='c1' style={{textAlign: 'center'}}>
-                            Don't have an account? Sign Up.
+                            <Text category='c1' style={styleguideUIcomponents1Styles.rightFooter}>
+                            Need help? Contact support
                             </Text>
                         </View>
                 </Layout>
-                </ImageBackground>
             </SafeAreaView>
           );
     };
@@ -128,9 +139,14 @@ const loginHeader = (props) => (
             flex: 1,
             resizeMode: 'cover'
           },
+          BackSecondImage: {
+            resizeMode: 'contain',
+            borderBottomLeftRadius: '20px'
+          },
           logo: {
             height: '40px',
             width: '265px',
+            marginTop: 50,
             display: 'block',
             marginLeft: 'auto',
             marginRight: 'auto'
@@ -141,8 +157,8 @@ const loginHeader = (props) => (
             minWidth: 200,
             height: 400,
             backgroundColor: 'white',
-            borderBottomLeftRadius: '15px',
-            textAlign: 'center'
+            textAlign: 'center',
+            borderBottomLeftRadius: '20px'
         },
         loginRightCard: {
             maxWidth: '45%',
@@ -150,8 +166,42 @@ const loginHeader = (props) => (
             minWidth: 200,
             height: 400,
             backgroundColor: 'white',
-            borderTopRightRadius: '15px',
-            textAlign: 'center'
+            textAlign: 'center',
+            padding: 25,
+            borderTopRightRadius: '20px'
+        },
+        container: {
+          display: 'flex',
+          flex: '2',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          paddingTop: '200px',
+          backgroundColor: 'rgba(255,255,255,0)'
+        },
+        background: {
+          flex: 1,
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0
+        },
+        input: {
+          marginTop: 15
+        },
+        button: {
+          marginTop: 15
+        },
+        leftFooter: {
+          position: 'absolute',
+          bottom: 5,
+          left: 70
+        },
+        rightFooter: {
+          position: 'absolute',
+          bottom: 5,
+          left: 70
         }
       })
       

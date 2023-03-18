@@ -30,7 +30,8 @@
     "react-native-svg": "13.4.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-web": "~0.18.10",
-    "expo-constants": "~14.2.1"
+    "expo-constants": "~14.2.1",
+    "expo-linear-gradient": "~12.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
