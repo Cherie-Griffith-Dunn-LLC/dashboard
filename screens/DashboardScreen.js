@@ -156,7 +156,7 @@ const DashboardScreen = () => {
                                 </>
                             ) : (
                                 <>
-                                <UserAlertsCard setSelectedIndex={setSelectedIndex} />
+                                <UserAlertsCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <UserCoursesCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             )}
