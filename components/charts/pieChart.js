@@ -29,16 +29,20 @@ export default class CustomPieChart extends React.Component {
         }
 
         // label each slice
-        const getLabel = (priority) => {
+        const getArc = (priority) => {
             if (priority <= 25) {
                 // return green
-                return 'Low';
+                return {};
             } else if (priority > 25 && priority <= 50) {
                 // return yellow
-                return 'Medium';
+                return {};
             } else if (priority > 50 && priority <= 100) {
                 // return red
-                return 'High';
+                return {
+                    outerRadius: '110%',
+                    innerRadius: '60%',
+                    padAngle: '0.1'
+                };
             }
         }
        
@@ -81,6 +85,7 @@ export default class CustomPieChart extends React.Component {
                 fill: getColor(value.priority),
                 onPress: () => console.log('press', index),
             },
+            arc: getArc(value.priority),
             key: `pie-${index}`,
             label: `${value.occurences}`
         }))
@@ -112,7 +117,6 @@ export default class CustomPieChart extends React.Component {
             style={{ height: 200 }}
             data={pieData}
             valueAccessor={({ item }) => item.value}
-            innerRadius={'0%'}
             padAngle={0}
             spacing={0}
             labelRadius={ 80 }
