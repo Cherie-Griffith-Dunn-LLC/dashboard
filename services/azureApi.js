@@ -37,6 +37,20 @@ export const getUsers = async (bearerToken) => {
     return data;
 };
 
+// post all users to database
+export const postUsers = async (users, bearerToken) => {
+    const response = await fetch(apiEndpoint + '/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + bearerToken
+      },
+      body: JSON.stringify({ users: users })
+    });
+    const data = await response.json();
+    return data;
+  };
+
 
 // make post request with email in body
 export const getTenantId = async (email) => {

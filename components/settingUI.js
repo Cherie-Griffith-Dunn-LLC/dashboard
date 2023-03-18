@@ -1,15 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
-import { getMe, getRole, getUsers } from '../services/azureApi';
+import { getMe, getUsers, postUsers } from '../services/azureApi';
 
 export const UsersList = (props) => {
-    //call the getme function
+    const [currentUser, setCurrentUser] = useState(null);
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        getMe(props.token)
+            .then((user) => {
+                setCurrentUser(user);
+            })
+            .catch((error) => {
+                setError(error);
+            });
+    }, []);
+
+    const handleGetUsersPress = () => {
+        setLoading(true);
         getUsers(props.token)
             .then((users) => {
                 setUsers(users);
@@ -19,19 +30,44 @@ export const UsersList = (props) => {
                 setError(error);
                 setLoading(false);
             });
-    }, []);
+    };
+
+    const handleUpdateUsersPress = () => {
+        setLoading(true);
+        postUsers(users, props.token)
+            .then(() => {
+                setLoading(false);
+                alert('Users updated successfully.');
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+                alert('Error updating users.');
+            });
+    };
 
     return (
-        console.log(props.token),
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            {currentUser && (
+                <Card style={styles.card} header={() => <Text category='h6'>{currentUser.displayName}</Text>}>
+                    <Text>{currentUser.mail}</Text>
+                    <Text>{currentUser.jobTitle}</Text>
+                    <Text>{currentUser.department}</Text>
+                    <Text>{currentUser.mobilePhone}</Text>
+                    <Text>{currentUser.officeLocation}</Text>
+                </Card>
+            )}
+
             <Text category='h1'>Users</Text>
-            <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                {loading ? (
-                    <Text>Loading...</Text>
-                ) : error ? (
-                    <Text>{error.message}</Text>
-                ) : (
-                    users.map((user) => (
+            <Button onPress={handleGetUsersPress}>Get Users</Button>
+            <Button onPress={handleUpdateUsersPress}>Update Users</Button>
+            {loading ? (
+                <Text>Loading...</Text>
+            ) : error ? (
+                <Text>{error.message}</Text>
+            ) : users.length > 0 ? (
+                <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    {users.map((user) => (
                         <Card key={user.id} style={styles.card} header={() => <Text category='h6'>{user.displayName}</Text>}>
                             <Text>{user.mail}</Text>
                             <Text>{user.jobTitle}</Text>
@@ -39,19 +75,21 @@ export const UsersList = (props) => {
                             <Text>{user.mobilePhone}</Text>
                             <Text>{user.officeLocation}</Text>
                         </Card>
-                    ))
-                )}
-            </Layout>
+                    ))}
+                </Layout>
+            ) : (
+                <Text></Text>
+            )}
         </Layout>
     );
 };
 
 const styles = StyleSheet.create({
     card: {
-      margin: 10,
-      padding: 10,
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 5,
+        margin: 10,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 5,
     },
-  });
+});
