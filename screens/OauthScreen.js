@@ -117,7 +117,7 @@ const loginHeader = (props) => (
                   />
                 <Layout style={styles.container}>
                     <Card header={logo} style={[GlobalStyles.card, styles.card]}>
-                        <Text category='s1'>Please login using your Microsoft Organization account in the popup. You will be redirected automatically.</Text>
+                        <Text category='p1'>Please login using your Microsoft Organization account in the popup. You will be redirected automatically.</Text>
                         <Divider style={{ marginVertical: 10 }} />
                         <Button accessoryLeft={LoadingIndicator} status='danger' style={GlobalStyles.button} onPress={() => navigation.navigate('Login')}>Cancel</Button>
                     </Card>
