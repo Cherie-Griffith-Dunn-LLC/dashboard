@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider } from '@ui-kitten/components';
+import GlobalStyles from '../constants/styles';
 
 const data = new Array(20).fill({
   title: 'Credentials Leak',
@@ -14,9 +15,17 @@ export const DWMList = () => {
   // store current data to pass to modal
   const [currentData, setCurrentData] = React.useState(null);
 
-    const renderItemAccessory = (props, index) => (
-        <Button {...props} onPress={() => {setVisible(true); setCurrentData(index)}} size='tiny'>VIEW</Button>
-    );
+  const buttonArrow = (props) => (
+    <Icon {...props} name='arrow-ios-forward-outline' />
+  );
+
+
+  const renderItemAccessory = (props, index) => (
+    <Button style={GlobalStyles.button}
+    {...props} onPress={() => {setVisible(true); setCurrentData(index)}}
+    accessoryLeft={buttonArrow}
+    size='medium' status='basic'></Button>
+);
 
     const renderItemIcon = (props) => (
         <Icon {...props} name='unlock-outline' />
@@ -36,6 +45,7 @@ export const DWMList = () => {
       style={styles.container}
       data={data}
       renderItem={renderItem}
+      ItemSeparatorComponent={Divider}
     />
     <Modal
         visible={visible}

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     button: {
         borderRadius: '15px',
         paddingTop: 5,
-        paddingBottom: 5
+        paddingBottom: 5,
     },
     card: {
         borderRadius: '15px'

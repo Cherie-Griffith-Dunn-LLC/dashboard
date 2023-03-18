@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar, Menu, MenuItem, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Text, Layout, Icon, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, View, ScrollView, Platform } from 'react-native';
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { StyleSheet, View, ScrollView, Platform, Image } from 'react-native';
 import { DashboardAlarmsList } from '../components/alarmsList';
 import { DashboardEventsList } from '../components/eventsList';
 import { DWMList } from '../components/dwmList';
@@ -30,6 +29,11 @@ const MenuIcon = (props) => (
 
 const LogOutIcon = (props) => (
     <Icon {...props} name='log-out-outline' />
+);
+
+
+const logo = (props) => (
+    <Image style={styles.logo} {...props}  source={require('../assets/cyplogo-blk.png')} />
 );
 
 const DashboardScreen = () => {
@@ -216,3 +220,10 @@ const DashboardScreen = () => {
 };
 
 export default DashboardScreen;
+
+const styles = StyleSheet.create({
+    logo: {
+        height: '20px',
+        width: '105px',
+    }
+});

@@ -18,6 +18,7 @@ function setIndexPathRow(row) {
     return IndexPath;
 }
 
+
 export class AlarmsCard extends Component {
     render() {
         // check if data is empty
@@ -114,17 +115,15 @@ const styles = StyleSheet.create({
         width: 500,
         minWidth: 300,
         height: 400,
-        shadowColor: '#171717',
-        shadowOffset: {width: -2, height: 4},
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
+        minHeight: 400
     },
     Input: {
         borderRadius: '12px'
       },
       Button: {
-        borderRadius: '20px',
-        width: '180px'
+        borderRadius: '15px',
+        width: '140px',
+        height: '25px'
       },
       BackImage: {
         flex: 1,

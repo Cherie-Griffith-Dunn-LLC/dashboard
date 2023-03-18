@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider } from '@ui-kitten/components';
 // usm api function
 import { getAlarms } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
@@ -24,8 +24,15 @@ export const DashboardAlarmsList = (props) => {
   // store current data to pass to modal
   const [currentData, setCurrentData] = React.useState(null);
 
+  const buttonArrow = (props) => (
+    <Icon {...props} name='arrow-ios-forward-outline' />
+  );
+
     const renderItemAccessory = (props, index) => (
-        <Button style={GlobalStyles.button} {...props} onPress={() => {setVisible(true); setCurrentData(index)}} size='tiny'>VIEW</Button>
+        <Button style={GlobalStyles.button}
+        {...props} onPress={() => {setVisible(true); setCurrentData(index)}}
+        accessoryLeft={buttonArrow}
+        size='medium' status='basic'></Button>
     );
 
     const renderItemIcon = (props) => (
@@ -59,6 +66,7 @@ export const DashboardAlarmsList = (props) => {
       style={styles.container}
       data={data}
       renderItem={renderItem}
+      ItemSeparatorComponent={Divider}
     />
     <Modal
         visible={visible}
@@ -87,7 +95,7 @@ export const DashboardAlarmsList = (props) => {
           <Text>Transient: {data[currentData]?.transient}</Text>
           <Text>Event Name: {data[currentData]?.event_name}</Text>
           <Text>Status: {data[currentData]?.status}</Text>
-          <Button onPress={() => setVisible(false)}>Close</Button>
+          <Button style={GlobalStyles.button} onPress={() => setVisible(false)}>Close</Button>
         </Card>
     </Modal>
     </>
@@ -97,6 +105,8 @@ export const DashboardAlarmsList = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    button: {
     },
     backdrop: {
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
