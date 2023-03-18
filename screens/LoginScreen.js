@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Platform, ImageBackground, Image } from 'react-native';
+import { StyleSheet, View, Platform, ImageBackground, Image, ScrollView, Dimensions } from 'react-native';
 import { Text, Layout, Card, Input, Button, Tooltip, Icon } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getTenantId } from '../services/azureApi';
 import GlobalStyles from '../constants/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
+const screenWidth = Dimensions.get("window").width;
 
 const loginHeader = (props) => (
     <Text {...props} category='p1' style={{textAlign: 'center'}}>
@@ -86,19 +87,22 @@ const loginHeader = (props) => (
                   locations={[0, 0.4]}
                   style={styleguideUIcomponents1Styles.background}
                   />
+                  <ScrollView>
                 <Layout style={styleguideUIcomponents1Styles.container}>
-                        <View style={styleguideUIcomponents1Styles.loginLeftCard}>
+                        {screenWidth > 412 &&
+                          <View style={styleguideUIcomponents1Styles.loginLeftCard}>
                             <ImageBackground
-                        imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
-                        style={{flex: 1}}
-                        source={require('../assets/backgrounds/login_lock_graphic.png')}
-                        >
+                            imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
+                            style={{flex: 1}}
+                            source={require('../assets/backgrounds/login_lock_graphic.png')}
+                            >
                                 <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
                                 <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
                                 Don't have an account? Sign Up.
                                 </Text>
                             </ImageBackground>
-                        </View>
+                          </View>
+                        }
                         <View
                         style={styleguideUIcomponents1Styles.loginRightCard}
                         >
@@ -130,6 +134,7 @@ const loginHeader = (props) => (
                             </Text>
                         </View>
                 </Layout>
+                </ScrollView>
             </SafeAreaView>
           );
     };
@@ -141,7 +146,7 @@ const loginHeader = (props) => (
             resizeMode: 'cover'
           },
           BackSecondImage: {
-            resizeMode: 'contain',
+            resizeMode: 'cover',
             borderBottomLeftRadius: '20px'
           },
           logo: {
