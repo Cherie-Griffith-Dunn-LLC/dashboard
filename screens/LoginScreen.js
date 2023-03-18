@@ -73,6 +73,7 @@ const loginHeader = (props) => (
             autoCapitalize='none'
             autoCorrect={false}
             autoFocus={true}
+            status={errorVisible ? 'danger' : 'basic'}
             style={[GlobalStyles.input, styleguideUIcomponents1Styles.input]}
             onChangeText={nextValue => setEmail(nextValue)}
         />
