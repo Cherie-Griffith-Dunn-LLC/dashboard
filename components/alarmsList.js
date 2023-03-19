@@ -1,11 +1,14 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card, Divider } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme } from '@ui-kitten/components';
 // usm api function
 import { getAlarms } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBiohazard, faGlobe, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
 
 export const DashboardAlarmsList = (props) => {
+  const theme = useTheme();
   // store data
   const [data, setData] = React.useState([]);
   // store loading state
@@ -14,15 +17,49 @@ export const DashboardAlarmsList = (props) => {
   React.useEffect(() => {
     getAlarms(props.token).then((response) => {
       // replace empty data array with response data
-      setData(response._embedded.alarms);
+      // for each item in alarms map onto it an icon and status based on rule intent
+      const alarms = response._embedded.alarms.map(alarm => {
+        if (alarm.rule_intent === 'System Compromise') {
+          return {
+            ...alarm,
+            icon: 'compromise'
+
+          }
+        } else if (alarm.rule_intent === 'Environmental Awareness') {
+          return {
+            ...alarm,
+            icon: 'environment'
+          }
+        } else if (alarm.rule_intent === 'Exploit & Installation') {
+          return {
+            ...alarm,
+            icon: 'exploit'
+          }
+        } else if (alarm.rule_intent === 'Delivery & Attack') {
+          return {
+            ...alarm,
+            icon: 'attack'
+          }
+        } else if (alarm.rule_intent === 'Reconnaisannce & Probing') {
+          return {
+            ...alarm,
+            icon: 'recon'
+          }
+        } else {
+          return {
+            ...alarm
+          }
+        }
+      });
+      setData(alarms);
+      console.log(alarms);
       setLoading(false);
     });
   }, []);
-
   // control modal visibility
   const [visible, setVisible] = React.useState(false);
   // store current data to pass to modal
-  const [currentData, setCurrentData] = React.useState(null);
+  const [currentData, setCurrentData] = React.useState([]);
 
   const buttonArrow = (props) => (
     <Icon {...props} name='arrow-ios-forward-outline' />
@@ -30,21 +67,64 @@ export const DashboardAlarmsList = (props) => {
 
     const renderItemAccessory = (props, index) => (
         <Button style={GlobalStyles.button}
-        {...props} onPress={() => {setVisible(true); setCurrentData(index)}}
+        {...props} onPress={() => {setVisible(true); setCurrentData(data[index])}}
         accessoryLeft={buttonArrow}
         size='medium' status='basic'></Button>
     );
 
+    const compromiseItemIcon = (props) => (
+      <FontAwesomeIcon {...props} size="lg" icon={faBiohazard} style={{ color: theme['color-danger-500'] }} />
+  );
+
+  const EnvironmentalItemIcon = (props) => (
+    <FontAwesomeIcon {...props} size="xs" icon={faGlobe} />
+  );
+
+  const ReconItemIcon = (props) => (
+    <FontAwesomeIcon {...props} icon={faBinoculars} />
+  );
+
+  const ExploitItemIcon = (props) => (
+    <FontAwesomeIcon {...props} icon={faLandMineOn} />
+  );
+
+  const AttackItemIcon = (props) => (
+    <FontAwesomeIcon {...props} icon={faTruckRampBox} />
+  );
+
     const renderItemIcon = (props) => (
-        <Icon {...props} name='alert-circle-outline' />
+      <Icon {...props} name='alert-circle-outline' />
     );
+    
 
   const renderItem = ({ item, index }) => (
     <ListItem
     title={`${item.rule_strategy}`}
     description={`${item.rule_method}`}
-    accessoryLeft={renderItemIcon}
+    accessoryLeft={
+      item.icon === 'compromise' ? compromiseItemIcon : (
+        item.icon === 'environment' ? EnvironmentalItemIcon : (
+          item.icon === 'recon' ? ReconItemIcon : (
+            item.icon === 'exploit' ? ExploitItemIcon : (
+              item.icon === 'attack' ? AttackItemIcon : renderItemIcon
+            )
+          )
+        )
+      )}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
+  );
+
+  const cardHeader = (props) => (
+    <View {...props} style={[props.style, styles.headerContainer]}>
+      <Text category='h6'>{currentData?.rule_strategy}</Text>
+      <Text category='s1'>{currentData?.rule_method}</Text>
+    </View>
+  );
+
+  const cardFooter = (props) => (
+    <View {...props} style={[props.style, styles.cardFooter]}>
+      <Button style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>Close</Button>
+    </View>
   );
 
   // if loading data, show loading text
@@ -72,30 +152,33 @@ export const DashboardAlarmsList = (props) => {
         visible={visible}
         onBackdropPress={() => setVisible(false)}
         backdropStyle={styles.backdrop}
+        style={{height: '90%', width: '90%'}}
         >
-        <Card>
-          <Text>Title: {data[currentData]?.rule_strategy}</Text>
-          <Text>Description: {data[currentData]?.rule_method}</Text>
-          <Text>Priority: {data[currentData]?.priority_label}</Text>
-          <Text>Rule Intent: {data[currentData]?.rule_intent}</Text>
-          <Text>App Type: {data[currentData]?.app_type}</Text>
-          <Text>Source Username: {data[currentData]?.source_username}</Text>
-          <Text>Security Group ID: {data[currentData]?.security_group_id}</Text>
-          <Text>Destination Name: {data[currentData]?.destination_name}</Text>
-          <Text>Timestamp Occured: {data[currentData]?.timestamp_occured}</Text>
-          <Text>Authentication Type: {data[currentData]?.authentication_type}</Text>
-          <Text>Ruled Method: {data[currentData]?.ruled_method}</Text>
-          <Text>App ID: {data[currentData]?.app_id}</Text>
-          <Text>Source Name: {data[currentData]?.source_name}</Text>
-          <Text>Timestamp Received: {data[currentData]?.timestamp_received}</Text>
-          <Text>Rule Strategy: {data[currentData]?.rule_strategy}</Text>
-          <Text>Request User Agent: {data[currentData]?.request_user_agent}</Text>
-          <Text>Rule ID: {data[currentData]?.rule_id}</Text>
-          <Text>Sensor UUID: {data[currentData]?.sensor_uuid}</Text>
-          <Text>Transient: {data[currentData]?.transient}</Text>
-          <Text>Event Name: {data[currentData]?.event_name}</Text>
-          <Text>Status: {data[currentData]?.status}</Text>
-          <Button style={GlobalStyles.button} onPress={() => setVisible(false)}>Close</Button>
+        <Card header={cardHeader} footer={cardFooter} status={currentData?.priority_label === 'high' ? 'danger' : 'info'}>
+          <Text>{Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))} days ago.</Text>
+          <Text>Priority: {currentData?.priority_label === 'high' ? (
+            <Button style={GlobalStyles.button} status='danger' appearance='outline' size='tiny'>{currentData?.priority_label?.toUpperCase()}</Button>
+          ) : (
+            <Button style={GlobalStyles.button} status='basic' appearance='outline' size='tiny'>{currentData?.priority_label?.toUpperCase()}</Button>
+          )}
+          </Text>
+          <Text>Status: {currentData?.status}</Text>
+          {currentData?.icon === 'compromise' ? (
+            <>
+            <Text>Username: {currentData?.source_username}</Text>
+            <Text>Source NT Domain: {currentData?.source_ntdomain}</Text>
+            <Text>File Name: {currentData?.file_name}</Text>
+            <Text>Malware Family: {currentData?.malware_family}</Text>
+            </>
+          ) : (
+            <>
+            <Text>Destination Username: {currentData?.destination_username}</Text>
+            <Text>Audit Reason: {currentData?.audit_reason}</Text>
+            <Text>Rule Attack Tactic: {currentData?.rule_attack_tactic}</Text>
+            <Text>Rule Attack Technique: {currentData?.rule_attack_technique}</Text>
+            </>
+          )}
+          <Text>Sensors: {currentData?.sensor_uuid}</Text>
         </Card>
     </Modal>
     </>
@@ -107,6 +190,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button: {
+      width: '140px',
+      height: '25px'
     },
     backdrop: {
       backgroundColor: 'rgba(0, 0, 0, 0.5)',

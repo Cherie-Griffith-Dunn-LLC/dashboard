@@ -108,7 +108,6 @@ export class LogManagementCard extends Component {
 }
 
 
-
 const styles = StyleSheet.create({
     dashboardCard: {
         maxWidth: '45%',
