@@ -19,11 +19,15 @@ export default class CustomLineChart extends React.Component {
         } else {
             //var newData = this.props.data;
             // parse data to get how many occured on each day then push to newData
-            var newData = [];
+            var newData = [{date: 0, occurences: 0}, {date: 24, occurences: 0}];
             var tempData = this.props.data;
+            console.log(tempData);
             // loop through data
             tempData.forEach((item) => {
-                const date = new Date(item.timestamp_occured*1000).getUTCHours();
+                const currentDate = item.timestamp_arrived / 1000;
+                console.log(currentDate);
+                console.log(new Date(currentDate * 1000));
+                const date = new Date(currentDate * 1000).getHours();
                 // check if date already exists in newData
                 var result = newData.find(obj => {
                     return obj.date === date
@@ -47,6 +51,7 @@ export default class CustomLineChart extends React.Component {
 
             // sort newData by date
             newData.sort((a, b) => (a.date > b.date) ? 1 : -1);
+            console.log(newData);
         }
         // chart line
         const Line = ({ line }) => (
