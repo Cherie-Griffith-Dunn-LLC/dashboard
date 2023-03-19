@@ -67,5 +67,22 @@ const styles = StyleSheet.create({
         width: 500,
         minWidth: 300,
         height: 400,
-    }
+        minHeight: 400
+    },
+    Input: {
+        borderRadius: '12px'
+      },
+      Button: {
+        borderRadius: '15px',
+        width: '140px',
+        height: '25px'
+      },
+      BackImage: {
+        flex: 1,
+        resizeMode: 'cover'
+      },
+      logo: {
+        height: '40px',
+        width: '265px'
+      }
 });
