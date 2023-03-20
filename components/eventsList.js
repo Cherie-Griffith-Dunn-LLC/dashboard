@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider } from '@ui-kitten/components';
 // usm api function
 import { getEvents } from '../services/usmApi';
-
+import GlobalStyles from '../constants/styles';
 
 
 export const DashboardEventsList = (props) => {
@@ -27,9 +27,17 @@ export const DashboardEventsList = (props) => {
   // store current data to pass to modal
   const [currentData, setCurrentData] = React.useState(null);
 
-    const renderItemAccessory = (props, index) => (
-        <Button {...props} onPress={() => {setVisible(true); setCurrentData(index)}} size='tiny'>VIEW</Button>
-    );
+  const buttonArrow = (props) => (
+    <Icon {...props} name='arrow-ios-forward-outline' />
+  );
+
+
+  const renderItemAccessory = (props, index) => (
+    <Button style={GlobalStyles.button}
+    {...props} onPress={() => {setVisible(true); setCurrentData(index)}}
+    accessoryLeft={buttonArrow}
+    size='medium' status='basic'></Button>
+);
 
     const renderItemIcon = (props) => (
         <Icon {...props} name='question-mark-circle-outline' />
@@ -61,6 +69,7 @@ export const DashboardEventsList = (props) => {
       style={styles.container}
       data={data}
       renderItem={renderItem}
+      ItemSeparatorComponent={Divider}
     />
     <Modal
         visible={visible}
@@ -105,7 +114,7 @@ export const DashboardEventsList = (props) => {
           <Text>Destination Infrastructure Name: {data[currentData]?.destination_infrastructure_name}</Text>
           <Text>Source Name: {data[currentData]?.source_name}</Text>
           <Text>Received From: {data[currentData]?.received_from}</Text>
-          <Button onPress={() => setVisible(false)}>Close</Button>
+          <Button style={GlobalStyles.button} onPress={() => setVisible(false)}>Close</Button>
         </Card>
     </Modal>
   </>

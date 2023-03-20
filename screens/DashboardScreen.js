@@ -1,15 +1,14 @@
 import React from 'react';
-import { Text, Layout, Card, Input, Button, Divider, Icon, List, ListItem, Avatar, Menu, MenuItem, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Text, Layout, Icon, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, View, ScrollView, Platform } from 'react-native';
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { StyleSheet, View, ScrollView, Platform, Image } from 'react-native';
 import { DashboardAlarmsList } from '../components/alarmsList';
 import { DashboardEventsList } from '../components/eventsList';
 import { DWMList } from '../components/dwmList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
-import { ThreatDetectionCard, VulnScanCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
+import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
 // user cards
 import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards';
 
@@ -20,6 +19,8 @@ import { TokenContext } from '../contexts/tokenContext';
 import { getMe, getRole } from '../services/azureApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
+// data for charts
+import { getAlarms, getEvents, getDWM } from '../services/usmApi';
 
 
 const MenuIcon = (props) => (
@@ -30,11 +31,21 @@ const LogOutIcon = (props) => (
     <Icon {...props} name='log-out-outline' />
 );
 
+
+const logo = (props) => (
+    <Image style={styles.logo} {...props}  source={require('../assets/cyplogo-blk.png')} />
+);
+
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
 
     // theme context
     const themeContext = React.useContext(ThemeContext);
+    // data for charts
+    const [alarms, setAlarms] = React.useState([]);
+    const [events, setEvents] = React.useState([]);
+    const [dwm, setDwm] = React.useState([]);
+    const [courses, setCourses] = React.useState([]);
 
     // logout user
     const logOut = async () => {
@@ -93,8 +104,19 @@ const DashboardScreen = () => {
         setUserRoles(userRoles);
     };
 
+    // get data for charts
+    const getChartData = async () => {
+        getEvents(token).then((response) => {
+            setEvents(response);
+          });
+        getAlarms(token).then((response) => {
+            setAlarms(response);
+          });
+    }
+
     React.useEffect(() => {
         getUserInfo();
+        getChartData();
     }, []);
 
     
@@ -127,14 +149,14 @@ const DashboardScreen = () => {
                         <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
-                                <ThreatDetectionCard setSelectedIndex={setSelectedIndex} />
-                                <VulnScanCard setSelectedIndex={setSelectedIndex} />
-                                <BehavioralMonitoringCard setSelectedIndex={setSelectedIndex} />
+                                <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
+                                <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
+                                <BehavioralMonitoringCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
                                 <>
-                                <UserAlertsCard setSelectedIndex={setSelectedIndex} />
+                                <UserAlertsCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <UserCoursesCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             )}
@@ -200,10 +222,8 @@ const DashboardScreen = () => {
 export default DashboardScreen;
 
 const styles = StyleSheet.create({
-    dashboardCard: {
-        maxWidth: '45%',
-        width: 500,
-        minWidth: 300,
-        height: 400,
+    logo: {
+        height: '20px',
+        width: '105px',
     }
-  });
+});
