@@ -5,7 +5,7 @@ import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme } fr
 import { getAlarms } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBiohazard, faGlobe, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
+import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
 
 export const DashboardAlarmsList = (props) => {
   const theme = useTheme();
@@ -15,7 +15,7 @@ export const DashboardAlarmsList = (props) => {
   const [loading, setLoading] = React.useState(true);
   // get alarms from api
   React.useEffect(() => {
-    getAlarms(props.token).then((response) => {
+    getAlarms(props.token, 20).then((response) => {
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent
       const alarms = response._embedded.alarms.map(alarm => {
@@ -77,7 +77,7 @@ export const DashboardAlarmsList = (props) => {
   );
 
   const EnvironmentalItemIcon = (props) => (
-    <FontAwesomeIcon {...props} size="xs" icon={faGlobe} />
+    <FontAwesomeIcon {...props} size="xs" icon={faBuildingShield} />
   );
 
   const ReconItemIcon = (props) => (
@@ -99,6 +99,7 @@ export const DashboardAlarmsList = (props) => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
+    onPress={() => {setVisible(true); setCurrentData(data[index])}}
     title={`${item.rule_strategy}`}
     description={`${item.rule_method}`}
     accessoryLeft={
