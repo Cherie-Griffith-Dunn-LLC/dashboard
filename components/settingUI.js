@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Card, Layout, Text } from '@ui-kitten/components';
 import { getMe, getUsers, postUsers } from '../services/azureApi';
+import { getDbUsers } from '../services/dbApi';
 
 export const UsersList = (props) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [dbUsers, setDbUsers] = useState([]);
 
     useEffect(() => {
         getMe(props.token)
@@ -46,6 +48,19 @@ export const UsersList = (props) => {
             });
     };
 
+    const handleGetDbUsersPress = () => {
+        setLoading(true);
+        getDbUsers(props.token)
+            .then((users) => {
+                setDbUsers(users);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
+    };
+
     return (
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             {currentUser && (
@@ -61,6 +76,7 @@ export const UsersList = (props) => {
             <Text category='h1'>Users</Text>
             <Button onPress={handleGetUsersPress}>Get Users</Button>
             <Button onPress={handleUpdateUsersPress}>Update Users</Button>
+            <Button onPress={handleGetDbUsersPress}>Get DB Users</Button>
             {loading ? (
                 <Text>Loading...</Text>
             ) : error ? (
@@ -77,8 +93,15 @@ export const UsersList = (props) => {
                         </Card>
                     ))}
                 </Layout>
-            ) : (
-                <Text></Text>
+            ) : dbUsers.length > 0 && (
+                <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    {dbUsers.map((user) => (
+                        <Card key={user.id} style={styles.card} header={() => <Text category='h6'>{user.name}</Text>}>
+                        <Text>{user.email}</Text>
+                        <Text>{user.job_title}</Text>
+                    </Card>
+                    ))}
+                </Layout>
             )}
         </Layout>
     );
