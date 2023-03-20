@@ -5,6 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getTenantId } from '../services/azureApi';
 import GlobalStyles from '../constants/styles';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -25,7 +28,7 @@ const loginHeader = (props) => (
   );
 
   const AzureIcon = (props) => (
-    <Icon name='wifi' {...props} />
+    <FontAwesomeIcon {...props} icon={faMicrosoft} inverse  />
   );
 
 
@@ -37,6 +40,15 @@ const loginHeader = (props) => (
     // create error & tooltip
     const [error, setError] = React.useState(null);
     const [errorVisible, setErrorVisible] = React.useState(false);
+
+    // email validation of format
+    const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
     
 
 
@@ -44,7 +56,9 @@ const loginHeader = (props) => (
     const login = async (userEmail) => {
         // get tenant id from email
         // test@cgdgovsolutions.com
-        getTenantId(userEmail) // returns tenant id
+        // check if email is a valid email format
+        if (validateEmail(userEmail) !== null) {
+          getTenantId(userEmail) // returns tenant id
             .then((res) => {
                 // check if we got an error
                 if (!res.error) {
@@ -61,6 +75,10 @@ const loginHeader = (props) => (
             .catch((err) => {
                 console.log(err);
             });
+        } else {
+          setError('Email is not valid');
+          setErrorVisible(true);
+        }
     };
 
     const renderInputEmail = () => (
@@ -122,14 +140,15 @@ const loginHeader = (props) => (
                             <Button
                             title='Login'
                             status='info'
+                            accessoryLeft={AzureIcon}
                             style={[GlobalStyles.button, styleguideUIcomponents1Styles.button]}
                             onPress={() => {
                                 login(email);
                             }}
                             >
-                                Login
+                                Login with Microsoft
                             </Button>
-                            <Text category='c1' style={styleguideUIcomponents1Styles.rightFooter}>
+                            <Text appearance='hint' category='c1' style={styleguideUIcomponents1Styles.rightFooter}>
                             Need help? Contact support
                             </Text>
                         </View>
@@ -146,8 +165,7 @@ const loginHeader = (props) => (
             resizeMode: 'cover'
           },
           BackSecondImage: {
-            resizeMode: 'cover',
-            borderBottomLeftRadius: '20px'
+            resizeMode: 'cover'
           },
           logo: {
             height: '40px',
@@ -163,8 +181,7 @@ const loginHeader = (props) => (
             minWidth: 200,
             height: 400,
             backgroundColor: 'white',
-            textAlign: 'center',
-            borderBottomLeftRadius: '20px'
+            textAlign: 'center'
         },
         loginRightCard: {
             maxWidth: '45%',
@@ -173,8 +190,7 @@ const loginHeader = (props) => (
             height: 400,
             backgroundColor: 'white',
             textAlign: 'center',
-            padding: 25,
-            borderTopRightRadius: '20px'
+            padding: 25
         },
         container: {
           display: 'flex',
