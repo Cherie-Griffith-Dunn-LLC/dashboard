@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { LineChart, XAxis } from 'react-native-svg-charts';
+import { LineChart, XAxis, YAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
 import { Circle, Path } from 'react-native-svg';
 
@@ -19,14 +19,15 @@ export default class CustomLineChart extends React.Component {
         } else {
             //var newData = this.props.data;
             // parse data to get how many occured on each day then push to newData
-            var newData = [{date: 0, occurences: 0}, {date: 24, occurences: 0}];
+            // var newData = [{date: 0, occurences: 0}, {date: 24, occurences: 0}];
+            var newData = new Array(25).fill().map((value, index) => ({
+                date: index,
+                occurences: 0
+            }))
             var tempData = this.props.data;
-            console.log(tempData);
             // loop through data
             tempData.forEach((item) => {
                 const currentDate = item.timestamp_arrived / 1000;
-                console.log(currentDate);
-                console.log(new Date(currentDate * 1000));
                 const date = new Date(currentDate * 1000).getHours();
                 // check if date already exists in newData
                 var result = newData.find(obj => {
@@ -51,7 +52,6 @@ export default class CustomLineChart extends React.Component {
 
             // sort newData by date
             newData.sort((a, b) => (a.date > b.date) ? 1 : -1);
-            console.log(newData);
         }
         // chart line
         const Line = ({ line }) => (
@@ -69,7 +69,7 @@ export default class CustomLineChart extends React.Component {
                     key={ index }
                     cx={ x(value.date) }
                     cy={ y(value.occurences) }
-                    r={ 4 }
+                    r={ value.occurences > 0 ? 4 : 0 }
                     strokeWidth="2.5"
                     stroke={ 'white' }
                     fill={ 'rgb(0, 144, 255)' }
@@ -78,7 +78,7 @@ export default class CustomLineChart extends React.Component {
         }
 
 
-        const contentInset = { top: 20, bottom: 20 }
+        const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
 
         
 

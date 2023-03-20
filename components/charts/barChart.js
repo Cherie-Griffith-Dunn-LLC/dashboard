@@ -10,7 +10,7 @@ export default class CustomBarChart extends React.Component {
         const fill = 'rgb(51, 102, 255)'
         // fake data
         const data = [50, 10, 40, 95, 4, 24, null, 85, undefined, 0, 35, 53, 53, 24, 50, 20, 80]
-        const contentInset = { top: 20, bottom: 20 }
+        const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
         return (
             <>
             <BarChart style={{ height: 200 }}
