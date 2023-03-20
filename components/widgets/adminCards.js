@@ -4,6 +4,7 @@ import { Card, Text, Button } from '@ui-kitten/components';
 import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
 import CustomBarChart from '../charts/barChart';
+import CustomStatChart from '../charts/statChart';
 
 // set IndexPath and return it
 // we have to do this since we dont have ts with IndexPath type
@@ -16,6 +17,17 @@ var IndexPath = {
 function setIndexPathRow(row) {
     IndexPath.row = row;
     return IndexPath;
+}
+
+export class StatsCard extends Component {
+    render() {
+        return (
+            <CustomStatChart
+                alarms={this.props.alarms.page?.totalElements}
+                events={this.props.events.page?.totalElements}
+            />
+        )
+    }
 }
 
 
@@ -114,7 +126,7 @@ const styles = StyleSheet.create({
         width: 500,
         minWidth: 300,
         height: 400,
-        minHeight: 400
+        minHeight: 400,
     },
     Input: {
         borderRadius: '12px'

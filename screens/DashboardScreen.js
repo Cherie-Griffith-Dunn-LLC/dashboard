@@ -8,7 +8,7 @@ import { DWMList } from '../components/dwmList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
-import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard } from '../components/widgets/adminCards';
+import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard, StatsCard } from '../components/widgets/adminCards';
 // user cards
 import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards';
 
@@ -106,10 +106,10 @@ const DashboardScreen = () => {
 
     // get data for charts
     const getChartData = async () => {
-        getEvents(token).then((response) => {
+        getEvents(token, 20).then((response) => {
             setEvents(response);
           });
-        getAlarms(token).then((response) => {
+        getAlarms(token, 20).then((response) => {
             setAlarms(response);
           });
     }
@@ -146,7 +146,10 @@ const DashboardScreen = () => {
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20 }}>
                         <Text category='h3'>Home</Text>
-                        <Layout style={{ display: 'flex', flex: '2', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        {userRoles.role === 'admin' && (
+                            <StatsCard alarms={alarms} events={events} />
+                        )}
+                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
