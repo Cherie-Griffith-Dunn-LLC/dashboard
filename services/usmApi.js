@@ -18,8 +18,8 @@ export const getOauth = async (authString) => {
 };
 
 // get alarms
-export const getAlarms = async (bearerToken) => {
-    const response = await fetch(usmEndpoint + '/alarms', {
+export const getAlarms = async (bearerToken, size, priority) => {
+    const response = await fetch(usmEndpoint + '/alarms?size=' + size + '&priority=' + priority, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -32,8 +32,8 @@ export const getAlarms = async (bearerToken) => {
 };
 
 // get events
-export const getEvents = async (bearerToken) => {
-    const response = await fetch(usmEndpoint + '/events', {
+export const getEvents = async (bearerToken, size) => {
+    const response = await fetch(usmEndpoint + '/events?size=' + size, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
