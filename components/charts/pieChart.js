@@ -16,13 +16,13 @@ export default class CustomPieChart extends React.Component {
 
         // color each slice
         const getColor = (priority) => {
-            if (priority <= 25) {
+            if (priority === 'low') {
                 // return green
                 return 'rgb(26, 213, 152)';
-            } else if (priority > 25 && priority <= 50) {
+            } else if (priority === 'medium') {
                 // return yellow
                 return 'rgb(0, 144, 255)';
-            } else if (priority > 50 && priority <= 100) {
+            } else if (priority === 'high') {
                 // return red
                 return 'rgb(219, 90, 238)';
             }
@@ -30,13 +30,13 @@ export default class CustomPieChart extends React.Component {
 
         // label each slice
         const getArc = (priority) => {
-            if (priority <= 25) {
+            if (priority === 'low') {
                 // return green
                 return {};
-            } else if (priority > 25 && priority <= 50) {
+            } else if (priority === 'medium') {
                 // return yellow
                 return {};
-            } else if (priority > 50 && priority <= 100) {
+            } else if (priority === 'high') {
                 // return red
                 return {
                     outerRadius: '110%',
@@ -53,7 +53,7 @@ export default class CustomPieChart extends React.Component {
             var newData = [];
             // loop through data
             tempData.forEach((item) => {
-                const priority = item.priority;
+                const priority = item.priority_label;
                 // check if date already exists in newData
                 var result = newData.find(obj => {
                     return obj.priority === priority
@@ -63,7 +63,7 @@ export default class CustomPieChart extends React.Component {
                 if (!result) {
                     newData.push({
                         priority: priority,
-                        label: item.priority_label,
+                        label: item.priority,
                         occurences: 0
                     });
                 }
@@ -75,10 +75,9 @@ export default class CustomPieChart extends React.Component {
                     }
                 }
             });
-            console.log(newData);
         }
         const pieData = newData
-        .filter((value) => value.priority > 0)
+        // .filter((value) => value.priority > 0)
         .map((value, index) => ({
             value: value.occurences,
             svg: {
@@ -86,11 +85,12 @@ export default class CustomPieChart extends React.Component {
                 onPress: () => console.log('press', index),
             },
             arc: getArc(value.priority),
-            key: `pie-${index}`,
+            key: `${value.label}`,
             label: `${value.occurences}`
         }))
-        console.log(this.props.data);
         console.log(pieData);
+
+        const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
 
         // chart labels
         const Labels = ({slices, height, width}) => slices.map((slice, index) => {
@@ -120,6 +120,7 @@ export default class CustomPieChart extends React.Component {
             padAngle={0}
             spacing={0}
             labelRadius={ 80 }
+            contentInset={contentInset}
             >
                 <Labels />
             </PieChart>

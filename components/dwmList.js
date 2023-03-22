@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider } from '@ui-kitten/components';
 import GlobalStyles from '../constants/styles';
 
 const data = new Array(20).fill({
   title: 'Credentials Leak',
   description: 'Credentials Leak Description',
+  account: 'user@example.com',
+  source: 'Dark Net Marketplace'
 });
 
 export const DWMList = () => {
@@ -22,7 +24,7 @@ export const DWMList = () => {
 
   const renderItemAccessory = (props, index) => (
     <Button style={GlobalStyles.button}
-    {...props} onPress={() => {setVisible(true); setCurrentData(index)}}
+    {...props} onPress={() => {setVisible(true); setCurrentData(data[index])}}
     accessoryLeft={buttonArrow}
     size='medium' status='basic'></Button>
 );
@@ -33,10 +35,24 @@ export const DWMList = () => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
+    onPress={() => {setVisible(true); setCurrentData(data[index])}}
     title={`${item.title} ${index + 1}`}
     description={`${item.description}`}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
+  );
+
+  const cardHeader = (props) => (
+    <View {...props} style={[props.style, styles.headerContainer]}>
+      <Text category='h6'>{currentData?.title}</Text>
+      <Text category='s1'>{currentData?.description}</Text>
+    </View>
+  );
+
+  const cardFooter = (props) => (
+    <View {...props} style={[props.style, styles.cardFooter]}>
+      <Button style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>Close</Button>
+    </View>
   );
 
   return (
@@ -52,10 +68,9 @@ export const DWMList = () => {
         onBackdropPress={() => setVisible(false)}
         backdropStyle={styles.backdrop}
         >
-        <Card>
-          <Text>{data[currentData]?.title} {currentData + 1}</Text>
-          <Text>{data[currentData]?.description}</Text>
-          <Button onPress={() => setVisible(false)}>Close</Button>
+        <Card header={cardHeader} footer={cardFooter} status='danger'>
+          <Text>{currentData?.account}</Text>
+          <Text>{currentData?.source}</Text>
         </Card>
     </Modal>
     </>
@@ -63,10 +78,14 @@ export const DWMList = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    backdrop: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    }
+  container: {
+    flex: 1,
+},
+button: {
+  width: '140px',
+  height: '25px'
+},
+backdrop: {
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+}
 });
