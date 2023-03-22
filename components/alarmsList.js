@@ -52,7 +52,6 @@ export const DashboardAlarmsList = (props) => {
         }
       });
       setData(alarms);
-      console.log(alarms);
       setLoading(false);
     });
   }, []);

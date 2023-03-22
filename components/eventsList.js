@@ -18,10 +18,8 @@ export const DashboardEventsList = (props) => {
   // get alarms from api
   React.useEffect(() => {
     getEvents(props.token, 20).then((response) => {
-      console.log(response);
       // replace empty data array with response data
       setData(response._embedded.eventResources);
-      console.log(data);
       setLoading(false);
     });
   }, []);

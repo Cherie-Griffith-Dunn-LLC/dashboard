@@ -76,11 +76,9 @@ const loginHeader = (props) => (
                 // show error
                 setError(res.error);
                 setErrorVisible(true);
-                console.log(res.error);
                 }
             })
             .catch((err) => {
-                console.log(err);
                 setError('An error occured. Please try again.');
                 setErrorVisible(true);
             });
