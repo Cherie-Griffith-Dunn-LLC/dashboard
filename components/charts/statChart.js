@@ -18,19 +18,25 @@ export default class CustomStatChart extends React.Component {
         return (
             <Layout style={styles.container}>
                 <View style={styles.item}>
-                    <Text status='danger' style={styles.count}>{this.props.alarms ? this.props.alarms : 0}</Text>
-                    <Text style={styles.title}>Alerts</Text>
+                    <Text status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
+                        {this.props.alarms ? this.props.alarms : 0}
+                    </Text>
+                    <Text style={styles.title}>Alarms</Text>
                 </View>
                 <View style={styles.item}>
-                    <Text status='warning' style={styles.count}>{this.props.events ? this.props.events : 0}</Text>
+                    <Text status={this.props.alarms > 0 ? 'warning' : 'basic'} style={styles.count}>
+                        {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : 0}
+                    </Text>
                     <Text>Events</Text>
                 </View>
                 <View style={styles.item}>
-                    <Text status='danger' style={styles.count}>{this.props.alarms ? this.props.alarms : 0}</Text>
+                    <Text status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
+                        {this.props.alarms ? this.props.alarms : 0}
+                    </Text>
                     <Text style={styles.title}>Dark Web</Text>
                 </View>
                 <View style={styles.item}>
-                    <Text status='info' style={styles.count}>100</Text>
+                    <Text status={this.props.alarms > 0 ? 'info' : 'basic'} style={styles.count}>100</Text>
                     <Text style={styles.title}>Courses</Text>
                 </View>
             </Layout>
