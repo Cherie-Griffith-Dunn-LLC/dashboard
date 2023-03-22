@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 
 
-const screenWidth = Dimensions.get("window").width;
+
 
 const loginHeader = (props) => (
     <Text {...props} category='p1' style={{textAlign: 'center'}}>
@@ -33,6 +33,13 @@ const loginHeader = (props) => (
 
 
   export default function LoginScreen({ navigation }) {
+
+    // create screenWidth
+    const [screenWidth, setScreenWidth] = React.useState(767);
+
+    React.useEffect(() => {
+      setScreenWidth(Dimensions.get("window").width);
+    }, []);
 
     // create email
     const [email, setEmail] = React.useState('');
@@ -74,6 +81,8 @@ const loginHeader = (props) => (
             })
             .catch((err) => {
                 console.log(err);
+                setError('An error occured. Please try again.');
+                setErrorVisible(true);
             });
         } else {
           setError('Email is not valid');
@@ -107,7 +116,7 @@ const loginHeader = (props) => (
                   />
                   <ScrollView>
                 <Layout style={styleguideUIcomponents1Styles.container}>
-                        {screenWidth > 412 &&
+                        {screenWidth >= 767 ?
                           <View style={styleguideUIcomponents1Styles.loginLeftCard}>
                             <ImageBackground
                             imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
@@ -120,7 +129,9 @@ const loginHeader = (props) => (
                                 </Text>
                             </ImageBackground>
                           </View>
-                        }
+                        : (
+                          <Image source={require('../assets/cyplogo-wht.png')} style={[styleguideUIcomponents1Styles.logo, {margin: 25}]} />
+                        )}
                         <View
                         style={styleguideUIcomponents1Styles.loginRightCard}
                         >
@@ -184,9 +195,9 @@ const loginHeader = (props) => (
             textAlign: 'center'
         },
         loginRightCard: {
-            maxWidth: '45%',
+            maxWidth: '90%',
             width: 300,
-            minWidth: 200,
+            minWidth: 300,
             height: 400,
             backgroundColor: 'white',
             textAlign: 'center',
