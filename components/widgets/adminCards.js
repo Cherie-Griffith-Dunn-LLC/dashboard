@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Text, Button } from '@ui-kitten/components';
+import { Card, Text, Button, Spinner } from '@ui-kitten/components';
 import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
 import CustomBarChart from '../charts/barChart';
@@ -19,6 +19,19 @@ function setIndexPathRow(row) {
     return IndexPath;
 }
 
+// loading component
+export class LoadingStatus extends Component {
+    render() {
+        return (
+            <Text>
+                <Spinner size='giant' status='info' />
+                Loading...
+            </Text>
+        )
+    }
+}
+
+// stats card
 export class StatsCard extends Component {
     render() {
         return (
@@ -39,7 +52,7 @@ export class AlarmsCard extends Component {
                 <Card style={styles.dashboardCard}>
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: 0</Text>
-                    <Text>No data</Text>
+                    <LoadingStatus />
                     <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
                 </Card>
             );
@@ -64,7 +77,7 @@ export class EventsCard extends Component {
                 <Card style={styles.dashboardCard}>
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: 0</Text>
-                    <Text>No data</Text>
+                    <LoadingStatus />
                     <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
                 </Card>
             );
@@ -89,7 +102,7 @@ export class BehavioralMonitoringCard extends Component {
                 <Card style={styles.dashboardCard}>
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: 0</Text>
-                    <Text>No data</Text>
+                    <LoadingStatus />
                     <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
                 </Card>
             );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card, Divider } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, Spinner } from '@ui-kitten/components';
 // usm api function
 import { getEvents } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
@@ -79,7 +79,10 @@ export const DashboardEventsList = (props) => {
   // if loading data, show loading text
   if (loading) {
     return (
-      <Text>Loading...</Text>
+      <Text>
+          <Spinner size='giant' status='info' />
+          Loading...
+      </Text>
     )
   }
   // if not loading and no adata, show no data text
