@@ -66,7 +66,7 @@ export const RequiredCourses = () => {
         <Modal visible={modalVisible} backdropStyle={styles.backdrop} onBackdropPress={handleModalBackdropPress}>
         {modalContent && (
           <>
-            <Button status='danger' style={styles.modalCloseButton} onPress={handleModalBackdropPress} accessoryRight={closeIcon} ></Button>
+            <Button status='danger' style={[styles.modalCloseButton, {borderRadius: 25}]} onPress={handleModalBackdropPress} accessoryRight={closeIcon} ></Button>
             {modalContent}
           </>
         )}
