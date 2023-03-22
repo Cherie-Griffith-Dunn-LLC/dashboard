@@ -88,7 +88,6 @@ export default class CustomPieChart extends React.Component {
             key: `${value.label}`,
             label: `${value.occurences}`
         }))
-        console.log(pieData);
 
         const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
 

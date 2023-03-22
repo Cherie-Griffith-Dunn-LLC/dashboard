@@ -141,9 +141,9 @@ const loginHeader = (props) => (
             marginRight: 'auto'
         },
         card: {
-            maxWidth: '45%',
+            maxWidth: '90%',
             width: 300,
-            minWidth: 200,
+            minWidth: 300,
             height: 400,
             backgroundColor: 'white',
             textAlign: 'center',
