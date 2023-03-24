@@ -34,7 +34,7 @@ export const RequiredCourses = () => {
     const handleCardPress = (index) => {
         const course = requiredCourses[index];
         setModalContent(
-            <iframe src={"https://icy-tree-0500ba10f.2.azurestaticapps.net/Cyber_Security_html5_1035/content/index.html#/"} style={{ width: '100%', height: '100%' }}></iframe>
+            <iframe src={"https://wonderful-rock-0cb66a70f.2.azurestaticapps.net"} style={{ width: '100%', height: '100%' }}></iframe>
         );
         setModalVisible(true);
       };
