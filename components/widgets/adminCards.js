@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Card, Text, Button, Spinner } from '@ui-kitten/components';
 import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
@@ -23,14 +23,13 @@ function setIndexPathRow(row) {
 export class LoadingStatus extends Component {
     render() {
         return (
-            <View style={styles.loadingContainer}>
+            <Text>
                 <Spinner size='giant' status='info' />
-                <Text>Loading...</Text>
-            </View>
+                Loading...
+            </Text>
         )
     }
 }
-
 
 // stats card
 export class StatsCard extends Component {
@@ -136,33 +135,26 @@ export class LogManagementCard extends Component {
 
 const styles = StyleSheet.create({
     dashboardCard: {
-        flex: 1,
-        width: '100%',
+        maxWidth: '45%',
+        width: 500,
+        minWidth: 300,
+        height: 400,
         minHeight: 400,
-        margin: 10,
-        padding: 10,
     },
     Input: {
-        borderRadius: 12,
-    },
-    Button: {
-        borderRadius: 15,
-        width: 140,
-        height: 25,
-        marginTop: 10,
-        alignSelf: 'center',
-    },
-    BackImage: {
+        borderRadius: '12px'
+      },
+      Button: {
+        borderRadius: '15px',
+        width: '140px',
+        height: '25px'
+      },
+      BackImage: {
         flex: 1,
-        resizeMode: 'cover',
-    },
-    logo: {
-        height: 40,
-        width: 265,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+        resizeMode: 'cover'
+      },
+      logo: {
+        height: '40px',
+        width: '265px'
+      }
 });
