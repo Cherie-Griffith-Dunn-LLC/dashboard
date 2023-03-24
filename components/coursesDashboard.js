@@ -1,6 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import { StyleSheet, Image, Modal } from 'react-native';
-import { Button, Card, Layout, Text } from '@ui-kitten/components';
+import { Button, Card, Icon, Layout, Text } from '@ui-kitten/components';
+import GlobalStyles from '../constants/styles';
 import { getDbCourses } from '../services/dbApi';
 
 const requiredCourses = new Array(1).fill({
@@ -19,6 +20,10 @@ const allCourses = new Array(8).fill({
 
 const renderItemIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
+);
+
+const closeIcon = (props) => (
+    <Icon {...props} name='close-outline' />
 );
 
 
@@ -59,7 +64,7 @@ export const RequiredCourses = () => {
         <Modal visible={modalVisible} backdropStyle={styles.backdrop} onBackdropPress={handleModalBackdropPress}>
         {modalContent && (
           <>
-            <Button style={styles.modalCloseButton} onPress={handleModalBackdropPress} >Close</Button>
+            <Button status='danger' style={[styles.modalCloseButton, {borderRadius: 25}]} onPress={handleModalBackdropPress} accessoryRight={closeIcon} ></Button>
             {modalContent}
           </>
         )}
@@ -136,6 +141,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 8,
         right: 23,
+        borderRadius: '15px'
       },
 
     container: {

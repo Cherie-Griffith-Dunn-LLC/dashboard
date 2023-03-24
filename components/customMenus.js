@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Menu, MenuItem, Icon, Layout, Button, SettingsIcon } from '@ui-kitten/components';
+import GlobalStyles from '../constants/styles';
 
 const HomeIcon = (props) => (
     <Icon {...props} name='home-outline' />
@@ -45,7 +46,7 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
+                    <Button style={[{ marginVertical: 4 }, GlobalStyles.button]} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
                     </>
                 ) : (
                     <>
@@ -53,7 +54,7 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    <Button style={[{ marginVertical: 4 }, GlobalStyles.button]} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
                     </>
                 )}
             </Layout>
@@ -114,6 +115,7 @@ class CollapsedUserMenu extends Component {
         selectedInex={this.props.selectedIndex}
         onSelect={index => this.props.setSelectedIndex(index)}>
             <MenuItem accessoryLeft={HomeIcon}/>
+            <MenuItem accessoryLeft={AlertsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
         </Menu>
         )
@@ -146,6 +148,7 @@ class ExpandedUserMenu extends Component {
             selectedInex={this.props.selectedIndex}
             onSelect={index => this.props.setSelectedIndex(index)}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
+                <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
             </Menu>
         )

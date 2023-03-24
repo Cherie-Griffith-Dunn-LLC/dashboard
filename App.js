@@ -11,7 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeContext } from './contexts/theme-context';
 // import our custom theme colors
 import { default as theme } from './assets/theme.json'
-
+// theme custom mapping
+import { default as mapping } from './assets/mapping.json';
 // import screens
 import LoginScreen from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
@@ -81,15 +82,15 @@ function App() {
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="light" />
         <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
-          <ApplicationProvider {...eva} theme={{...eva[themeMode], ...theme}}>
+          <ApplicationProvider {...eva} theme={{...eva[themeMode], ...theme}} customMapping={mapping}>
               {(token === null) ? (
                 <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="login">
-                  <Stack.Screen name="login" component={Login} />
-                  <Stack.Screen name="oauth" component={OauthScreen} />
+                  <Stack.Screen  name="Login" component={Login} />
+                  <Stack.Screen name="OAuth" component={OauthScreen} />
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator screenOptions={{headerShown: false}}>
-                  <Stack.Screen name="dashboard" component={DashboardScreen} />
+                  <Stack.Screen name="Dashboard" component={DashboardScreen} />
                 </Stack.Navigator>
               )}
           </ApplicationProvider>
