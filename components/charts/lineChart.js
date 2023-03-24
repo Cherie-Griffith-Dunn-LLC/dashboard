@@ -85,7 +85,7 @@ export default class CustomLineChart extends React.Component {
         return (
             <>
             <LineChart
-                style={{ height: 200 }}
+                style={{ height: 250 }}
                 data={ newData }
                 xAccessor={({ item }) => item.date}
                 yAccessor={({ item }) => item.occurences}
