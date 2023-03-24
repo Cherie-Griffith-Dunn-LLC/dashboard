@@ -16,12 +16,12 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext } from '../contexts/tokenContext';
 // azure api functions
-import { getMe, getRole } from '../services/azureApi';
+import { getMe, getRole, getUsers } from '../services/azureApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
 import { getAlarms, getEvents, getDWM } from '../services/usmApi';
-
+import { UsersList } from '../components/settingUI';
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
@@ -94,14 +94,21 @@ const DashboardScreen = () => {
     // get user info from api
     const [userInfo, setUserInfo] = React.useState({});
     const [userRoles, setUserRoles] = React.useState({});
+    const [allUsers, setAllUsers] = React.useState([]);
     const getUserInfo = async () => {
         // Get user's information from Microsoft Graph API
         const userInfo = await getMe(token);
         const userRoles = await getRole(token);
+        const allUsers = await getUsers(token);
 
         // Parse response and get user's name
         setUserInfo(userInfo);
         setUserRoles(userRoles);
+        //only call this if the user is an admin
+        if (userRoles.role === 'admin') {
+            setAllUsers(allUsers);
+            console.log(allUsers);
+        }    
     };
 
     // get data for charts
@@ -195,7 +202,7 @@ const DashboardScreen = () => {
                             <Text category='h3'>Required</Text>
                             <RequiredCourses />
                             <Text category='h3'>All Courses</Text>
-                            <AllCourses />
+                            <AllCourses token={token} />
                         </Layout>
                     )
                 ) : (
@@ -212,6 +219,14 @@ const DashboardScreen = () => {
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Dark Web Monitoring</Text>
                             <DWMList />
+                        </Layout>
+                    )
+                )}
+                {userRoles.role === 'admin' && (
+                    selectedIndex.row === 5 && (
+                        <Layout style={{ flex: 1, padding: 20 }}>
+                            <Text category='h3'>Settings</Text>
+                            <UsersList token={token} />
                         </Layout>
                     )
                 )}

@@ -1,8 +1,8 @@
-import React, { useState }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import { StyleSheet, Image, Modal } from 'react-native';
 import { Button, Card, Icon, Layout, Text } from '@ui-kitten/components';
 import GlobalStyles from '../constants/styles';
-
+import { getDbCourses } from '../services/dbApi';
 
 const requiredCourses = new Array(1).fill({
   title: 'Cyber Security',
@@ -28,15 +28,13 @@ const closeIcon = (props) => (
 
 
 export const RequiredCourses = () => {
-    //<iframe src="https://icy-tree-0500ba10f.2.azurestaticapps.net/Cyber_Security_html5_1035/content/index.html#/" width="100%" height="600px" frameborder="0"></iframe>
-
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);
 
     const handleCardPress = (index) => {
         const course = requiredCourses[index];
         setModalContent(
-            <iframe src={"https://icy-tree-0500ba10f.2.azurestaticapps.net/Cyber_Security_html5_1035/content/index.html#/"} style={{ width: '100%', height: '100%' }}></iframe>
+            <iframe src={"https://wonderful-rock-0cb66a70f.2.azurestaticapps.net"} style={{ width: '100%', height: '100%' }}></iframe>
         );
         setModalVisible(true);
       };
@@ -58,7 +56,7 @@ export const RequiredCourses = () => {
                 status='danger'
                 onPress={() => handleCardPress(index)}
                 >
-                    <Text category='h6'>{course.title } {index + 1}</Text>
+                    <Text category='h6'>{course.title }</Text>
                     <Text>{course.description}</Text>
                 </Card>
             ))}
@@ -77,22 +75,54 @@ export const RequiredCourses = () => {
 
 
 
-export const AllCourses = () => {
-    // return a card for each course in RequiredCourses
+export const AllCourses = (props) => {
+  const [courses, setCourses] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
+  useEffect(() => {
+    getDbCourses(props.token).then((data) => {
+      setCourses(data);
+    });
+  }, []);
+
+  const handleCardPress = (url) => {
+    setModalContent(
+        <iframe src={url} style={{ width: '100%', height: '100%' }}></iframe>
+    );
+    setModalVisible(true);
+  };
+
+  const handleModalBackdropPress = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
+
     return (
+        <>
         <Layout style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-            {allCourses.map((course, index) => (
+            {courses.map((course, index) => (
                 <Card
                     key={index}
                     header={props => <Image {...props} source={require('../assets/courses/course-thumbnail.jpg')} style={styles.courseThumbnail} />}
                     style={styles.courseCard}
                     status='info'
+                    onPress={() => handleCardPress(course.url)}
                 >
-                    <Text category='h6'>{course.title } {index + 1}</Text>
+                    <Text category='h6'>{course.name}</Text>
                     <Text>{course.description}</Text>
                 </Card>
             ))}
         </Layout>
+        <Modal visible={modalVisible} backdropStyle={styles.backdrop} onBackdropPress={handleModalBackdropPress}>
+        {modalContent && (
+          <>
+            <Button style={styles.modalCloseButton} onPress={handleModalBackdropPress} >Close</Button>
+            {modalContent}
+          </>
+        )}
+      </Modal>
+      </>
     );
 };
 
