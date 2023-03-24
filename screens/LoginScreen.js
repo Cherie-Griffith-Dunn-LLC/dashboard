@@ -114,22 +114,18 @@ const loginHeader = (props) => (
                   />
                   <ScrollView>
                 <Layout style={styleguideUIcomponents1Styles.container}>
-                        {screenWidth >= 767 ?
-                          <View style={styleguideUIcomponents1Styles.loginLeftCard}>
-                            <ImageBackground
-                            imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
-                            style={{flex: 1}}
-                            source={require('../assets/backgrounds/login_lock_graphic.png')}
-                            >
-                                <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
-                                <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
-                                Don't have an account? Sign Up.
-                                </Text>
-                            </ImageBackground>
-                          </View>
-                        : (
-                          <Image source={require('../assets/cyplogo-wht.png')} style={[styleguideUIcomponents1Styles.logo, {margin: 25}]} />
-                        )}
+                        <View style={styleguideUIcomponents1Styles.loginLeftCard}>
+                          <ImageBackground
+                          imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
+                          style={{flex: 1}}
+                          source={require('../assets/backgrounds/login_lock_graphic.png')}
+                          >
+                              <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
+                              <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
+                              Don't have an account? Sign Up.
+                              </Text>
+                          </ImageBackground>
+                        </View>
                         <View
                         style={styleguideUIcomponents1Styles.loginRightCard}
                         >
@@ -177,8 +173,10 @@ const loginHeader = (props) => (
             resizeMode: 'cover'
           },
           logo: {
-            height: 40,
-            width: 267,
+            maxHeight: 30,
+            maxWidth: 200,
+            minWidth: 100,
+            minHeight: 15,
             marginTop: 50,
             display: 'flex',
             marginLeft: 'auto',
@@ -187,7 +185,7 @@ const loginHeader = (props) => (
           loginLeftCard: {
             maxWidth: '45%',
             width: 300,
-            minWidth: 200,
+            minWidth: 100,
             height: 400,
             backgroundColor: 'white',
             textAlign: 'center'
@@ -195,7 +193,7 @@ const loginHeader = (props) => (
         loginRightCard: {
             maxWidth: '90%',
             width: 300,
-            minWidth: 300,
+            minWidth: 200,
             height: 400,
             backgroundColor: 'white',
             textAlign: 'center',
@@ -204,7 +202,7 @@ const loginHeader = (props) => (
         container: {
           display: 'flex',
           flex: '2',
-          flexWrap: 'wrap',
+          flexWrap: 'nowrap',
           flexDirection: 'row',
           justifyContent: 'center',
           paddingTop: '200px',
