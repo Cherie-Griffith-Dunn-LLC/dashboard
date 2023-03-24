@@ -92,10 +92,9 @@ export default class CustomPieChart extends React.Component {
         const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
 
         // chart labels
-        const Labels = ({ slices, height, width }) => {
-            return slices.map((slice, index) => {
-              const { labelCentroid, pieCentroid, data } = slice;
-              return (
+        const Labels = ({slices, height, width}) => slices.map((slice, index) => {
+            const { labelCentroid, pieCentroid, data } = slice;
+            return (
                 <Text
                     key={index}
                     x={pieCentroid[0]}
@@ -108,7 +107,7 @@ export default class CustomPieChart extends React.Component {
                     stroke={'black'}
                     strokeWidth={0.2}
                 >
-                  {pieData[index].label}
+                    {pieData[index].label}
                 </Text>
             );
         });
