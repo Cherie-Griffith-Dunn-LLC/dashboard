@@ -13,7 +13,7 @@ export default class CustomBarChart extends React.Component {
         const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
         return (
             <>
-            <BarChart style={{ height: 200 }}
+            <BarChart style={{ height: 250 }}
             data={data}
             svg={{ fill }}
             contentInset={contentInset}>

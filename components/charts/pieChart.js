@@ -97,12 +97,13 @@ export default class CustomPieChart extends React.Component {
             return (
                 <Text
                     key={index}
-                    x={labelCentroid[0]}
-                    y={labelCentroid[1]}
-                    fill={'black'}
+                    x={pieCentroid[0]}
+                    y={pieCentroid[1]}
+                    fill={'white'}
                     textAncor={'middle'}
                     alignmentBaseline={'middle'}
                     fontSize={24}
+                    fontWeight={'bold'}
                     stroke={'black'}
                     strokeWidth={0.2}
                 >
@@ -112,20 +113,26 @@ export default class CustomPieChart extends React.Component {
         });
 
         return (
-            <PieChart
-            style={{ height: 200 }}
-            data={pieData}
-            valueAccessor={({ item }) => item.value}
-            padAngle={0}
-            spacing={0}
-            labelRadius={ 80 }
-            contentInset={contentInset}
-            >
-                <Labels />
-            </PieChart>
+            <View style={styles.container}>
+                <PieChart
+                style={{ height: 250, width: 200 }}
+                data={pieData}
+                valueAccessor={({ item }) => item.value}
+                padAngle={0}
+                spacing={0}
+                labelRadius={ 80 }
+                contentInset={contentInset}
+                >
+                    <Labels />
+                </PieChart>
+            </View>
          );
     }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });

@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
       Button: {
         borderRadius: '15px',
         width: '140px',
-        height: '25px'
+        height: '25px',
+        alignSelf: 'center'
       },
       BackImage: {
         flex: 1,
