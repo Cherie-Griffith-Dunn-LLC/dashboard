@@ -173,8 +173,8 @@ const loginHeader = (props) => (
             resizeMode: 'cover'
           },
           logo: {
-            maxHeight: 30,
-            maxWidth: 200,
+            height: 30,
+            width: 200,
             minWidth: 100,
             minHeight: 15,
             marginTop: 50,
