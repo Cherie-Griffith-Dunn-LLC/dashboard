@@ -170,7 +170,7 @@ const DashboardScreen = () => {
                             <Text category='h3'>Required</Text>
                             <RequiredCourses />
                             <Text category='h3'>All Courses</Text>
-                            <AllCourses />
+                            <AllCourses token={token} />
                         </Layout>
                     )
                 ) : (
