@@ -1,23 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Text, Button, Spinner } from '@ui-kitten/components';
+import { Card, Text, Button, Spinner, IndexPath } from '@ui-kitten/components';
 import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
 import CustomBarChart from '../charts/barChart';
 import CustomStatChart from '../charts/statChart';
-
-// set IndexPath and return it
-// we have to do this since we dont have ts with IndexPath type
-
-var IndexPath = {
-    row: 0,
-    section: undefined
-  };
-
-function setIndexPathRow(row) {
-    IndexPath.row = row;
-    return IndexPath;
-}
 
 // loading component
 export class LoadingStatus extends Component {
@@ -53,7 +40,7 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: 0</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -62,7 +49,7 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(1))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
             );
         }
@@ -78,7 +65,7 @@ export class EventsCard extends Component {
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: 0</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -87,7 +74,7 @@ export class EventsCard extends Component {
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: {this.props.data.page.totalElements}</Text>
                     <CustomLineChart data={this.props.data._embedded.eventResources} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(2))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
                 </Card>
             );
         }
@@ -103,7 +90,7 @@ export class BehavioralMonitoringCard extends Component {
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: 0</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(4))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -112,7 +99,7 @@ export class BehavioralMonitoringCard extends Component {
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Text>Total Alarms: {this.props.data.page.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(4))}>View Details</Button>
+                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(4))}>View Details</Button>
                 </Card>
             );
         }
@@ -126,7 +113,7 @@ export class LogManagementCard extends Component {
                 <Text category='h6'>Learning Management System</Text>
                 <Text>Total Required Courses: 100</Text>
                 <CustomBarChart />
-                <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(setIndexPathRow(3))}>View Details</Button>
+                <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
             </Card>
         );
     }
