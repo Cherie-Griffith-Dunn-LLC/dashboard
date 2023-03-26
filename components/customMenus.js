@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { Menu, MenuItem, Icon, Layout, Button, SettingsIcon } from '@ui-kitten/components';
 import GlobalStyles from '../constants/styles';
 
@@ -35,6 +35,14 @@ const DarkIcon = (props) => (
     <Icon {...props} name='moon-outline' />
 );
 
+const SmallLogo = (props) => (
+    <Image style={styles.smallLogo} {...props}  source={require('../assets/cyplogo-shield_symbol-blk.svg')} />
+);
+
+const LargeLogo = (props) => (
+    <Image style={styles.largeLogo} {...props}  source={require('../assets/cyplogo-blk.png')} />
+);
+
 // admin sidebar menu
 export class AdminMenu extends Component {
     render() {
@@ -42,6 +50,7 @@ export class AdminMenu extends Component {
             <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
                 {this.props.menuWidth === 50 ? (
                     <>
+                    <SmallLogo />
                     <CollapsedAdminMenu
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
@@ -50,6 +59,7 @@ export class AdminMenu extends Component {
                     </>
                 ) : (
                     <>
+                    <LargeLogo />
                     <ExpandedAdminMenu
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
@@ -69,6 +79,7 @@ export class UserMenu extends Component {
             <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
                 {this.props.menuWidth === 50 ? (
                     <>
+                    <SmallLogo />
                     <CollapsedUserMenu
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
@@ -77,6 +88,7 @@ export class UserMenu extends Component {
                     </>
                 ) : (
                     <>
+                    <LargeLogo />
                     <ExpandedUserMenu
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
@@ -157,5 +169,14 @@ class ExpandedUserMenu extends Component {
 
 
 const styles = StyleSheet.create({
-
+    smallLogo: {
+        width: 16,
+        height: 20,
+        alignSelf: 'center',
+    },
+    largeLogo: {
+        width: 132,
+        height: 20,
+        marginLeft: 16,
+    }
 });
