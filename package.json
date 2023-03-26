@@ -40,7 +40,8 @@
     "react-native-web": "~0.18.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@ui-kitten/metro-config": "^5.1.2"
   },
   "private": true
 }
