@@ -108,12 +108,30 @@ class CollapsedAdminMenu extends Component {
             <Menu
         selectedInex={this.props.selectedIndex}
         onSelect={index => this.props.setSelectedIndex(index)}>
-            <MenuItem accessoryLeft={HomeIcon}/>
-            <MenuItem accessoryLeft={AlertsIcon}/>
-            <MenuItem accessoryLeft={TicketsIcon}/>
-            <MenuItem accessoryLeft={CoursesIcon}/>
-            <MenuItem accessoryLeft={DWMIcon}/>
-            <MenuItem accessoryLeft={SettingIcon}/>
+            <MenuItem
+                accessoryLeft={HomeIcon}
+                style={this.props.selectedIndex.row === 0 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={AlertsIcon}
+                style={this.props.selectedIndex.row === 1 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={TicketsIcon}
+                style={this.props.selectedIndex.row === 2 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={CoursesIcon}
+                style={this.props.selectedIndex.row === 3 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={DWMIcon}
+                style={this.props.selectedIndex.row === 4 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={SettingIcon}
+                style={this.props.selectedIndex.row === 5 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
         </Menu>
         )
     }
@@ -141,12 +159,36 @@ class ExpandedAdminMenu extends Component {
             <Menu
             selectedInex={this.props.selectedIndex}
             onSelect={index => this.props.setSelectedIndex(index)}>
-                <MenuItem title='Home' accessoryLeft={HomeIcon}/>
-                <MenuItem title='Alarms' accessoryLeft={AlertsIcon}/>
-                <MenuItem title='Events' accessoryLeft={TicketsIcon}/>
-                <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
-                <MenuItem title='Dark Web Monitoring' accessoryLeft={DWMIcon}/>
-                <MenuItem title='Settings' accessoryLeft={SettingIcon}/>
+                <MenuItem
+                    title='Home'
+                    style={this.props.selectedIndex.row === 0 ? styles.selectedMenuItem : styles.menuItem}
+                    accessoryLeft={HomeIcon}
+                />
+                <MenuItem
+                    title='Alarms'
+                    style={this.props.selectedIndex.row === 1 ? styles.selectedMenuItem : styles.menuItem}
+                    accessoryLeft={AlertsIcon}
+                />
+                <MenuItem
+                    title='Events'
+                    accessoryLeft={TicketsIcon}
+                    style={this.props.selectedIndex.row === 2 ? styles.selectedMenuItem : styles.menuItem}
+                />
+                <MenuItem
+                    title='Courses'
+                    accessoryLeft={CoursesIcon}
+                    style={this.props.selectedIndex.row === 3 ? styles.selectedMenuItem : styles.menuItem}
+                />
+                <MenuItem
+                    title='Dark Web Monitoring'
+                    accessoryLeft={DWMIcon}
+                    style={this.props.selectedIndex.row === 4 ? styles.selectedMenuItem : styles.menuItem}
+                />
+                <MenuItem
+                    title='Settings'
+                    accessoryLeft={SettingIcon}
+                    style={this.props.selectedIndex.row === 5 ? styles.selectedMenuItem : styles.menuItem}
+                />
             </Menu>
         )
     }
@@ -170,13 +212,34 @@ class ExpandedUserMenu extends Component {
 
 const styles = StyleSheet.create({
     smallLogo: {
-        width: 16,
-        height: 20,
+        width: 18,
+        height: 22,
+        marginBottom: 20,
+        marginTop: 10,
         alignSelf: 'center',
     },
     largeLogo: {
-        width: 132,
-        height: 20,
-        marginLeft: 16,
+        width: 150,
+        height: 22,
+        margin: 20,
+        alignSelf: 'center',
+    },
+    menuItem: {
+        margin: 5,
+        borderRadius: 15,
+    },
+    selectedMenuItem: {
+        backgroundColor: '#0090ff',
+        color: '#FFFFFF',
+        borderRadius: 15,
+        margin: 5,
+    },
+    colMenuItem: {
+        borderRadius: 15,
+    },
+    colSelectedMenuItem: {
+        backgroundColor: '#0090ff',
+        color: '#FFFFFF',
+        borderRadius: 15,
     }
 });
