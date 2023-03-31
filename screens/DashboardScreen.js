@@ -151,7 +151,7 @@ const DashboardScreen = () => {
                 )}
                 <ScrollView>
                 {selectedIndex.row === 0 && (
-                    <Layout style={{ flex: 1, padding: 20 }}>
+                    <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center' }}>
                         <Text category='h3'>Home</Text>
                         {userRoles.role === 'admin' && (
                             <StatsCard alarms={alarms} events={events} />
