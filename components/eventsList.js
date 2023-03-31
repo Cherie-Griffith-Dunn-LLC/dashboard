@@ -105,6 +105,7 @@ export const DashboardEventsList = (props) => {
         <Card
           header={cardHeader}
           footer={cardFooter}
+          style={GlobalStyles.card}
           status={currentData?.event_severity === 'WARNING' ? 'danger' : (
             currentData?.event_severity === 'Informational' ? 'info' : (
               (currentData?.event_severity === 'ERROR' || currentData?.event_severity === 'UNDEFINED') ? 'warning' : 'basic'

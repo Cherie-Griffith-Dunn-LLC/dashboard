@@ -12,7 +12,7 @@ export class UserAlertsCard extends Component {
         if (this.props.data.length === 0) {
             return (
                 <Card style={styles.dashboardCard}>
-                    <Text category='h6'>Alarms</Text>
+                    <Text category='h6'>Alerts</Text>
                     <Text>Total Alarms: 0</Text>
                     <Text>No data</Text>
                     <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
