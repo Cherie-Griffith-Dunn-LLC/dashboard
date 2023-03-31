@@ -157,7 +157,7 @@ export const DashboardAlarmsList = (props) => {
         backdropStyle={styles.backdrop}
         style={{height: '90%', width: '90%'}}
         >
-        <Card header={cardHeader} footer={cardFooter} status={currentData?.priority_label === 'high' ? 'danger' : 'info'}>
+        <Card style={[GlobalStyles.card]} header={cardHeader} footer={cardFooter} status={currentData?.priority_label === 'high' ? 'danger' : 'info'}>
           <Text>{Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))} days ago.</Text>
           <Text>Priority: {currentData?.priority_label === 'high' ? (
             <Button style={GlobalStyles.button} status='danger' appearance='outline' size='tiny'>{currentData?.priority_label?.toUpperCase()}</Button>
