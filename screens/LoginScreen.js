@@ -184,17 +184,17 @@ const loginHeader = (props) => (
           },
           loginLeftCard: {
             maxWidth: '45%',
-            width: 300,
+            width: 400,
             minWidth: 100,
-            height: 400,
+            height: 500,
             backgroundColor: 'white',
             textAlign: 'center'
         },
         loginRightCard: {
-            maxWidth: '90%',
-            width: 300,
+            maxWidth: '80%',
+            width: 400,
             minWidth: 200,
-            height: 400,
+            height: 500,
             backgroundColor: 'white',
             textAlign: 'center',
             padding: 25
@@ -217,20 +217,28 @@ const loginHeader = (props) => (
           right: 0
         },
         input: {
-          marginTop: 15
+          marginTop: 50,
+          alignSelf: 'center',
+          width: 300,
+          minWidth: 200,
+          maxWidth: '100%'
         },
         button: {
-          marginTop: 15
+          marginTop: 50,
+          alignSelf: 'center',
+          width: 300,
+          minWidth: 200,
+          maxWidth: '100%'
         },
         leftFooter: {
-          position: 'absolute',
+          alignSelf: 'center',
           bottom: 5,
-          left: 70
+          position: 'absolute'
         },
         rightFooter: {
-          position: 'absolute',
+          alignSelf: 'center',
           bottom: 5,
-          left: 70
+          position: 'absolute'
         }
       })
       

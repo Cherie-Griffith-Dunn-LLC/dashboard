@@ -119,7 +119,7 @@ const loginHeader = (props) => (
                     <Card header={logo} style={[GlobalStyles.card, styles.card]}>
                         <Text category='p1'>Please login using your Microsoft Organization account in the popup. You will be redirected automatically.</Text>
                         <Divider style={{ marginVertical: 10 }} />
-                        <Button accessoryLeft={LoadingIndicator} status='danger' style={GlobalStyles.button} onPress={() => navigation.navigate('Login')}>Cancel</Button>
+                        <Button accessoryLeft={LoadingIndicator} status='danger' style={[GlobalStyles.button, styles.button]} onPress={() => navigation.navigate('Login')}>Cancel</Button>
                     </Card>
                 </Layout>
             </SafeAreaView>
@@ -142,9 +142,9 @@ const loginHeader = (props) => (
         },
         card: {
             maxWidth: '90%',
-            width: 300,
+            width: 400,
             minWidth: 300,
-            height: 400,
+            height: 500,
             backgroundColor: 'white',
             textAlign: 'center',
             borderRadius: 0,
@@ -170,5 +170,8 @@ const loginHeader = (props) => (
         justifyContent: 'center',
         paddingTop: '200px',
         backgroundColor: 'rgba(255,255,255,0)'
+      },
+      button: {
+        marginTop: 50
       }
     })
