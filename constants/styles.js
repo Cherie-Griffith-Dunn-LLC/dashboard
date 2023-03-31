@@ -13,7 +13,5 @@ export default StyleSheet.create({
     },
     card: {
         borderRadius: 15,
-        borderColor: 'grey',
-        borderWidth: 1,
     }
 });

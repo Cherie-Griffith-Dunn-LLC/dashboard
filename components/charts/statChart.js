@@ -21,25 +21,25 @@ export default class CustomStatChart extends React.Component {
         return (
             <Layout style={styles.container}>
                 <Card style={[styles.item, GlobalStyles.card]}>
-                    <Text status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
+                    <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
                         {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
                     </Text>
                     <Text style={styles.title}>Alarms</Text>
                 </Card>
                 <Card style={[styles.item, GlobalStyles.card]}>
-                    <Text status={this.props.events > 0 ? 'warning' : 'basic'} style={styles.count}>
+                    <Text category='h6' style={styles.count}>
                         {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
                     </Text>
                     <Text>Events</Text>
                 </Card>
-                <Card style={[styles.item, GlobalStyles.card]}>
-                    <Text status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
+                <Card category='h6' style={[styles.item, GlobalStyles.card]}>
+                    <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
                         {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
                     </Text>
                     <Text style={styles.title}>Dark Web</Text>
                 </Card>
-                <Card style={[styles.item, GlobalStyles.card]}>
-                    <Text status='success' style={styles.count}>100</Text>
+                <Card category='h6' style={[styles.item, GlobalStyles.card]}>
+                    <Text style={styles.count}>100</Text>
                     <Text style={styles.title}>Courses</Text>
                 </Card>
             </Layout>
@@ -65,8 +65,10 @@ const styles = StyleSheet.create({
         width: 250,
         maxWidth: '25%',
         textAlign: 'center',
+        borderColor: 'grey',
+        borderWidth: 1,
     },
     count: {
-        fontSize: 50,
+        fontSize: 45,
     }
 });
