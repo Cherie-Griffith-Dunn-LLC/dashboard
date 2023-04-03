@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner } from '@ui-kitten/components';
 // usm api function
-import { getAlarms } from '../services/usmApi';
+import { getInvestigations } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
 
-export const DashboardAlarmsList = (props) => {
+export const DashboardAlertsList = (props) => {
   const theme = useTheme();
   // store data
   const [data, setData] = React.useState([]);
@@ -15,7 +15,8 @@ export const DashboardAlarmsList = (props) => {
   const [loading, setLoading] = React.useState(true);
   // get alarms from api
   React.useEffect(() => {
-    getAlarms(props.token, 20).then((response) => {
+    getInvestigations(props.token, 20).then((response) => {
+      console.log(response);
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent
       const alarms = response._embedded.alarms.map(alarm => {
@@ -53,6 +54,7 @@ export const DashboardAlarmsList = (props) => {
       });
       setData(alarms);
       setLoading(false);
+      console.log(alarms);
     });
   }, []);
   // control modal visibility
@@ -123,7 +125,8 @@ export const DashboardAlarmsList = (props) => {
 
   const cardFooter = (props) => (
     <View {...props} style={[props.style, styles.cardFooter]}>
-      <Button style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>Close</Button>
+      <Button status='primary' style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>View Course</Button>
+      <Button status='danger' style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>Close</Button>
     </View>
   );
 

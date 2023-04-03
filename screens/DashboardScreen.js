@@ -3,6 +3,7 @@ import { Text, Layout, Icon, IndexPath, TopNavigation, TopNavigationAction } fro
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View, ScrollView, Platform, Image } from 'react-native';
 import { DashboardAlarmsList } from '../components/alarmsList';
+import { DashboardAlertsList } from '../components/investigationsList';
 import { DashboardEventsList } from '../components/eventsList';
 import { DWMList } from '../components/dwmList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
@@ -20,7 +21,7 @@ import { getMe, getRole, getUsers } from '../services/azureApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
-import { getAlarms, getEvents, getDWM } from '../services/usmApi';
+import { getAlarms, getEvents, getDWM, getInvestigations } from '../services/usmApi';
 import { UsersList } from '../components/settingUI';
 
 const MenuIcon = (props) => (
@@ -44,6 +45,7 @@ const DashboardScreen = () => {
     // data for charts
     const [alarms, setAlarms] = React.useState([]);
     const [events, setEvents] = React.useState([]);
+    const [alerts, setAlerts] = React.useState([]);
     const [dwm, setDwm] = React.useState([]);
     const [courses, setCourses] = React.useState([]);
 
@@ -119,6 +121,10 @@ const DashboardScreen = () => {
         getAlarms(token, 20).then((response) => {
             setAlarms(response);
           });
+
+        getInvestigations(token, 20).then((response) => {
+            setAlerts(response);
+            });
     }
 
     React.useEffect(() => {
@@ -166,7 +172,7 @@ const DashboardScreen = () => {
                                 </>
                             ) : (
                                 <>
-                                <UserAlertsCard data={alarms} setSelectedIndex={setSelectedIndex} />
+                                <UserAlertsCard data={alerts} setSelectedIndex={setSelectedIndex} />
                                 <UserCoursesCard setSelectedIndex={setSelectedIndex} />
                                 </>
                             )}
@@ -184,7 +190,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 1 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Alerts</Text>
-                            <DashboardAlarmsList />
+                            <DashboardAlertsList token={token} />
                         </Layout>
                     )
                 )}
