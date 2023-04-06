@@ -51,8 +51,8 @@ export const UsersList = (props) => {
     const handleGetDbUsersPress = () => {
         setLoading(true);
         getDbUsers(props.token)
-            .then((users) => {
-                setDbUsers(users);
+            .then((dbUsers) => {
+                setDbUsers(dbUsers);
                 setLoading(false);
             })
             .catch((error) => {

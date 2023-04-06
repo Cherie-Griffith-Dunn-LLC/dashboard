@@ -113,6 +113,7 @@ const DashboardScreen = () => {
 
     // get data for charts
     const getChartData = async () => {
+        console.log('getting data');
         getEvents(token, 20).then((response) => {
             setEvents(response);
           });
@@ -200,7 +201,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 3 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Required</Text>
-                            <RequiredCourses />
+                            <RequiredCourses token={token} />
                             <Text category='h3'>All Courses</Text>
                             <AllCourses token={token} />
                         </Layout>
