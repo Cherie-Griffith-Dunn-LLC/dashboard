@@ -34,7 +34,7 @@ export const RequiredCourses = (props) => {
                   <Card
                       key={index}
                       header={props => <Image {...props} source={require('../assets/courses/course-thumbnail.jpg')} style={styles.courseThumbnail} />}
-                      style={styles.courseCard}
+                      style={styles.requiredCourseCard}
                       status='info'
                       onPress={() => handleCardPress(course.url)}
                   >
@@ -54,7 +54,6 @@ export const RequiredCourses = (props) => {
         </>
       );
   };
-
 
 
 export const AllCourses = (props) => {
@@ -136,7 +135,7 @@ export const AllCourses = (props) => {
     },
     requiredCourseCard: { // Changed from courseCard
       margin: 8,
-      width: '45%',
+      width: '15%',
     },
     backdrop: {
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
