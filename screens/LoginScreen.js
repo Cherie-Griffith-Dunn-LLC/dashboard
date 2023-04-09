@@ -114,22 +114,18 @@ const loginHeader = (props) => (
                   />
                   <ScrollView>
                 <Layout style={styleguideUIcomponents1Styles.container}>
-                        {screenWidth >= 767 ?
-                          <View style={styleguideUIcomponents1Styles.loginLeftCard}>
-                            <ImageBackground
-                            imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
-                            style={{flex: 1}}
-                            source={require('../assets/backgrounds/login_lock_graphic.png')}
-                            >
-                                <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
-                                <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
-                                Don't have an account? Sign Up.
-                                </Text>
-                            </ImageBackground>
-                          </View>
-                        : (
-                          <Image source={require('../assets/cyplogo-wht.png')} style={[styleguideUIcomponents1Styles.logo, {margin: 25}]} />
-                        )}
+                        <View style={styleguideUIcomponents1Styles.loginLeftCard}>
+                          <ImageBackground
+                          imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
+                          style={{flex: 1}}
+                          source={require('../assets/backgrounds/login_lock_graphic.png')}
+                          >
+                              <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
+                              <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
+                              Don't have an account? Sign Up.
+                              </Text>
+                          </ImageBackground>
+                        </View>
                         <View
                         style={styleguideUIcomponents1Styles.loginRightCard}
                         >
@@ -177,8 +173,10 @@ const loginHeader = (props) => (
             resizeMode: 'cover'
           },
           logo: {
-            height: 40,
-            width: 267,
+            height: 30,
+            width: 200,
+            minWidth: 100,
+            minHeight: 15,
             marginTop: 50,
             display: 'flex',
             marginLeft: 'auto',
@@ -186,17 +184,17 @@ const loginHeader = (props) => (
           },
           loginLeftCard: {
             maxWidth: '45%',
-            width: 300,
-            minWidth: 200,
-            height: 400,
+            width: 400,
+            minWidth: 100,
+            height: 500,
             backgroundColor: 'white',
             textAlign: 'center'
         },
         loginRightCard: {
-            maxWidth: '90%',
-            width: 300,
-            minWidth: 300,
-            height: 400,
+            maxWidth: '80%',
+            width: 400,
+            minWidth: 200,
+            height: 500,
             backgroundColor: 'white',
             textAlign: 'center',
             padding: 25
@@ -204,7 +202,7 @@ const loginHeader = (props) => (
         container: {
           display: 'flex',
           flex: '2',
-          flexWrap: 'wrap',
+          flexWrap: 'nowrap',
           flexDirection: 'row',
           justifyContent: 'center',
           paddingTop: '200px',
@@ -219,20 +217,28 @@ const loginHeader = (props) => (
           right: 0
         },
         input: {
-          marginTop: 15
+          marginTop: 50,
+          alignSelf: 'center',
+          width: 300,
+          minWidth: 200,
+          maxWidth: '100%'
         },
         button: {
-          marginTop: 15
+          marginTop: 50,
+          alignSelf: 'center',
+          width: 300,
+          minWidth: 200,
+          maxWidth: '100%'
         },
         leftFooter: {
-          position: 'absolute',
+          alignSelf: 'center',
           bottom: 5,
-          left: 70
+          position: 'absolute'
         },
         rightFooter: {
-          position: 'absolute',
+          alignSelf: 'center',
           bottom: 5,
-          left: 70
+          position: 'absolute'
         }
       })
       

@@ -100,9 +100,9 @@ export const UsersList = (props) => {
             <Layout style={styles.footer}>
                 <Text category='h4' style={styles.title}>Users</Text>
                 <Layout style={styles.buttonGroup}>
-                    <Button style={styles.button} onPress={handleGetUsersPress}>Get Users</Button>
-                    <Button style={styles.button} onPress={handleUpdateUsersPress}>Update Users</Button>
-                    <Button style={styles.button} onPress={handleGetDbUsersPress}>Edit Users</Button>
+                    <Button status='info' style={styles.button} onPress={handleGetUsersPress}>Get Users</Button>
+                    <Button status='info' style={styles.button} onPress={handleUpdateUsersPress}>Update Users</Button>
+                    <Button status='info' style={styles.button} onPress={handleGetDbUsersPress}>Edit Users</Button>
                 </Layout>
             </Layout>
             <ScrollView>

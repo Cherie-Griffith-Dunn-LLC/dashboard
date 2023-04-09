@@ -57,7 +57,7 @@ export default class CustomLineChart extends React.Component {
         const Line = ({ line }) => (
             <Path
                 d={ line }
-                stroke={ 'rgb(0, 144, 255)' }
+                stroke={ 'rgb(42, 157, 143)' }
                 strokeWidth="3"
                 fill={ 'none' }
             />
@@ -72,7 +72,7 @@ export default class CustomLineChart extends React.Component {
                     r={ value.occurences > 0 ? 4 : 0 }
                     strokeWidth="2.5"
                     stroke={ 'white' }
-                    fill={ 'rgb(0, 144, 255)' }
+                    fill={ 'rgb(42, 157, 143)' }
                 />
             ))
         }
@@ -85,7 +85,7 @@ export default class CustomLineChart extends React.Component {
         return (
             <>
             <LineChart
-                style={{ height: 200 }}
+                style={{ height: 250 }}
                 data={ newData }
                 xAccessor={({ item }) => item.date}
                 yAccessor={({ item }) => item.occurences}

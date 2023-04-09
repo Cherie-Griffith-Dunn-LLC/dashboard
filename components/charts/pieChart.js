@@ -18,13 +18,13 @@ export default class CustomPieChart extends React.Component {
         const getColor = (priority) => {
             if (priority === 'low') {
                 // return green
-                return 'rgb(26, 213, 152)';
+                return 'rgb(42, 157, 143)';
             } else if (priority === 'medium') {
                 // return yellow
-                return 'rgb(0, 144, 255)';
+                return 'rgb(233, 196, 106)';
             } else if (priority === 'high') {
                 // return red
-                return 'rgb(219, 90, 238)';
+                return 'rgb(231, 111, 81)';
             }
         }
 
@@ -92,45 +92,47 @@ export default class CustomPieChart extends React.Component {
         const contentInset = { top: 20, bottom: 20, right: 20, left: 20 }
 
         // chart labels
-        const Labels = ({ slices, height, width }) => {
-            return slices.map((slice, index) => {
-              const { labelCentroid, pieCentroid, data } = slice;
-              return (
+        const Labels = ({slices, height, width}) => slices.map((slice, index) => {
+            const { labelCentroid, pieCentroid, data } = slice;
+            return (
                 <Text
-                  key={index}
-                  x={pieCentroid[0]}
-                  y={pieCentroid[1]}
-                  fill={'white'}
-                  textAnchor={'middle'}
-                  alignmentBaseline={'middle'}
-                  fontSize={24}
-                  fontWeight={'bold'}
-                  stroke={'black'}
-                  strokeWidth={0.2}
+                    key={index}
+                    x={pieCentroid[0]}
+                    y={pieCentroid[1]}
+                    fill={'white'}
+                    textAncor={'middle'}
+                    alignmentBaseline={'middle'}
+                    fontSize={24}
+                    fontWeight={'bold'}
+                    stroke={'black'}
+                    strokeWidth={0.2}
                 >
-                  {pieData[index].label}
+                    {pieData[index].label}
                 </Text>
-              );
-            });
-          };
+            );
+        });
 
-        
-    return (
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <PieChart
-            style={{ height: 250, width: 200 }}
-            data={pieData}
-            valueAccessor={({ item }) => item.value}
-            padAngle={0}
-            spacing={0}
-            labelRadius={80}
-            contentInset={contentInset}
-          >
-            <Labels />
-          </PieChart>
-        </View>
-      );
+        return (
+            <View style={styles.container}>
+                <PieChart
+                style={{ height: 250, width: 200 }}
+                data={pieData}
+                valueAccessor={({ item }) => item.value}
+                padAngle={0}
+                spacing={0}
+                labelRadius={ 80 }
+                contentInset={contentInset}
+                >
+                    <Labels />
+                </PieChart>
+            </View>
+         );
     }
-  }
-  
-  const styles = StyleSheet.create({});
+}
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});

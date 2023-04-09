@@ -12,6 +12,6 @@ export default StyleSheet.create({
         paddingBottom: 5,
     },
     card: {
-        borderRadius: 15
+        borderRadius: 15,
     }
 });

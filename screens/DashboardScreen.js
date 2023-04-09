@@ -157,7 +157,7 @@ const DashboardScreen = () => {
                         {userRoles.role === 'admin' && (
                             <StatsCard alarms={alarms} events={events} />
                         )}
-                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly', rowGap: 10, columnGap: 10, alignItems: 'center', alignContent: 'space-evenly' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
