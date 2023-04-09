@@ -53,3 +53,15 @@ export const getCoursesByUser = async (bearerToken) => {
     const data = await response.json();
     return data;
 };
+
+//get all assignments of the organization
+export const getAllAssignments = async (bearerToken) => {
+    const response = await fetch(dbEndpoint + '/allCourseAssignments', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer '  + bearerToken
+        }
+    });
+    const data = await response.json();
+    return data;
+};

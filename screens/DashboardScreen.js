@@ -5,7 +5,7 @@ import { StyleSheet, View, ScrollView, Platform, Image } from 'react-native';
 import { DashboardAlarmsList } from '../components/alarmsList';
 import { DashboardEventsList } from '../components/eventsList';
 import { DWMList } from '../components/dwmList';
-import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
+import { RequiredCourses, AllCourses, AllAssignments } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
 import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard, StatsCard } from '../components/widgets/adminCards';
@@ -202,8 +202,8 @@ const DashboardScreen = () => {
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Required</Text>
                             <RequiredCourses token={token} />
-                            <Text category='h3'>All Courses</Text>
-                            <AllCourses token={token} />
+                            <Text category='h3'>Assignments</Text>
+                            <AllAssignments token={token} />
                         </Layout>
                     )
                 ) : (

@@ -1,8 +1,9 @@
 import React, { useEffect, useState }  from 'react';
-import { StyleSheet, Image, Modal } from 'react-native';
-import { Button, Card, Icon, Layout, Text } from '@ui-kitten/components';
+import { StyleSheet, Image, View } from 'react-native';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout } from '@ui-kitten/components';
+import { getDbCourses, getCoursesByUser, assignCourse, getAllAssignments } from '../services/dbApi';
 import GlobalStyles from '../constants/styles';
-import { getDbCourses, getCoursesByUser, assignCourse } from '../services/dbApi';
+
 
 export const RequiredCourses = (props) => {
     const [courses, setCourses] = useState([]);
@@ -128,6 +129,109 @@ export const AllCourses = (props) => {
       </>
     );
   };
+
+
+export const AllAssignments = (props) => {
+    const [assignments, setAssignments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [visible, setVisible] = useState(false);
+    const [currentData, setCurrentData] = useState(null);
+  
+    useEffect(() => {
+      getAllAssignments(props.token).then((data) => {
+        setAssignments(data);
+        setLoading(false);
+      });
+    }, []);
+  
+    const handleCardPress = (data) => {
+      setCurrentData(data);
+      setVisible(true);
+    };
+  
+    const handleModalBackdropPress = () => {
+      setVisible(false);
+      setCurrentData(null);
+    };
+  
+    const renderItemIcon = (props) => (
+      <Icon {...props} name='book-outline' />
+    );
+  
+    const renderItemAccessory = (props, data) => (
+      <Button
+        {...props}
+        onPress={() => handleCardPress(data)}
+        accessoryLeft={buttonArrow}
+        size='medium'
+        status='basic'>
+      </Button>
+    );
+  
+    const renderItem = ({ item }) => (
+      <ListItem
+        title={`${item.employee_name}`}
+        description={`${item.course_name}`}
+        accessoryLeft={renderItemIcon}
+        accessoryRight={(props) => renderItemAccessory(props, item)}
+      />
+    );
+  
+    const buttonArrow = (props) => (
+      <Icon {...props} name='arrow-ios-forward-outline' />
+    );
+  
+    const cardHeader = (props) => (
+      <View {...props} style={[props.style, styles.headerContainer]}>
+        <Text category='h6'>{currentData?.employee_name}</Text>
+        <Text category='s1'>{currentData?.course_name}</Text>
+      </View>
+    );
+  
+    const cardFooter = (props) => (
+      <View {...props} style={[props.style, styles.cardFooter]}>
+        <Button style={[GlobalStyles.button, styles.button]} onPress={handleModalBackdropPress}>Close</Button>
+      </View>
+    );
+  
+    if (loading) {
+      return (
+        <Text>
+          <Spinner size='giant' status='info' />
+          Loading...
+        </Text>
+      )
+    }
+  
+    if (assignments.length === 0) {
+      return (
+        <Text>No assignments found.</Text>
+      )
+    }
+  
+    return (
+      <>
+        <List
+          style={{height: '80vh'}}
+          data={assignments}
+          renderItem={renderItem}
+          ItemSeparatorComponent={Divider}
+        />
+        <Modal
+          visible={visible}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={handleModalBackdropPress}>
+          {currentData && (
+            <Card header={cardHeader} footer={cardFooter} status='info'>
+              <Text>Assign Date: {currentData.assign_date}</Text>
+              <Text>Start Date: {currentData.start_date}</Text>
+              <Text>Completion Date: {currentData.completion_date}</Text>
+            </Card>
+          )}
+        </Modal>
+      </>
+    );
+  };
   
   const styles = StyleSheet.create({
     courseThumbnail: {
@@ -150,7 +254,7 @@ export const AllCourses = (props) => {
       marginVertical: 8,
     },
     container: {
-      flex: 1,
+      flex: 10,
     },
     courseThumbnail: {
       width: 260,
