@@ -158,9 +158,13 @@ export const DashboardAlarmsList = (props) => {
         style={{height: '90%', width: '90%'}}
         >
         <Card
-          style={currentData?.priority_label === 'high' ? [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-danger-500']}] : [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-info-500']}]}
+          style={currentData?.priority_label === 'high' ? [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-danger-500']}] : (
+            currentData?.priority_label === 'medium' ? [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-warning-500']}] : [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-info-500']}]
+          )}
           header={cardHeader} footer={cardFooter}
-          status={currentData?.priority_label === 'high' ? 'danger' : 'info'}
+          status={currentData?.priority_label === 'high' ? 'danger' : (
+            currentData?.priority_label === 'medium' ? 'warning' : 'info'
+          )}
         >
           <Text>{Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))} days ago.</Text>
           <Text>Priority: {currentData?.priority_label === 'high' ? (
