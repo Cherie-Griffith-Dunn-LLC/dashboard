@@ -57,7 +57,7 @@ export default class CustomLineChart extends React.Component {
         const Line = ({ line }) => (
             <Path
                 d={ line }
-                stroke={ 'rgb(42, 157, 143)' }
+                stroke={ '#0091ff' }
                 strokeWidth="3"
                 fill={ 'none' }
             />
@@ -71,8 +71,8 @@ export default class CustomLineChart extends React.Component {
                     cy={ y(value.occurences) }
                     r={ value.occurences > 0 ? 4 : 0 }
                     strokeWidth="2.5"
-                    stroke={ 'white' }
-                    fill={ 'rgb(42, 157, 143)' }
+                    stroke={ '#0091ff' }
+                    fill={ 'white' }
                 />
             ))
         }
