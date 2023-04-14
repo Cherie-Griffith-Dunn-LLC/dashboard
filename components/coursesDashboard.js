@@ -18,7 +18,7 @@ export const RequiredCourses = (props) => {
   
     const handleCardPress = (url) => {
       setModalContent(
-          <iframe src={url} style={{ width: '100%', height: '100%' }}></iframe>
+          <iframe src={url} style={{ width: '1900px', height: '900px' }}></iframe>
       );
       setModalVisible(true);
     };
@@ -70,7 +70,7 @@ export const AllCourses = (props) => {
   
     const handleCardPress = (url) => {
       setModalContent(
-        <iframe src={url} style={{ width: '100%', height: '100%' }}></iframe>
+        <iframe src={url} style={{ width: '1900px', height: '900px' }}></iframe>
       );
       setModalVisible(true);
     };
@@ -234,12 +234,10 @@ export const AllAssignments = (props) => {
   };
   
   const styles = StyleSheet.create({
-    courseThumbnail: {
-      height: 120,
-    },
     requiredCourseCard: { // Changed from courseCard
       margin: 8,
       width: '15%',
+      marginBottom: 25,
     },
     backdrop: {
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
