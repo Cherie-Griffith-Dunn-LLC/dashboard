@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#CED1D5'
     },
     selectedMenuItem: {
-        backgroundColor: '#0090ff',
+        backgroundColor: 'black',
         color: '#FFFFFF',
         borderRadius: 15,
         margin: 5,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#CED1D5'
     },
     colSelectedMenuItem: {
-        backgroundColor: '#0090ff',
+        backgroundColor: 'black',
         color: '#FFFFFF',
         borderRadius: 15,
     }
