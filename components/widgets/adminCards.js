@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Text, Button, Spinner, IndexPath } from '@ui-kitten/components';
+import { Card, Text, Button, Spinner, IndexPath, Layout } from '@ui-kitten/components';
 import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
 import CustomBarChart from '../charts/barChart';
@@ -42,7 +42,6 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: 0</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -51,7 +50,6 @@ export class AlarmsCard extends Component {
                     <Text category='h6'>Alarms</Text>
                     <Text>Total Alarms: {this.props.data.page?.totalElements}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
             );
         }
@@ -67,7 +65,6 @@ export class EventsCard extends Component {
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: 0</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
                 </Card>
             );
         } else {
@@ -76,7 +73,6 @@ export class EventsCard extends Component {
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: {this.props.data.page?.totalElements}</Text>
                     <CustomLineChart data={this.props.data._embedded.eventResources} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
                 </Card>
             );
         }
@@ -90,18 +86,15 @@ export class BehavioralMonitoringCard extends Component {
             return (
                 <Card style={[styles.dashboardCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text>Total Alarms: 0</Text>
+                    <Text>Compromised data incidences</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(4))}>View Details</Button>
                 </Card>
             );
         } else {
             return (
                 <Card style={[styles.dashboardCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text>Total Alarms: {this.props.data.page?.totalElements}</Text>
-                    <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(4))}>View Details</Button>
+                    <Text>Total: {this.props.data.page?.totalElements}</Text>
                 </Card>
             );
         }
@@ -112,10 +105,13 @@ export class LogManagementCard extends Component {
     render() {
         return (
             <Card style={[styles.dashboardCard, GlobalStyles.card]}>
-                <Text category='h6'>Learning Management System</Text>
+                <Text category='h6'>Courses Overview</Text>
                 <Text>Total Required Courses: 100</Text>
-                <CustomBarChart />
-                <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
+                <Layout style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text>24 Assigned</Text>
+                    <Text>13 In Progress</Text>
+                    <Text>11 Completed</Text>
+                </Layout>
             </Card>
         );
     }
@@ -129,6 +125,8 @@ const styles = StyleSheet.create({
         minWidth: 300,
         height: 400,
         minHeight: 400,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
     },
     Input: {
         borderRadius: '12px'
