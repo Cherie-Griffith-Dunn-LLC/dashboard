@@ -24,6 +24,8 @@ import { AdminMenu, UserMenu } from '../components/customMenus';
 import { getAlarms, getEvents, getDWM, getInvestigations } from '../services/usmApi';
 import { UsersList } from '../components/settingUI';
 
+import GlobalStyles from '../constants/styles';
+
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
 );
@@ -149,7 +151,7 @@ const DashboardScreen = () => {
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}
             />
-            <Layout style={{ flex: 1, display: 'flex', flexDirection: 'row' }}>
+            <Layout style={[GlobalStyles.bgGray, { flex: 1, display: 'flex', flexDirection: 'row' }]}>
                 {userRoles.role === 'admin' ? (
                     <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 ) : (
