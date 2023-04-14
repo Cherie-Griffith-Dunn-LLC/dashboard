@@ -47,7 +47,7 @@ const LargeLogo = (props) => (
 export class AdminMenu extends Component {
     render() {
         return (
-            <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
+            <Layout style={[GlobalStyles.bgGray, { width: this.props.menuWidth, textAlign: 'center' }]}>
                 {this.props.menuWidth === 50 ? (
                     <>
                     <SmallLogo />
@@ -76,7 +76,7 @@ export class AdminMenu extends Component {
 export class UserMenu extends Component {
     render() {
         return (
-            <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
+            <Layout style={[GlobalStyles.bgGray, { width: this.props.menuWidth, textAlign: 'center' }]}>
                 {this.props.menuWidth === 50 ? (
                     <>
                     <SmallLogo />
@@ -107,7 +107,8 @@ class CollapsedAdminMenu extends Component {
         return (
             <Menu
         selectedInex={this.props.selectedIndex}
-        onSelect={index => this.props.setSelectedIndex(index)}>
+        onSelect={index => this.props.setSelectedIndex(index)}
+        style={[GlobalStyles.bgGray]}>
             <MenuItem
                 accessoryLeft={HomeIcon}
                 style={this.props.selectedIndex.row === 0 ? styles.colSelectedMenuItem : styles.colMenuItem}
@@ -143,7 +144,8 @@ class CollapsedUserMenu extends Component {
         return (
             <Menu
         selectedInex={this.props.selectedIndex}
-        onSelect={index => this.props.setSelectedIndex(index)}>
+        onSelect={index => this.props.setSelectedIndex(index)}
+        style={[GlobalStyles.bgGray]}>
             <MenuItem accessoryLeft={HomeIcon}/>
             <MenuItem accessoryLeft={AlertsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
@@ -158,7 +160,8 @@ class ExpandedAdminMenu extends Component {
         return (
             <Menu
             selectedInex={this.props.selectedIndex}
-            onSelect={index => this.props.setSelectedIndex(index)}>
+            onSelect={index => this.props.setSelectedIndex(index)}
+            style={[GlobalStyles.bgGray]}>
                 <MenuItem
                     title='Home'
                     style={this.props.selectedIndex.row === 0 ? styles.selectedMenuItem : styles.menuItem}
@@ -200,7 +203,8 @@ class ExpandedUserMenu extends Component {
         return (
             <Menu
             selectedInex={this.props.selectedIndex}
-            onSelect={index => this.props.setSelectedIndex(index)}>
+            onSelect={index => this.props.setSelectedIndex(index)}
+            style={[GlobalStyles.bgGray]}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
                 <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
@@ -227,6 +231,7 @@ const styles = StyleSheet.create({
     menuItem: {
         margin: 5,
         borderRadius: 15,
+        backgroundColor: '#CED1D5'
     },
     selectedMenuItem: {
         backgroundColor: '#0090ff',
@@ -236,6 +241,7 @@ const styles = StyleSheet.create({
     },
     colMenuItem: {
         borderRadius: 15,
+        backgroundColor: '#CED1D5'
     },
     colSelectedMenuItem: {
         backgroundColor: '#0090ff',
