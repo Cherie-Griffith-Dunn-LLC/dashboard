@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner } from '@ui-kitten/components';
 // usm api function
-import { getAlarms } from '../services/usmApi';
+import { getAlarms, getDictionaries } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,8 @@ export const DashboardAlarmsList = (props) => {
   const [data, setData] = React.useState([]);
   // store loading state
   const [loading, setLoading] = React.useState(true);
+  // store dictionary
+  const [dictionary, setDictionary] = React.useState([]);
   // get alarms from api
   React.useEffect(() => {
     getAlarms(props.token, 20).then((response) => {
@@ -52,7 +54,16 @@ export const DashboardAlarmsList = (props) => {
         }
       });
       setData(alarms);
+      console.log(alarms);
       setLoading(false);
+
+      if (response.page?.totalElements > 0) {
+        // get dictionary
+        getDictionaries(props.token).then((response) => {
+          setDictionary(response);
+          console.log(response);
+        });
+      }
     });
   }, []);
   // control modal visibility
@@ -190,6 +201,9 @@ export const DashboardAlarmsList = (props) => {
             </>
           )}
           <Text>Sensors: {currentData?.sensor_uuid}</Text>
+          <Text>Intent: {dictionary[currentData?.rule_dictionary]?.Intent[currentData?.rule_intent]}</Text>
+          <Text>Method: {dictionary[currentData?.rule_dictionary]?.Method[currentData?.rule_method]}</Text>
+          <Text>Strategy: {dictionary[currentData?.rule_dictionary]?.Strategy[currentData?.rule_strategy]}</Text>
         </Card>
     </Modal>
     </>
