@@ -73,7 +73,7 @@ export class EventsCard extends Component {
                 <Card style={[styles.topCard, GlobalStyles.card]}>
                     <Text category='h6'>Events</Text>
                     <Text>Total Events: {this.props.data.page?.totalElements}</Text>
-                    <CustomLineChart data={this.props.data._embedded.eventResources} />
+                    <CustomLineChart data={this.props.data._embedded?.eventResources} />
                 </Card>
             );
         }
