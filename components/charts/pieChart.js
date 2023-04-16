@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { PieChart, Pie, Sector, YAxis } from 'react-native-svg-charts';
+import { PieChart, Pie, Sector, YAxis, XAxis } from 'react-native-svg-charts';
 import { Text } from 'react-native-svg';
+import { Layout } from '@ui-kitten/components';
 
 
 export default class CustomPieChart extends React.Component {
@@ -45,7 +46,7 @@ export default class CustomPieChart extends React.Component {
                 };
             }
         }
-       
+       var total = 0;
         if (!this.props.data) {
             var newData = data;
         } else {
@@ -53,6 +54,7 @@ export default class CustomPieChart extends React.Component {
             var newData = [];
             // loop through data
             tempData.forEach((item) => {
+                total += 1;
                 const priority = item.priority_label;
                 // check if date already exists in newData
                 var result = newData.find(obj => {
@@ -124,6 +126,14 @@ export default class CustomPieChart extends React.Component {
                 contentInset={contentInset}
                 >
                     <Labels />
+                    <Text
+                        style={{
+                            position: 'absolute',
+                            textAlign: 'center',
+                        }}
+                    >
+                    {`${total} \n Alarms`}
+                    </Text>
                 </PieChart>
             </View>
          );
