@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext } from '../contexts/tokenContext';
 // azure api functions
 import { getMe, getRole, getUsers } from '../services/azureApi';
+import { getTrainingList } from '../services/dbApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
@@ -57,6 +58,7 @@ const DashboardScreen = () => {
     const [alerts, setAlerts] = React.useState([]);
     const [dwm, setDwm] = React.useState([]);
     const [courses, setCourses] = React.useState([]);
+    const [trainingList, setTrainingList] = React.useState([]);
 
     // logout user
     const logOut = async () => {
@@ -128,29 +130,39 @@ const DashboardScreen = () => {
         //only call this if the user is an admin
         if (userRoles.role === 'admin') {
             setAllUsers(allUsers);
-            console.log(allUsers);
         }    
     };
 
     // get data for charts
     const getChartData = async () => {
         console.log('getting data');
-        getEvents(token, 20).then((response) => {
-            setEvents(response);
-          });
-        getAlarms(token, 20).then((response) => {
-            setAlarms(response);
-          });
-
-        getInvestigations(token, 20).then((response) => {
-            setAlerts(response);
+        // if user is admin
+        if (userRoles.role === 'admin') {
+            getEvents(token, 20).then((response) => {
+                setEvents(response);
             });
+            getAlarms(token, 20).then((response) => {
+                setAlarms(response);
+            });
+    
+            getTrainingList(token, 20).then((response) => {
+                setTrainingList(response);
+                console.log(response);
+            });
+        } else {
+            getInvestigations(token, 20).then((response) => {
+                setAlerts(response);
+            });
+        }
     }
 
     React.useEffect(() => {
         getUserInfo();
-        getChartData();
     }, []);
+    // seperate chart data query so user role is a dependency of the function
+    React.useEffect(() => {
+        getChartData();
+    }, [userRoles]);
 
     
 
@@ -189,7 +201,7 @@ const DashboardScreen = () => {
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard setSelectedIndex={setSelectedIndex} />
                                 <BehavioralMonitoringCard data={alarms} setSelectedIndex={setSelectedIndex} />
-                                <EmployeeTrainingCard data={alarms} setSelectedIndex={setSelectedIndex} />
+                                <EmployeeTrainingCard data={trainingList} setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
                                 <>
