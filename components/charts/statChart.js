@@ -52,9 +52,9 @@ export default class CustomStatChart extends React.Component {
                     header={dwmHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
                     <Text category='h6' style={styles.count}>
-                        {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
+                        Office Tools
                     </Text>
-                    <Text style={styles.title}>Office Tools</Text>
+                    <Text style={styles.title}>Manage your tasks</Text>
                 </Card>
             </Layout>
          );
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         flex: '1',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        minWidth: 300,
+        width: '100%',
         height: 150,
         maxHeight: 150,
         marginBottom: 10,
@@ -92,5 +92,6 @@ const styles = StyleSheet.create({
     },
     header: {
         color: 'white',
+        padding: 10,
     }
 });
