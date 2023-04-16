@@ -9,7 +9,7 @@ import { DWMList } from '../components/dwmList';
 import { RequiredCourses, AllCourses } from '../components/coursesDashboard';
 import { ThemeContext } from '../contexts/theme-context';
 // admin cards
-import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard, StatsCard } from '../components/widgets/adminCards';
+import { AlarmsCard, EventsCard, BehavioralMonitoringCard, LogManagementCard, StatsCard, EmployeeTrainingCard } from '../components/widgets/adminCards';
 // user cards
 import { UserAlertsCard, UserCoursesCard } from '../components/widgets/userCards';
 
@@ -34,6 +34,13 @@ const LogOutIcon = (props) => (
     <Icon {...props} name='log-out-outline' />
 );
 
+const BellIcon = (props) => (
+    <Icon {...props} name='bell-outline' />
+);
+
+const SettingsIcon = (props) => (
+    <Icon {...props} name='settings-2-outline' />
+);
 
 const logo = (props) => (
     <Image style={styles.logo} {...props}  source={require('../assets/cyplogo-blk.png')} />
@@ -89,10 +96,20 @@ const DashboardScreen = () => {
     );
 
     const singOutAction = () => (
+        <>
+        <TopNavigationAction
+            icon={BellIcon}
+            onPress={() => setSelectedIndex(new IndexPath(1))}
+        />
+        <TopNavigationAction
+            icon={SettingsIcon}
+            onPress={() => setSelectedIndex(new IndexPath(5))}
+        />
         <TopNavigationAction
             icon={LogOutIcon}
             onPress={() => logOut()}
         />
+        </>
     );
 
     // get user info from api
@@ -164,13 +181,14 @@ const DashboardScreen = () => {
                         {userRoles.role === 'admin' && (
                             <StatsCard alarms={alarms} events={events} />
                         )}
-                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-evenly', rowGap: 10, columnGap: 10, alignItems: 'center', alignContent: 'space-evenly' }}>
+                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between', rowGap: 10, columnGap: 10, alignItems: 'center', alignContent: 'space-evenly' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
-                                <BehavioralMonitoringCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard setSelectedIndex={setSelectedIndex} />
+                                <BehavioralMonitoringCard data={alarms} setSelectedIndex={setSelectedIndex} />
+                                <EmployeeTrainingCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
                                 <>
