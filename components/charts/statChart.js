@@ -18,15 +18,15 @@ export default class CustomStatChart extends React.Component {
         const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80]
 
         const alarmsHeader = (props) => (
-            <Text>ALARMS</Text>
+            <Text style={styles.header}>ALARMS</Text>
         );
 
         const eventsHeader = (props) => (
-            <Text>EVENTS</Text>
+            <Text style={styles.header}>EVENTS</Text>
         );
 
         const dwmHeader = (props) => (
-            <Text>DARK WEB</Text>
+            <Text style={styles.header}>FEATURED PARTNER</Text>
         );
         
 
@@ -46,7 +46,7 @@ export default class CustomStatChart extends React.Component {
                     <Text category='h6' style={styles.count}>
                         {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
                     </Text>
-                    <Text>Events</Text>
+                    <Text style={styles.title}>Events</Text>
                 </Card>
                 <Card
                     header={dwmHeader}
@@ -54,7 +54,7 @@ export default class CustomStatChart extends React.Component {
                     <Text category='h6' style={styles.count}>
                         {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
                     </Text>
-                    <Text style={styles.title}>Dark Web</Text>
+                    <Text style={styles.title}>Office Tools</Text>
                 </Card>
             </Layout>
          );
@@ -88,6 +88,9 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     title: {
+        color: 'white',
+    },
+    header: {
         color: 'white',
     }
 });
