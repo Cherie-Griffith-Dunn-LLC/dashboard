@@ -91,6 +91,7 @@ export class BehavioralMonitoringCard extends Component {
             return (
                 <Card style={[styles.bottomCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
+                    <Text>Compromised data incidences</Text>
                     <Text>Total: {this.props.data.page?.totalElements}</Text>
                 </Card>
             );
@@ -103,11 +104,19 @@ export class LogManagementCard extends Component {
         return (
             <Card style={[styles.bottomCard, GlobalStyles.card]}>
                 <Text category='h6'>Courses Overview</Text>
-                <Text>Total Required Courses: 100</Text>
                 <Layout style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text>24 Assigned</Text>
-                    <Text>13 In Progress</Text>
-                    <Text>11 Completed</Text>
+                    <Layout>
+                        <Text category='h6'>24</Text>
+                        <Text category='label'>Assigned</Text>
+                    </Layout>
+                    <Layout>
+                        <Text category='h6'>13</Text>
+                        <Text category='label'>In Progress</Text>
+                    </Layout>
+                    <Layout>
+                        <Text category='h6'>11</Text>
+                        <Text category='label'>Completed</Text>
+                    </Layout>
                 </Layout>
             </Card>
         );
