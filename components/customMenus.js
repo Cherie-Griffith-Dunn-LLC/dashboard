@@ -64,7 +64,7 @@ export class AdminMenu extends Component {
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
                     <Text category='label'>&copy; CYPROTECK, Inc.</Text>
-                    <Text category='c2'>Terms of Use | Privacy Policy</Text>
+                    <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
                     </>
                 )}
             </Layout>
@@ -94,7 +94,7 @@ export class UserMenu extends Component {
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
                     <Text>&copy; CYPROTECK, Inc.</Text>
-                    <Text>Terms of Use | Privacy Policy</Text>
+                    <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
                     </>
                 )}
             </Layout>
