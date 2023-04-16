@@ -40,17 +40,15 @@ export class AlarmsCard extends Component {
         if (this.props.data.length === 0) {
             return (
                 <Card style={[styles.topCard, GlobalStyles.card]}>
-                    <Text category='h6'>Alarms</Text>
-                    <Text>Total Alarms: 0</Text>
+                    <Text category='h6'>Alarms Summary</Text>
                     <LoadingStatus />
                 </Card>
             );
         } else {
             return (
                 <Card style={[styles.topCard, GlobalStyles.card]}>
-                    <Text category='h6'>Alarms</Text>
-                    <Text>Total Alarms: {this.props.data.page?.totalElements}</Text>
-                    <CustomPieChart data={this.props.data._embedded.alarms} />
+                    <Text category='h6'>Alarms Summary</Text>
+                    <CustomPieChart data={this.props.data._embedded?.alarms} />
                 </Card>
             );
         }
@@ -63,16 +61,14 @@ export class EventsCard extends Component {
         if (this.props.data.length === 0) {
             return (
                 <Card style={[styles.topCard, GlobalStyles.card]}>
-                    <Text category='h6'>Events</Text>
-                    <Text>Total Events: 0</Text>
+                    <Text category='h6'>Events Tracking</Text>
                     <LoadingStatus />
                 </Card>
             );
         } else {
             return (
                 <Card style={[styles.topCard, GlobalStyles.card]}>
-                    <Text category='h6'>Events</Text>
-                    <Text>Total Events: {this.props.data.page?.totalElements}</Text>
+                    <Text category='h6'>Events Tracking</Text>
                     <CustomLineChart data={this.props.data._embedded?.eventResources} />
                 </Card>
             );
