@@ -132,7 +132,7 @@ export default class CustomPieChart extends React.Component {
                             textAlign: 'center',
                         }}
                     >
-                    {`${total} \n Alarms`}
+                    {`${total ? total : '0'} \n Alarms`}
                     </Text>
                 </PieChart>
             </View>
