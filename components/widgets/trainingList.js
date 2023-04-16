@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout } from '@ui-kitten/components';
 // usm api function
 import { getAlarms, getDictionaries } from '../../services/usmApi';
 import GlobalStyles from '../../constants/styles';
@@ -45,10 +45,43 @@ export const TrainingList = (props) => {
   const renderItem = ({ item, index }) => (
     <ListItem
     onPress={() => {setVisible(true); setCurrentData(data[index])}}
-    title={`${item.name}`}
-    description={`${item.email}`}
     accessoryLeft={renderItemIcon}
-    accessoryRight={(props) => renderItemAccessory(props, index)} />
+    accessoryRight={(props) => renderItemAccessory(props, index)}>
+      <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+        <Layout  style={{ flex: 1, alignItems: 'flex-start' }}>
+        <FontAwesomeIcon icon={faUser} />
+        </Layout>
+        <Layout style={{ flex: 2, alignItems: 'flex-start' }}>
+        <Text>
+          {item.name.length <= 20 ? item.name : item.name.substring(0, 20) + '...'}
+        </Text>
+        </Layout>
+        <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
+        <Text>
+          {item.email.length <= 30 ? item.email : item.email.substring(0, 30) + '...'}
+        </Text>
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'flex-start' }}>
+        <Text>{item.mostRecentAssignment ? item.mostRecentAssignment : '--/--/----'}</Text>
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'flex-start' }}>
+        {item.totalAssignments >= 3 ? (
+          <Button style={GlobalStyles.button} status='danger' appearance='outline' size='tiny'>HIGH</Button>
+        ) : (
+          <Button style={GlobalStyles.button} status='basic' appearance='outline' size='tiny'>LOW</Button>
+        )}
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'flex-start' }}>
+        <Text>{item.totalAssignments}</Text>
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
+        <Button style={GlobalStyles.button}
+        onPress={() => {setVisible(true); setCurrentData(data[index])}}
+        accessoryLeft={buttonArrow}
+        size='medium' status='basic'></Button>
+        </Layout>
+      </Layout>
+    </ListItem>
   );
 
   const cardHeader = (props) => (
@@ -76,6 +109,7 @@ export const TrainingList = (props) => {
     <>
     <List
       style={styles.container}
+      numColumns={1}
       data={data}
       renderItem={renderItem}
       ItemSeparatorComponent={Divider}
