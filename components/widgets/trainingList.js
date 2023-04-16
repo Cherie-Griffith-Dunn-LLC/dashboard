@@ -51,7 +51,7 @@ export const TrainingList = (props) => {
         <Layout  style={{ flex: 1, alignItems: 'flex-start' }}>
         <FontAwesomeIcon icon={faUser} />
         </Layout>
-        <Layout style={{ flex: 2, alignItems: 'flex-start' }}>
+        <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
         <Text>
           {item.name.length <= 20 ? item.name : item.name.substring(0, 20) + '...'}
         </Text>
@@ -61,24 +61,28 @@ export const TrainingList = (props) => {
           {item.email.length <= 30 ? item.email : item.email.substring(0, 30) + '...'}
         </Text>
         </Layout>
-        <Layout style={{ flex: 1, alignItems: 'flex-start' }}>
-        <Text>{item.mostRecentAssignment ? item.mostRecentAssignment : '--/--/----'}</Text>
+        <Layout style={{ flex: 1, alignItems: 'center' }}>
+        <Text>{item.mostRecentCompletion ? item.mostRecentCompletion : '--/--/----'}</Text>
         </Layout>
-        <Layout style={{ flex: 1, alignItems: 'flex-start' }}>
-        {item.totalAssignments >= 3 ? (
-          <Button style={GlobalStyles.button} status='danger' appearance='outline' size='tiny'>HIGH</Button>
-        ) : (
-          <Button style={GlobalStyles.button} status='basic' appearance='outline' size='tiny'>LOW</Button>
-        )}
+        <Layout style={{ flex: 1, alignItems: 'center' }}>
+        {(item.totalAssignments >= 3 &&  item.totalAssignments <= 5) ? (
+          <Button style={GlobalStyles.button} status='warning' size='tiny'>MEDIUM</Button>
+        ) : (item.totalAssignments > 5) ? (
+            <Button style={GlobalStyles.button} status='danger' size='tiny'>HIGH</Button>
+          ) : (
+            <Button style={GlobalStyles.button} status='success' size='tiny'>LOW</Button>
+          )
+        }
         </Layout>
-        <Layout style={{ flex: 1, alignItems: 'flex-start' }}>
+        <Layout style={{ flex: 1, alignItems: 'center' }}>
         <Text>{item.totalAssignments}</Text>
         </Layout>
         <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
         <Button style={GlobalStyles.button}
         onPress={() => {setVisible(true); setCurrentData(data[index])}}
-        accessoryLeft={buttonArrow}
-        size='medium' status='basic'></Button>
+        accessoryRight={buttonArrow}
+        appearance='outline'
+        size='small' status='basic'>Details</Button>
         </Layout>
       </Layout>
     </ListItem>
@@ -107,6 +111,13 @@ export const TrainingList = (props) => {
   
   return (
     <>
+    <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+      <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>Employee Name</Text>
+      <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Risk Status</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Total Courses</Text>
+    </Layout>
     <List
       style={styles.container}
       numColumns={1}
