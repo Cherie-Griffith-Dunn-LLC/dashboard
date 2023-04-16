@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image } from 'react-native';
-import { Menu, MenuItem, Icon, Layout, Button, SettingsIcon } from '@ui-kitten/components';
+import { Menu, MenuItem, Icon, Layout, Button, Text } from '@ui-kitten/components';
 import GlobalStyles from '../constants/styles';
 
 const HomeIcon = (props) => (
@@ -47,7 +47,7 @@ const LargeLogo = (props) => (
 export class AdminMenu extends Component {
     render() {
         return (
-            <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
+            <Layout style={[GlobalStyles.bgGray, { width: this.props.menuWidth, textAlign: 'center' }]}>
                 {this.props.menuWidth === 50 ? (
                     <>
                     <SmallLogo />
@@ -55,7 +55,6 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={[{ marginVertical: 4 }, GlobalStyles.button]} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
                     </>
                 ) : (
                     <>
@@ -64,7 +63,8 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={[{ marginVertical: 4 }, GlobalStyles.button]} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    <Text category='label'>&copy; CYPROTECK, Inc.</Text>
+                    <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
                     </>
                 )}
             </Layout>
@@ -76,7 +76,7 @@ export class AdminMenu extends Component {
 export class UserMenu extends Component {
     render() {
         return (
-            <Layout style={{ width: this.props.menuWidth, textAlign: 'center' }}>
+            <Layout style={[GlobalStyles.bgGray, { width: this.props.menuWidth, textAlign: 'center' }]}>
                 {this.props.menuWidth === 50 ? (
                     <>
                     <SmallLogo />
@@ -84,7 +84,7 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
+                    <Text>CYPROTECK, Inc.</Text>
                     </>
                 ) : (
                     <>
@@ -93,7 +93,8 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    <Text>&copy; CYPROTECK, Inc.</Text>
+                    <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
                     </>
                 )}
             </Layout>
@@ -107,7 +108,8 @@ class CollapsedAdminMenu extends Component {
         return (
             <Menu
         selectedInex={this.props.selectedIndex}
-        onSelect={index => this.props.setSelectedIndex(index)}>
+        onSelect={index => this.props.setSelectedIndex(index)}
+        style={[GlobalStyles.bgGray]}>
             <MenuItem
                 accessoryLeft={HomeIcon}
                 style={this.props.selectedIndex.row === 0 ? styles.colSelectedMenuItem : styles.colMenuItem}
@@ -143,7 +145,8 @@ class CollapsedUserMenu extends Component {
         return (
             <Menu
         selectedInex={this.props.selectedIndex}
-        onSelect={index => this.props.setSelectedIndex(index)}>
+        onSelect={index => this.props.setSelectedIndex(index)}
+        style={[GlobalStyles.bgGray]}>
             <MenuItem accessoryLeft={HomeIcon}/>
             <MenuItem accessoryLeft={AlertsIcon}/>
             <MenuItem accessoryLeft={CoursesIcon}/>
@@ -158,7 +161,8 @@ class ExpandedAdminMenu extends Component {
         return (
             <Menu
             selectedInex={this.props.selectedIndex}
-            onSelect={index => this.props.setSelectedIndex(index)}>
+            onSelect={index => this.props.setSelectedIndex(index)}
+            style={[GlobalStyles.bgGray]}>
                 <MenuItem
                     title='Home'
                     style={this.props.selectedIndex.row === 0 ? styles.selectedMenuItem : styles.menuItem}
@@ -200,7 +204,8 @@ class ExpandedUserMenu extends Component {
         return (
             <Menu
             selectedInex={this.props.selectedIndex}
-            onSelect={index => this.props.setSelectedIndex(index)}>
+            onSelect={index => this.props.setSelectedIndex(index)}
+            style={[GlobalStyles.bgGray]}>
                 <MenuItem title='Home' accessoryLeft={HomeIcon}/>
                 <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
                 <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
@@ -227,18 +232,20 @@ const styles = StyleSheet.create({
     menuItem: {
         margin: 5,
         borderRadius: 15,
+        backgroundColor: '#CED1D5'
     },
     selectedMenuItem: {
-        backgroundColor: '#0090ff',
+        backgroundColor: 'black',
         color: '#FFFFFF',
         borderRadius: 15,
         margin: 5,
     },
     colMenuItem: {
         borderRadius: 15,
+        backgroundColor: '#CED1D5'
     },
     colSelectedMenuItem: {
-        backgroundColor: '#0090ff',
+        backgroundColor: 'black',
         color: '#FFFFFF',
         borderRadius: 15,
     }

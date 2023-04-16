@@ -13,5 +13,8 @@ export default StyleSheet.create({
     },
     card: {
         borderRadius: 15,
+    },
+    bgGray: {
+        backgroundColor: '#CED1D5'
     }
 });

@@ -14,7 +14,7 @@ Commiting to the `main` branch will automatically deploy the web app to https://
 - [VS Code Extension (optional)](https://marketplace.visualstudio.com/items?itemName=byCedric.vscode-expo)
 
 ### Running Development Server
-- `npm install`
+- `npm install` (note: run `npx expo install --check` to fix dependency issues.)
 - `npm run start` or `npm run web`
 
 Run the API locally by default on port 3000.
@@ -23,6 +23,7 @@ Run the API locally by default on port 3000.
 - On your Android device, press "Scan QR Code" on the "Home" tab of the Expo Go app and scan the QR code you see in the terminal.
 - On your iPhone or iPad, open the default Apple "Camera" app and scan the QR code you see in the terminal.
 - For web, press "w" in terminal then navigate to http://localhost:19006
+
 
 ### Technology Stack Documentation
 - [React Native](https://reactnative.dev/docs/getting-started)

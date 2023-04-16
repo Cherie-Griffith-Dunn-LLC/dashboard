@@ -44,3 +44,32 @@ export const getEvents = async (bearerToken, size) => {
 
     return data;
 };
+
+// get investigations
+export const getInvestigations = async (bearerToken, size) => {
+    const response = await fetch(usmEndpoint + '/investigations?size=' + size, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '  + bearerToken
+        }
+    });
+    const data = await response.json();
+
+    return data;
+}
+
+// get dictionaries
+export const getDictionaries = async (bearerToken, size) => {
+    const response = await fetch(usmEndpoint + '/dictionaries?size=' + size, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '  + bearerToken
+        }
+    });
+
+    const data = await response.json();
+
+    return data;
+}

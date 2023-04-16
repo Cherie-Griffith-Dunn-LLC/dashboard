@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { LineChart, XAxis, YAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
+import * as scale from 'd3-scale';
 import { Circle, Path } from 'react-native-svg';
 
 export default class CustomLineChart extends React.Component {
@@ -57,7 +58,7 @@ export default class CustomLineChart extends React.Component {
         const Line = ({ line }) => (
             <Path
                 d={ line }
-                stroke={ 'rgb(42, 157, 143)' }
+                stroke={ '#0091ff' }
                 strokeWidth="3"
                 fill={ 'none' }
             />
@@ -71,8 +72,8 @@ export default class CustomLineChart extends React.Component {
                     cy={ y(value.occurences) }
                     r={ value.occurences > 0 ? 4 : 0 }
                     strokeWidth="2.5"
-                    stroke={ 'white' }
-                    fill={ 'rgb(42, 157, 143)' }
+                    stroke={ '#0091ff' }
+                    fill={ 'white' }
                 />
             ))
         }
@@ -84,13 +85,26 @@ export default class CustomLineChart extends React.Component {
 
         return (
             <>
+            <YAxis
+                data={newData}
+                yAccessor={({ item }) => item.occurences}
+                contentInset={contentInset}
+                svg={{
+                    fontSize: 10,
+                    fill: 'black',
+                }}
+                numberOfTicks={5}
+            />
             <LineChart
-                style={{ height: 250 }}
+                style={{ height: 250}}
                 data={ newData }
                 xAccessor={({ item }) => item.date}
                 yAccessor={({ item }) => item.occurences}
                 xMin={0}
                 xMax={24}
+                yMin={0}
+                numberOfTicks={5}
+                xScale={scale.scaleTime}
                 curve={ shape.curveNatural }
                 contentInset={contentInset}
             >
@@ -100,9 +114,26 @@ export default class CustomLineChart extends React.Component {
             <XAxis
                 data={newData}
                 xAccessor={({ item }) => item.date}
-                formatLabel={(value, index) => value}
-                svg={{ fontSize: 10, fill: 'black' }}
+                formatLabel={(value, index) => {
+                    if (value > 12 && (value % 2) !== 0) {
+                        return `${value - 12} PM`;
+                    } else if (value < 12 && (value % 2) !== 0) {
+                        return `${value} AM`;
+                    }
+                }}
+                svg={{
+                    fontSize: 10,
+                    fill: 'black',
+                    rotation: 20,
+                    originY: 30,
+                    y: 5,
+                }}
+                scale={scale.scaleTime}
                 max={24}
+                style={{
+                    marginHorizontal: -15,
+                    height: 20,
+                }}
                 contentInset={contentInset}
             />
             </>

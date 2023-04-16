@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { PieChart, Pie, Sector, YAxis } from 'react-native-svg-charts';
+import { PieChart, Pie, Sector, YAxis, XAxis } from 'react-native-svg-charts';
 import { Text } from 'react-native-svg';
+import { Layout } from '@ui-kitten/components';
 
 
 export default class CustomPieChart extends React.Component {
@@ -18,13 +19,13 @@ export default class CustomPieChart extends React.Component {
         const getColor = (priority) => {
             if (priority === 'low') {
                 // return green
-                return 'rgb(42, 157, 143)';
+                return '#3f9463';
             } else if (priority === 'medium') {
                 // return yellow
-                return 'rgb(233, 196, 106)';
+                return '#cc7631';
             } else if (priority === 'high') {
                 // return red
-                return 'rgb(231, 111, 81)';
+                return '#cf4039';
             }
         }
 
@@ -45,7 +46,7 @@ export default class CustomPieChart extends React.Component {
                 };
             }
         }
-       
+       var total = 0;
         if (!this.props.data) {
             var newData = data;
         } else {
@@ -53,6 +54,7 @@ export default class CustomPieChart extends React.Component {
             var newData = [];
             // loop through data
             tempData.forEach((item) => {
+                total += 1;
                 const priority = item.priority_label;
                 // check if date already exists in newData
                 var result = newData.find(obj => {
@@ -124,6 +126,14 @@ export default class CustomPieChart extends React.Component {
                 contentInset={contentInset}
                 >
                     <Labels />
+                    <Text
+                        style={{
+                            position: 'absolute',
+                            textAlign: 'center',
+                        }}
+                    >
+                    {`${total ? total : '0'} \n Alarms`}
+                    </Text>
                 </PieChart>
             </View>
          );

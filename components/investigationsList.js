@@ -2,22 +2,21 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner } from '@ui-kitten/components';
 // usm api function
-import { getAlarms, getDictionaries } from '../services/usmApi';
+import { getInvestigations } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
 
-export const DashboardAlarmsList = (props) => {
+export const DashboardAlertsList = (props) => {
   const theme = useTheme();
   // store data
   const [data, setData] = React.useState([]);
   // store loading state
   const [loading, setLoading] = React.useState(true);
-  // store dictionary
-  const [dictionary, setDictionary] = React.useState([]);
   // get alarms from api
   React.useEffect(() => {
-    getAlarms(props.token, 20).then((response) => {
+    getInvestigations(props.token, 20).then((response) => {
+      console.log(response);
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent
       const alarms = response._embedded.alarms.map(alarm => {
@@ -54,16 +53,8 @@ export const DashboardAlarmsList = (props) => {
         }
       });
       setData(alarms);
-      console.log(alarms);
       setLoading(false);
-
-      if (response.page?.totalElements > 0) {
-        // get dictionary
-        getDictionaries(props.token).then((response) => {
-          setDictionary(response);
-          console.log(response);
-        });
-      }
+      console.log(alarms);
     });
   }, []);
   // control modal visibility
@@ -134,7 +125,8 @@ export const DashboardAlarmsList = (props) => {
 
   const cardFooter = (props) => (
     <View {...props} style={[props.style, styles.cardFooter]}>
-      <Button style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>Close</Button>
+      <Button status='primary' style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>View Course</Button>
+      <Button status='danger' style={[GlobalStyles.button, styles.button]} onPress={() => setVisible(false)}>Close</Button>
     </View>
   );
 
@@ -169,13 +161,9 @@ export const DashboardAlarmsList = (props) => {
         style={{height: '90%', width: '90%'}}
         >
         <Card
-          style={currentData?.priority_label === 'high' ? [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-danger-500']}] : (
-            currentData?.priority_label === 'medium' ? [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-warning-500']}] : [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-info-500']}]
-          )}
+          style={currentData?.priority_label === 'high' ? [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-danger-500']}] : [GlobalStyles.card, {borderWidth: 2, borderColor: theme['color-info-500']}]}
           header={cardHeader} footer={cardFooter}
-          status={currentData?.priority_label === 'high' ? 'danger' : (
-            currentData?.priority_label === 'medium' ? 'warning' : 'info'
-          )}
+          status={currentData?.priority_label === 'high' ? 'danger' : 'info'}
         >
           <Text>{Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))} days ago.</Text>
           <Text>Priority: {currentData?.priority_label === 'high' ? (
@@ -201,9 +189,6 @@ export const DashboardAlarmsList = (props) => {
             </>
           )}
           <Text>Sensors: {currentData?.sensor_uuid}</Text>
-          <Text>Intent: {dictionary[currentData?.rule_dictionary]?.Intent[currentData?.rule_intent]}</Text>
-          <Text>Method: {dictionary[currentData?.rule_dictionary]?.Method[currentData?.rule_method]}</Text>
-          <Text>Strategy: {dictionary[currentData?.rule_dictionary]?.Strategy[currentData?.rule_strategy]}</Text>
         </Card>
     </Modal>
     </>

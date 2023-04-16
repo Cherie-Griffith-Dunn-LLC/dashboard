@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Text, Button, Spinner, IndexPath } from '@ui-kitten/components';
+import { Card, Text, Button, Spinner, IndexPath, Layout } from '@ui-kitten/components';
 import CustomPieChart from '../charts/pieChart';
 import CustomLineChart from '../charts/lineChart';
 import CustomBarChart from '../charts/barChart';
 import CustomStatChart from '../charts/statChart';
 
 import GlobalStyles from '../../constants/styles';
+import { TrainingList } from './trainingList';
 
 // loading component
 export class LoadingStatus extends Component {
@@ -38,20 +39,16 @@ export class AlarmsCard extends Component {
         // check if data is empty
         if (this.props.data.length === 0) {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
-                    <Text category='h6'>Alarms</Text>
-                    <Text>Total Alarms: 0</Text>
+                <Card style={[styles.topCard, GlobalStyles.card]}>
+                    <Text category='h6'>Alarms Summary</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
             );
         } else {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
-                    <Text category='h6'>Alarms</Text>
-                    <Text>Total Alarms: {this.props.data.page?.totalElements}</Text>
-                    <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
+                <Card style={[styles.topCard, GlobalStyles.card]}>
+                    <Text category='h6'>Alarms Summary</Text>
+                    <CustomPieChart data={this.props.data._embedded?.alarms} />
                 </Card>
             );
         }
@@ -63,20 +60,16 @@ export class EventsCard extends Component {
         // check if data is empty
         if (this.props.data.length === 0) {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
-                    <Text category='h6'>Events</Text>
-                    <Text>Total Events: 0</Text>
+                <Card style={[styles.topCard, GlobalStyles.card]}>
+                    <Text category='h6'>Events Tracking</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
                 </Card>
             );
         } else {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
-                    <Text category='h6'>Events</Text>
-                    <Text>Total Events: {this.props.data.page?.totalElements}</Text>
-                    <CustomLineChart data={this.props.data._embedded.eventResources} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
+                <Card style={[styles.topCard, GlobalStyles.card]}>
+                    <Text category='h6'>Events Tracking</Text>
+                    <CustomLineChart data={this.props.data._embedded?.eventResources} />
                 </Card>
             );
         }
@@ -88,20 +81,18 @@ export class BehavioralMonitoringCard extends Component {
         // check if data is empty
         if (this.props.data.length === 0) {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
+                <Card style={[styles.bottomCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text>Total Alarms: 0</Text>
+                    <Text>Compromised data incidences</Text>
                     <LoadingStatus />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(4))}>View Details</Button>
                 </Card>
             );
         } else {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
+                <Card style={[styles.bottomCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text>Total Alarms: {this.props.data.page?.totalElements}</Text>
-                    <CustomPieChart data={this.props.data._embedded.alarms} />
-                    <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(4))}>View Details</Button>
+                    <Text>Compromised data incidences</Text>
+                    <Text>Total: {this.props.data.page?.totalElements}</Text>
                 </Card>
             );
         }
@@ -111,24 +102,74 @@ export class BehavioralMonitoringCard extends Component {
 export class LogManagementCard extends Component {
     render() {
         return (
-            <Card style={[styles.dashboardCard, GlobalStyles.card]}>
-                <Text category='h6'>Learning Management System</Text>
-                <Text>Total Required Courses: 100</Text>
-                <CustomBarChart />
-                <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(3))}>View Details</Button>
+            <Card style={[styles.bottomCard, GlobalStyles.card]}>
+                <Text category='h6'>Courses Overview</Text>
+                <Layout style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Layout>
+                        <Text category='h6'>24</Text>
+                        <Text category='label'>Assigned</Text>
+                    </Layout>
+                    <Layout>
+                        <Text category='h6'>13</Text>
+                        <Text category='label'>In Progress</Text>
+                    </Layout>
+                    <Layout>
+                        <Text category='h6'>11</Text>
+                        <Text category='label'>Completed</Text>
+                    </Layout>
+                </Layout>
             </Card>
         );
     }
 }
 
+export class EmployeeTrainingCard extends Component {
+    render() {
+        if (this.props.data.length === 0) {
+            return (
+                <Card style={[styles.trainingCard, GlobalStyles.card]}>
+                    <Text category='h6'>Employee Training</Text>
+                    <LoadingStatus />
+                </Card>
+            )
+        } else {
+            return (
+                <Card style={[styles.trainingCard, GlobalStyles.card]}>
+                    <Text category='h6'>Employee Training</Text>
+                    <TrainingList data={this.props.data} />
+                </Card>
+            )
+        }
+    }
+}
+
 
 const styles = StyleSheet.create({
-    dashboardCard: {
-        maxWidth: '45%',
-        width: 500,
+    trainingCard: {
+        maxWidth: '100%',
+        width: '100%',
         minWidth: 300,
+        minHeight: 400,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
+    },
+    topCard: {
+        maxWidth: '90%',
+        width: 500,
+        minWidth: '48%',
         height: 400,
         minHeight: 400,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
+    },
+    bottomCard: {
+        maxWidth: '100%',
+        width: 500,
+        minWidth: '48%',
+        height: 200,
+        minHeight: 150,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
     },
     Input: {
         borderRadius: '12px'
