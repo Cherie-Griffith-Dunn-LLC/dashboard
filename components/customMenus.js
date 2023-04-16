@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image } from 'react-native';
-import { Menu, MenuItem, Icon, Layout, Button, SettingsIcon } from '@ui-kitten/components';
+import { Menu, MenuItem, Icon, Layout, Button, Text } from '@ui-kitten/components';
 import GlobalStyles from '../constants/styles';
 
 const HomeIcon = (props) => (
@@ -55,7 +55,6 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={[{ marginVertical: 4 }, GlobalStyles.button]} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
                     </>
                 ) : (
                     <>
@@ -64,7 +63,8 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={[{ marginVertical: 4 }, GlobalStyles.button]} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    <Text category='label'>&copy; CYPROTECK, Inc.</Text>
+                    <Text category='c2'>Terms of Use | Privacy Policy</Text>
                     </>
                 )}
             </Layout>
@@ -84,7 +84,7 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}></Button>
+                    <Text>CYPROTECK, Inc.</Text>
                     </>
                 ) : (
                     <>
@@ -93,7 +93,8 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Button style={{ marginVertical: 4 }} onPress={this.props.toggleTheme} accessoryLeft={LightIcon}>TOGGLE THEME</Button>
+                    <Text>&copy; CYPROTECK, Inc.</Text>
+                    <Text>Terms of Use | Privacy Policy</Text>
                     </>
                 )}
             </Layout>
