@@ -22,7 +22,7 @@ import { getTrainingList } from '../services/dbApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
-import { getAlarms, getEvents, getDWM, getInvestigations } from '../services/usmApi';
+import { getAlarms, getEvents, getDWM, getInvestigations, getAllDWM } from '../services/usmApi';
 import { UsersList } from '../components/settingUI';
 
 import GlobalStyles from '../constants/styles';
@@ -144,16 +144,21 @@ const DashboardScreen = () => {
             getAlarms(token, 20).then((response) => {
                 setAlarms(response);
             });
+            getAllDWM(token, 20).then((response) => {
+                setDwm(response);
+                console.log('Dark web monitoring:');
+                console.log(response);
+            });
     
             getTrainingList(token, 20).then((response) => {
                 setTrainingList(response);
-                console.log(response);
             });
         } else {
             getInvestigations(token, 20).then((response) => {
                 setAlerts(response);
             });
         }
+
     }
 
     React.useEffect(() => {
@@ -200,7 +205,7 @@ const DashboardScreen = () => {
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard setSelectedIndex={setSelectedIndex} />
-                                <BehavioralMonitoringCard data={alarms} setSelectedIndex={setSelectedIndex} />
+                                <BehavioralMonitoringCard data={dwm} setSelectedIndex={setSelectedIndex} />
                                 <EmployeeTrainingCard data={trainingList} setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
@@ -257,7 +262,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 4 && (
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Dark Web Monitoring</Text>
-                            <DWMList />
+                            <DWMList token={token} />
                         </Layout>
                     )
                 )}

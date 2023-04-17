@@ -73,3 +73,17 @@ export const getDictionaries = async (bearerToken, size) => {
 
     return data;
 }
+
+// get all dark web monitoring events
+export const getAllDWM = async (bearerToken, size) => {
+    const response = await fetch(usmEndpoint + '/darkWebEvents?size=' + size, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '  + bearerToken
+        }
+    });
+    const data = await response.json();
+
+    return data;
+}
