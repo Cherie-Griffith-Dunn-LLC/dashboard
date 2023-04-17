@@ -10,115 +10,108 @@ export const UsersList = (props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [dbUsers, setDbUsers] = useState([]);
-
+  
     useEffect(() => {
-        getMe(props.token)
-            .then((user) => {
-                setCurrentUser(user);
-            })
-            .catch((error) => {
-                setError(error);
-            });
+      getMe(props.token)
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch((error) => {
+          setError(error);
+        });
     }, []);
-
-    const handleGetUsersPress = () => {
-        setLoading(true);
-        getUsers(props.token)
-            .then((users) => {
-                setUsers(users);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
-    };
-
+  
     const handleUpdateUsersPress = () => {
-        setLoading(true);
-        postUsers(users, props.token)
+      setLoading(true);
+      getUsers(props.token)
+        .then((users) => {
+          setUsers(users);
+          postUsers(users, props.token)
             .then(() => {
-                setLoading(false);
-                alert('Users updated successfully.');
+              setLoading(false);
+              alert('Users updated successfully.');
             })
             .catch((error) => {
-                setError(error);
-                setLoading(false);
-                alert('Error updating users.');
+              setError(error);
+              setLoading(false);
+              alert('Error updating users.');
             });
+        })
+        .catch((error) => {
+          setError(error);
+          setLoading(false);
+        });
     };
-
+  
     const handleGetDbUsersPress = () => {
-        setLoading(true);
-        getDbUsers(props.token)
-            .then((dbUsers) => {
-                setDbUsers(dbUsers);
-                setLoading(false);
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
+      setLoading(true);
+      getDbUsers(props.token)
+        .then((dbUsers) => {
+          setDbUsers(dbUsers);
+          setLoading(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setLoading(false);
+        });
     };
-
+  
     const renderItemAccessory = (user) => (
-        <Button size='tiny' onPress={() => alert(`User ID: ${user.id}`)}>Details</Button>
+      <Button size='tiny' onPress={() => alert(`User ID: ${user.id}`)}>Details</Button>
     );
-
+  
     const renderItemIcon = (props) => (
-        <Icon {...props} name='person' />
+      <Icon {...props} name='person' />
     );
-
+  
     const renderItem = ({ item }) => (
-        <ListItem
-            title={item.displayName || item.name}
-            description={item.mail || item.email}
-            accessoryLeft={renderItemIcon}
-            accessoryRight={() => renderItemAccessory(item)}
-        />
+      <ListItem
+        title={item.displayName || item.name}
+        description={item.mail || item.email}
+        accessoryLeft={renderItemIcon}
+        accessoryRight={() => renderItemAccessory(item)}
+      />
     );
-
+  
     return (
-        <Layout style={styles.container}>
-            {currentUser && (
-                <List
-                    style={styles.currentUserList}
-                    data={[
-                        { title: 'Name', value: currentUser.displayName },
-                        { title: 'Mail', value: currentUser.mail },
-                        { title: 'Job Title', value: currentUser.jobTitle },
-                        { title: 'Department', value: currentUser.department },
-                        
-                    ]}
-                    renderItem={({ item }) => (
-                        <ListItem title={item.title} description={item.value} />
-                    )}
-                    renderHeader={() => <Text category='h6' style={styles.currentUserHeader}>{currentUser.displayName}</Text>}
-                />
+      <Layout style={styles.container}>
+        {currentUser && (
+          <List
+            style={styles.currentUserList}
+            data={[
+              { title: 'Name', value: currentUser.displayName },
+              { title: 'Mail', value: currentUser.mail },
+              { title: 'Job Title', value: currentUser.jobTitle },
+              { title: 'Department', value: currentUser.department },
+            ]}
+            renderItem={({ item }) => (
+              <ListItem title={item.title} description={item.value} />
             )}
-
-            <Layout style={styles.footer}>
-                <Text category='h4' style={styles.title}>Users</Text>
-                <Layout style={styles.buttonGroup}>
-                    <Button status='info' style={styles.button} onPress={handleGetUsersPress}>Get Users</Button>
-                    <Button status='info' style={styles.button} onPress={handleUpdateUsersPress}>Update Users</Button>
-                    <Button status='info' style={styles.button} onPress={handleGetDbUsersPress}>Edit Users</Button>
-                </Layout>
-            </Layout>
-            <ScrollView>
-                {loading ? (
-                    <Text>Loading...</Text>
-                ) : error ? (
-                    <Text>{error.message}</Text>
-                ) : users.length > 0 || dbUsers.length > 0 ? (
-                    <List
-                        style={styles.list}
-                        data={[...users, ...dbUsers]}
-                        renderItem={renderItem}
-                    />
-                ) : null}
-            </ScrollView>
+            renderHeader={() => <Text category='h6' style={styles.currentUserHeader}>{currentUser.displayName}</Text>}
+          />
+        )}
+  
+        <Layout style={styles.footer}>
+          <Text category='h4' style={styles.title}>Users</Text>
+          <Layout style={styles.buttonGroup}>
+            <Button status='info' style={styles.button} onPress={handleUpdateUsersPress}>Update Users</Button>
+            <Button status='info' style={styles.button} onPress={handleGetDbUsersPress}>Edit Users</Button>
+          </Layout>
         </Layout>
+        <ScrollView>
+          {loading ? (
+            <Text>Loading...</Text>
+          ) : error ? (
+            <Text>{error.message}</Text>
+          ) : users.length > 0 || dbUsers.length > 0 ? (
+            <List
+              style={styles.list}
+              data={[...users, ...dbUsers]}
+              renderItem={renderItem}
+            />
+          ) : null}
+        </ScrollView>
+      </Layout>
     );
 };
 
