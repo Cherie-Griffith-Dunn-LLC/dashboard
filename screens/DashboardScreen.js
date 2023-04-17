@@ -240,8 +240,6 @@ const DashboardScreen = () => {
                         <Layout style={{ flex: 1, padding: 20 }}>
                             <Text category='h3'>Required</Text>
                             <RequiredCourses token={token} />
-                            <Text category='h3'>Assignments</Text>
-                            <AllAssignments token={token} />
                         </Layout>
                     )
                 ) : (

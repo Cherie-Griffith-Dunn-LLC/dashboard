@@ -1,7 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout } from '@ui-kitten/components';
-import { getDbCourses, getCoursesByUser, assignCourse, getAllAssignments } from '../services/dbApi';
+import { getDbCourses, getCoursesByUser, assignCourse, getAllAssignments, updateStartDate } from '../services/dbApi';
 import GlobalStyles from '../constants/styles';
 
 
@@ -16,7 +16,8 @@ export const RequiredCourses = (props) => {
       });
     }, []);
   
-    const handleCardPress = (url) => {
+    const handleCardPress = (url, courseId) => {
+      updateStartDate(props.token, courseId);
       setModalContent(
           <iframe src={url} style={{ width: '1900px', height: '900px' }}></iframe>
       );
@@ -29,6 +30,7 @@ export const RequiredCourses = (props) => {
     };
     
       return (
+        console.log(courses),
           <>
           <Layout style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
               {courses.map((course, index) => (
@@ -37,7 +39,7 @@ export const RequiredCourses = (props) => {
                       header={props => <Image {...props} source={require('../assets/courses/course-thumbnail.jpg')} style={styles.courseThumbnail} />}
                       style={styles.requiredCourseCard}
                       status='info'
-                      onPress={() => handleCardPress(course.url)}
+                      onPress={() => handleCardPress(course.url, course.id)}
                   >
                       <Text category='h6'>{course.name}</Text>
                       <Text>{course.description}</Text>

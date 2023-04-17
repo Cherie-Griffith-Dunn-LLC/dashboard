@@ -77,3 +77,19 @@ export const getTrainingList = async (bearerToken) => {
     const data = await response.json();
     return data;
 }
+
+//update the start date of an assignment
+export const updateStartDate = async (bearerToken, courseId) => {
+    const response = await fetch(dbEndpoint + '/courses/updatedate', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer '  + bearerToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            courseId: courseId
+        })
+    });
+    const data = await response.json();
+    return data;
+};
