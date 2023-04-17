@@ -86,7 +86,7 @@ export default class CustomPieChart extends React.Component {
                 fill: getColor(value.priority),
                 onPress: () => console.log('press', index),
             },
-            arc: getArc(value.priority),
+            //arc: getArc(value.priority),
             key: `${value.label}`,
             label: `${value.occurences}`
         }))
@@ -127,12 +127,13 @@ export default class CustomPieChart extends React.Component {
                 >
                     <Labels />
                     <Text
+                        category='h2'
                         style={{
                             position: 'absolute',
-                            textAlign: 'center',
+                            fontSize: 24,
                         }}
                     >
-                    {`${total ? total : '0'} \n Alarms`}
+                        {total ? total : '0'}
                     </Text>
                 </PieChart>
             </View>
@@ -142,7 +143,6 @@ export default class CustomPieChart extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
         alignItems: 'center'
     }
 });
