@@ -101,6 +101,7 @@ export default class CustomLineChart extends React.Component {
                     height: 250,
 
                 }}
+                yMin={0}
                 numberOfTicks={5}
             />
             <LineChart
@@ -110,6 +111,7 @@ export default class CustomLineChart extends React.Component {
                 yAccessor={({ item }) => item.occurences}
                 xMin={0}
                 xMax={24}
+                yMin={0}
                 xScale={scale.scaleTime}
                 curve={ shape.curveNatural }
                 contentInset={contentInset}
