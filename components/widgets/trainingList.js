@@ -7,6 +7,18 @@ import GlobalStyles from '../../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox, faUser } from '@fortawesome/free-solid-svg-icons';
 
+
+function dateParse(mysqlDate) {
+  var dateParts = mysqlDate.split("-");
+  var date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+
+  var newDate = ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+
+
+  return newDate;
+}
+
+
 export const TrainingList = (props) => {
   const theme = useTheme();
   // store data
@@ -47,7 +59,7 @@ export const TrainingList = (props) => {
     onPress={() => {setVisible(true); setCurrentData(data[index])}}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)}>
-      <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+      <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
         <Layout  style={{ flex: 1, alignItems: 'flex-start' }}>
         <FontAwesomeIcon icon={faUser} />
         </Layout>
@@ -62,7 +74,7 @@ export const TrainingList = (props) => {
         </Text>
         </Layout>
         <Layout style={{ flex: 1, alignItems: 'center' }}>
-        <Text>{item.mostRecentCompletion ? item.mostRecentCompletion : '--/--/----'}</Text>
+        <Text>{item.mostRecentCompletion ? dateParse(item.mostRecentCompletion) : '--/--/----'}</Text>
         </Layout>
         <Layout style={{ flex: 1, alignItems: 'center' }}>
         {(item.totalAssignments >= 3 &&  item.totalAssignments <= 5) ? (
@@ -111,7 +123,7 @@ export const TrainingList = (props) => {
   
   return (
     <>
-    <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+    <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
       <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>Employee Name</Text>
       <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
       <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>

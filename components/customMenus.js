@@ -84,7 +84,6 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
-                    <Text>CYPROTECK, Inc.</Text>
                     </>
                 ) : (
                     <>
@@ -147,9 +146,18 @@ class CollapsedUserMenu extends Component {
         selectedInex={this.props.selectedIndex}
         onSelect={index => this.props.setSelectedIndex(index)}
         style={[GlobalStyles.bgGray]}>
-            <MenuItem accessoryLeft={HomeIcon}/>
-            <MenuItem accessoryLeft={AlertsIcon}/>
-            <MenuItem accessoryLeft={CoursesIcon}/>
+            <MenuItem
+                accessoryLeft={HomeIcon}
+                style={this.props.selectedIndex.row === 0 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={AlertsIcon}
+                style={this.props.selectedIndex.row === 1 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
+            <MenuItem
+                accessoryLeft={CoursesIcon}
+                style={this.props.selectedIndex.row === 2 ? styles.colSelectedMenuItem : styles.colMenuItem}
+            />
         </Menu>
         )
     }
@@ -206,9 +214,21 @@ class ExpandedUserMenu extends Component {
             selectedInex={this.props.selectedIndex}
             onSelect={index => this.props.setSelectedIndex(index)}
             style={[GlobalStyles.bgGray]}>
-                <MenuItem title='Home' accessoryLeft={HomeIcon}/>
-                <MenuItem title='Alerts' accessoryLeft={AlertsIcon}/>
-                <MenuItem title='Courses' accessoryLeft={CoursesIcon}/>
+                <MenuItem
+                    title='Home'
+                    accessoryLeft={HomeIcon}
+                    style={this.props.selectedIndex.row === 0 ? styles.selectedMenuItem : styles.menuItem}
+                />
+                <MenuItem
+                    title='Alerts'
+                    accessoryLeft={AlertsIcon}
+                    style={this.props.selectedIndex.row === 1 ? styles.selectedMenuItem : styles.menuItem}
+                />
+                <MenuItem
+                    title='Courses'
+                    accessoryLeft={CoursesIcon}
+                    style={this.props.selectedIndex.row === 2 ? styles.selectedMenuItem : styles.menuItem}
+                />
             </Menu>
         )
     }

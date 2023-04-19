@@ -93,6 +93,15 @@ export default class CustomLineChart extends React.Component {
                     fontSize: 10,
                     fill: 'black',
                 }}
+                // stick to the far left of the container
+                style={{
+                    position: 'absolute',
+                    top: 40,
+                    left: 24,
+                    height: 250,
+
+                }}
+                yMin={0}
                 numberOfTicks={5}
             />
             <LineChart
@@ -103,10 +112,10 @@ export default class CustomLineChart extends React.Component {
                 xMin={0}
                 xMax={24}
                 yMin={0}
-                numberOfTicks={5}
                 xScale={scale.scaleTime}
                 curve={ shape.curveNatural }
                 contentInset={contentInset}
+                numberOfTicks={5}
             >
                 <Line />
                 <Decorator />
