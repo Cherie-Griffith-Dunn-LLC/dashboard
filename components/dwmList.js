@@ -6,7 +6,7 @@ import { getAllDWM } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShieldHalved } from '@fortawesome/free-solid-svg-icons';
-import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
+import { faLock } from '@fortawesome/free-regular-svg-icons';
 
 
 export const DWMList = (props) => {
@@ -42,7 +42,7 @@ export const DWMList = (props) => {
 );
 
     const renderItemIcon = (props) => (
-      <FontAwesomeIcon {...props} icon={faCircleQuestion} />
+      <FontAwesomeIcon {...props} icon={faLock} />
     );
 
     const securityItemIcon = (props) => (
