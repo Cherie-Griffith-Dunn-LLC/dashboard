@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Layout, Icon, IndexPath, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { Text, Layout, Icon, IndexPath, TopNavigation, TopNavigationAction, Spinner } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View, ScrollView, Platform, Image } from 'react-native';
 import { DashboardAlarmsList } from '../components/alarmsList';
@@ -49,9 +49,12 @@ const logo = (props) => (
 
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
+    
 
     // theme context
     const themeContext = React.useContext(ThemeContext);
+    // loading state
+    const [isLoading, setIsLoading] = React.useState(true);
     // data for charts
     const [alarms, setAlarms] = React.useState([]);
     const [events, setEvents] = React.useState([]);
@@ -117,20 +120,14 @@ const DashboardScreen = () => {
     // get user info from api
     const [userInfo, setUserInfo] = React.useState({});
     const [userRoles, setUserRoles] = React.useState({});
-    const [allUsers, setAllUsers] = React.useState([]);
     const getUserInfo = async () => {
         // Get user's information from Microsoft Graph API
         const userInfo = await getMe(token);
         const userRoles = await getRole(token);
-        const allUsers = await getUsers(token);
 
         // Parse response and get user's name
         setUserInfo(userInfo);
         setUserRoles(userRoles);
-        //only call this if the user is an admin
-        if (userRoles.role === 'admin') {
-            setAllUsers(allUsers);
-        }    
     };
 
     // get data for charts
@@ -161,7 +158,10 @@ const DashboardScreen = () => {
     }
 
     React.useEffect(() => {
-        getUserInfo();
+        getUserInfo().then(() => {
+            console.log("Finished getting user info");
+            setIsLoading(false);
+        });
     }, []);
     // seperate chart data query so user role is a dependency of the function
     React.useEffect(() => {
@@ -173,6 +173,18 @@ const DashboardScreen = () => {
     
     // index for menu
     const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
+
+    // if loading show loading screen 
+    if (isLoading) {
+        return (
+            <SafeAreaView style={{ flex: 1 }}>
+                <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Image style={styles.largeLogo} source={require('../assets/cyplogo-blk.png')} />
+                    <Spinner />
+                </Layout>
+            </SafeAreaView>
+        )
+    }
     
 
     return (
@@ -291,5 +303,11 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         minHeight: '85vh',
+    },
+    largeLogo: {
+        width: 265,
+        height: 40,
+        margin: 20,
+        alignSelf: 'center'
     }
 });
