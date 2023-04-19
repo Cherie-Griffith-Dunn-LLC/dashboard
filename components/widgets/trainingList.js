@@ -7,6 +7,18 @@ import GlobalStyles from '../../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox, faUser } from '@fortawesome/free-solid-svg-icons';
 
+
+function dateParse(mysqlDate) {
+  var dateParts = mysqlDate.split("-");
+  var date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2].substr(0,2));
+
+  var newDate = ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+
+
+  return newDate;
+}
+
+
 export const TrainingList = (props) => {
   const theme = useTheme();
   // store data
@@ -62,7 +74,7 @@ export const TrainingList = (props) => {
         </Text>
         </Layout>
         <Layout style={{ flex: 1, alignItems: 'center' }}>
-        <Text>{item.mostRecentCompletion ? item.mostRecentCompletion : '--/--/----'}</Text>
+        <Text>{item.mostRecentCompletion ? dateParse(item.mostRecentCompletion) : '--/--/----'}</Text>
         </Layout>
         <Layout style={{ flex: 1, alignItems: 'center' }}>
         {(item.totalAssignments >= 3 &&  item.totalAssignments <= 5) ? (
