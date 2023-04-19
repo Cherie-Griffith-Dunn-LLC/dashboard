@@ -2,9 +2,23 @@ import { Layout, Text, Spinner, Card } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/styles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faCircleExclamation, faStar } from '@fortawesome/free-solid-svg-icons';
+
 
 const screenWidth = Dimensions.get("window").width;
 
+const eventIcon = (props) => (
+    <FontAwesomeIcon {...props} size="lg" icon={faEye} />
+);
+
+const alarmIcon = (props) => (
+    <FontAwesomeIcon {...props} size="lg" icon={faCircleExclamation} />
+);
+
+const partnerIcon = (props) => (
+    <FontAwesomeIcon {...props} size="lg" icon={faStar} />
+);
 
 export default class CustomStatChart extends React.Component {
 
@@ -35,26 +49,41 @@ export default class CustomStatChart extends React.Component {
                 <Card
                     header={alarmsHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#cc7631' }]}>
-                    <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
-                        {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
-                    </Text>
-                    <Text style={styles.title}>Alarms</Text>
+                    <View style={styles.insideContainer}>
+                        <View style={styles.icon}>
+                            <FontAwesomeIcon style={{height: 32, color: '#cc7631'}} size="lg" icon={faCircleExclamation} />
+                        </View>
+                        <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
+                            {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
+                        </Text>
+                    </View>
                 </Card>
                 <Card
                     header={eventsHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#0b4d80' }]}>
-                    <Text category='h6' style={styles.count}>
-                        {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
-                    </Text>
-                    <Text style={styles.title}>Events</Text>
+                    <View style={styles.insideContainer}>
+                        <View style={styles.icon}>
+                            <FontAwesomeIcon style={{height: 32, color: '#0b4d80'}} size="lg" icon={faEye} />
+                        </View>
+                        <Text category='h6' style={styles.count}>
+                            {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
+                        </Text>
+                    </View>
                 </Card>
                 <Card
                     header={dwmHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
-                    <Text category='h6' style={styles.count}>
-                        Office Tools
-                    </Text>
-                    <Text style={styles.title}>Manage your tasks</Text>
+                        <View style={styles.insideContainer}>
+                            <View style={styles.icon}>
+                                <FontAwesomeIcon style={{height: 32, color: '#010d27'}} size="lg" icon={faStar} />
+                            </View>
+                            <View>
+                                <Text category='h6' style={styles.count}>
+                                    Office Tools
+                                </Text>
+                                <Text style={styles.title}>Manage your tasks</Text>
+                            </View>
+                        </View>
                 </Card>
             </Layout>
          );
@@ -78,14 +107,19 @@ const styles = StyleSheet.create({
         height: 150,
         width: 350,
         maxWidth: '33%',
-        textAlign: 'start',
         borderColor: 'grey',
         borderWidth: 1,
-        color: 'white',
+    },
+    insideContainer: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
     },
     count: {
         fontSize: 45,
         color: 'white',
+        flex: 1
     },
     title: {
         color: 'white',
@@ -93,5 +127,17 @@ const styles = StyleSheet.create({
     header: {
         color: 'white',
         padding: 10,
+    },
+    icon: {
+        backgroundColor: 'white',
+        height: 52,
+        width: 52,
+        borderRadius: 10,
+        justifyContent: 'center',
+        marginRight: 5,
+    },
+    innerIcon: {
+        color: 'black',
+        height: 32,
     }
 });
