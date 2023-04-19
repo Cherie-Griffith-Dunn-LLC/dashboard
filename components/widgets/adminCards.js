@@ -83,7 +83,7 @@ export class BehavioralMonitoringCard extends Component {
             return (
                 <Card style={[styles.bottomCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text>Compromised data incidences</Text>
+                    <Text appearance='hint'>Compromised data incidences</Text>
                     <LoadingStatus />
                 </Card>
             );
@@ -91,8 +91,17 @@ export class BehavioralMonitoringCard extends Component {
             return (
                 <Card style={[styles.bottomCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text>Compromised data incidences</Text>
-                    <Text>Total: {this.props.data.page?.totalElements}</Text>
+                    <Text appearance='hint'>Compromised data incidences</Text>
+                    <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
+                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                            <Text category='h6' style={styles.totalNumbers}>{this.props.data._embedded?.eventResources.length}</Text>
+                            <Text appearance='hint'>Recent</Text>
+                        </Layout>
+                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                            <Text category='h6' style={styles.totalNumbers}>{this.props.data.page?.totalElements}</Text>
+                            <Text appearance='hint'>Total</Text>
+                        </Layout>
+                    </Layout>
                 </Card>
             );
         }
@@ -104,17 +113,17 @@ export class LogManagementCard extends Component {
         return (
             <Card style={[styles.bottomCard, GlobalStyles.card]}>
                 <Text category='h6'>Courses Overview</Text>
-                <Layout style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Layout>
-                        <Text category='h6'>24</Text>
+                <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
+                    <Layout style={{ alignItems: 'center', padding: 10 }}>
+                        <Text style={styles.totalNumbers} category='h6'>24</Text>
                         <Text category='label'>Assigned</Text>
                     </Layout>
-                    <Layout>
-                        <Text category='h6'>13</Text>
+                    <Layout style={{ alignItems: 'center', padding: 10 }}>
+                        <Text style={styles.totalNumbers} category='h6'>13</Text>
                         <Text category='label'>In Progress</Text>
                     </Layout>
-                    <Layout>
-                        <Text category='h6'>11</Text>
+                    <Layout style={{ alignItems: 'center', padding: 10 }}>
+                        <Text style={styles.totalNumbers} category='h6'>11</Text>
                         <Text category='label'>Completed</Text>
                     </Layout>
                 </Layout>
@@ -187,5 +196,8 @@ const styles = StyleSheet.create({
       logo: {
         height: '40px',
         width: '265px'
+      },
+      totalNumbers: {
+        fontSize: 40,
       }
 });
