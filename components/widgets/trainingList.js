@@ -59,7 +59,7 @@ export const TrainingList = (props) => {
     onPress={() => {setVisible(true); setCurrentData(data[index])}}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)}>
-      <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+      <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
         <Layout  style={{ flex: 1, alignItems: 'flex-start' }}>
         <FontAwesomeIcon icon={faUser} />
         </Layout>
@@ -123,7 +123,7 @@ export const TrainingList = (props) => {
   
   return (
     <>
-    <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+    <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
       <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>Employee Name</Text>
       <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
       <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
