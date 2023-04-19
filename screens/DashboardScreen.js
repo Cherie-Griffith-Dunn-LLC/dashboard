@@ -138,9 +138,6 @@ const DashboardScreen = () => {
         console.log('getting data');
         // if user is admin
         if (userRoles.role === 'admin') {
-            getEvents(token, 20).then((response) => {
-                setEvents(response);
-            });
             getAlarms(token, 20).then((response) => {
                 setAlarms(response);
             });
@@ -149,7 +146,9 @@ const DashboardScreen = () => {
                 console.log('Dark web monitoring:');
                 console.log(response);
             });
-    
+            getEvents(token, 20).then((response) => {
+                setEvents(response);
+            });
             getTrainingList(token, 20).then((response) => {
                 setTrainingList(response);
             });
@@ -186,7 +185,7 @@ const DashboardScreen = () => {
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}
             />
-            <Layout style={[GlobalStyles.bgGray, { flex: 1, display: 'flex', flexDirection: 'row' }]}>
+            <Layout style={[GlobalStyles.bgGray, { flex: 1, display: 'flex', flexDirection: 'row', height: '100%' }]}>
                 {userRoles.role === 'admin' ? (
                     <AdminMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 ) : (
@@ -194,12 +193,12 @@ const DashboardScreen = () => {
                 )}
                 <ScrollView>
                 {selectedIndex.row === 0 && (
-                    <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center' }}>
+                    <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center', width: '100%' }}>
                         <Text category='h3'>Home</Text>
                         {userRoles.role === 'admin' && (
                             <StatsCard alarms={alarms} events={events} />
                         )}
-                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between', rowGap: 10, columnGap: 10, alignItems: 'center', alignContent: 'space-evenly' }}>
+                        <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', rowGap: 10, columnGap: 10, minHeight: '80vh', alignContent: 'space-evenly', justifyContent: 'space-between' }}>
                             {userRoles.role === 'admin' ? (
                                 <>
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
@@ -219,14 +218,14 @@ const DashboardScreen = () => {
                 )}
                 {userRoles.role === 'admin' ? (
                     selectedIndex.row === 1 && (
-                        <Layout style={{ flex: 1, padding: 20 }}>
+                        <Layout style={styles.container}>
                             <Text category='h3'>Alarms</Text>
                             <DashboardAlarmsList token={token} />
                         </Layout>
                     )
                 ) : (
                     selectedIndex.row === 1 && (
-                        <Layout style={{ flex: 1, padding: 20 }}>
+                        <Layout style={styles.container}>
                             <Text category='h3'>Alerts</Text>
                             <DashboardAlertsList token={token} />
                         </Layout>
@@ -234,7 +233,7 @@ const DashboardScreen = () => {
                 )}
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 2 && (
-                    <Layout style={{ flex: 1, padding: 20 }}>
+                    <Layout style={styles.container}>
                         <Text category='h3'>Events</Text>
                         <DashboardEventsList token={token} />
                     </Layout>
@@ -242,7 +241,7 @@ const DashboardScreen = () => {
                 )}
                 {userRoles.role === 'admin' ? (
                     selectedIndex.row === 3 && (
-                        <Layout style={{ flex: 1, padding: 20 }}>
+                        <Layout style={styles.container}>
                             <Text category='h3'>Required</Text>
                             <RequiredCourses token={token} />
                             <Text category='h3'>Assignments</Text>
@@ -251,7 +250,7 @@ const DashboardScreen = () => {
                     )
                 ) : (
                     selectedIndex.row === 2 && (
-                            <Layout style={{ flex: 1, padding: 20 }}>
+                            <Layout style={styles.container}>
                                 <Text category='h3'>Courses</Text>
                                 <Text category='h3'>Required</Text>
                                 <RequiredCourses />
@@ -260,7 +259,7 @@ const DashboardScreen = () => {
                 )}
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 4 && (
-                        <Layout style={{ flex: 1, padding: 20 }}>
+                        <Layout style={styles.container}>
                             <Text category='h3'>Dark Web Monitoring</Text>
                             <DWMList token={token} />
                         </Layout>
@@ -268,7 +267,7 @@ const DashboardScreen = () => {
                 )}
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 5 && (
-                        <Layout style={{ flex: 1, padding: 20 }}>
+                        <Layout style={styles.container}>
                             <Text category='h3'>Settings</Text>
                             <UsersList token={token} />
                         </Layout>
@@ -287,5 +286,10 @@ const styles = StyleSheet.create({
     logo: {
         height: '20px',
         width: '105px',
+    },
+    container: {
+        flex: 1,
+        padding: 20,
+        minHeight: '85vh',
     }
 });
