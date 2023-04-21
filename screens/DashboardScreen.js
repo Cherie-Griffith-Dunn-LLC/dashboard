@@ -50,7 +50,8 @@ const logo = (props) => (
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
     
-
+    // Clock
+    const [time, setTime] = React.useState(new Date().toString());
     // theme context
     const themeContext = React.useContext(ThemeContext);
     // loading state
@@ -80,6 +81,15 @@ const DashboardScreen = () => {
             setToken(null);
         }
     };
+
+    // update the clock every second
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(new Date().toString());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+    
     
 
 
@@ -191,8 +201,8 @@ const DashboardScreen = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
             <TopNavigation
-                title='CYPROTECK Dashboard'
-                subtitle={'Welcome, ' + (userInfo.givenName || "User") + '!'}
+                title={'Welcome, ' + (userInfo.givenName || "User")}
+                subtitle={ time }
                 alignment='center'
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}
