@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout, IndexPath } from '@ui-kitten/components';
 // usm api function
 import { getAlarms, getDictionaries } from '../../services/usmApi';
 import GlobalStyles from '../../constants/styles';
@@ -43,7 +43,7 @@ export const TrainingList = (props) => {
 
     const renderItemAccessory = (props, index) => (
         <Button style={GlobalStyles.button}
-        {...props} onPress={() => {setVisible(true); setCurrentData(data[index])}}
+        {...props} onPress={() => {props.setSelectedIndex(new IndexPath(3))}}
         accessoryLeft={buttonArrow}
         size='medium' status='basic'></Button>
     );
@@ -56,7 +56,6 @@ export const TrainingList = (props) => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
-    onPress={() => {setVisible(true); setCurrentData(data[index])}}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)}>
       <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
@@ -91,7 +90,7 @@ export const TrainingList = (props) => {
         </Layout>
         <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
         <Button style={GlobalStyles.button}
-        onPress={() => {setVisible(true); setCurrentData(data[index])}}
+        onPress={() => {props.setSelectedIndex(new IndexPath(3))}}
         accessoryRight={buttonArrow}
         appearance='outline'
         size='small' status='basic'>Details</Button>
