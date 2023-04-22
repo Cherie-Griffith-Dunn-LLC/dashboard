@@ -102,6 +102,7 @@ const loginHeader = (props) => (
             status={errorVisible ? 'danger' : 'basic'}
             style={[GlobalStyles.input, styleguideUIcomponents1Styles.input]}
             onChangeText={nextValue => setEmail(nextValue)}
+            onSubmitEditing={() => { login(email); }}
         />
     );
 
