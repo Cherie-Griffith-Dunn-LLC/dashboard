@@ -16,7 +16,6 @@ export const DashboardAlertsList = (props) => {
   // get alarms from api
   React.useEffect(() => {
     getInvestigations(props.token, 20).then((response) => {
-      console.log(response);
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent
       const alarms = response._embedded.alarms.map(alarm => {
@@ -54,7 +53,6 @@ export const DashboardAlertsList = (props) => {
       });
       setData(alarms);
       setLoading(false);
-      console.log(alarms);
     });
   }, []);
   // control modal visibility

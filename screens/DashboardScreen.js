@@ -157,7 +157,6 @@ const DashboardScreen = () => {
                 setTrainingList(response);
             });
             getCourseStatistics(token).then((response) => {
-                console.log(response);
                 setCourses(response);
             });
         } else {

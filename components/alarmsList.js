@@ -54,14 +54,12 @@ export const DashboardAlarmsList = (props) => {
         }
       });
       setData(alarms);
-      console.log(alarms);
       setLoading(false);
 
       if (response.page?.totalElements > 0) {
         // get dictionary
         getDictionaries(props.token).then((response) => {
           setDictionary(response);
-          console.log(response);
         });
       }
     });
