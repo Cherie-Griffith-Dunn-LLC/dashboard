@@ -25,7 +25,7 @@ export class UserAlertsCard extends Component {
         // check if data is empty
         if (this.props.data.length === 0) {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
+                <Card style={[styles.topCard, GlobalStyles.card]}>
                     <Text category='h6'>Alerts</Text>
                     <Text>Total Alerts: 0</Text>
                     <LoadingStatus />
@@ -34,7 +34,7 @@ export class UserAlertsCard extends Component {
             );
         } else {
             return (
-                <Card style={[styles.dashboardCard, GlobalStyles.card]}>
+                <Card style={[styles.topCard, GlobalStyles.card]}>
                     <Text category='h6'>Alerts</Text>
                     <Text>Total Alerts: {this.props.data._embedded.alarms?.length}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
@@ -48,7 +48,7 @@ export class UserAlertsCard extends Component {
 export class UserCoursesCard extends Component {
     render() {
         return (
-            <Card style={styles.dashboardCard}>
+            <Card style={[styles.topCard, GlobalStyles.card]}>
                 <Text category='h6'>Learning Management System</Text>
                 <Text>Total Required Courses: 100</Text>
                 <CustomBarChart />
@@ -64,12 +64,31 @@ export class UserCoursesCard extends Component {
 
 
 const styles = StyleSheet.create({
-    dashboardCard: {
-        maxWidth: '45%',
-        width: 500,
+    trainingCard: {
+        maxWidth: '100%',
+        width: '100%',
         minWidth: 300,
+        minHeight: 400,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
+    },
+    topCard: {
+        maxWidth: '90%',
+        width: 500,
+        minWidth: '48%',
         height: 400,
         minHeight: 400,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
+    },
+    bottomCard: {
+        maxWidth: '100%',
+        width: 500,
+        minWidth: '48%',
+        height: 200,
+        minHeight: 150,
+        borderColor: '#CED1D5',
+        borderWidth: 1,
     },
     Input: {
         borderRadius: '12px'
@@ -87,5 +106,8 @@ const styles = StyleSheet.create({
       logo: {
         height: '40px',
         width: '265px'
+      },
+      totalNumbers: {
+        fontSize: 40,
       }
 });
