@@ -77,3 +77,15 @@ export const getTrainingList = async (bearerToken) => {
     const data = await response.json();
     return data;
 }
+
+// get courses statistics
+export const getCourseStatistics = async (bearerToken) => {
+    const response = await fetch(dbEndpoint + '/courses/statistics', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer '  + bearerToken
+        }
+    });
+    const data = await response.json();
+    return data;
+}

@@ -110,25 +110,37 @@ export class BehavioralMonitoringCard extends Component {
 
 export class LogManagementCard extends Component {
     render() {
-        return (
-            <Card style={[styles.bottomCard, GlobalStyles.card]}>
-                <Text category='h6'>Courses Overview</Text>
-                <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
-                    <Layout style={{ alignItems: 'center', padding: 10 }}>
-                        <Text style={styles.totalNumbers} category='h6'>24</Text>
-                        <Text category='label'>Assigned</Text>
+        // check if data is empty
+        if (this.props.data.length === 0) {
+            return (
+                <Card style={[styles.bottomCard, GlobalStyles.card]}>
+                    <Text category='h6'>Courses Overview</Text>
+                    <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
+                        <LoadingStatus />
                     </Layout>
-                    <Layout style={{ alignItems: 'center', padding: 10 }}>
-                        <Text style={styles.totalNumbers} category='h6'>13</Text>
-                        <Text category='label'>In Progress</Text>
+                </Card>
+            );
+        } else {
+            return (
+                <Card style={[styles.bottomCard, GlobalStyles.card]}>
+                    <Text category='h6'>Courses Overview</Text>
+                    <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
+                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                            <Text style={styles.totalNumbers} category='h6'>{this.props.data.totalAssignedCourses}</Text>
+                            <Text category='label'>Assigned</Text>
+                        </Layout>
+                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                            <Text style={styles.totalNumbers} category='h6'>{this.props.data.totalInProgressCourses}</Text>
+                            <Text category='label'>In Progress</Text>
+                        </Layout>
+                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                            <Text style={styles.totalNumbers} category='h6'>{this.props.data.totalCompletedCourses}</Text>
+                            <Text category='label'>Completed</Text>
+                        </Layout>
                     </Layout>
-                    <Layout style={{ alignItems: 'center', padding: 10 }}>
-                        <Text style={styles.totalNumbers} category='h6'>11</Text>
-                        <Text category='label'>Completed</Text>
-                    </Layout>
-                </Layout>
-            </Card>
-        );
+                </Card>
+            );
+        }
     }
 }
 

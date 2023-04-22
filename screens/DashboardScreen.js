@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext } from '../contexts/tokenContext';
 // azure api functions
 import { getMe, getRole, getUsers } from '../services/azureApi';
-import { getTrainingList } from '../services/dbApi';
+import { getTrainingList, getCourseStatistics } from '../services/dbApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
@@ -142,7 +142,6 @@ const DashboardScreen = () => {
 
     // get data for charts
     const getChartData = async () => {
-        console.log('getting data');
         // if user is admin
         if (userRoles.role === 'admin') {
             getAlarms(token, 20).then((response) => {
@@ -150,14 +149,16 @@ const DashboardScreen = () => {
             });
             getAllDWM(token, 20).then((response) => {
                 setDwm(response);
-                console.log('Dark web monitoring:');
-                console.log(response);
             });
             getEvents(token, 20).then((response) => {
                 setEvents(response);
             });
             getTrainingList(token, 20).then((response) => {
                 setTrainingList(response);
+            });
+            getCourseStatistics(token).then((response) => {
+                console.log(response);
+                setCourses(response);
             });
         } else {
             getInvestigations(token, 20).then((response) => {
@@ -169,7 +170,6 @@ const DashboardScreen = () => {
 
     React.useEffect(() => {
         getUserInfo().then(() => {
-            console.log("Finished getting user info");
             setIsLoading(false);
         });
     }, []);
@@ -225,7 +225,7 @@ const DashboardScreen = () => {
                                 <>
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
-                                <LogManagementCard setSelectedIndex={setSelectedIndex} />
+                                <LogManagementCard data={courses} setSelectedIndex={setSelectedIndex} />
                                 <BehavioralMonitoringCard data={dwm} setSelectedIndex={setSelectedIndex} />
                                 <EmployeeTrainingCard data={trainingList} setSelectedIndex={setSelectedIndex} />
                                 </>
