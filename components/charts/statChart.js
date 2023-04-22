@@ -28,6 +28,9 @@ export default class CustomStatChart extends React.Component {
 
     render() {
 
+        // store screen width
+        const screenWidth = Dimensions.get("window").width;
+
         // fake data
         const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80]
 
@@ -50,9 +53,11 @@ export default class CustomStatChart extends React.Component {
                     header={alarmsHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#cc7631' }]}>
                     <View style={styles.insideContainer}>
+                        {screenWidth > 600 ?
                         <View style={styles.icon}>
                             <FontAwesomeIcon style={{height: 32, color: '#cc7631'}} size="lg" icon={faCircleExclamation} />
                         </View>
+                        : null}
                         <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
                             {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
                         </Text>
@@ -62,21 +67,26 @@ export default class CustomStatChart extends React.Component {
                     header={eventsHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#0b4d80' }]}>
                     <View style={styles.insideContainer}>
-                        <View style={styles.icon}>
-                            <FontAwesomeIcon style={{height: 32, color: '#0b4d80'}} size="lg" icon={faEye} />
-                        </View>
+                        {screenWidth > 600 ?
+                            <View style={styles.icon}>
+                                <FontAwesomeIcon style={{height: 32, color: '#0b4d80'}} size="lg" icon={faEye} />
+                            </View>
+                        : null}
                         <Text category='h6' style={styles.count}>
                             {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
                         </Text>
                     </View>
                 </Card>
+                {screenWidth > 600 ?
                 <Card
                     header={dwmHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
                         <View style={styles.insideContainer}>
-                            <View style={styles.icon}>
-                                <FontAwesomeIcon style={{height: 32, color: '#010d27'}} size="lg" icon={faStar} />
-                            </View>
+                            {screenWidth > 600 ?
+                                <View style={styles.icon}>
+                                    <FontAwesomeIcon style={{height: 32, color: '#010d27'}} size="lg" icon={faStar} />
+                                </View>
+                                : null}
                             <View>
                                 <Text category='h6' style={styles.count}>
                                     Office Tools
@@ -85,6 +95,7 @@ export default class CustomStatChart extends React.Component {
                             </View>
                         </View>
                 </Card>
+            : null}
             </Layout>
          );
     }
@@ -107,6 +118,7 @@ const styles = StyleSheet.create({
         height: 150,
         width: 350,
         maxWidth: '33%',
+        minWidth: 150,
         borderColor: 'grey',
         borderWidth: 1,
     },
