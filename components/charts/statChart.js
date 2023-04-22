@@ -50,8 +50,8 @@ export default class CustomStatChart extends React.Component {
         return (
             <Layout style={styles.container}>
                 <Card
-                    header={alarmsHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#cc7631' }]}>
+                    <Text style={styles.header}>ALARMS</Text>
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                         <View style={styles.icon}>
@@ -64,8 +64,8 @@ export default class CustomStatChart extends React.Component {
                     </View>
                 </Card>
                 <Card
-                    header={eventsHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#0b4d80' }]}>
+                    <Text style={styles.header}>EVENTS</Text>
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                             <View style={styles.icon}>
@@ -79,8 +79,8 @@ export default class CustomStatChart extends React.Component {
                 </Card>
                 {screenWidth > 600 ?
                 <Card
-                    header={dwmHeader}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
+                        <Text style={styles.header}>FEATURED PARTNER</Text>
                         <View style={styles.insideContainer}>
                             {screenWidth > 600 ?
                                 <View style={styles.icon}>
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
     },
     header: {
         color: 'white',
-        padding: 10,
+        paddingTop: 5,
+        paddingBottom: 10,
     },
     icon: {
         backgroundColor: 'white',
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
         width: 52,
         borderRadius: 10,
         justifyContent: 'center',
-        marginRight: 5,
+        marginRight: 10,
     },
     innerIcon: {
         color: 'black',
