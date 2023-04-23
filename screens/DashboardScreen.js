@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenContext } from '../contexts/tokenContext';
 // azure api functions
 import { getMe, getRole, getUsers } from '../services/azureApi';
-import { getTrainingList } from '../services/dbApi';
+import { getTrainingList, getCourseStatistics } from '../services/dbApi';
 // menus
 import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
@@ -50,7 +50,8 @@ const logo = (props) => (
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
     
-
+    // Clock
+    const [time, setTime] = React.useState(new Date().toString());
     // theme context
     const themeContext = React.useContext(ThemeContext);
     // loading state
@@ -80,6 +81,15 @@ const DashboardScreen = () => {
             setToken(null);
         }
     };
+
+    // update the clock every second
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(new Date().toString());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+    
     
 
 
@@ -132,7 +142,6 @@ const DashboardScreen = () => {
 
     // get data for charts
     const getChartData = async () => {
-        console.log('getting data');
         // if user is admin
         if (userRoles.role === 'admin') {
             getAlarms(token, 20).then((response) => {
@@ -140,14 +149,15 @@ const DashboardScreen = () => {
             });
             getAllDWM(token, 20).then((response) => {
                 setDwm(response);
-                console.log('Dark web monitoring:');
-                console.log(response);
             });
             getEvents(token, 20).then((response) => {
                 setEvents(response);
             });
             getTrainingList(token, 20).then((response) => {
                 setTrainingList(response);
+            });
+            getCourseStatistics(token).then((response) => {
+                setCourses(response);
             });
         } else {
             getInvestigations(token, 20).then((response) => {
@@ -159,7 +169,6 @@ const DashboardScreen = () => {
 
     React.useEffect(() => {
         getUserInfo().then(() => {
-            console.log("Finished getting user info");
             setIsLoading(false);
         });
     }, []);
@@ -191,8 +200,8 @@ const DashboardScreen = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
             <TopNavigation
-                title='CYPROTECK Dashboard'
-                subtitle={'Welcome, ' + (userInfo.givenName || "User") + '!'}
+                title={'Welcome, ' + (userInfo.givenName || "User")}
+                subtitle={ time }
                 alignment='center'
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}
@@ -215,7 +224,7 @@ const DashboardScreen = () => {
                                 <>
                                 <AlarmsCard data={alarms} setSelectedIndex={setSelectedIndex} />
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
-                                <LogManagementCard setSelectedIndex={setSelectedIndex} />
+                                <LogManagementCard data={courses} setSelectedIndex={setSelectedIndex} />
                                 <BehavioralMonitoringCard data={dwm} setSelectedIndex={setSelectedIndex} />
                                 <EmployeeTrainingCard data={trainingList} setSelectedIndex={setSelectedIndex} />
                                 </>

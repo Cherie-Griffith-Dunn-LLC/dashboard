@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout } from '@ui-kitten/components';
+import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout, IndexPath } from '@ui-kitten/components';
 // usm api function
 import { getAlarms, getDictionaries } from '../../services/usmApi';
 import GlobalStyles from '../../constants/styles';
@@ -27,11 +27,24 @@ export const TrainingList = (props) => {
   const [loading, setLoading] = React.useState(true);
   // store dictionary
   const [dictionary, setDictionary] = React.useState([]);
+  // store screen width
+  const [screenWidth, setScreenWidth] = React.useState(0);
   // get employees from api
   React.useEffect(() => {
     const employees = props.data;
     setData(employees);
+    setScreenWidth(window.innerWidth);
   }, []);
+  // set screen width when window is resized
+  React.useEffect(() => {
+    const updateLayout = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', updateLayout);
+    updateLayout();
+    return () => window.removeEventListener('resize', updateLayout);
+  }, []);
+  
   // control modal visibility
   const [visible, setVisible] = React.useState(false);
   // store current data to pass to modal
@@ -43,7 +56,7 @@ export const TrainingList = (props) => {
 
     const renderItemAccessory = (props, index) => (
         <Button style={GlobalStyles.button}
-        {...props} onPress={() => {setVisible(true); setCurrentData(data[index])}}
+        {...props} onPress={() => {props.setSelectedIndex(new IndexPath(3))}}
         accessoryLeft={buttonArrow}
         size='medium' status='basic'></Button>
     );
@@ -56,7 +69,6 @@ export const TrainingList = (props) => {
 
   const renderItem = ({ item, index }) => (
     <ListItem
-    onPress={() => {setVisible(true); setCurrentData(data[index])}}
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)}>
       <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
@@ -68,14 +80,18 @@ export const TrainingList = (props) => {
           {item.name.length <= 20 ? item.name : item.name.substring(0, 20) + '...'}
         </Text>
         </Layout>
-        <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
-        <Text>
-          {item.email.length <= 30 ? item.email : item.email.substring(0, 30) + '...'}
-        </Text>
-        </Layout>
-        <Layout style={{ flex: 1, alignItems: 'center' }}>
-        <Text>{item.mostRecentCompletion ? dateParse(item.mostRecentCompletion) : '--/--/----'}</Text>
-        </Layout>
+        {screenWidth > 600 ? (
+          <>
+          <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
+          <Text>
+            {item.email.length <= 30 ? item.email : item.email.substring(0, 30) + '...'}
+          </Text>
+          </Layout>
+          <Layout style={{ flex: 1, alignItems: 'center' }}>
+          <Text>{item.mostRecentCompletion ? dateParse(item.mostRecentCompletion) : '--/--/----'}</Text>
+          </Layout>
+          </>
+          ) : null}
         <Layout style={{ flex: 1, alignItems: 'center' }}>
         {(item.totalAssignments >= 3 &&  item.totalAssignments <= 5) ? (
           <Button style={GlobalStyles.button} status='warning' size='tiny'>MEDIUM</Button>
@@ -89,13 +105,15 @@ export const TrainingList = (props) => {
         <Layout style={{ flex: 1, alignItems: 'center' }}>
         <Text>{item.totalAssignments}</Text>
         </Layout>
-        <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
-        <Button style={GlobalStyles.button}
-        onPress={() => {setVisible(true); setCurrentData(data[index])}}
-        accessoryRight={buttonArrow}
-        appearance='outline'
-        size='small' status='basic'>Details</Button>
-        </Layout>
+        {screenWidth > 600 ? (
+          <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
+          <Button style={GlobalStyles.button}
+          onPress={() => {props.setSelectedIndex(new IndexPath(3))}}
+          accessoryRight={buttonArrow}
+          appearance='outline'
+          size='small' status='basic'>Details</Button>
+          </Layout>
+          ) : null}
       </Layout>
     </ListItem>
   );
@@ -125,8 +143,12 @@ export const TrainingList = (props) => {
     <>
     <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
       <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>Employee Name</Text>
-      <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
-      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
+      {screenWidth > 600 ? (
+        <>
+          <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
+          <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
+        </>
+      ) : null}
       <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Risk Status</Text>
       <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Total Courses</Text>
     </Layout>
