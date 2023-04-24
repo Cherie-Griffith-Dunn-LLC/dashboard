@@ -98,14 +98,14 @@ export default class CustomLineChart extends React.Component {
                     position: 'absolute',
                     top: 40,
                     left: 24,
-                    height: 250,
+                    height: 200,
 
                 }}
                 yMin={0}
                 numberOfTicks={5}
             />
             <LineChart
-                style={{ height: 250}}
+                style={{ height: 200}}
                 data={ newData }
                 xAccessor={({ item }) => item.date}
                 yAccessor={({ item }) => item.occurences}

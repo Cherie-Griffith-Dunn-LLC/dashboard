@@ -28,6 +28,7 @@ export class StatsCard extends Component {
             <CustomStatChart
                 alarms={this.props.alarms.page?.totalElements}
                 events={this.props.events.page?.totalElements}
+                dwm={this.props.dwm.page?.totalElements}
             />
         )
     }
@@ -178,8 +179,7 @@ const styles = StyleSheet.create({
         maxWidth: '90%',
         width: 500,
         minWidth: '48%',
-        height: 400,
-        minHeight: 400,
+        height: 300,
         borderColor: '#CED1D5',
         borderWidth: 1,
     },

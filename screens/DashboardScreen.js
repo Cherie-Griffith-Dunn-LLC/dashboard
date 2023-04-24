@@ -217,7 +217,7 @@ const DashboardScreen = () => {
                     <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center', width: '100%' }}>
                         <Text category='h3'>Home</Text>
                         {userRoles.role === 'admin' && (
-                            <StatsCard alarms={alarms} events={events} />
+                            <StatsCard alarms={alarms} events={events} dwm={dwm} />
                         )}
                         <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', rowGap: 10, columnGap: 10, minHeight: '80vh', alignContent: 'space-evenly', justifyContent: 'space-between' }}>
                             {userRoles.role === 'admin' ? (

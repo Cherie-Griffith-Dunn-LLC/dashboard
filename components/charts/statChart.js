@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faCircleExclamation, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faCircleExclamation, faStar, faLock } from '@fortawesome/free-solid-svg-icons';
 
 
 const screenWidth = Dimensions.get("window").width;
@@ -17,7 +17,7 @@ const alarmIcon = (props) => (
 );
 
 const partnerIcon = (props) => (
-    <FontAwesomeIcon {...props} size="lg" icon={faStar} />
+    <FontAwesomeIcon {...props} size="lg" icon={faLockOpen} />
 );
 
 export default class CustomStatChart extends React.Component {
@@ -80,18 +80,18 @@ export default class CustomStatChart extends React.Component {
                 {screenWidth > 600 ?
                 <Card
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
-                        <Text style={styles.header}>FEATURED PARTNER</Text>
+                        <Text style={styles.header}>DARK WEB MONITORING</Text>
                         <View style={styles.insideContainer}>
                             {screenWidth > 600 ?
                                 <View style={styles.icon}>
-                                    <FontAwesomeIcon style={{height: 32, color: '#010d27'}} size="lg" icon={faStar} />
+                                    <FontAwesomeIcon style={{height: 32, color: '#010d27'}} size="lg" icon={faLock} />
                                 </View>
                                 : null}
                             <View>
-                                <Text category='h6' style={styles.count}>
-                                    Office Tools
+                                <Text category='h6' status={this.props.dwm > 0 ? 'danger' : 'basic'} style={styles.count}>
+                                    {this.props.dwm ? this.props.dwm : <Spinner size='giant' status='info' />}
                                 </Text>
-                                <Text style={styles.title}>Manage your tasks</Text>
+                                <Text style={styles.title}>Credentials Stolen</Text>
                             </View>
                         </View>
                 </Card>
@@ -143,14 +143,14 @@ const styles = StyleSheet.create({
     },
     icon: {
         backgroundColor: 'white',
-        height: 52,
-        width: 52,
+        height: 42,
+        width: 42,
         borderRadius: 10,
         justifyContent: 'center',
         marginRight: 10,
     },
     innerIcon: {
         color: 'black',
-        height: 32,
+        height: 22,
     }
 });
