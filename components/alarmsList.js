@@ -17,6 +17,45 @@ export const DashboardAlarmsList = (props) => {
   const [dictionary, setDictionary] = React.useState([]);
   // get alarms from api
   React.useEffect(() => {
+    // check if alarms where passed in props
+    if (props.data.page?.totalElements) {
+      const alarms = props.data._embedded?.alarms.map(alarm => {
+        if (alarm.rule_intent === 'System Compromise') {
+          return {
+            ...alarm,
+            icon: 'compromise'
+
+          }
+        } else if (alarm.rule_intent === 'Environmental Awareness') {
+          return {
+            ...alarm,
+            icon: 'environment'
+          }
+        } else if (alarm.rule_intent === 'Exploit & Installation') {
+          return {
+            ...alarm,
+            icon: 'exploit'
+          }
+        } else if (alarm.rule_intent === 'Delivery & Attack') {
+          return {
+            ...alarm,
+            icon: 'attack'
+          }
+        } else if (alarm.rule_intent === 'Reconnaisannce & Probing') {
+          return {
+            ...alarm,
+            icon: 'recon'
+          }
+        } else {
+          return {
+            ...alarm
+          }
+        }
+      });
+      setData(alarms);
+      setLoading(false);
+    }
+     
     getAlarms(props.token, 20).then((response) => {
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent
@@ -103,6 +142,18 @@ export const DashboardAlarmsList = (props) => {
     const renderItemIcon = (props) => (
       <Icon {...props} name='alert-circle-outline' />
     );
+
+    // function to get days ago from date
+    const daysAgo = (date) => {
+      // Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))
+      const days = Math.round((new Date().getTime() - new Date(Math.round(date))) / (1000 * 3600 * 24));
+      if (days === 0) {
+        // return the local time of the date
+        return new Date(Math.round(date)).toLocaleTimeString();
+      } else {
+        return `${days} days ago`;
+      }
+    };
     
 
   const renderItem = ({ item, index }) => (
@@ -175,7 +226,9 @@ export const DashboardAlarmsList = (props) => {
             currentData?.priority_label === 'medium' ? 'warning' : 'info'
           )}
         >
-          <Text>{Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))} days ago.</Text>
+          <Text category='h6'>Alarm Details:</Text>
+          <Divider style={GlobalStyles.divider} />
+          <Text>{daysAgo(currentData?.timestamp_occured)}</Text>
           <Text>Priority: {currentData?.priority_label === 'high' ? (
             <Button style={GlobalStyles.button} status='danger' appearance='outline' size='tiny'>{currentData?.priority_label?.toUpperCase()}</Button>
           ) : (
@@ -199,9 +252,14 @@ export const DashboardAlarmsList = (props) => {
             </>
           )}
           <Text>Sensors: {currentData?.sensor_uuid}</Text>
-          <Text>Intent: {dictionary[currentData?.rule_dictionary]?.Intent[currentData?.rule_intent]}</Text>
-          <Text>Method: {dictionary[currentData?.rule_dictionary]?.Method[currentData?.rule_method]}</Text>
-          <Text>Strategy: {dictionary[currentData?.rule_dictionary]?.Strategy[currentData?.rule_strategy]}</Text>
+          <Divider style={GlobalStyles.divider} />
+          <Text category='h6'>Description:</Text>
+          <Text category='s1'>Method:</Text>
+          <Text category='p1'>{dictionary[currentData?.rule_dictionary]?.Method[currentData?.rule_method]}</Text>
+          <Text category='s1'>Strategy:</Text>
+          <Text category='p1'>{dictionary[currentData?.rule_dictionary]?.Strategy[currentData?.rule_strategy]}</Text>
+          <Text category='s1'>Intent:</Text>
+          <Text category='p1'>{dictionary[currentData?.rule_dictionary]?.Intent[currentData?.rule_intent]}</Text>
         </Card>
     </Modal>
     </>
