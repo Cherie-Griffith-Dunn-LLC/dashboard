@@ -96,11 +96,11 @@ export class BehavioralMonitoringCard extends Component {
                     <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
                         <Layout style={{ alignItems: 'center', padding: 10 }}>
                             <Text category='h6' style={styles.totalNumbers}>{this.props.data._embedded?.eventResources.length}</Text>
-                            <Text appearance='hint'>Recent</Text>
+                            <Text category='label' appearance='hint'>Recent</Text>
                         </Layout>
                         <Layout style={{ alignItems: 'center', padding: 10 }}>
                             <Text category='h6' style={styles.totalNumbers}>{this.props.data.page?.totalElements}</Text>
-                            <Text appearance='hint'>Total</Text>
+                            <Text category='label' appearance='hint'>Total</Text>
                         </Layout>
                     </Layout>
                 </Card>
@@ -128,15 +128,15 @@ export class LogManagementCard extends Component {
                     <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
                         <Layout style={{ alignItems: 'center', padding: 10 }}>
                             <Text style={styles.totalNumbers} category='h6'>{this.props.data.totalAssignedCourses}</Text>
-                            <Text category='label'>Assigned</Text>
+                            <Text category='label' appearance='hint'>Assigned</Text>
                         </Layout>
                         <Layout style={{ alignItems: 'center', padding: 10 }}>
                             <Text style={styles.totalNumbers} category='h6'>{this.props.data.totalInProgressCourses}</Text>
-                            <Text category='label'>In Progress</Text>
+                            <Text category='label' appearance='hint'>In Progress</Text>
                         </Layout>
                         <Layout style={{ alignItems: 'center', padding: 10 }}>
                             <Text style={styles.totalNumbers} category='h6'>{this.props.data.totalCompletedCourses}</Text>
-                            <Text category='label'>Completed</Text>
+                            <Text category='label' appearance='hint'>Completed</Text>
                         </Layout>
                     </Layout>
                 </Card>
