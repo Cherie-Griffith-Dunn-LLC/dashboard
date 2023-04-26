@@ -241,14 +241,14 @@ const DashboardScreen = () => {
                     selectedIndex.row === 1 && (
                         <Layout style={styles.container}>
                             <Text category='h3'>Alarms</Text>
-                            <DashboardAlarmsList token={token} />
+                            <DashboardAlarmsList data={alarms} token={token} />
                         </Layout>
                     )
                 ) : (
                     selectedIndex.row === 1 && (
                         <Layout style={styles.container}>
                             <Text category='h3'>Alerts</Text>
-                            <DashboardAlertsList token={token} />
+                            <DashboardAlertsList data={alerts} token={token} />
                         </Layout>
                     )
                 )}
@@ -256,7 +256,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 2 && (
                     <Layout style={styles.container}>
                         <Text category='h3'>Events</Text>
-                        <DashboardEventsList token={token} />
+                        <DashboardEventsList data={events} token={token} />
                     </Layout>
                     )
                 )}
@@ -282,7 +282,7 @@ const DashboardScreen = () => {
                     selectedIndex.row === 4 && (
                         <Layout style={styles.container}>
                             <Text category='h3'>Dark Web Monitoring</Text>
-                            <DWMList token={token} />
+                            <DWMList data={dwm} token={token} />
                         </Layout>
                     )
                 )}
