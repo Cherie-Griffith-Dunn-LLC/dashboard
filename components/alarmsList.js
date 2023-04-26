@@ -55,7 +55,7 @@ export const DashboardAlarmsList = (props) => {
       setData(alarms);
       setLoading(false);
     }
-     
+    // update list
     getAlarms(props.token, 20).then((response) => {
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent

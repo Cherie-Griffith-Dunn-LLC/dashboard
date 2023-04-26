@@ -17,6 +17,12 @@ export const DashboardEventsList = (props) => {
   const [loading, setLoading] = React.useState(true);
   // get alarms from api
   React.useEffect(() => {
+    // check if events where passed in props
+    if (props.data.page?.totalElements) {
+      setData(props.data._embedded?.eventResources);
+      setLoading(false);
+    }
+    // update list
     getEvents(props.token, 20).then((response) => {
       // replace empty data array with response data
       setData(response._embedded.eventResources);
@@ -101,6 +107,7 @@ export const DashboardEventsList = (props) => {
         visible={visible}
         onBackdropPress={() => setVisible(false)}
         backdropStyle={styles.backdrop}
+        style={{height: '90%', width: '90%'}}
         >
         <Card
           header={cardHeader}
