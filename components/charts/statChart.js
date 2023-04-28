@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     },
     item: {
         height: 100,
-        width: 350,
+        width: 440,
         maxWidth: '33%',
         minWidth: 125,
         borderColor: 'grey',
