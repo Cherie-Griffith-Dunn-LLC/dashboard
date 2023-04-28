@@ -91,7 +91,6 @@ export default class CustomStatChart extends React.Component {
                                 <Text category='h6' status={this.props.dwm > 0 ? 'danger' : 'basic'} style={styles.count}>
                                     {this.props.dwm ? this.props.dwm : <Spinner size='giant' status='info' />}
                                 </Text>
-                                <Text style={styles.title}>Credentials Stolen</Text>
                             </View>
                         </View>
                 </Card>
@@ -108,17 +107,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        height: 150,
-        maxHeight: 150,
+        height: 125,
+        maxHeight: 125,
         marginBottom: 10,
         rowGap: 10,
         columnGap: 10,
     },
     item: {
-        height: 150,
+        height: 100,
         width: 350,
         maxWidth: '33%',
-        minWidth: 150,
+        minWidth: 125,
         borderColor: 'grey',
         borderWidth: 1,
     },
@@ -138,8 +137,6 @@ const styles = StyleSheet.create({
     },
     header: {
         color: 'white',
-        paddingTop: 5,
-        paddingBottom: 10,
     },
     icon: {
         backgroundColor: 'white',
