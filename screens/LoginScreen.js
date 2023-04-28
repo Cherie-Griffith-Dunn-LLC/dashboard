@@ -35,10 +35,10 @@ const loginHeader = (props) => (
   export default function LoginScreen({ navigation }) {
 
     // create screenWidth
-    const [screenWidth, setScreenWidth] = React.useState(767);
+    const [screenWidth, setScreenWidth] = React.useState(0);
 
     React.useEffect(() => {
-      setScreenWidth(Dimensions.get("window").width);
+      setScreenWidth(window.innerWidth);
     }, []);
 
     // create email
@@ -114,21 +114,21 @@ const loginHeader = (props) => (
                   style={styleguideUIcomponents1Styles.background}
                   />
                   <ScrollView>
-                <Layout style={styleguideUIcomponents1Styles.container}>
-                        <View style={styleguideUIcomponents1Styles.loginLeftCard}>
+                <Layout style={screenWidth >= 800 ? styleguideUIcomponents1Styles.container : styleguideUIcomponents1Styles.mobileContainer}>
+                        <View style={screenWidth >= 800 ? styleguideUIcomponents1Styles.loginLeftCard : styleguideUIcomponents1Styles.mobileLeftCard}>
                           <ImageBackground
                           imageStyle={styleguideUIcomponents1Styles.BackSecondImage}
                           style={{flex: 1}}
                           source={require('../assets/backgrounds/login_lock_graphic.png')}
                           >
                               <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
-                              <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
+                              {screenWidth >= 800 ? <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
                               Don't have an account? Sign Up.
-                              </Text>
+                              </Text> : null}
                           </ImageBackground>
                         </View>
                         <View
-                        style={styleguideUIcomponents1Styles.loginRightCard}
+                        style={screenWidth >= 800 ? styleguideUIcomponents1Styles.loginRightCard : styleguideUIcomponents1Styles.mobileRightCard}
                         >
                             <Text status='info' category='h6' style={{textAlign: 'left', marginTop: 40}}>
                             Welcome back,
@@ -184,17 +184,28 @@ const loginHeader = (props) => (
             marginRight: 'auto'
           },
           loginLeftCard: {
-            maxWidth: '45%',
+            maxWidth: '100vw',
             width: 400,
-            minWidth: 100,
             height: 500,
             backgroundColor: 'white',
             textAlign: 'center'
         },
+        mobileLeftCard: {
+          width: '100vw',
+          height: '30vh',
+          backgroundColor: 'white',
+          textAlign: 'center'
+        },
+        mobileRightCard: {
+          width: '100vw',
+          height: '70vh',
+          backgroundColor: 'white',
+          textAlign: 'center',
+          padding: 25
+        },
         loginRightCard: {
-            maxWidth: '80%',
+            maxWidth: '100vw',
             width: 400,
-            minWidth: 200,
             height: 500,
             backgroundColor: 'white',
             textAlign: 'center',
@@ -203,10 +214,18 @@ const loginHeader = (props) => (
         container: {
           display: 'flex',
           flex: '2',
-          flexWrap: 'nowrap',
+          flexWrap: 'wrap',
           flexDirection: 'row',
           justifyContent: 'center',
-          paddingTop: '200px',
+          paddingTop: 200,
+          backgroundColor: 'rgba(255,255,255,0)'
+        },
+        mobileContainer: {
+          display: 'flex',
+          flex: '2',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          justifyContent: 'center',
           backgroundColor: 'rgba(255,255,255,0)'
         },
         background: {

@@ -94,14 +94,14 @@ export const DashboardAlarmsList = (props) => {
       });
       setData(alarms);
       setLoading(false);
-
-      if (response.page?.totalElements > 0) {
+    });
+    // get dictionary if there are alarms
+    if (props.data.page?.totalElements > 0 || data.length > 0) {
         // get dictionary
         getDictionaries(props.token).then((response) => {
           setDictionary(response);
         });
-      }
-    });
+    }
   }, []);
   // control modal visibility
   const [visible, setVisible] = React.useState(false);

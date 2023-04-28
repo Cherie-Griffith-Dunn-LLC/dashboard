@@ -61,7 +61,7 @@ export const getInvestigations = async (bearerToken, size) => {
 
 // get dictionaries
 export const getDictionaries = async (bearerToken, size) => {
-    const response = await fetch(usmEndpoint + '/dictionaries?size=' + size, {
+    const response = await fetch(usmEndpoint + '/dictionaries', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
