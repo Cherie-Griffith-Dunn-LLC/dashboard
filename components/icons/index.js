@@ -10,3 +10,4 @@ export { default as ReportsIcon } from "./ReportsIcon";
 export { default as SettingsIcon } from "./SettingsIcon";
 export { default as StarIcon } from "./StarIcon";
 export { default as SupportIcon } from "./SupportIcon";
+export { default as UserIcon } from "./UserIcon";
