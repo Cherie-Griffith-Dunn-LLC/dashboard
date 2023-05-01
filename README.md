@@ -6,7 +6,7 @@ Commiting to the `main` branch will automatically deploy the web app to https://
 
 - To manually build and deploy the web app, run `npm run build`. Static files will be generated in the `web-build` directory.
 
-## Development Enviroment
+## Development Environment
 ### Requirements
 - Node.js
 - Android Studio (for Android) or [Expo Go Client](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
