@@ -94,11 +94,11 @@ export class BehavioralMonitoringCard extends Component {
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Text appearance='hint'>Compromised data incidences</Text>
                     <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
-                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                        <Layout style={{ alignItems: 'center', padding: 10, paddingTop: 0 }}>
                             <Text category='h6' style={styles.totalNumbers}>{this.props.data._embedded?.eventResources.length}</Text>
                             <Text category='label' appearance='hint'>Recent</Text>
                         </Layout>
-                        <Layout style={{ alignItems: 'center', padding: 10 }}>
+                        <Layout style={{ alignItems: 'center', padding: 10, paddingTop: 0 }}>
                             <Text category='h6' style={styles.totalNumbers}>{this.props.data.page?.totalElements}</Text>
                             <Text category='label' appearance='hint'>Total</Text>
                         </Layout>
@@ -187,8 +187,8 @@ const styles = StyleSheet.create({
         maxWidth: '100%',
         width: 500,
         minWidth: '48%',
-        height: 200,
-        minHeight: 150,
+        height: 125,
+        minHeight: 125,
         borderColor: '#CED1D5',
         borderWidth: 1,
     },

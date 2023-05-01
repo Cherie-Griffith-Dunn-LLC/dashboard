@@ -4,21 +4,10 @@ import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faCircleExclamation, faStar, faLock } from '@fortawesome/free-solid-svg-icons';
-
+import { AlarmIcon, EventsIcon, DwmIcon } from '../icons';
 
 const screenWidth = Dimensions.get("window").width;
 
-const eventIcon = (props) => (
-    <FontAwesomeIcon {...props} size="lg" icon={faEye} />
-);
-
-const alarmIcon = (props) => (
-    <FontAwesomeIcon {...props} size="lg" icon={faCircleExclamation} />
-);
-
-const partnerIcon = (props) => (
-    <FontAwesomeIcon {...props} size="lg" icon={faLockOpen} />
-);
 
 export default class CustomStatChart extends React.Component {
 
@@ -55,7 +44,7 @@ export default class CustomStatChart extends React.Component {
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                         <View style={styles.icon}>
-                            <FontAwesomeIcon style={{height: 32, color: '#cc7631'}} size="lg" icon={faCircleExclamation} />
+                            <AlarmIcon style={{height: 32, color: '#cc7631', margin: 10}} fill="#cc7631" />
                         </View>
                         : null}
                         <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
@@ -69,7 +58,7 @@ export default class CustomStatChart extends React.Component {
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                             <View style={styles.icon}>
-                                <FontAwesomeIcon style={{height: 32, color: '#0b4d80'}} size="lg" icon={faEye} />
+                                <EventsIcon style={{height: 32, color: '#0b4d80', marginLeft: 8.5, marginTop: 10}} fill="#0b4d80" />
                             </View>
                         : null}
                         <Text category='h6' style={styles.count}>
@@ -84,14 +73,13 @@ export default class CustomStatChart extends React.Component {
                         <View style={styles.insideContainer}>
                             {screenWidth > 600 ?
                                 <View style={styles.icon}>
-                                    <FontAwesomeIcon style={{height: 32, color: '#010d27'}} size="lg" icon={faLock} />
+                                    <DwmIcon style={{height: 32, color: '#010d27', margin: 9}} fill='#010d27' />
                                 </View>
                                 : null}
                             <View>
                                 <Text category='h6' status={this.props.dwm > 0 ? 'danger' : 'basic'} style={styles.count}>
                                     {this.props.dwm ? this.props.dwm : <Spinner size='giant' status='info' />}
                                 </Text>
-                                <Text style={styles.title}>Credentials Stolen</Text>
                             </View>
                         </View>
                 </Card>
@@ -108,17 +96,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        height: 150,
-        maxHeight: 150,
+        height: 125,
+        maxHeight: 125,
         marginBottom: 10,
         rowGap: 10,
         columnGap: 10,
     },
     item: {
-        height: 150,
-        width: 350,
+        height: 100,
+        width: 440,
         maxWidth: '33%',
-        minWidth: 150,
+        minWidth: 125,
         borderColor: 'grey',
         borderWidth: 1,
     },
@@ -138,8 +126,6 @@ const styles = StyleSheet.create({
     },
     header: {
         color: 'white',
-        paddingTop: 5,
-        paddingBottom: 10,
     },
     icon: {
         backgroundColor: 'white',

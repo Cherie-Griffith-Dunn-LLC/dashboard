@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout, IndexPath } from '@ui-kitten/components';
-// usm api function
-import { getAlarms, getDictionaries } from '../../services/usmApi';
 import GlobalStyles from '../../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox, faUser } from '@fortawesome/free-solid-svg-icons';
-
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { UserIcon } from '../icons';
 
 function dateParse(mysqlDate) {
   var dateParts = mysqlDate.split("-");
@@ -63,7 +61,7 @@ export const TrainingList = (props) => {
 
 
     const renderItemIcon = (props) => (
-      <FontAwesomeIcon {...props} icon={faUser} />
+      <UserIcon {...props} />
     );
     
 
@@ -73,7 +71,9 @@ export const TrainingList = (props) => {
     accessoryRight={(props) => renderItemAccessory(props, index)}>
       <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
         <Layout  style={{ flex: 1, alignItems: 'flex-start' }}>
-        <FontAwesomeIcon icon={faUser} />
+        <View style={{ height: 44, width: 44, borderRadius: 15, backgroundColor: '#010d27' }}>
+          <UserIcon fill="#ffff" style={{ height: 24, width: 24, marginTop: 10, MarginBottom: 10, marginLeft: 12, marginRight: 8 }} />
+        </View>
         </Layout>
         <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
         <Text>

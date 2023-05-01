@@ -24,6 +24,7 @@ import { AdminMenu, UserMenu } from '../components/customMenus';
 // data for charts
 import { getAlarms, getEvents, getDWM, getInvestigations, getAllDWM } from '../services/usmApi';
 import { UsersList } from '../components/settingUI';
+import { BellIcon, SettingsIcon, LogoutIcon } from '../components/icons';
 
 import GlobalStyles from '../constants/styles';
 
@@ -31,16 +32,22 @@ const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
 );
 
-const LogOutIcon = (props) => (
-    <Icon {...props} name='log-out-outline' />
+const SignOutIcon = (props) => (
+    <View style={styles.iconContainer}>
+        <Icon {...props} style={styles.icon} name='log-out-outline' />
+    </View>
 );
 
-const BellIcon = (props) => (
-    <Icon {...props} name='bell-outline' />
+const NotificationIcon = (props) => (
+    <View style={styles.iconContainer}>
+        <Icon {...props} style={styles.icon} name='bell-outline' />
+    </View>
 );
 
-const SettingsIcon = (props) => (
-    <Icon {...props} name='settings-2-outline' />
+const CogIcon = (props) => (
+    <View style={styles.iconContainer}>
+        <Icon {...props} style={styles.icon} name='settings-2-outline' />
+    </View>
 );
 
 const logo = (props) => (
@@ -113,15 +120,15 @@ const DashboardScreen = () => {
     const singOutAction = () => (
         <>
         <TopNavigationAction
-            icon={BellIcon}
+            icon={NotificationIcon}
             onPress={() => setSelectedIndex(new IndexPath(1))}
         />
         <TopNavigationAction
-            icon={SettingsIcon}
+            icon={CogIcon}
             onPress={() => setSelectedIndex(new IndexPath(5))}
         />
         <TopNavigationAction
-            icon={LogOutIcon}
+            icon={SignOutIcon}
             onPress={() => logOut()}
         />
         </>
@@ -215,7 +222,6 @@ const DashboardScreen = () => {
                 <ScrollView>
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center', width: '100%' }}>
-                        <Text category='h3'>Home</Text>
                         {userRoles.role === 'admin' && (
                             <StatsCard alarms={alarms} events={events} dwm={dwm} />
                         )}
@@ -318,5 +324,21 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 20,
         alignSelf: 'center'
+    },
+    iconContainer: {
+        backgroundColor: 'white',
+        borderColor: '#CED1D5',
+        borderWidth: 1,
+        height: 40,
+        width: 40,
+        borderRadius: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icon: {
+        color: 'black',
+        height: 20,
+        width: 20,
     }
 });

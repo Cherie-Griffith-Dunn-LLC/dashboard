@@ -76,14 +76,16 @@ function App() {
 
     return (
       <TokenContext.Provider value={{ token, setToken }}>
-      <NavigationContainer>
+      <NavigationContainer documentTitle={{
+        formatter: (options, route) => `CYPROTECK® - ${options?.title ?? route?.name}`
+      }} >
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar style="light" />
         <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
           <ApplicationProvider {...eva} theme={{...eva[themeMode], ...theme}}>
               {(token === null) ? (
                 <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="login">
-                  <Stack.Screen  name="Login" component={Login} />
+                  <Stack.Screen options={{title: "Account Login"}} name="Login" component={Login} />
                   <Stack.Screen name="OAuth" component={OauthScreen} />
                 </Stack.Navigator>
               ) : (

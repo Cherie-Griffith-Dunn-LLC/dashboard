@@ -8,11 +8,11 @@ const HomeIcon = (props) => (
 );
 
 const AlertsIcon = (props) => (
-    <Icon {...props} name='alert-triangle-outline' />
+    <Icon {...props} name='alert-circle-outline' />
 );
 
 const TicketsIcon = (props) => (
-    <Icon {...props} name='question-mark-circle-outline' />
+    <Icon {...props} name='activity' />
 );
 
 const CoursesIcon = (props) => (
@@ -20,7 +20,7 @@ const CoursesIcon = (props) => (
 );
 
 const DWMIcon = (props) => (
-    <Icon {...props} name='unlock-outline' />
+    <Icon {...props} name='pie-chart-outline' />
 );
 
 const SettingIcon = (props) => (

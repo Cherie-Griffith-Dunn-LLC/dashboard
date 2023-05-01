@@ -1,0 +1,13 @@
+export { default as AlarmIcon } from "./AlarmIcon";
+export { default as BellIcon } from "./BellIcon";
+export { default as CoursesIcon } from "./CoursesIcon";
+export { default as DashboardIcon } from "./DashboardIcon";
+export { default as DwmIcon } from "./DwmIcon";
+export { default as EventsIcon } from "./EventsIcon";
+export { default as InvestigationsIcon } from "./InvestigationsIcon";
+export { default as LogoutIcon } from "./LogoutIcon";
+export { default as ReportsIcon } from "./ReportsIcon";
+export { default as SettingsIcon } from "./SettingsIcon";
+export { default as StarIcon } from "./StarIcon";
+export { default as SupportIcon } from "./SupportIcon";
+export { default as UserIcon } from "./UserIcon";
