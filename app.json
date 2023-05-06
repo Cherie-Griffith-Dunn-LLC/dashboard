@@ -1,6 +1,8 @@
 {
   "expo": {
     "name": "cyproteck",
+    "description": "CYPROTECK Security Solutions Dashboard.",
+    "privacy": "hidden",
     "slug": "cyproteck",
     "version": "1.0.0",
     "owner": "cyproteck",
@@ -33,7 +35,11 @@
       "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/icon.png",
+      "name": "CYPROTECK",
+      "description": "CYPROTECK Security Solutions Dashboard.",
+      "themeColor": "#ffffff",
+      "backgroundColor": "#ffffff",
       "build": {
         "babel": {
           "include": [
