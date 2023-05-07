@@ -21,6 +21,9 @@ module.exports = () => {
         web: {
           favicon: "./assets/icon.png",
         },
+        plugins: [
+          "sentry-expo"
+        ],
         extra: {
             apiUrl: 'https://cyproteckapi.azurewebsites.net',
             eas: {
@@ -50,6 +53,9 @@ module.exports = () => {
         web: {
           favicon: "./assets/icon.png",
         },
+        plugins: [
+          "sentry-expo"
+        ],
         extra: {
             apiUrl: 'http://localhost:3000',
             eas: {

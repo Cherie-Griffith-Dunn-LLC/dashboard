@@ -48,6 +48,20 @@
         }
       }
     },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "cyproteck",
+            "project": "dashboard"
+          }
+        }
+      ]
+    },
+    "plugins": [
+      "sentry-expo"
+    ],
     "extra": {
       "eas": {
         "projectId": "8c5fc950-3942-4d7f-aa66-43e0f9e77cef"
