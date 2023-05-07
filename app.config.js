@@ -3,6 +3,12 @@ module.exports = () => {
       return {
         /* your production config */
         owner: 'cyproteck',
+        icon: "./assets/icon.png",
+        splash: {
+          image: "./assets/splash.png",
+          resizeMode: "contain",
+          backgroundColor: "#ffffff"
+        },
         ios: {
           supportsTablet: true,
           bundleIdentifier: "com.cyproteck.cyproteck",
@@ -12,6 +18,12 @@ module.exports = () => {
           package: "com.cyproteck.cyproteck",
           versionCode: 1
         },
+        web: {
+          favicon: "./assets/icon.png",
+        },
+        plugins: [
+          "sentry-expo"
+        ],
         extra: {
             apiUrl: 'https://cyproteckapi.azurewebsites.net',
             eas: {
@@ -23,15 +35,27 @@ module.exports = () => {
       return {
         /* your development config */
         owner: 'cyproteck',
+        splash: {
+          image: "./assets/splash.png",
+          resizeMode: "contain",
+          backgroundColor: "#ffffff"
+        },
         ios: {
           supportsTablet: true,
           bundleIdentifier: "com.cyproteck.cyproteck",
           buildNumber: "0.0.1"
         },
+        icon: "./assets/icon.png",
         android: {
           package: "com.cyproteck.cyproteck",
           versionCode: 1
         },
+        web: {
+          favicon: "./assets/icon.png",
+        },
+        plugins: [
+          "sentry-expo"
+        ],
         extra: {
             apiUrl: 'http://localhost:3000',
             eas: {

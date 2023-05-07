@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeContext } from './contexts/theme-context';
+import * as Sentry from 'sentry-expo';
 // import our custom theme colors
 import { default as theme } from './assets/theme.json';
 // import screens
@@ -18,6 +19,16 @@ import OauthScreen from './screens/OauthScreen';
 
 // create context for token
 import { TokenContext } from './contexts/tokenContext';
+
+// set up sentry
+Sentry.init({
+  dsn: 'https://12eef28bf24c483e98e6a9b2aeaf2e24@o4505110341812224.ingest.sentry.io/4505143868129280',
+  environment: process.env.MY_ENVIRONMENT === 'production' ? 'production' : 'development',
+  // if true all dev/local errors will be ignored and only app releases will report errors to Sentry
+  enableInExpoDevelopment: true,
+  // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+  debug: process.env.MY_ENVIRONMENT === 'production' ? false : true,
+});
 
 function Login({navigation, route}) {
   return <LoginScreen navigation={navigation} route={route} />;
