@@ -1,5 +1,32 @@
 {
-  "strict": {
-    "text-font-family": "OpenSans-Regular"
+    "components": {
+        "MenuItem": {
+            "meta": {},
+            "appearances": {
+                "default": {
+                    "mapping": {
+                        "backgroundColor": "#CED1D5",
+                        "titleMarginHorizontal": 8,
+                        "iconMarginHorizontal": 8,
+                        "state": {
+                            "hover": {
+                                "titleColor": "#0b4d80",
+                                "iconTintColor": "#0b4d80"
+                            },
+                            "active": {
+                                "backgroundColor": "#CED1D5"
+                            },
+                            "selected": {
+                                "backgroundColor": "black",
+                                "titleColor": "white",
+                                "iconTintColor": "#0b4d80",
+                                "indicatorWidth": 0,
+                                "indicatorBackgroundColor": "transparent"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
   }
-}
