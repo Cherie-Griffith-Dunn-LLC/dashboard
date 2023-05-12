@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout, IndexPath } from '@ui-kitten/components';
 import GlobalStyles from '../../constants/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +16,7 @@ function dateParse(mysqlDate) {
   return newDate;
 }
 
+const windowWidth = Dimensions.get('window').width;
 
 export const TrainingList = (props) => {
   const theme = useTheme();
@@ -25,22 +26,23 @@ export const TrainingList = (props) => {
   const [loading, setLoading] = React.useState(true);
   // store dictionary
   const [dictionary, setDictionary] = React.useState([]);
-  // store screen width
-  const [screenWidth, setScreenWidth] = React.useState(0);
   // get employees from api
   React.useEffect(() => {
     const employees = props.data;
     setData(employees);
-    setScreenWidth(window.innerWidth);
   }, []);
-  // set screen width when window is resized
+  // create screenWidth
+  const [screenWidth, setScreenWidth] = React.useState(windowWidth);
+
   React.useEffect(() => {
-    const updateLayout = () => {
-      setScreenWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', updateLayout);
-    updateLayout();
-    return () => window.removeEventListener('resize', updateLayout);
+    // listen for changes to screen size
+    const screenSubscription = Dimensions.addEventListener(
+      'change',
+      ({ window: { width, height } }) => {
+        setScreenWidth(width);
+      }
+    );
+    return () => screenSubscription.remove();
   }, []);
   
   // control modal visibility
@@ -142,14 +144,14 @@ export const TrainingList = (props) => {
   return (
     <>
     <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
-      <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>Employee Name</Text>
-      {screenWidth > 600 ? (
+      <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>{screenWidth > 768 ? 'Employee Name' : 'Name'  }</Text>
+      {screenWidth > 768 ? (
         <>
           <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
           <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
         </>
       ) : null}
-      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Risk Status</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>{screenWidth > 768 ? 'Risk Status' : 'Risk'  }</Text>
       <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Total Courses</Text>
     </Layout>
     <List

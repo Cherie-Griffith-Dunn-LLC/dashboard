@@ -31,14 +31,23 @@ const loginHeader = (props) => (
     <FontAwesomeIcon {...props} icon={faMicrosoft} inverse  />
   );
 
+  const windowWidth = Dimensions.get('window').width;
+
 
   export default function LoginScreen({ navigation }) {
 
     // create screenWidth
-    const [screenWidth, setScreenWidth] = React.useState(0);
+    const [screenWidth, setScreenWidth] = React.useState(windowWidth);
 
     React.useEffect(() => {
-      setScreenWidth(window.innerWidth);
+      // listen for changes to screen size
+      const screenSubscription = Dimensions.addEventListener(
+        'change',
+        ({ window: { width, height } }) => {
+          setScreenWidth(width);
+        }
+      );
+      return () => screenSubscription.remove();
     }, []);
 
     // create email

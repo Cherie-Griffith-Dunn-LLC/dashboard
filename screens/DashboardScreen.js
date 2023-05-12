@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Layout, Icon, IndexPath, TopNavigation, TopNavigationAction, Spinner } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, View, ScrollView, Platform, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Platform, Image, Dimensions } from 'react-native';
 import { DashboardAlarmsList } from '../components/alarmsList';
 import { DashboardAlertsList } from '../components/investigationsList';
 import { DashboardEventsList } from '../components/eventsList';
@@ -53,6 +53,8 @@ const CogIcon = (props) => (
 const logo = (props) => (
     <Image style={styles.logo} {...props}  source={require('../assets/cyplogo-blk.png')} />
 );
+
+const windowWidth = Dimensions.get('window').width;
 
 const DashboardScreen = () => {
     const { token, setToken } = React.useContext(TokenContext);
@@ -184,7 +186,19 @@ const DashboardScreen = () => {
         getChartData();
     }, [userRoles]);
 
-    
+    // create screenWidth
+    const [screenWidth, setScreenWidth] = React.useState(windowWidth);
+
+    React.useEffect(() => {
+        // listen for changes to screen size
+        const screenSubscription = Dimensions.addEventListener(
+          'change',
+          ({ window: { width, height } }) => {
+            setScreenWidth(width);
+          }
+        );
+        return () => screenSubscription.remove();
+      }, []);
 
     
     // index for menu
@@ -208,7 +222,8 @@ const DashboardScreen = () => {
             <View style={{ flex: 1 }}>
             <TopNavigation
                 title={'Welcome, ' + (userInfo.givenName || "User")}
-                subtitle={ time }
+                // only show subtitle on non-mobile devices
+                subtitle={ screenWidth > 768 ? time : null }
                 alignment='center'
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}

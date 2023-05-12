@@ -99,7 +99,7 @@ export default class CustomPieChart extends React.Component {
             return (
                 <Text
                     key={index}
-                    x={pieCentroid[0]}
+                    x={pieCentroid[0] - 5}
                     y={pieCentroid[1]}
                     fill={'white'}
                     textAncor={'middle'}
