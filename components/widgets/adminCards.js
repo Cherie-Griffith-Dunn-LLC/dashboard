@@ -92,7 +92,6 @@ export class BehavioralMonitoringCard extends Component {
             return (
                 <Card style={[styles.bottomCard, GlobalStyles.card]}>
                     <Text category='h6'>Dark Web Monitoring</Text>
-                    <Text appearance='hint'>Compromised data incidences</Text>
                     <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
                         <Layout style={{ alignItems: 'center', padding: 10, paddingTop: 0 }}>
                             <Text category='h6' style={styles.totalNumbers}>{this.props.data._embedded?.eventResources.length}</Text>
