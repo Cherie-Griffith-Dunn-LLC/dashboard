@@ -27,6 +27,7 @@ import { UsersList } from '../components/settingUI';
 import { BellIcon, SettingsIcon, LogoutIcon } from '../components/icons';
 
 import GlobalStyles from '../constants/styles';
+import { Divider } from 'react-native-elements';
 
 const MenuIcon = (props) => (
     <Icon {...props} name='menu' />
@@ -224,7 +225,7 @@ const DashboardScreen = () => {
                 title={'Welcome, ' + (userInfo.givenName || "User")}
                 // only show subtitle on non-mobile devices
                 subtitle={ screenWidth > 768 ? time : null }
-                alignment='center'
+                alignment={screenWidth > 768 ? 'center' : 'start'}
                 accessoryLeft={renderDrawerAction}
                 accessoryRight={singOutAction}
             />
@@ -234,6 +235,7 @@ const DashboardScreen = () => {
                 ) : (
                     <UserMenu menuWidth={menuWidth} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} toggleTheme={themeContext.toggleTheme} />
                 )}
+                <Divider />
                 <ScrollView>
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center', width: '100%' }}>
