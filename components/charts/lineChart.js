@@ -133,7 +133,7 @@ export default class CustomLineChart extends React.Component {
                 svg={{
                     fontSize: 10,
                     fill: 'black',
-                    rotation: 20,
+                    rotation: 25,
                     originY: 30,
                     y: 5,
                 }}
