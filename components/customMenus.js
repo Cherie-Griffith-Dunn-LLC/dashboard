@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image } from 'react-native';
 import { Menu, MenuItem, Icon, Layout, Button, Text } from '@ui-kitten/components';
 import GlobalStyles from '../constants/styles';
+import * as WebBrowser from 'expo-web-browser';
 
 const HomeIcon = (props) => (
     <Icon {...props} name='home-outline' />
@@ -27,6 +28,10 @@ const SettingIcon = (props) => (
     <Icon {...props} name='settings-2-outline' />
 );
 
+const SupportIcon = (props) => (
+    <Icon {...props} name='people-outline' />
+);
+
 const LightIcon = (props) => (
     <Icon {...props} name='sun-outline' />
 );
@@ -43,6 +48,11 @@ const LargeLogo = (props) => (
     <Image style={styles.largeLogo} {...props}  source={require('../assets/cyplogo-blk.png')} />
 );
 
+// function to open link in app browser
+const openLink = async (url) => {
+    await WebBrowser.openBrowserAsync(url);
+}
+
 // admin sidebar menu
 export class AdminMenu extends Component {
     render() {
@@ -55,6 +65,12 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
+                    <Button
+                        onPress={() => openLink('https://cyproteck.com/?page_id=1087')}
+                        accessoryLeft={SupportIcon}
+                        appearance='ghost'
+                        status='basic'
+                        style={{ alignSelf: 'center', marginBottom: 20, marginTop: 20 }}></Button>
                     </>
                 ) : (
                     <>
@@ -63,6 +79,12 @@ export class AdminMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
+                    <Button
+                        onPress={() => openLink('https://cyproteck.com/?page_id=1087')}
+                        accessoryLeft={SupportIcon}
+                        appearance='ghost'
+                        status='basic'
+                        style={{ alignSelf: 'center', marginBottom: 20, marginTop: 20 }}>Support Center</Button>
                     <Text category='label'>&copy; CYPROTECK, Inc.</Text>
                     <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
                     </>
@@ -84,6 +106,12 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
+                    <Button
+                        onPress={() => openLink('https://cyproteck.com/?page_id=1087')}
+                        accessoryLeft={SupportIcon}
+                        appearance='ghost'
+                        status='basic'
+                        style={{ alignSelf: 'center', marginBottom: 20, marginTop: 20 }}></Button>
                     </>
                 ) : (
                     <>
@@ -92,6 +120,12 @@ export class UserMenu extends Component {
                         selectedIndex={this.props.selectedIndex}
                         setSelectedIndex={this.props.setSelectedIndex}
                     />
+                    <Button
+                        onPress={() => openLink('https://cyproteck.com/?page_id=1087')}
+                        accessoryLeft={SupportIcon}
+                        appearance='ghost'
+                        status='basic'
+                        style={{ alignSelf: 'center', marginBottom: 20, marginTop: 20 }}>Support Center</Button>
                     <Text>&copy; CYPROTECK, Inc.</Text>
                     <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
                     </>
