@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getTenantId } from '../services/azureApi';
 import GlobalStyles from '../constants/styles';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 
 

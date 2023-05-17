@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout, IndexPath } from '@ui-kitten/components';
 import GlobalStyles from '../../constants/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserIcon } from '../icons';
 
 function dateParse(mysqlDate) {
