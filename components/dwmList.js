@@ -4,7 +4,7 @@ import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, Spinner } fro
 // usm api function
 import { getAllDWM } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-regular-svg-icons';
 

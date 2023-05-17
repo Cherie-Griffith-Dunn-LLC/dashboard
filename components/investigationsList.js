@@ -4,7 +4,7 @@ import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spi
 // usm api function
 import { getInvestigations } from '../services/usmApi';
 import GlobalStyles from '../constants/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBiohazard, faBuildingShield, faBinoculars, faLandMineOn, faTruckRampBox } from '@fortawesome/free-solid-svg-icons';
 
 export const DashboardAlertsList = (props) => {

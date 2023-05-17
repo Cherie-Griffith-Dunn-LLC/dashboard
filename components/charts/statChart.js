@@ -2,8 +2,6 @@ import { Layout, Text, Spinner, Card } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faCircleExclamation, faStar, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AlarmIcon, EventsIcon, DwmIcon } from '../icons';
 
 const screenWidth = Dimensions.get("window").width;

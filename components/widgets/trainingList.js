@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { List, ListItem, Button, Icon, Modal, Text, Card, Divider, useTheme, Spinner, Layout, IndexPath } from '@ui-kitten/components';
 import GlobalStyles from '../../constants/styles';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserIcon } from '../icons';
 
 function dateParse(mysqlDate) {
@@ -71,7 +69,8 @@ export const TrainingList = (props) => {
     <ListItem
     accessoryLeft={renderItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)}>
-      <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
+      {screenWidth >= 800 ? (
+        <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
         <Layout  style={{ flex: 1, alignItems: 'flex-start' }}>
         <View style={{ height: 44, width: 44, borderRadius: 15, backgroundColor: '#010d27' }}>
           <UserIcon fill="#ffff" style={{ height: 24, width: 24, marginTop: 10, MarginBottom: 10, marginLeft: 12, marginRight: 8 }} />
@@ -82,18 +81,14 @@ export const TrainingList = (props) => {
           {item.name.length <= 20 ? item.name : item.name.substring(0, 20) + '...'}
         </Text>
         </Layout>
-        {screenWidth > 600 ? (
-          <>
-          <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
-          <Text>
-            {item.email.length <= 30 ? item.email : item.email.substring(0, 30) + '...'}
-          </Text>
-          </Layout>
-          <Layout style={{ flex: 1, alignItems: 'center' }}>
-          <Text>{item.mostRecentCompletion ? dateParse(item.mostRecentCompletion) : '--/--/----'}</Text>
-          </Layout>
-          </>
-          ) : null}
+        <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
+        <Text>
+          {item.email.length <= 30 ? item.email : item.email.substring(0, 30) + '...'}
+        </Text>
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'center' }}>
+        <Text>{item.mostRecentCompletion ? dateParse(item.mostRecentCompletion) : '--/--/----'}</Text>
+        </Layout>
         <Layout style={{ flex: 1, alignItems: 'center' }}>
         {(item.totalAssignments >= 3 &&  item.totalAssignments <= 5) ? (
           <Button style={GlobalStyles.button} status='warning' size='tiny'>MEDIUM</Button>
@@ -107,16 +102,36 @@ export const TrainingList = (props) => {
         <Layout style={{ flex: 1, alignItems: 'center' }}>
         <Text>{item.totalAssignments}</Text>
         </Layout>
-        {screenWidth > 600 ? (
-          <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
-          <Button style={GlobalStyles.button}
-          onPress={() => {props.setSelectedIndex(new IndexPath(3))}}
-          accessoryRight={buttonArrow}
-          appearance='outline'
-          size='small' status='basic'>Details</Button>
-          </Layout>
-          ) : null}
+        <Layout style={{ flex: 1, alignItems: 'flex-end'}}>
+        <Button style={GlobalStyles.button}
+        onPress={() => {props.setSelectedIndex(new IndexPath(3))}}
+        accessoryRight={buttonArrow}
+        appearance='outline'
+        size='small' status='basic'>Details</Button>
+        </Layout>
       </Layout>
+      ) : (
+        <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', flexWrap: 'nowrap' }}>
+        <Layout style={{ flex: 3, alignItems: 'flex-start' }}>
+        <Text>
+          {item.name.length <= 20 ? item.name : item.name.substring(0, 20) + '...'}
+        </Text>
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'center' }}>
+        {(item.totalAssignments >= 3 &&  item.totalAssignments <= 5) ? (
+          <Button style={GlobalStyles.button} status='warning' size='tiny'>MEDIUM</Button>
+        ) : (item.totalAssignments > 5) ? (
+            <Button style={GlobalStyles.button} status='danger' size='tiny'>HIGH</Button>
+          ) : (
+            <Button style={GlobalStyles.button} status='success' size='tiny'>LOW</Button>
+          )
+        }
+        </Layout>
+        <Layout style={{ flex: 1, alignItems: 'center' }}>
+        <Text>{item.totalAssignments}</Text>
+        </Layout>
+      </Layout>
+      )}
     </ListItem>
   );
 
@@ -143,17 +158,21 @@ export const TrainingList = (props) => {
   
   return (
     <>
+    {screenWidth > 768 ? (
     <Layout style={{ paddingLeft: 80, paddingRight: 90, display: 'flex', alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
-      <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>{screenWidth > 768 ? 'Employee Name' : 'Name'  }</Text>
-      {screenWidth > 768 ? (
-        <>
-          <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
-          <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
-        </>
-      ) : null}
-      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>{screenWidth > 768 ? 'Risk Status' : 'Risk'  }</Text>
+      <Text category='label' style={{ flex: 3, alignSelf: 'flex-start' }}>Employee Name</Text>
+      <Text category='label' style={{ flex: 3, alignSelf: 'flex-end' }}>Email</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Last Course Completed</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Risk Status</Text>
       <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Total Courses</Text>
     </Layout>
+    ) : (
+      <Layout style={{ paddingLeft: 0, paddingRight: 0, display: 'flex', alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'nowrap' }}>
+      <Text category='label' style={{ flex: 2, alignSelf: 'flex-start' }}>Name</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Risk</Text>
+      <Text category='label' style={{ flex: 1, alignSelf: 'flex-end' }}>Total Courses</Text>
+    </Layout>
+    )}
     <List
       style={styles.container}
       numColumns={1}

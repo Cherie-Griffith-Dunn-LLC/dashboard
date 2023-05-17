@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     topCard: {
-        maxWidth: '90%',
+        maxWidth: '100%',
         width: 500,
         minWidth: '48%',
         height: 300,
