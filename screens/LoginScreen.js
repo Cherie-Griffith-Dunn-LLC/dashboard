@@ -28,7 +28,7 @@ const loginHeader = (props) => (
   );
 
   const AzureIcon = (props) => (
-    <FontAwesomeIcon {...props} icon={faMicrosoft} inverse  />
+    <FontAwesomeIcon {...props} icon={faMicrosoft} color={'white'}  />
   );
 
   const windowWidth = Dimensions.get('window').width;
