@@ -54,6 +54,7 @@ const loginHeader = (props) => (
                 'profile',
                 'offline_access',
                 'email',
+                'Directory.AccessAsUser.All',
                 'User.Read'
             ],
             redirectUri: makeRedirectUri({
