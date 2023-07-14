@@ -73,6 +73,7 @@ const DashboardScreen = () => {
     const [dwm, setDwm] = React.useState([]);
     const [courses, setCourses] = React.useState([]);
     const [trainingList, setTrainingList] = React.useState([]);
+    const [trainingLoading, setTrainingLoading] = React.useState(true);
 
     // logout user
     const logOut = async () => {
@@ -165,6 +166,7 @@ const DashboardScreen = () => {
             });
             getTrainingList(token, 20).then((response) => {
                 setTrainingList(response);
+                setTrainingLoading(false);
             });
             getCourseStatistics(token).then((response) => {
                 setCourses(response);
@@ -249,7 +251,7 @@ const DashboardScreen = () => {
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard data={courses} setSelectedIndex={setSelectedIndex} />
                                 <BehavioralMonitoringCard data={dwm} setSelectedIndex={setSelectedIndex} />
-                                <EmployeeTrainingCard data={trainingList} setSelectedIndex={setSelectedIndex} />
+                                <EmployeeTrainingCard data={trainingList} loading={trainingLoading} setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
                                 <>

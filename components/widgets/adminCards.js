@@ -146,7 +146,7 @@ export class LogManagementCard extends Component {
 
 export class EmployeeTrainingCard extends Component {
     render() {
-        if (this.props.data.length === 0) {
+        if (this.props.trainingLoading === true) {
             return (
                 <Card style={[styles.trainingCard, GlobalStyles.card]}>
                     <Text category='h6'>Employee Training</Text>
