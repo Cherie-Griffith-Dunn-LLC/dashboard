@@ -251,7 +251,7 @@ const DashboardScreen = () => {
                                 <EventsCard data={events} setSelectedIndex={setSelectedIndex} />
                                 <LogManagementCard data={courses} setSelectedIndex={setSelectedIndex} />
                                 <BehavioralMonitoringCard data={dwm} setSelectedIndex={setSelectedIndex} />
-                                <EmployeeTrainingCard data={trainingList} loading={trainingLoading} setSelectedIndex={setSelectedIndex} />
+                                <EmployeeTrainingCard data={trainingList} trainingLoading={trainingLoading} setSelectedIndex={setSelectedIndex} />
                                 </>
                             ) : (
                                 <>

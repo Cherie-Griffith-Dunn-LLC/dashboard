@@ -157,7 +157,7 @@ export class EmployeeTrainingCard extends Component {
             return (
                 <Card style={[styles.trainingCard, GlobalStyles.card]}>
                     <Text category='h6'>Employee Training</Text>
-                    <TrainingList setSelectedIndex={this.props.setSelectedIndex} data={this.props.data} />
+                    <TrainingList trainingLoading={this.props.trainingLoading} setSelectedIndex={this.props.setSelectedIndex} data={this.props.data} />
                 </Card>
             )
         }
