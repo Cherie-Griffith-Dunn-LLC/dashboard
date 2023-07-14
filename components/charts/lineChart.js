@@ -16,7 +16,11 @@ export default class CustomLineChart extends React.Component {
         
         // check if data is empty
         if (!this.props.data) {
-            var newData = oldData;
+            // show empty chart
+            var newData = new Array(25).fill().map((value, index) => ({
+                date: index,
+                occurences: 0
+            }))
         } else {
             //var newData = this.props.data;
             // parse data to get how many occured on each day then push to newData
