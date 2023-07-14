@@ -46,7 +46,7 @@ export default class CustomStatChart extends React.Component {
                         </View>
                         : null}
                         <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
-                            {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
+                            {Number.isInteger(this.props.alarms) ? this.props.alarms : <Spinner size='giant' status='info' />}
                         </Text>
                     </View>
                 </Card>
