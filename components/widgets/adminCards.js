@@ -94,11 +94,11 @@ export class BehavioralMonitoringCard extends Component {
                     <Text category='h6'>Dark Web Monitoring</Text>
                     <Layout style={{ display: 'flex', flex: 1, alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'nowrap' }}>
                         <Layout style={{ alignItems: 'center', padding: 10, paddingTop: 0 }}>
-                            <Text category='h6' style={styles.totalNumbers}>{this.props.data._embedded?.eventResources.length}</Text>
+                            <Text category='h6' style={styles.totalNumbers}>{this.props.data._embedded?.eventResources.length ? this.props.data._embedded?.eventResources.length : 0}</Text>
                             <Text category='label' appearance='hint'>Recent</Text>
                         </Layout>
                         <Layout style={{ alignItems: 'center', padding: 10, paddingTop: 0 }}>
-                            <Text category='h6' style={styles.totalNumbers}>{this.props.data.page?.totalElements}</Text>
+                            <Text category='h6' style={styles.totalNumbers}>{this.props.data.page?.totalElements ? this.props.data.page?.totalElements : 0}</Text>
                             <Text category='label' appearance='hint'>Total</Text>
                         </Layout>
                     </Layout>
@@ -146,7 +146,7 @@ export class LogManagementCard extends Component {
 
 export class EmployeeTrainingCard extends Component {
     render() {
-        if (this.props.data.length === 0) {
+        if (this.props.trainingLoading === true) {
             return (
                 <Card style={[styles.trainingCard, GlobalStyles.card]}>
                     <Text category='h6'>Employee Training</Text>
@@ -157,7 +157,7 @@ export class EmployeeTrainingCard extends Component {
             return (
                 <Card style={[styles.trainingCard, GlobalStyles.card]}>
                     <Text category='h6'>Employee Training</Text>
-                    <TrainingList setSelectedIndex={this.props.setSelectedIndex} data={this.props.data} />
+                    <TrainingList trainingLoading={this.props.trainingLoading} setSelectedIndex={this.props.setSelectedIndex} data={this.props.data} />
                 </Card>
             )
         }

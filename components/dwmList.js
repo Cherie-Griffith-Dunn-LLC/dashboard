@@ -25,7 +25,7 @@ export const DWMList = (props) => {
     // update list
     getAllDWM(props.token, 20).then((response) => {
       // replace empty data array with response data
-      setData(response._embedded.eventResources);
+      setData(response._embedded?.eventResources);
       setLoading(false);
     });
   }, []);
@@ -87,7 +87,7 @@ export const DWMList = (props) => {
     )
   }
   // if not loading and no adata, show no data text
-  if (!loading && data.length === 0) {
+  if (!loading && data === []) {
     return (
       <Text>No data</Text>
     )

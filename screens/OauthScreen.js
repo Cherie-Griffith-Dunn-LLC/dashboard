@@ -32,7 +32,7 @@ const loginHeader = (props) => (
   );
 
   // app keys
-  const clientId = '94a4d08f-e078-45f2-a42a-ceb9ad7439ec';
+  const clientId = '1d40f6b3-9072-4a0a-af48-6e423e58d0d6';
 
   export default function OauthScreen({ route, navigation }) {
 
@@ -54,6 +54,7 @@ const loginHeader = (props) => (
                 'profile',
                 'offline_access',
                 'email',
+                'Directory.AccessAsUser.All',
                 'User.Read'
             ],
             redirectUri: makeRedirectUri({

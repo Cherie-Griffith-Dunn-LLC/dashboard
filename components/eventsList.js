@@ -25,9 +25,10 @@ export const DashboardEventsList = (props) => {
     // update list
     getEvents(props.token, 20).then((response) => {
       // replace empty data array with response data
-      setData(response._embedded.eventResources);
+      setData(response._embedded?.eventResources);
       setLoading(false);
     });
+    console.log(data);
   }, []);
 
   // control modal visibility
@@ -90,7 +91,7 @@ export const DashboardEventsList = (props) => {
     )
   }
   // if not loading and no adata, show no data text
-  if (!loading && data.length === 0) {
+  if (!loading && data === []) {
     return (
       <Text>No data</Text>
     )

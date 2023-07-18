@@ -59,7 +59,7 @@ export const DashboardAlarmsList = (props) => {
     getAlarms(props.token, 20).then((response) => {
       // replace empty data array with response data
       // for each item in alarms map onto it an icon and status based on rule intent
-      const alarms = response._embedded.alarms.map(alarm => {
+      const alarms = response._embedded?.alarms?.map(alarm => {
         if (alarm.rule_intent === 'System Compromise') {
           return {
             ...alarm,

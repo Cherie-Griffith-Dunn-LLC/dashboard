@@ -28,6 +28,7 @@ export const TrainingList = (props) => {
   React.useEffect(() => {
     const employees = props.data;
     setData(employees);
+    console.log(employees);
   }, []);
   // create screenWidth
   const [screenWidth, setScreenWidth] = React.useState(windowWidth);
@@ -152,7 +153,7 @@ export const TrainingList = (props) => {
   // if not loading and no adata, show no data text
   if (data?.length === 0) {
     return (
-      <Text>No data</Text>
+      <Text>No employee training assigned.</Text>
     )
   }
   

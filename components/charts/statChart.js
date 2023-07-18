@@ -46,7 +46,7 @@ export default class CustomStatChart extends React.Component {
                         </View>
                         : null}
                         <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
-                            {this.props.alarms ? this.props.alarms : <Spinner size='giant' status='info' />}
+                            {Number.isInteger(this.props.alarms) ? this.props.alarms : <Spinner size='giant' status='info' />}
                         </Text>
                     </View>
                 </Card>
@@ -60,7 +60,7 @@ export default class CustomStatChart extends React.Component {
                             </View>
                         : null}
                         <Text category='h6' style={styles.count}>
-                            {this.props.events ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
+                            {Number.isInteger(this.props.events) ? (this.props.events === 10000 ? '10k+' : this.props.events) : <Spinner size='giant' status='info' />}
                         </Text>
                     </View>
                 </Card>
@@ -76,7 +76,7 @@ export default class CustomStatChart extends React.Component {
                                 : null}
                             <View>
                                 <Text category='h6' status={this.props.dwm > 0 ? 'danger' : 'basic'} style={styles.count}>
-                                    {this.props.dwm ? this.props.dwm : <Spinner size='giant' status='info' />}
+                                    {Number.isInteger(this.props.dwm) ? this.props.dwm : <Spinner size='giant' status='info' />}
                                 </Text>
                             </View>
                         </View>
