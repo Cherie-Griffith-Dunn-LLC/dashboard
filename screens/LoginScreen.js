@@ -74,7 +74,7 @@ const loginHeader = (props) => (
         // test@cgdgovsolutions.com
         // check if email is a valid email format
         if (validateEmail(userEmail) !== null) {
-          getTenantId(userEmail) // returns tenant id
+          getTenantId(userEmail.toLowerCase()) // returns tenant id
             .then((res) => {
                 // check if we got an error
                 if (!res.error) {
