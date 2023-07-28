@@ -72,23 +72,23 @@ export const DashboardAlertsList = (props) => {
     );
 
     const compromiseItemIcon = (props) => (
-      <FontAwesomeIcon {...props} size="lg" icon={faBiohazard} style={{ color: theme['color-danger-500'] }} />
+      <FontAwesomeIcon {...props} size="xs" icon={faBiohazard} style={{ width: 24, color: theme['color-danger-500'] }} />
   );
 
   const EnvironmentalItemIcon = (props) => (
-    <FontAwesomeIcon {...props} size="xs" icon={faBuildingShield} />
+    <FontAwesomeIcon {...props} size="xs" icon={faBuildingShield} style={{ width: 24 }} />
   );
 
   const ReconItemIcon = (props) => (
-    <FontAwesomeIcon {...props} icon={faBinoculars} />
+    <FontAwesomeIcon {...props} icon={faBinoculars} style={{ width: 24 }} />
   );
 
   const ExploitItemIcon = (props) => (
-    <FontAwesomeIcon {...props} icon={faLandMineOn} />
+    <FontAwesomeIcon {...props} icon={faLandMineOn} style={{ width: 24 }} />
   );
 
   const AttackItemIcon = (props) => (
-    <FontAwesomeIcon {...props} icon={faTruckRampBox} />
+    <FontAwesomeIcon {...props} icon={faTruckRampBox} style={{ width: 24 }} />
   );
 
     const renderItemIcon = (props) => (
@@ -194,14 +194,14 @@ export const DashboardAlertsList = (props) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    button: {
-      width: '140px',
-      height: '25px'
-    },
-    backdrop: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    }
+  container: {
+      flex: 1,
+  },
+  button: {
+    width: '140px',
+    height: '25px'
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  }
 });
