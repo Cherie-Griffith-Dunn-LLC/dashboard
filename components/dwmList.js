@@ -60,7 +60,7 @@ export const DWMList = (props) => {
     onPress={() => {setVisible(true); setCurrentData(data[index])}}
     title={`${item.source_user_email}`}
     description={`${item.source_dns_domain}`}
-    accessoryLeft={renderItemIcon}
+    accessoryLeft={securityItemIcon}
     accessoryRight={(props) => renderItemAccessory(props, index)} />
   );
 
