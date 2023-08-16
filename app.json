@@ -60,7 +60,8 @@
       ]
     },
     "plugins": [
-      "sentry-expo"
+      "sentry-expo",
+      "react-native-msal"
     ],
     "extra": {
       "eas": {

@@ -22,7 +22,8 @@ module.exports = () => {
           favicon: "./assets/icon.png",
         },
         plugins: [
-          "sentry-expo"
+          "sentry-expo",
+          "react-native-msal"
         ],
         extra: {
             apiUrl: 'https://cyproteckapi.azurewebsites.net',
@@ -54,7 +55,8 @@ module.exports = () => {
           favicon: "./assets/icon.png",
         },
         plugins: [
-          "sentry-expo"
+          "sentry-expo",
+          "react-native-msal"
         ],
         extra: {
             apiUrl: 'http://localhost:3000',
