@@ -10,6 +10,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import GlobalStyles from '../constants/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
+// msal imports
+import PublicClientApplication from 'react-native-msal';
+import { MSALConfiguration } from 'react-native-msal';
+
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
 
@@ -34,9 +38,40 @@ const loginHeader = (props) => (
   // app keys
   const clientId = '1d40f6b3-9072-4a0a-af48-6e423e58d0d6';
 
+
+  // msal config
+  const config = {
+    ...MSALConfiguration,
+    auth: {
+      clientId: 'acb25fbc-4413-4920-b5f1-04ce0e49fc86',
+      // This authority is used as the default in `acquireToken` and `acquireTokenSilent` if not provided to those methods.
+      // Defaults to 'https://login.microsoftonline.com/common'
+      // authority: 'https://<authority url>',
+      // redirect
+      redirectUri: Platform.select({
+        android: 'msauth://com.cyproteck.cyproteck/chGHORtE8XSnHOWZJryjlVX3zmU%3D', // ex: "msauth://com.package/Xo8WBi6jzSxKDVR4drqm84yr9iU%3D"
+        web: 'http://localhost:19006/', // ex: "https://login.microsoftonline.com/common/oauth2/nativeclient"
+        default: 'https://app.cyproteck.com/',
+      }),
+    },
+  };
+
+    // msal scopes
+    const scopes = [];
+
+    
   export default function OauthScreen({ route, navigation }) {
 
     const { token, setToken } = React.useContext(TokenContext);
+
+    // init public client app
+    const pca = new PublicClientApplication(config);
+    try {
+      pca.init();
+    } catch (error) {
+      console.error('Error initializing the pca, check your config.', error);
+    }
+
     
 
     // create auto discovery
