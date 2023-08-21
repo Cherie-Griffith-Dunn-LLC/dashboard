@@ -23,7 +23,12 @@ module.exports = () => {
         },
         plugins: [
           "sentry-expo",
-          "react-native-msal"
+          [
+            "react-native-msal",
+            {
+              "androidPackageSignatureHash": "chGHORtE8XSnHOWZJryjlVX3zmU="
+            }
+          ]
         ],
         extra: {
             apiUrl: 'https://cyproteckapi.azurewebsites.net',
@@ -56,7 +61,12 @@ module.exports = () => {
         },
         plugins: [
           "sentry-expo",
-          "react-native-msal"
+          [
+            "react-native-msal",
+            {
+              "androidPackageSignatureHash": ""
+            }
+          ]
         ],
         extra: {
             apiUrl: 'http://localhost:3000',

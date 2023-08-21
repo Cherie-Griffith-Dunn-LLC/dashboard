@@ -61,7 +61,12 @@
     },
     "plugins": [
       "sentry-expo",
-      "react-native-msal"
+      [
+        "react-native-msal",
+        {
+          "androidPackageSignatureHash": "chGHORtE8XSnHOWZJryjlVX3zmU="
+        }
+      ]
     ],
     "extra": {
       "eas": {
