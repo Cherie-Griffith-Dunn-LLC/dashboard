@@ -57,22 +57,46 @@ const loginHeader = (props) => (
   };
 
     // msal scopes
-    const scopes = [];
+    const scopes = [
+      'openid',
+      'offline_access'
+    ];
 
     
   export default function OauthScreen({ route, navigation }) {
 
     const { token, setToken } = React.useContext(TokenContext);
 
-    // init public client app
+    // init public client app async
     const pca = new PublicClientApplication(config);
-    try {
-      pca.init();
-    } catch (error) {
-      console.error('Error initializing the pca, check your config.', error);
-    }
-
-    
+   
+    React.useEffect(() => {
+      try {
+        pca.init();
+      } catch (error) {
+        console.error('Error initializing the pca, check your config.', error);
+      }
+  
+      // Acquiring a token for the first time, you must call pca.acquireToken
+      const params = { scopes };
+      pca.acquireToken(params).then((response) => {
+        const accessToken = response.accessToken;
+        const expiresOn = response.expiresOn;
+        // store the token
+      if (Platform.OS !== 'web') {
+          SecureStore.setItemAsync('token', accessToken);
+          SecureStore.setItemAsync('expireTime', expiresOn);
+          setToken(accessToken);
+      } else {
+          AsyncStorage.setItem('token', accessToken);
+          AsyncStorage.setItem('expireTime', expiresOn);
+          setToken(accessToken);
+      }
+      }).catch((error) => {
+        console.error('Error: ', error);
+      });
+      
+    }, [pca]);
 
     // create auto discovery
     //const [discovery, setDiscovery] = React.useState(null);
@@ -102,11 +126,11 @@ const loginHeader = (props) => (
     );
 
     // prompt for login
-    React.useEffect(() => {
-        if (request) {
-            promptAsync();
-        }
-    }, [request]);
+    // React.useEffect(() => {
+    //     if (request) {
+    //         promptAsync();
+    //     }
+    // }, [request]);
 
     // handle response
     React.useEffect(() => {
