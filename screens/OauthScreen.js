@@ -12,7 +12,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 // msal imports
 import PublicClientApplication from 'react-native-msal';
-import { MSALConfiguration } from 'react-native-msal';
 
 // authentication via Azure AD
 WebBrowser.maybeCompleteAuthSession();
@@ -41,12 +40,12 @@ const loginHeader = (props) => (
 
   // msal config
   const config = {
-    ...MSALConfiguration,
     auth: {
       clientId: 'acb25fbc-4413-4920-b5f1-04ce0e49fc86',
       // This authority is used as the default in `acquireToken` and `acquireTokenSilent` if not provided to those methods.
       // Defaults to 'https://login.microsoftonline.com/common'
       // authority: 'https://<authority url>',
+      authority: 'https://cyproteckcustomers.b2clogin.com/cyproteckcustomers.onmicrosoft.com',
       // redirect
       redirectUri: Platform.select({
         android: 'msauth://com.cyproteck.cyproteck/chGHORtE8XSnHOWZJryjlVX3zmU%3D', // ex: "msauth://com.package/Xo8WBi6jzSxKDVR4drqm84yr9iU%3D"
@@ -80,6 +79,7 @@ const loginHeader = (props) => (
       // Acquiring a token for the first time, you must call pca.acquireToken
       const params = { scopes };
       pca.acquireToken(params).then((response) => {
+        console.log(response);
         const accessToken = response.accessToken;
         const expiresOn = response.expiresOn;
         // store the token
