@@ -45,7 +45,6 @@ const loginHeader = (props) => (
       // This authority is used as the default in `acquireToken` and `acquireTokenSilent` if not provided to those methods.
       // Defaults to 'https://login.microsoftonline.com/common'
       // authority: 'https://<authority url>',
-      authority: 'https://cyproteckcustomers.b2clogin.com/cyproteckcustomers.onmicrosoft.com',
       // redirect
       redirectUri: Platform.select({
         android: 'msauth://com.cyproteck.cyproteck/chGHORtE8XSnHOWZJryjlVX3zmU%3D', // ex: "msauth://com.package/Xo8WBi6jzSxKDVR4drqm84yr9iU%3D"
@@ -81,7 +80,8 @@ const loginHeader = (props) => (
       pca.acquireToken(params).then((response) => {
         console.log(response);
         const accessToken = response.accessToken;
-        const expiresOn = response.expiresOn;
+        // get the expire time then convert to unix timestamp
+        const expiresOn = response.expiresOn / 1000;
         // store the token
       if (Platform.OS !== 'web') {
           SecureStore.setItemAsync('token', accessToken);
