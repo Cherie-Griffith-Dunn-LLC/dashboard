@@ -57,7 +57,9 @@ const loginHeader = (props) => (
     // msal scopes
     const scopes = [
       'openid',
-      'offline_access'
+      'offline_access',
+      'Directory.Read.All',
+      'User.Read.All'
     ];
 
     
