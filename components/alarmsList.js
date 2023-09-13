@@ -226,7 +226,7 @@ export const DashboardAlarmsList = (props) => {
             currentData?.priority_label === 'medium' ? 'warning' : 'info'
           )}
         >
-          <Text category='h6'>Alarm Details:</Text>
+          <Text category='h6'>Threat Details:</Text>
           <Divider style={GlobalStyles.divider} />
           <Text>{daysAgo(currentData?.timestamp_occured)}</Text>
           <Text>Priority: {currentData?.priority_label === 'high' ? (

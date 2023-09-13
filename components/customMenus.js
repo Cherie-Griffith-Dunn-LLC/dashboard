@@ -221,13 +221,13 @@ class ExpandedAdminMenu extends Component {
                     accessoryLeft={HomeIcon}
                 />
                 <MenuItem
-                    title='Alarms'
+                    title='Threats'
                     selected={this.props.selectedIndex.row === 1}
                     style={styles.menuItem}
                     accessoryLeft={AlertsIcon}
                 />
                 <MenuItem
-                    title='Events'
+                    title='System Activity'
                     selected={this.props.selectedIndex.row === 2}
                     style={styles.menuItem}
                     accessoryLeft={TicketsIcon}
@@ -270,7 +270,7 @@ class ExpandedUserMenu extends Component {
                     selected={this.props.selectedIndex.row === 0}
                 />
                 <MenuItem
-                    title='Alerts'
+                    title='Threats'
                     accessoryLeft={AlertsIcon}
                     style={styles.menuItem}
                     selected={this.props.selectedIndex.row === 1}

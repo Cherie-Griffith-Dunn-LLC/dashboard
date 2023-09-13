@@ -22,11 +22,11 @@ export default class CustomStatChart extends React.Component {
         const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80]
 
         const alarmsHeader = (props) => (
-            <Text style={styles.header}>ALARMS</Text>
+            <Text style={styles.header}>THREATS</Text>
         );
 
         const eventsHeader = (props) => (
-            <Text style={styles.header}>EVENTS</Text>
+            <Text style={styles.header}>SYSTEM ACTIVITY</Text>
         );
 
         const dwmHeader = (props) => (
@@ -38,7 +38,7 @@ export default class CustomStatChart extends React.Component {
             <Layout style={styles.container}>
                 <Card
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#cc7631' }]}>
-                    <Text style={styles.header}>ALARMS</Text>
+                    <Text style={styles.header}>THREATS</Text>
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                         <View style={styles.icon}>
@@ -52,7 +52,7 @@ export default class CustomStatChart extends React.Component {
                 </Card>
                 <Card
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#0b4d80' }]}>
-                    <Text style={styles.header}>EVENTS</Text>
+                    <Text style={styles.header}>SYSTEM ACTIVITY</Text>
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                             <View style={styles.icon}>

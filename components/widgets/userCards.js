@@ -26,8 +26,8 @@ export class UserAlertsCard extends Component {
         if (this.props.data.length === 0) {
             return (
                 <Card style={[styles.topCard, GlobalStyles.card]}>
-                    <Text category='h6'>Alerts</Text>
-                    <Text>Total Alerts: 0</Text>
+                    <Text category='h6'>Threats</Text>
+                    <Text>Total Threats: 0</Text>
                     <LoadingStatus />
                     <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
@@ -35,8 +35,8 @@ export class UserAlertsCard extends Component {
         } else {
             return (
                 <Card style={[styles.topCard, GlobalStyles.card]}>
-                    <Text category='h6'>Alerts</Text>
-                    <Text>Total Alerts: {this.props.data._embedded.alarms?.length}</Text>
+                    <Text category='h6'>Threats</Text>
+                    <Text>Total Threats: {this.props.data._embedded.alarms?.length}</Text>
                     <CustomPieChart data={this.props.data._embedded.alarms} />
                     <Button status='info' style={styles.Button} onPress={() => this.props.setSelectedIndex(new IndexPath(1))}>View Details</Button>
                 </Card>
