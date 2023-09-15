@@ -29,6 +29,14 @@ Sentry.init({
   enableInExpoDevelopment: true,
   // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   debug: process.env.MY_ENVIRONMENT === 'production' ? false : true,
+  // performance monitoring
+  // set to lower value when high traffic
+  tracesSampleRate: 1.0,
+  _experiments: {
+    // profilesSampleRate is relative to tracesSampleRate.
+    // Here, we'll capture profiles for 100% of transactions.
+    profilesSampleRate: 1.0,
+  },
 });
 
 function Login({navigation, route}) {

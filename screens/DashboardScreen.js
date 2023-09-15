@@ -265,7 +265,7 @@ const DashboardScreen = () => {
                 {userRoles.role === 'admin' ? (
                     selectedIndex.row === 1 && (
                         <Layout style={styles.container}>
-                            <Text category='h3'>Alarms</Text>
+                            <Text category='h3'>Threats</Text>
                             <DashboardAlarmsList data={alarms} token={token} />
                         </Layout>
                     )
@@ -280,7 +280,7 @@ const DashboardScreen = () => {
                 {userRoles.role === 'admin' && (
                     selectedIndex.row === 2 && (
                     <Layout style={styles.container}>
-                        <Text category='h3'>Events</Text>
+                        <Text category='h3'>System Activity</Text>
                         <DashboardEventsList data={events} token={token} />
                     </Layout>
                     )
