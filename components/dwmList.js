@@ -87,7 +87,7 @@ export const DWMList = (props) => {
     )
   }
   // if not loading and no adata, show no data text
-  if (!loading && data === []) {
+  if (!loading && data == []) {
     return (
       <Text>No data</Text>
     )
@@ -117,6 +117,18 @@ export const DWMList = (props) => {
           )}
         >
           <Text>{Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))} days ago.</Text>
+          {currentData?.highlight_fields?.map((item, index) => (
+            // check if exists
+            currentData[item] && (
+              // check if item contains customfield
+            item.includes('customfield') ? (
+              // get the number
+              <Text key={index}>{currentData["customheader_" + item.match(/\d+/g)[0]]}: {currentData[item]}</Text>
+            ) : (
+              <Text key={index}>{item.replaceAll('_', ' ')}: {currentData[item]}</Text>
+            )
+            )
+          ))}
           <Text>Event Type: {currentData?.event_type}</Text>
           <Text>Event Source: {currentData?.source_name ? currentData?.source_name : currentData?.source_username}</Text>
           <Text>Packet Type: {currentData?.packet_type}</Text>
