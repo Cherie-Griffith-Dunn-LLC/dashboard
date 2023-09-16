@@ -68,7 +68,7 @@ export default class CustomStatChart extends React.Component {
                 </Card>
                 {screenWidth > 600 ?
                 <Card
-                onPress={() => {this.props.setSelectedIndex(new IndexPath(3))}}
+                onPress={() => {this.props.setSelectedIndex(new IndexPath(4))}}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
                         <Text style={styles.header}>DARK WEB MONITORING</Text>
                         <View style={styles.insideContainer}>
