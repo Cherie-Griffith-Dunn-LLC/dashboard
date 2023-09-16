@@ -37,12 +37,12 @@ export default class CustomStatChart extends React.Component {
         return (
             <Layout style={styles.container}>
                 <Card
-                    style={[styles.item, GlobalStyles.card, { backgroundColor: '#cc7631' }]}>
+                    style={[styles.item, GlobalStyles.card, { backgroundColor: '#cf4039' }]}>
                     <Text style={styles.header}>THREATS</Text>
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                         <View style={styles.icon}>
-                            <AlarmIcon style={{height: 32, color: '#cc7631', margin: 10}} fill="#cc7631" />
+                            <AlarmIcon style={{height: 32, color: '#cf4039', margin: 10}} fill="#cf4039" />
                         </View>
                         : null}
                         <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
