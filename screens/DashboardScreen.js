@@ -242,7 +242,7 @@ const DashboardScreen = () => {
                 {selectedIndex.row === 0 && (
                     <Layout style={{ flex: 1, padding: 20, maxWidth: 1320, alignSelf: 'center', width: '100%' }}>
                         {userRoles.role === 'admin' && (
-                            <StatsCard alarms={alarms} events={events} dwm={dwm} />
+                            <StatsCard alarms={alarms} events={events} dwm={dwm} setSelectedIndex={setSelectedIndex} />
                         )}
                         <Layout style={{ display: 'flex', flex: '1', flexWrap: 'wrap', flexDirection: 'row', rowGap: 10, columnGap: 10, minHeight: '80vh', alignContent: 'space-evenly', justifyContent: 'space-between' }}>
                             {userRoles.role === 'admin' ? (
