@@ -7,9 +7,12 @@ import GlobalStyles from '../constants/styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import * as WebBrowser from 'expo-web-browser';
 
-
-
+// function to open link in app browser
+const openLink = async (url) => {
+  await WebBrowser.openBrowserAsync(url);
+}
 
 const loginHeader = (props) => (
     <Text {...props} category='p1' style={{textAlign: 'center'}}>
@@ -18,7 +21,7 @@ const loginHeader = (props) => (
   );
 
   const loginFooter = (props) => (
-    <Text {...props} category='c1' style={{textAlign: 'center'}}>
+    <Text onPress={() => openLink('https://cyproteck.com/contactus/')} {...props} category='c1' style={{textAlign: 'center'}}>
     Don't have an account? Sign Up.
     </Text>
   );
@@ -131,7 +134,7 @@ const loginHeader = (props) => (
                           source={require('../assets/backgrounds/login_lock_graphic.png')}
                           >
                               <Image source={require('../assets/cyplogo-wht.png')} style={styleguideUIcomponents1Styles.logo} />
-                              {screenWidth >= 800 ? <Text category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
+                              {screenWidth >= 800 ? <Text onPress={() => openLink('https://cyproteck.com/contactus/')} category='c1' style={styleguideUIcomponents1Styles.leftFooter}>
                               Don't have an account? Sign Up.
                               </Text> : null}
                           </ImageBackground>
@@ -163,7 +166,7 @@ const loginHeader = (props) => (
                             >
                                 Login with Microsoft
                             </Button>
-                            <Text appearance='hint' category='c1' style={styleguideUIcomponents1Styles.rightFooter}>
+                            <Text onPress={() => openLink('https://cyproteck.com/?page_id=1087')} appearance='hint' category='c1' style={styleguideUIcomponents1Styles.rightFooter}>
                             Need help? Contact support
                             </Text>
                         </View>
