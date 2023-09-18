@@ -22,7 +22,7 @@ export default class CustomPieChart extends React.Component {
                 return '#3f9463';
             } else if (priority === 'medium') {
                 // return yellow
-                return '#cc7631';
+                return '#FDCA40';
             } else if (priority === 'high') {
                 // return red
                 return '#cf4039';
