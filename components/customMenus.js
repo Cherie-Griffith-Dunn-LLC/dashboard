@@ -86,7 +86,10 @@ export class AdminMenu extends Component {
                         status='basic'
                         style={{ alignSelf: 'center', marginBottom: 20, marginTop: 20 }}>Support Center</Button>
                     <Text category='label'>&copy; CYPROTECK, Inc.</Text>
-                    <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
+                    <Text category='c2' appearance='hint'
+                    onPress={() => openLink('https://cyproteck.com/terms-and-conditions/')}>
+                        Terms of Use | Privacy Policy
+                    </Text>
                     </>
                 )}
             </Layout>
@@ -127,7 +130,10 @@ export class UserMenu extends Component {
                         status='basic'
                         style={{ alignSelf: 'center', marginBottom: 20, marginTop: 20 }}>Support Center</Button>
                     <Text>&copy; CYPROTECK, Inc.</Text>
-                    <Text category='c2' appearance='hint'>Terms of Use | Privacy Policy</Text>
+                    <Text category='c2' appearance='hint'
+                    onPress={() => openLink('https://cyproteck.com/terms-and-conditions/')}>
+                        Terms of Use | Privacy Policy
+                    </Text>
                     </>
                 )}
             </Layout>

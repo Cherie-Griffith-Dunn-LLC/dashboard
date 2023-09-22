@@ -29,6 +29,7 @@ export class StatsCard extends Component {
                 alarms={this.props.alarms.page?.totalElements}
                 events={this.props.events.page?.totalElements}
                 dwm={this.props.dwm.page?.totalElements}
+                setSelectedIndex={this.props.setSelectedIndex}
             />
         )
     }

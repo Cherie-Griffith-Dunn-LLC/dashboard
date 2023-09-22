@@ -1,4 +1,4 @@
-import { Layout, Text, Spinner, Card } from '@ui-kitten/components';
+import { Layout, Text, Spinner, Card, IndexPath } from '@ui-kitten/components';
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import GlobalStyles from '../../constants/styles';
@@ -37,12 +37,13 @@ export default class CustomStatChart extends React.Component {
         return (
             <Layout style={styles.container}>
                 <Card
-                    style={[styles.item, GlobalStyles.card, { backgroundColor: '#cc7631' }]}>
+                    onPress={() => {this.props.setSelectedIndex(new IndexPath(1))}}
+                    style={[styles.item, GlobalStyles.card, { backgroundColor: '#cf4039' }]}>
                     <Text style={styles.header}>THREATS</Text>
                     <View style={styles.insideContainer}>
                         {screenWidth > 600 ?
                         <View style={styles.icon}>
-                            <AlarmIcon style={{height: 32, color: '#cc7631', margin: 10}} fill="#cc7631" />
+                            <AlarmIcon style={{height: 32, color: '#cf4039', margin: 10}} fill="#cf4039" />
                         </View>
                         : null}
                         <Text category='h6' status={this.props.alarms > 0 ? 'danger' : 'basic'} style={styles.count}>
@@ -51,6 +52,7 @@ export default class CustomStatChart extends React.Component {
                     </View>
                 </Card>
                 <Card
+                    onPress={() => {this.props.setSelectedIndex(new IndexPath(2))}}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#0b4d80' }]}>
                     <Text style={styles.header}>SYSTEM ACTIVITY</Text>
                     <View style={styles.insideContainer}>
@@ -66,6 +68,7 @@ export default class CustomStatChart extends React.Component {
                 </Card>
                 {screenWidth > 600 ?
                 <Card
+                onPress={() => {this.props.setSelectedIndex(new IndexPath(4))}}
                     style={[styles.item, GlobalStyles.card, { backgroundColor: '#010d27' }]}>
                         <Text style={styles.header}>DARK WEB MONITORING</Text>
                         <View style={styles.insideContainer}>
