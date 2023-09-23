@@ -129,8 +129,6 @@ export const DWMList = (props) => {
             )
             )
           ))}
-          <Text>Event Type: {currentData?.event_type}</Text>
-          <Text>Event Source: {currentData?.source_name ? currentData?.source_name : currentData?.source_username}</Text>
           <Text>Packet Type: {currentData?.packet_type}</Text>
         </Card>
     </Modal>
