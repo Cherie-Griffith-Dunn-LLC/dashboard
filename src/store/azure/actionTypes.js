@@ -1,0 +1,1 @@
+export const GET_TENANT_ID = "GET_TENANT_ID";
