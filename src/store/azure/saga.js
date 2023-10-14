@@ -17,7 +17,11 @@ function* fetchTenantId({ payload: { email, history }}) {
             throw new Error(response.error);
         } else if (response.tenantId) {
             yield put(getTenantIdSuccess(response.tenantId));
-            history("/dashboard");
+            // redirect to OAuth page with tenantId
+            history({
+                pathname: "/OAuth",
+                state: { tenantId: response.tenantId }
+            })
         }
     } catch (error) {
         yield put(getTenantIdFail(error));

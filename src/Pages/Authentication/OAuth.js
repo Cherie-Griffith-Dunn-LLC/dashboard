@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 // import
 
 const OAuth = () => {
-  document.title = "Login | Upzet - React Admin & Dashboard Template";
+  document.title = "OAuth | Upzet - React Admin & Dashboard Template";
     useEffect(() => {
         document.body.className = "bg-pattern";
         // remove classname when component will unmount
@@ -46,71 +46,18 @@ const OAuth = () => {
                       Welcome Back !
                     </h4>
                     <p className="mb-5 text-center">
-                      Sign in to continue to Upzet.
+                      Please login using your Microsoft Organization account in the popup. You will be redirected automatically.
                     </p>
                     <Form className="form-horizontal" action="#">
                       <Row>
                         <Col md={12}>
-                          <div className="mb-4">
-                            <label className="form-label" htmlFor="username">
-                              Username
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="username"
-                              placeholder="Enter username"
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label
-                              className="form-label"
-                              htmlFor="userpassword"
-                            >
-                              Password
-                            </label>
-                            <input
-                              type="password"
-                              className="form-control"
-                              id="userpassword"
-                              placeholder="Enter password"
-                            />
-                          </div>
 
-                          <Row>
-                            <Col>
-                              <div className="form-check">
-                                <input
-                                  type="checkbox"
-                                  className="form-check-input"
-                                  id="customControlInline"
-                                />
-                                <label
-                                  className="form-label form-check-label"
-                                  htmlFor="customControlInline"
-                                >
-                                  Remember me
-                                </label>
-                              </div>
-                            </Col>
-                            <Col className="col-7">
-                              <div className="text-md-end mt-3 mt-md-0">
-                                <Link
-                                  to="/auth-recoverpw"
-                                  className="text-muted"
-                                >
-                                  <i className="mdi mdi-lock"></i> Forgot your
-                                  password?
-                                </Link>
-                              </div>
-                            </Col>
-                          </Row>
                           <div className="d-grid mt-4">
                             <button
-                              className="btn btn-primary waves-effect waves-light"
+                              className="btn btn-danger waves-effect waves-light"
                               type="submit"
                             >
-                              Log In
+                              Cancel
                             </button>
                           </div>
                         </Col>

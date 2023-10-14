@@ -11,6 +11,9 @@ import Events from "../Pages/Events";
 // Import Dark Web Monitoring page
 import DarkWebMonitoring from "../Pages/DarkWebMonitoring";
 
+// OAuth Page
+import OAuth from "../Pages/Authentication/OAuth";
+
 // Import Calender
 import Calender from "../Pages/Calender";
 
@@ -205,6 +208,8 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
+  // OAuth
+  { path: "/OAuth", component: <OAuth /> },
 
   // Authentication Inner Pages
   { path: "/auth-login", component: <Login1 /> },
