@@ -4,10 +4,10 @@ import {
     GET_TENANT_ID_FAIL
  } from "./actionTypes"
 
-export const getTenantId = (email) => {
+export const getTenantId = (email, history) => {
     return {
         type: GET_TENANT_ID,
-        payload: email,
+        payload: { email, history },
     }
 }
 

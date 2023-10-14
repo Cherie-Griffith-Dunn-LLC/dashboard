@@ -7,15 +7,17 @@ import { getTenantIdSuccess, getTenantIdFail } from "./actions";
 
 import { getTenantId } from "../../helpers/azure_helper";
 
-function* fetchTenantId(action) {
+function* fetchTenantId({ payload: { email, history }}) {
     try {
-        const response = yield call(getTenantId, action.payload);
+        const response = yield call(getTenantId, email);
+        console.log(response);
         // check if error in response
         if (response.error) {
-            yield put(getTenantIdFail(response.error));
-            return;
+            // throw error
+            throw new Error(response.error);
         } else if (response.tenantId) {
             yield put(getTenantIdSuccess(response.tenantId));
+            history("/dashboard");
         }
     } catch (error) {
         yield put(getTenantIdFail(error));

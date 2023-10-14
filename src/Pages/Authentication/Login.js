@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { loginUser, socialLogin } from "../../store/actions";
+import { getTenantId } from "../../store/actions";
 
 const Login = props => {
   document.title = "Login | CYPROTECK - Security Solutions Dashboard";
@@ -29,14 +29,12 @@ const Login = props => {
 
     initialValues: {
       email: "admin@Themesdesign.com" || '',
-      password: "123456" || '',
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      dispatch(loginUser(values, props.router.navigate));
+      dispatch(getTenantId(values.email, props.router.navigate));
     }
   });
 
