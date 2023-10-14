@@ -4,18 +4,92 @@ import logodark from "../../assets/images/logo-dark.png";
 
 import { Container, Row, Col, Card, CardBody, Form } from "reactstrap";
 import { Link } from "react-router-dom";
+import withRouter from "../../components/Common/withRouter";
 
-// import
+// import msal
+import { InteractionRequiredAuthError, PublicClientApplication } from "@azure/msal-browser";
 
-const OAuth = () => {
-  document.title = "OAuth | Upzet - React Admin & Dashboard Template";
+const OAuth = props => {
+  
+
+  document.title = "OAuth | CYPROTECK - Security Solutions Dashboard";
     useEffect(() => {
+        console.log(props);
+        login();
         document.body.className = "bg-pattern";
         // remove classname when component will unmount
         return function cleanup() {
           document.body.className = "";
         };
       });
+
+      // msal function
+      const login = async () => {
+        // initialize msal
+        const msalConfig = {
+          auth: {
+            clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
+            // Set the authority to our tenant ID passed in from props
+            authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
+            // set redirect based on production env
+            redirectUri: process.env.NODE_ENV === "production" ? "https://cyproteck.com/dashboard" : "http://localhost:/dashboard",
+          },
+        };
+        const msalInstance = new PublicClientApplication(msalConfig);
+        await msalInstance.initialize();
+
+        const request ={ 
+          scopes: [
+          'openid',
+          'offline_access',
+          'Directory.Read.All',
+          'User.Read.All'
+          ]
+        };
+
+        // login the user
+        msalInstance.acquireTokenSilent(request).then(tokenResponse => {
+          // get access token
+          const accessToken = tokenResponse.accessToken;
+          console.log(tokenResponse);
+          const expiresOn = tokenResponse.expiresOn / 1000;
+          localStorage.setItem("expireTime", expiresOn);
+          // store the accesstoken securely
+          localStorage.setItem("accessToken", accessToken);
+          // redirect to dashboard
+          props.router.navigate("/dashboard");
+        }).catch(error => {
+          if (error instanceof InteractionRequiredAuthError) {
+            return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
+              // get access token
+              const accessToken = tokenResponse.accessToken;
+              console.log(tokenResponse);
+              const expiresOn = tokenResponse.expiresOn / 1000;
+              // store the accesstoken securely
+              localStorage.setItem("accessToken", accessToken);
+              // store the expireTime
+              localStorage.setItem("expireTime", expiresOn);
+              // redirect to dashboard
+              props.router.navigate("/dashboard");
+            });
+          } else {
+            console.log(error);
+            // use acquireTokenPopup to authenticate user silently
+            return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
+              // get access token
+              const accessToken = tokenResponse.accessToken;
+              console.log(tokenResponse);
+              // store the accesstoken securely
+              localStorage.setItem("accessToken", accessToken);
+              const expiresOn = tokenResponse.expiresOn / 1000;
+              localStorage.setItem("expireTime", expiresOn);
+              // redirect to dashboard
+              props.router.navigate("/dashboard");
+            });
+          }
+        })
+      }
+
   return (
     <React.Fragment>
       <div className="bg-overlay"></div>
@@ -68,10 +142,10 @@ const OAuth = () => {
               </Card>
               <div className="mt-5 text-center">
                 <p className="text-white-50">
-                  Don't have an account ?{" "}
+                  Having trouble logging in?{" "}
                   <Link to="/auth-register" className="fw-medium text-primary">
                     {" "}
-                    Register{" "}
+                    Help Desk{" "}
                   </Link>{" "}
                 </p>
                 <p className="text-white-50">
@@ -87,4 +161,4 @@ const OAuth = () => {
   );
 };
 
-export default OAuth;
+export default withRouter(OAuth);

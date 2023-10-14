@@ -209,7 +209,7 @@ const publicRoutes = [
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
   // OAuth
-  { path: "/OAuth", component: <OAuth /> },
+  { path: "/OAuth/:tenantId", component: <OAuth /> },
 
   // Authentication Inner Pages
   { path: "/auth-login", component: <Login1 /> },
