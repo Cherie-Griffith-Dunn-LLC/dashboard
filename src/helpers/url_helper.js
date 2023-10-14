@@ -1,3 +1,6 @@
+// Get Tenant ID
+export const GET_TENANT_ID = "/tenant";
+
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
 

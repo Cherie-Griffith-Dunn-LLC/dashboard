@@ -12,6 +12,9 @@ import login from "./auth/login/reducer";
 import profile from "./auth/profile/reducer";
 import account from "./auth/register/reducer";
 
+// Azure
+import azure from "./azure/reducer";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -20,6 +23,7 @@ const rootReducer = combineReducers({
   login,
   profile,
   account,
+  azure
 });
 
 export default rootReducer;

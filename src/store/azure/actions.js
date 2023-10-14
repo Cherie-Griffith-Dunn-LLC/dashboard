@@ -1,8 +1,26 @@
-import { GET_TENANT_ID } from "./actionTypes"
+import { 
+    GET_TENANT_ID,
+    GET_TENANT_ID_SUCCESS,
+    GET_TENANT_ID_FAIL
+ } from "./actionTypes"
 
-export const getTenantId = (data) => {
+export const getTenantId = (email) => {
     return {
         type: GET_TENANT_ID,
-        payload: data,
+        payload: email,
+    }
+}
+
+export const getTenantIdSuccess = (response) => {
+    return {
+        type: GET_TENANT_ID_SUCCESS,
+        payload: response,
+    }
+}
+
+export const getTenantIdFail = (error) => {
+    return {
+        type: GET_TENANT_ID_FAIL,
+        payload: error,
     }
 }
