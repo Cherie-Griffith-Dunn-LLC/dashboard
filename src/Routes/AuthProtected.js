@@ -5,12 +5,17 @@ import { useProfile } from "../Hooks/UserHooks";
 
 const AuthProtected = (props) => {
   const { userProfile, loading } = useProfile();
+  // get the authToken and expiretime from localstorage
+  const authToken = localStorage.getItem("accessToken");
+  const expireTime = localStorage.getItem("expireTime");
 
-  /*
-    redirect is un-auth access protected routes via url
-    */
 
-  if (!userProfile && loading) {
+  // check if authToken exist and expireTime is valid
+  if (!authToken && loading) {
+    return (
+      <Navigate to={{ pathname: "/login", state: { from: props.location } }} />
+    );
+  } else if (expireTime < Math.floor(Date.now() / 1000) && loading) {
     return (
       <Navigate to={{ pathname: "/login", state: { from: props.location } }} />
     );
