@@ -9,6 +9,7 @@ import forgetPasswordSaga from "./auth/forgetpwd/saga"
 
 import azureSaga from "./azure/tenant/saga";
 import userSaga from "./azure/user/saga";
+import roleSaga from "./azure/roles/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -21,5 +22,6 @@ export default function* rootSaga() {
     fork(forgetPasswordSaga),
     fork(azureSaga),
     fork(userSaga),
+    fork(roleSaga),
   ]);
 }

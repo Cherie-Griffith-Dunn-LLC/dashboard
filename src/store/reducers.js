@@ -15,6 +15,7 @@ import account from "./auth/register/reducer";
 // Azure
 import azure from "./azure/tenant/reducer";
 import getCurrentUser from "./azure/user/reducer";
+import getCurrentRole from "./azure/roles/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   account,
   azure,
   getCurrentUser,
+  getCurrentRole,
 });
 
 export default rootReducer;

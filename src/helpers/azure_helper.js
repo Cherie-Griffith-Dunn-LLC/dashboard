@@ -13,7 +13,13 @@ const getCurrentUser = () => {
     return apiClient.get(url.GET_CURRENT_USER);
 };
 
+const getCurrentRole = () => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_CURRENT_ROLE);
+};
+
 export {
     getTenantId,
     getCurrentUser,
+    getCurrentRole,
 };

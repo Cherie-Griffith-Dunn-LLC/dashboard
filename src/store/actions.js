@@ -13,3 +13,4 @@ export * from "./auth/profile/actions"
 // Azure module
 export * from "./azure/tenant/actions"
 export * from "./azure/user/actions"
+export * from "./azure/roles/actions"
