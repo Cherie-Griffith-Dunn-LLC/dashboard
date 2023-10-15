@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import sidebarData from "./SidebarData";
+import {AdminSidebarData, UserSidebarData} from "./SidebarData";
 //Simple bar
 import SimpleBar from "simplebar-react";
 // MetisMenu
@@ -9,7 +9,11 @@ import withRouter from "../../components/Common/withRouter";
 import { Link } from "react-router-dom";
 //i18n
 import { withTranslation } from "react-i18next";
+//redux
+import { useDispatch } from "react-redux";
+import { getCurrentRole } from "../../store/actions";
 const Sidebar = (props) => {
+  // get the users role
   const ref = useRef();
   const activateParentDropdown = useCallback(item => {
     item.classList.add("active");
@@ -120,13 +124,23 @@ const Sidebar = (props) => {
       }
     }
   }
+  const dispatch = useDispatch();
+  // store the current role in state
+  const [role, setRole] = React.useState("user");
+  // get the current role from using store actions
+  useEffect(() => {
+    const currentRole = dispatch(getCurrentRole());
+    console.log(currentRole);
+    setRole(currentRole);
+    console.log(role);
+  }, []);
   return (
     <React.Fragment>
       <div className="vertical-menu">
         <SimpleBar className="h-100" ref={ref}>
           <div id="sidebar-menu">
             <ul className="metismenu list-unstyled" id="side-menu-item">
-              {(sidebarData || []).map((item, key) => (
+              {((role === "admin" ? AdminSidebarData : UserSidebarData) || []).map((item, key) => (
                 <React.Fragment key={key}>
                   {item.isMainMenu ? (
                     <li className="menu-title">{props.t(item.label)}</li>
