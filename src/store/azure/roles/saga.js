@@ -18,8 +18,8 @@ function* fetchCurrentRole() {
         if (response.error) {
             throw new Error(response.error);
         }
-        console.log(response);
-        yield put(getCurrentRoleSuccess(response));
+        localStorage.setItem("role", response.role);
+        yield put(getCurrentRoleSuccess(response.role));
     } catch (error) {
         yield put(getCurrentRoleFail(error));
     }

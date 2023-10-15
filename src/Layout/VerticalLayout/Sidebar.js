@@ -129,10 +129,8 @@ const Sidebar = (props) => {
   const [role, setRole] = React.useState("user");
   // get the current role from using store actions
   useEffect(() => {
-    const currentRole = dispatch(getCurrentRole());
-    console.log(currentRole);
-    setRole(currentRole);
-    console.log(role);
+    dispatch(getCurrentRole());
+    setRole(localStorage.getItem("role"));
   }, []);
   return (
     <React.Fragment>
@@ -140,7 +138,7 @@ const Sidebar = (props) => {
         <SimpleBar className="h-100" ref={ref}>
           <div id="sidebar-menu">
             <ul className="metismenu list-unstyled" id="side-menu-item">
-              {((role === "admin" ? AdminSidebarData : UserSidebarData) || []).map((item, key) => (
+              {((role == "admin" ? AdminSidebarData : UserSidebarData) || []).map((item, key) => (
                 <React.Fragment key={key}>
                   {item.isMainMenu ? (
                     <li className="menu-title">{props.t(item.label)}</li>
