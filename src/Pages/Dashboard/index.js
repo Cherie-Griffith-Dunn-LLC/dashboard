@@ -6,14 +6,32 @@ import SocialSource from "./SocialSource";
 import OverView from "./OverView";
 import RevenueByLocation from "./RevenueByLocation";
 import LatestTransation from "./LatestTransation";
+import { useDispatch } from "react-redux";
 
 import { Row, Container } from "reactstrap";
+
+// import api functions
+import { getCurrentUser } from "../../store/actions";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const Dashboard = () => {
   document.title = "Dashboard | CYPROTECK - Security Solutions Dashboard";
+
+  const [userProfile, setUserProfile] = React.useState({});
+
+  const dispatch = useDispatch();
+
+
+  React.useEffect(() => {
+    // Get the current user
+    const currentUser = dispatch(getCurrentUser());
+    console.log("Getting the current user in dashboard");
+    setUserProfile(currentUser);
+    console.log(userProfile);
+  }, []);
+    
   return (
     <React.Fragment>
       <div className="page-content">

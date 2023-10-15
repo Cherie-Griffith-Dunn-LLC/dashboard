@@ -13,7 +13,8 @@ import profile from "./auth/profile/reducer";
 import account from "./auth/register/reducer";
 
 // Azure
-import azure from "./azure/reducer";
+import azure from "./azure/tenant/reducer";
+import getCurrentUser from "./azure/user/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   login,
   profile,
   account,
-  azure
+  azure,
+  getCurrentUser,
 });
 
 export default rootReducer;

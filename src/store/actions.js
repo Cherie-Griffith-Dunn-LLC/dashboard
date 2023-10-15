@@ -11,4 +11,5 @@ export * from "./auth/forgetpwd/actions"
 export * from "./auth/profile/actions"
 
 // Azure module
-export * from "./azure/actions"
+export * from "./azure/tenant/actions"
+export * from "./azure/user/actions"

@@ -1,7 +1,7 @@
 import { 
     GET_TENANT_ID,
     GET_TENANT_ID_SUCCESS,
-    GET_TENANT_ID_FAIL
+    GET_TENANT_ID_FAIL,
  } from "./actionTypes"
 
 export const getTenantId = (email, history) => {

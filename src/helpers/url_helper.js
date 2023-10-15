@@ -1,5 +1,9 @@
-// Get Tenant ID
+// Azure
 export const GET_TENANT_ID = "/tenant";
+export const GET_CURRENT_USER = "/user";
+export const GET_CURRENT_ROLE = "/user/role";
+export const GET_ORG_USERS = "/users";
+export const POST_ORG_USERS = "/users";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

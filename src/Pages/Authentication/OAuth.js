@@ -9,6 +9,8 @@ import withRouter from "../../components/Common/withRouter";
 // import msal
 import { InteractionRequiredAuthError, PublicClientApplication } from "@azure/msal-browser";
 
+import { setAuthorization } from "../../helpers/api_helper"; 
+
 const OAuth = props => {
   
 
@@ -56,6 +58,8 @@ const OAuth = props => {
           localStorage.setItem("expireTime", expiresOn);
           // store the accesstoken securely
           localStorage.setItem("accessToken", accessToken);
+          // set Authorization to the accesstoken
+          setAuthorization(accessToken);
           // redirect to dashboard
           props.router.navigate("/dashboard");
         }).catch(error => {
@@ -69,6 +73,8 @@ const OAuth = props => {
               localStorage.setItem("accessToken", accessToken);
               // store the expireTime
               localStorage.setItem("expireTime", expiresOn);
+              // set Authorization to the accesstoken
+              setAuthorization(accessToken);
               // redirect to dashboard
               props.router.navigate("/dashboard");
             });
@@ -83,6 +89,8 @@ const OAuth = props => {
               localStorage.setItem("accessToken", accessToken);
               const expiresOn = tokenResponse.expiresOn / 1000;
               localStorage.setItem("expireTime", expiresOn);
+              // set Authorization to the accesstoken
+              setAuthorization(accessToken);
               // redirect to dashboard
               props.router.navigate("/dashboard");
             });

@@ -5,7 +5,7 @@ import { GET_TENANT_ID } from "./actionTypes";
 
 import { getTenantIdSuccess, getTenantIdFail } from "./actions";
 
-import { getTenantId } from "../../helpers/azure_helper";
+import { getTenantId } from "../../../helpers/azure_helper";
 
 function* fetchTenantId({ payload: { email, history }}) {
     try {
