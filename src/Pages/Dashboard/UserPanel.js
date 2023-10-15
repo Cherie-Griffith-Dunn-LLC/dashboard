@@ -108,7 +108,7 @@ const UserPanel = () => {
                   </div>
                 </div>
                 <div className="flex-grow-1 overflow-hidden">
-                  <p className="mb-1">Company Risk</p>
+                  <p className="mb-1">Risk Score</p>
                   <h5 className="mb-3">7.0</h5>
                   <p className="text-truncate mb-0">
                     <span className="text-success me-2">
