@@ -7,7 +7,7 @@ import {
 const INIT_STATE = {
     alarms: "",
     error: "",
-    loading: false,
+    loading: true,
 }
 
 const alienAlarms = (state = INIT_STATE, action) => {

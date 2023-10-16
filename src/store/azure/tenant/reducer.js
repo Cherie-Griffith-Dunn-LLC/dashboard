@@ -3,7 +3,7 @@ import { GET_TENANT_ID_FAIL, GET_TENANT_ID_SUCCESS, GET_TENANT_ID  } from "./act
 const INIT_STATE = {
     tenantId: "",
     error: "",
-    loading: false,
+    loading: true,
 }
 
 const azureTenantId = (state = INIT_STATE, action) => {

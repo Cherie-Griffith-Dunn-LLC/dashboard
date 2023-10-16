@@ -10,7 +10,6 @@ import { getTenantId } from "../../../helpers/azure_helper";
 function* fetchTenantId({ payload: { email, history }}) {
     try {
         const response = yield call(getTenantId, email);
-        console.log(response);
         // check if error in response
         if (response.error) {
             // throw error
