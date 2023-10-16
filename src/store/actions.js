@@ -17,3 +17,4 @@ export * from "./azure/roles/actions"
 
 // AlienVault module
 export * from "./alien/alarms/actions"
+export * from "./alien/darkweb/actions"

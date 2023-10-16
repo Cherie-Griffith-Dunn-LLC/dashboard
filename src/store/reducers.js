@@ -19,6 +19,7 @@ import getCurrentRole from "./azure/roles/reducer";
 
 // AlienVault
 import alienAlarms from "./alien/alarms/reducer";
+import alienDWM from "./alien/darkweb/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   getCurrentUser,
   getCurrentRole,
   alienAlarms,
+  alienDWM,
 });
 
 export default rootReducer;

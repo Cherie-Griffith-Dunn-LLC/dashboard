@@ -10,7 +10,7 @@ export const GET_ALARMS = "/alarms";
 export const GET_EVENTS = "/events";
 export const GET_INVESTIGATIONS = "/investigations";
 export const GET_DICTIONARIES = "/dictionaries";
-export const GET_DWM = "/darkWebEvents";
+export const GET_ALL_DWM = "/darkWebEvents";
 
 
 //REGISTER

@@ -4,7 +4,10 @@ import { Row, Col } from 'reactstrap';
 
 import { DarkWebData } from '../../CommonData/Data/index';
 
-const DWMList = () => {
+const DWMList = (props) => {
+
+    const alarms = props.alarmsData;
+
     return (
         <React.Fragment>
             <Row>

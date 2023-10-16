@@ -1,0 +1,3 @@
+export const GET_ALL_DWM = "GET_ALL_DWM";
+export const GET_ALL_DWM_SUCCESS = "GET_ALL_DWM_SUCCESS";
+export const GET_ALL_DWM_FAIL = "GET_ALL_DWM_FAIL";

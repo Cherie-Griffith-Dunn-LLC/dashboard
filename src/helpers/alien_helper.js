@@ -7,7 +7,13 @@ const getAlarms = (size, priority) => {
     return apiClient.get(url.GET_ALARMS, { size, priority });
 };
 
+const getAllDWM = (size) => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_ALL_DWM, { size });
+}
+
 
 export {
     getAlarms,
+    getAllDWM
 };
