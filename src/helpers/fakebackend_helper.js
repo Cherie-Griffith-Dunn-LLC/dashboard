@@ -85,7 +85,7 @@ const postJwtForgetPwd = data => api.create(url.POST_FAKE_JWT_PASSWORD_FORGET, d
 export const postSocialLogin = data => api.create(url.SOCIAL_LOGIN, data);
 
 // get Events
-export const getEvents = () => api.get(url.GET_EVENTS);
+export const getEvents = () => api.get(url.GET_CAL_EVENTS);
 
 // add Events
 export const addNewEvent = event => api.create(url.ADD_NEW_EVENT, event);

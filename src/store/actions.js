@@ -14,3 +14,6 @@ export * from "./auth/profile/actions"
 export * from "./azure/tenant/actions"
 export * from "./azure/user/actions"
 export * from "./azure/roles/actions"
+
+// AlienVault module
+export * from "./alien/alarms/actions"

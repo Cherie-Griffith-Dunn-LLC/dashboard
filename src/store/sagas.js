@@ -11,6 +11,8 @@ import azureSaga from "./azure/tenant/saga";
 import userSaga from "./azure/user/saga";
 import roleSaga from "./azure/roles/saga";
 
+import alarmSaga from "./alien/alarms/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
@@ -23,5 +25,6 @@ export default function* rootSaga() {
     fork(azureSaga),
     fork(userSaga),
     fork(roleSaga),
+    fork(alarmSaga),
   ]);
 }

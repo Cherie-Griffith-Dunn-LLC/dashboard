@@ -5,6 +5,14 @@ export const GET_CURRENT_ROLE = "/user/role";
 export const GET_ORG_USERS = "/users";
 export const POST_ORG_USERS = "/users";
 
+// AlienVault
+export const GET_ALARMS = "/alarms";
+export const GET_EVENTS = "/events";
+export const GET_INVESTIGATIONS = "/investigations";
+export const GET_DICTIONARIES = "/dictionaries";
+export const GET_DWM = "/darkWebEvents";
+
+
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
 
@@ -20,7 +28,7 @@ export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile";
 export const POST_EDIT_PROFILE = "/post-fake-profile";
 
 //CALENDER
-export const GET_EVENTS = "/events";
+export const GET_CAL_EVENTS = "/events";
 export const ADD_NEW_EVENT = "/add/event";
 export const UPDATE_EVENT = "/update/event";
 export const DELETE_EVENT = "/delete/event";

@@ -8,9 +8,6 @@ const AuthProtected = (props) => {
   // get the authToken and expiretime from localstorage
   const authToken = localStorage.getItem("accessToken");
   const expireTime = localStorage.getItem("expireTime");
-  console.log("Expire Time", expireTime);
-  console.log("Current Time", Math.floor(Date.now() / 1000));
-  console.log(expireTime < Math.floor(Date.now() / 1000))
 
 
   // check if authToken exist and expireTime is valid

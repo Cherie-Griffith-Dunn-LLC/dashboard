@@ -17,6 +17,9 @@ import azure from "./azure/tenant/reducer";
 import getCurrentUser from "./azure/user/reducer";
 import getCurrentRole from "./azure/roles/reducer";
 
+// AlienVault
+import alienAlarms from "./alien/alarms/reducer";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -28,6 +31,7 @@ const rootReducer = combineReducers({
   azure,
   getCurrentUser,
   getCurrentRole,
+  alienAlarms,
 });
 
 export default rootReducer;
