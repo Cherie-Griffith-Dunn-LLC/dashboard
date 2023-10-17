@@ -13,6 +13,7 @@ import roleSaga from "./azure/roles/saga";
 
 import alarmSaga from "./alien/alarms/saga";
 import darkwebSaga from "./alien/darkweb/saga";
+import eventsSaga from "./alien/events/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -28,5 +29,6 @@ export default function* rootSaga() {
     fork(roleSaga),
     fork(alarmSaga),
     fork(darkwebSaga),
+    fork(eventsSaga),
   ]);
 }

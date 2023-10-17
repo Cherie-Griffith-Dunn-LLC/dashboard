@@ -2,9 +2,12 @@ import React from 'react';
 
 import { Row, Col } from 'reactstrap';
 
-import { EventsData } from '../../CommonData/Data/index';
+//import { EventsData } from '../../CommonData/Data/index';
 
-const EventsList = () => {
+const EventsList = (props) => {
+
+    const events = props.eventsData.events["_embedded"].eventResources;
+    console.log(events);
     return (
         <React.Fragment>
             <Row>
@@ -25,7 +28,7 @@ const EventsList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {EventsData.map((item, key) => (<tr key={key}>
+                                        {events.map((item, key) => (<tr key={key}>
                                             <td>
                                                 <p className="mb-1 font-size-12">{item.event_name}</p>
                                             </td>

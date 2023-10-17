@@ -12,8 +12,13 @@ const getAllDWM = (size) => {
     return apiClient.get(url.GET_ALL_DWM, { size });
 }
 
+const getEvents = (size) => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_EVENTS, { size });
+}
 
 export {
     getAlarms,
-    getAllDWM
+    getAllDWM,
+    getEvents,
 };

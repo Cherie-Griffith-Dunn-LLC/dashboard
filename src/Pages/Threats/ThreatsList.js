@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Row, Col } from 'reactstrap';
 
-import { ThreatsData } from '../../CommonData/Data/index';
+//import { ThreatsData } from '../../CommonData/Data/index';
 
 
 

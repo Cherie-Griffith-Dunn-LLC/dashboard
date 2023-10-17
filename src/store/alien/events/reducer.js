@@ -1,31 +1,31 @@
 import { 
-    GET_ALL_DWM,
-    GET_ALL_DWM_SUCCESS,
-    GET_ALL_DWM_FAIL,
+    GET_SYS_EVENTS,
+    GET_SYS_EVENTS_SUCCESS,
+    GET_SYS_EVENTS_FAIL,
   } from "./actionTypes";
 
 const INIT_STATE = {
-    alarms: [],
+    events: [],
     error: "",
     loading: true,
 }
 
-const alienDWM = (state = INIT_STATE, action) => {
+const alienEvents = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case GET_ALL_DWM:
+        case GET_SYS_EVENTS:
             state = {
                 ...state,
                 loading: true,
             };
             break;
-        case GET_ALL_DWM_SUCCESS:
+        case GET_SYS_EVENTS_SUCCESS:
             state = {
                 ...state,
-                alarms: action.payload,
+                events: action.payload,
                 loading: false,
             };
             break;
-        case GET_ALL_DWM_FAIL:
+        case GET_SYS_EVENTS_FAIL:
             state = {
                 ...state,
                 error: action.payload,
@@ -39,4 +39,4 @@ const alienDWM = (state = INIT_STATE, action) => {
     return state;
 }
 
-export default alienDWM;
+export default alienEvents;
