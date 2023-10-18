@@ -29,8 +29,9 @@ const Dashboard = () => {
     // Get the current user
     const currentUser = dispatch(getCurrentUser());
     setUserProfile(currentUser);
-    console.log(userProfile);
   }, [dispatch]);
+
+  console.log(userProfile);
 
   React.useEffect(() => {
     dispatch(getAlarms(20));
