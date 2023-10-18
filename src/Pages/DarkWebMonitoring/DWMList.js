@@ -2,11 +2,10 @@ import React from 'react';
 
 import { Row, Col } from 'reactstrap';
 
-import { DarkWebData } from '../../CommonData/Data/index';
 
 const DWMList = (props) => {
 
-    const alarms = props.alarmsData;
+    const alarms = props.alarmsData["_embedded"].eventResources;
 
     return (
         <React.Fragment>
@@ -27,7 +26,7 @@ const DWMList = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {DarkWebData.map((item, key) => (<tr key={key}>
+                                        {alarms.map((item, key) => (<tr key={key}>
                                             <td>
                                                <div className="avatar-xs">
                                                     <span className="avatar-title rounded-circle bg-soft-primary text-success">
