@@ -5,8 +5,10 @@ const RadialChart = (props) => {
   const alarms = props.alarms?.alarms;
   const loading = props.alarms?.loading;
   const error = props.alarms?.error;
-  console.log(alarms);
   //const series = [44, 55, 67];
+  if (error) {
+    console.error(error);
+  }
 
   // create a series in state
   const [series, setSeries] = React.useState([]);
@@ -15,7 +17,7 @@ const RadialChart = (props) => {
     var low = 0;
     var high = 0;
     var medium = 0;
-    alarms._embedded.alarms.map((item) => {
+    alarms._embedded.alarms.forEach((item) => {
       if (item.priority_label === "low") {
         low++;
       } else if (item.priority_label === "medium") {

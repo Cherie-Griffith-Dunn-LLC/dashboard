@@ -4,7 +4,7 @@ import OrderStatus from "./OrderStatus";
 import Notifications from "./Notifications";
 import SocialSource from "./SocialSource";
 import OverView from "./OverView";
-import RevenueByLocation from "./RevenueByLocation";
+//import RevenueByLocation from "./RevenueByLocation";
 import LatestTransation from "./LatestTransation";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,13 +29,14 @@ const Dashboard = () => {
     // Get the current user
     const currentUser = dispatch(getCurrentUser());
     setUserProfile(currentUser);
-  }, []);
+    console.log(userProfile);
+  }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(getAlarms(20));
     dispatch(getSysEvents(20));
     dispatch(getAllDWM(20));
-  }, []);
+  }, [dispatch]);
 
   const alarmsData  = useSelector(state => state.alienAlarms);
   const eventsData  = useSelector(state => state.alienEvents);

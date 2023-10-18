@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { getTenantId, socialLogin } from "../../store/actions";
+import { getTenantId } from "../../store/actions";
 
 const Login = props => {
   document.title = "Login | CYPROTECK - Security Solutions Dashboard";
@@ -47,38 +47,38 @@ const Login = props => {
   //   dispatch(loginUser(values, props.router.navigate));
   // };
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.router.navigate, type));
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.router.navigate, type));
-    }
-  };
+  // const signIn = (res, type) => {
+  //   if (type === "google" && res) {
+  //     const postData = {
+  //       name: res.profileObj.name,
+  //       email: res.profileObj.email,
+  //       token: res.tokenObj.access_token,
+  //       idToken: res.tokenId,
+  //     };
+  //     dispatch(socialLogin(postData, props.router.navigate, type));
+  //   } else if (type === "facebook" && res) {
+  //     const postData = {
+  //       name: res.name,
+  //       email: res.email,
+  //       token: res.accessToken,
+  //       idToken: res.tokenId,
+  //     };
+  //     dispatch(socialLogin(postData, props.router.navigate, type));
+  //   }
+  // };
 
   //handleGoogleLoginResponse
-  const googleResponse = response => {
-    signIn(response, "google");
-  };
+  // const googleResponse = response => {
+  //   signIn(response, "google");
+  // };
 
   //handleTwitterLoginResponse
   // const twitterResponse = e => {}
 
   //handleFacebookLoginResponse
-  const facebookResponse = response => {
-    signIn(response, "facebook");
-  };
+  // const facebookResponse = response => {
+  //   signIn(response, "facebook");
+  // };
 
   useEffect(() => {
     document.body.className = "bg-pattern";

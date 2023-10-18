@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate, Route } from "react-router-dom";
 
-import { useProfile } from "../Hooks/UserHooks";
+//import { useProfile } from "../Hooks/UserHooks";
 
 const AuthProtected = (props) => {
-  const { userProfile, loading } = useProfile();
+  //const { userProfile, loading } = useProfile();
   // get the authToken and expiretime from localstorage
   const authToken = localStorage.getItem("accessToken");
   const expireTime = localStorage.getItem("expireTime");

@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest, all } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 
 // Redux States
 import { GET_CURRENT_USER } from "./actionTypes";

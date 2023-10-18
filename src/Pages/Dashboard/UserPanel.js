@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardBody, Col, Row } from "reactstrap";
 
-import RadialChart1 from "./userpanelChart1";
-import RadialChart2 from "./userpanelChart2";
-import RadialChart3 from "./userpanelChart3";
+// import RadialChart1 from "./userpanelChart1";
+// import RadialChart2 from "./userpanelChart2";
+// import RadialChart3 from "./userpanelChart3";
 
 const UserPanel = (props) => {
 

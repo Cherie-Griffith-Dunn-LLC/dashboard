@@ -9,7 +9,7 @@ import { Row, Col } from 'reactstrap';
 const ThreatsList = (props) => {
 
     const alarms = props.alarmsData["_embedded"].alarms;
-    const pageData = props.alarmsData.page;
+    //const pageData = props.alarmsData.page;
 
     console.log(alarms);
     
