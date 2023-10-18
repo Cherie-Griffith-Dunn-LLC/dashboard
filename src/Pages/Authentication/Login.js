@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // actions
-import { getTenantId } from "../../store/actions";
+import { getTenantId, socialLogin } from "../../store/actions";
 
 const Login = props => {
   document.title = "Login | CYPROTECK - Security Solutions Dashboard";
