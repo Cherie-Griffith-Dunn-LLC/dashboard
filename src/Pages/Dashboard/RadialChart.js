@@ -1,8 +1,14 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const RadialChart = () => {
-  const series = [44, 55, 67];
+const RadialChart = (props) => {
+  const alarms = props.alarms?.alarms;
+  const loading = props.alarms?.loading;
+  const error = props.alarms?.error;
+  console.log(alarms);
+  //const series = [44, 55, 67];
+
+  
   const options = {
     chart: {
       height: 350,
@@ -31,7 +37,8 @@ const RadialChart = () => {
             label: "Total",
             formatter: function (w) {
               // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-              return 341;
+              // check if loading
+                return alarms.page.size;
             },
           },
         },
@@ -40,6 +47,33 @@ const RadialChart = () => {
     labels: ["Low", "Medium", "High"],
     colors: ["#0bb197", "#4aa3ff", "#ff3d60"],
   };
+  if (loading !== false) {
+    return <div>Loading...</div>;
+  }
+
+  
+
+  // create a series in state
+  const [series, setSeries] = React.useState([]);
+
+  React.useEffect(() => {
+    var low = 0;
+    var high = 0;
+    var medium = 0;
+    alarms._embedded.alarms.map((item) => {
+      if (item.priority_label === "low") {
+        low++;
+      } else if (item.priority_label === "medium") {
+        medium++;
+      } else if (item.priority_label === "high") {
+        high++;
+      }
+    });
+    setSeries([low, medium, high]);
+  }
+  , [alarms]);
+
+
   return (
     <React.Fragment>
       <ReactApexChart

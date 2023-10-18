@@ -5,7 +5,45 @@ import { Card, CardBody, Col, Row } from "reactstrap";
 
 import { SocialSourceData } from "../../CommonData/Data/index";
 
-const SocialSource = () => {
+const SocialSource = (props) => {
+  const alarms = props.alarms?.alarms;
+  const loading = props.alarms?.loading;
+  const error = props.alarms?.error;
+  if (loading !== false) {
+    return (
+      
+    <React.Fragment>
+    <Col xl={4}>
+      <Card>
+        <CardBody>
+          <div className="d-flex  align-items-center">
+            <div className="flex-grow-1">
+              <h5 className="card-title">Threats by Priority</h5>
+            </div>
+            <div className="flex-shrink-0">
+              <select className="form-select form-select-sm mb-0 my-n1">
+                {[
+                  "May",
+                  "April",
+                  "March",
+                  "February",
+                  "January",
+                  "December",
+                ].map((item, key) => (
+                  <option key={key} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>Loading...</div>
+          </div>
+        </CardBody>
+      </Card>
+    </Col>
+  </React.Fragment>
+    );
+  }
   return (
     <React.Fragment>
       <Col xl={4}>
@@ -33,7 +71,7 @@ const SocialSource = () => {
               </div>
             </div>
             {/* RadialChart */}
-            <RadialChart />
+            <RadialChart alarms={props.alarms}  />
             <Row>
               {SocialSourceData.map((item, key) => (
                 <div key={key} className="col-4">

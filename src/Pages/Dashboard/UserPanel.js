@@ -5,7 +5,12 @@ import RadialChart1 from "./userpanelChart1";
 import RadialChart2 from "./userpanelChart2";
 import RadialChart3 from "./userpanelChart3";
 
-const UserPanel = () => {
+const UserPanel = (props) => {
+
+  const events = props.events;
+  const alarms = props.alarms;
+  const dwmAlarms = props.dwm;
+
   return (
     <React.Fragment>
       <Row>
@@ -23,15 +28,7 @@ const UserPanel = () => {
 
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">Threats</p>
-                  <h5 className="mb-3">2.2k</h5>
-                  <p className="text-truncate mb-0">
-                    <span className="text-success me-2">
-                      {" "}
-                      0.02%{" "}
-                      <i className="ri-arrow-right-up-line align-bottom ms-1"></i>
-                    </span>{" "}
-                    From previous
-                  </p>
+                  <h5 className="mb-3">{alarms.loading !== false ? "loading" : alarms?.alarms.page.totalElements}</h5>
                 </div>
               </div>
             </CardBody>
@@ -52,15 +49,7 @@ const UserPanel = () => {
 
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">System Activity</p>
-                  <h5 className="mb-3">50</h5>
-                  <p className="text-truncate mb-0">
-                    <span className="text-success me-2">
-                      {" "}
-                      1.7%{" "}
-                      <i className="ri-arrow-right-up-line align-bottom ms-1"></i>
-                    </span>{" "}
-                    From previous
-                  </p>
+                  <h5 className="mb-3">{events.loading !== false ? "loading" : (events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements)}</h5>
                 </div>
               </div>
             </CardBody>
@@ -81,15 +70,7 @@ const UserPanel = () => {
 
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">Dark Web Monitoring</p>
-                  <h5 className="mb-3">24.03 %</h5>
-                  <p className="text-truncate mb-0">
-                    <span className="text-danger me-2">
-                      {" "}
-                      0.01%{" "}
-                      <i className="ri-arrow-right-down-line align-bottom ms-1"></i>
-                    </span>{" "}
-                    From previous
-                  </p>
+                  <h5 className="mb-3">{dwmAlarms.loading !== false ? "loading" : dwmAlarms?.alarms.page.totalElements}</h5>
                 </div>
               </div>
             </CardBody>
@@ -110,14 +91,6 @@ const UserPanel = () => {
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">Risk Score</p>
                   <h5 className="mb-3">7.0</h5>
-                  <p className="text-truncate mb-0">
-                    <span className="text-success me-2">
-                      {" "}
-                      0.01%{" "}
-                      <i className="ri-arrow-right-up-line align-bottom ms-1"></i>
-                    </span>{" "}
-                    From previous
-                  </p>
                 </div>
               </div>
             </CardBody>

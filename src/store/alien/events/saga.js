@@ -18,7 +18,6 @@ function* fetchEvents() {
         if (response.error) {
             throw new Error(response.error);
         }
-        console.log("response", response);
         yield put(getSysEventsSuccess(response));
     } catch (error) {
         yield put(getSysEventsFail(error));

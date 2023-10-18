@@ -6,12 +6,13 @@ import SocialSource from "./SocialSource";
 import OverView from "./OverView";
 import RevenueByLocation from "./RevenueByLocation";
 import LatestTransation from "./LatestTransation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Row, Container } from "reactstrap";
 
 // import api functions
-import { getCurrentUser } from "../../store/actions";
+import { getCurrentUser, getAlarms, getSysEvents, getAllDWM } from "../../store/actions";
+import withRouter from "../../components/Common/withRouter";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -27,24 +28,34 @@ const Dashboard = () => {
   React.useEffect(() => {
     // Get the current user
     const currentUser = dispatch(getCurrentUser());
-    console.log("Getting the current user in dashboard");
     setUserProfile(currentUser);
-    console.log(userProfile);
   }, []);
-    
+
+  React.useEffect(() => {
+    dispatch(getAlarms(20));
+    dispatch(getSysEvents(20));
+    dispatch(getAllDWM(20));
+  }, []);
+
+  const alarmsData  = useSelector(state => state.alienAlarms);
+  const eventsData  = useSelector(state => state.alienEvents);
+  const dwmData     = useSelector(state => state.alienDWM);
+
+
+  // show dashboard
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid={true}>
           <Breadcrumbs title="CYPROTECK" breadcrumbItem="Dashboard" />
           {/* User Panel Charts */}
-          <UsePanel />
+          <UsePanel alarms={alarmsData} events={eventsData} dwm={dwmData} />
 
           <Row>
             {/* Overview Chart */}
             <OverView />
-            {/* Social Source Chart */}
-            <SocialSource />
+            {/* Threats Pie Chart */}
+            <SocialSource alarms={alarmsData} />
           </Row>
 
           <Row>
@@ -62,4 +73,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);
