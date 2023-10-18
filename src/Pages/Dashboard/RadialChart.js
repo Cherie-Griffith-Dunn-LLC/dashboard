@@ -8,6 +8,26 @@ const RadialChart = (props) => {
   console.log(alarms);
   //const series = [44, 55, 67];
 
+  // create a series in state
+  const [series, setSeries] = React.useState([]);
+
+  React.useEffect(() => {
+    var low = 0;
+    var high = 0;
+    var medium = 0;
+    alarms._embedded.alarms.map((item) => {
+      if (item.priority_label === "low") {
+        low++;
+      } else if (item.priority_label === "medium") {
+        medium++;
+      } else if (item.priority_label === "high") {
+        high++;
+      }
+    });
+    setSeries([low, medium, high]);
+  }
+  , [alarms]);
+
   
   const options = {
     chart: {
@@ -53,25 +73,7 @@ const RadialChart = (props) => {
 
   
 
-  // create a series in state
-  const [series, setSeries] = React.useState([]);
-
-  React.useEffect(() => {
-    var low = 0;
-    var high = 0;
-    var medium = 0;
-    alarms._embedded.alarms.map((item) => {
-      if (item.priority_label === "low") {
-        low++;
-      } else if (item.priority_label === "medium") {
-        medium++;
-      } else if (item.priority_label === "high") {
-        high++;
-      }
-    });
-    setSeries([low, medium, high]);
-  }
-  , [alarms]);
+  
 
 
   return (
