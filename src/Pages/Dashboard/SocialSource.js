@@ -6,9 +6,12 @@ import { Card, CardBody, Col, Row } from "reactstrap";
 import { SocialSourceData } from "../../CommonData/Data/index";
 
 const SocialSource = (props) => {
-  const alarms = props.alarms?.alarms;
+  //const alarms = props.alarms?.alarms;
   const loading = props.alarms?.loading;
   const error = props.alarms?.error;
+  if (error) {
+    console.error(error);
+  }
   if (loading !== false) {
     return (
       
