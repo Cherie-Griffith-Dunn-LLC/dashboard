@@ -34,7 +34,7 @@ const OAuth = props => {
             // Set the authority to our tenant ID passed in from props
             authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
             // set redirect based on production env
-            redirectUri: process.env.NODE_ENV === "production" ? "https://cyproteck.com/dashboard" : "http://localhost:/dashboard",
+            redirectUri: process.env.NODE_ENV === "production" ? "https://cyproteck.com/" : "/",
           },
         };
         const msalInstance = new PublicClientApplication(msalConfig);
