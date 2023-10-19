@@ -19,3 +19,6 @@ export * from "./azure/roles/actions"
 export * from "./alien/alarms/actions"
 export * from "./alien/darkweb/actions"
 export * from "./alien/events/actions"
+
+// LMS module
+export * from "./lms/trainingList/actions"

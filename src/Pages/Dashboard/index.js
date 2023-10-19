@@ -5,7 +5,7 @@ import Notifications from "./Notifications";
 import SocialSource from "./SocialSource";
 import OverView from "./OverView";
 //import RevenueByLocation from "./RevenueByLocation";
-import LatestTransation from "./LatestTransation";
+import TrainingList from "./TrainingList";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Row, Container } from "reactstrap";
@@ -68,7 +68,7 @@ const Dashboard = () => {
           </Row>
 
           {/* Latest Transaction Table */}
-          <LatestTransation />
+          <TrainingList />
         </Container>
       </div>
     </React.Fragment>

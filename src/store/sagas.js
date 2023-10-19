@@ -15,6 +15,8 @@ import alarmSaga from "./alien/alarms/saga";
 import darkwebSaga from "./alien/darkweb/saga";
 import eventsSaga from "./alien/events/saga";
 
+import trainingListSaga from "./lms/trainingList/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
@@ -30,5 +32,6 @@ export default function* rootSaga() {
     fork(alarmSaga),
     fork(darkwebSaga),
     fork(eventsSaga),
+    fork(trainingListSaga),
   ]);
 }

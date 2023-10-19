@@ -12,6 +12,9 @@ export const GET_INVESTIGATIONS = "/investigations";
 export const GET_DICTIONARIES = "/dictionaries";
 export const GET_ALL_DWM = "/darkWebEvents";
 
+// LMS
+export const GET_TRAINING_LIST = "/users/training";
+
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
