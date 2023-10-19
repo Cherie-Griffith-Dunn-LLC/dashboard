@@ -28,7 +28,7 @@ const Login = props => {
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@Themesdesign.com" || '',
+      email: '',
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -39,7 +39,7 @@ const Login = props => {
   });
 
   const { error } = useSelector(state => ({
-    error: state.login.error,
+    error: state.azure.error.message,
   }));
 
   // handleValidSubmit
@@ -205,8 +205,7 @@ const Login = props => {
                 </Link>{" "}
               </p>
               <p className="text-white-50">
-                © {new Date().getFullYear()} Upzet. Crafted with{" "}
-                <i className="mdi mdi-heart text-danger"></i> by Themesdesign
+                © {new Date().getFullYear()} CYPROTECK, Inc.
               </p>
             </div>
           </Col>
