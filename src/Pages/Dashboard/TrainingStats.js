@@ -19,7 +19,7 @@ const TrainingStats = (props) => {
 
     React.useEffect(() => {
         if (error) {
-            console.log(error);
+            console.error(error);
         }
     }, [error]);
 
@@ -40,7 +40,6 @@ const TrainingStats = (props) => {
         )
     }
 
-    console.log(statistics);
 
     return (
         <React.Fragment>

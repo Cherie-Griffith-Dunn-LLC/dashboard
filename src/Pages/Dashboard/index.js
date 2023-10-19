@@ -2,7 +2,7 @@ import React from "react";
 import UsePanel from "./UserPanel";
 import TrainingStats from "./TrainingStats";
 import Notifications from "./Notifications";
-import SocialSource from "./SocialSource";
+import ThreatsByPriority from "./ThreatsByPriority";
 import OverView from "./OverView";
 //import RevenueByLocation from "./RevenueByLocation";
 import TrainingList from "./TrainingList";
@@ -60,7 +60,7 @@ const Dashboard = () => {
             {/* Overview Chart */}
             <OverView />
             {/* Threats Pie Chart */}
-            <SocialSource alarms={alarmsData} />
+            <ThreatsByPriority alarms={alarmsData} />
           </Row>
 
           <Row>
