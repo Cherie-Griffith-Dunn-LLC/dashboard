@@ -16,6 +16,7 @@ import darkwebSaga from "./alien/darkweb/saga";
 import eventsSaga from "./alien/events/saga";
 
 import trainingListSaga from "./lms/trainingList/saga";
+import courseStatsSaga from "./lms/courseStatistics/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -33,5 +34,6 @@ export default function* rootSaga() {
     fork(darkwebSaga),
     fork(eventsSaga),
     fork(trainingListSaga),
+    fork(courseStatsSaga),
   ]);
 }

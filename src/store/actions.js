@@ -22,3 +22,4 @@ export * from "./alien/events/actions"
 
 // LMS module
 export * from "./lms/trainingList/actions"
+export * from "./lms/courseStatistics/actions"

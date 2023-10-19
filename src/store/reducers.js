@@ -24,6 +24,7 @@ import alienEvents from "./alien/events/reducer";
 
 // LMS
 import lmsTrainingList from "./lms/trainingList/reducer";
+import courseStatistics from "./lms/courseStatistics/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   alienDWM,
   alienEvents,
   lmsTrainingList,
+  courseStatistics,
 });
 
 export default rootReducer;
