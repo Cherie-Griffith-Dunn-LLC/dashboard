@@ -3,7 +3,7 @@ import RadialChart from "./RadialChart";
 
 import { Card, CardBody, Col, Row } from "reactstrap";
 
-import { SocialSourceData } from "../../CommonData/Data/index";
+// import { SocialSourceData } from "../../CommonData/Data/index";
 
 const ThreatsByPriority = (props) => {
   const alarms = props.alarms?.alarms;
@@ -29,7 +29,7 @@ const ThreatsByPriority = (props) => {
     }
     setSeries([low, medium, high]);
   }
-  , [alarms]);
+  , [alarms, loading]);
 
   if (error) {
     console.error(error);

@@ -7,7 +7,7 @@ import {
     Row,
 } from "reactstrap";
 
-import { OrderStatusData } from '../../CommonData/Data/index';
+// import { OrderStatusData } from '../../CommonData/Data/index';
 
 
 const TrainingStats = (props) => {
