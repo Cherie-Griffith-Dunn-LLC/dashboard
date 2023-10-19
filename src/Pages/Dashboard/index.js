@@ -1,7 +1,7 @@
 import React from "react";
 import UsePanel from "./UserPanel";
 import TrainingStats from "./TrainingStats";
-import Notifications from "./Notifications";
+import RecentThreats from "./RecentThreats";
 import ThreatsByPriority from "./ThreatsByPriority";
 import OverView from "./OverView";
 //import RevenueByLocation from "./RevenueByLocation";
@@ -67,7 +67,7 @@ const Dashboard = () => {
             {/* Order Stats */}
             <TrainingStats courseStats={courseStats} />
             {/* Notifications */}
-            <Notifications />
+            <RecentThreats alarms={alarmsData} />
           </Row>
 
           {/* Latest Transaction Table */}

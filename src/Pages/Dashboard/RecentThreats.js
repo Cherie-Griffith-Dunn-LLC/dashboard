@@ -7,9 +7,38 @@ import SimpleBar from "simplebar-react";
 
 import { Card, CardBody, CardTitle, Col } from "reactstrap";
 
-import { ThreatsData } from "../../CommonData/Data/index";
+// import { ThreatsData } from "../../CommonData/Data/index";
 
-const Notifications = () => {
+const RecentThreats = (props) => {
+
+
+  const alarms = props.alarms?.alarms;
+  const error = props.alarms?.error;
+  const loading = props.alarms?.loading;
+
+  if (error) {
+    console.error(error);
+  }
+
+  if (loading) {
+    return (
+      <React.Fragment>
+        <Col lg={4}>
+          <Card>
+            <CardBody>
+              <CardTitle>Recent Threats</CardTitle>
+  
+              <div className="pe-3">
+                <p>Loading...</p>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </React.Fragment>
+    );
+  }
+
+
   return (
     <React.Fragment>
       <Col lg={4}>
@@ -19,7 +48,7 @@ const Notifications = () => {
 
             <div className="pe-3">
               <SimpleBar style={{ maxHeight: "287px" }}>
-                {ThreatsData.map((item, key) => (
+                {alarms._embedded.alarms.map((item, key) => (
                   <Link key={key} to="#" className="text-body d-block">
                     <div className="d-flex py-3">
                       <div className="flex-shrink-0 me-3 align-self-center">
@@ -56,4 +85,4 @@ const Notifications = () => {
     </React.Fragment>
   );
 };
-export default Notifications;
+export default RecentThreats;

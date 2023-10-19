@@ -70,7 +70,6 @@ const ThreatsByPriority = (props) => {
     );
   }
 
-  console.log(series);
 
   return (
     <React.Fragment>
