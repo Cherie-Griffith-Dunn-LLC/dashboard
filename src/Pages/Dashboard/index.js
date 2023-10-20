@@ -58,7 +58,7 @@ const Dashboard = () => {
 
           <Row>
             {/* Overview Chart */}
-            <OverView />
+            <OverView alarms={alarmsData} events={eventsData} dwm={dwmData} courseStats={courseStats} />
             {/* Threats Pie Chart */}
             <ThreatsByPriority alarms={alarmsData} />
           </Row>
