@@ -16,7 +16,6 @@ const OAuth = props => {
 
   document.title = "OAuth | CYPROTECK - Security Solutions Dashboard";
     useEffect(() => {
-        console.log(props);
         login();
         document.body.className = "bg-pattern";
         // remove classname when component will unmount
@@ -53,7 +52,6 @@ const OAuth = props => {
         msalInstance.acquireTokenSilent(request).then(tokenResponse => {
           // get access token
           const accessToken = tokenResponse.accessToken;
-          console.log(tokenResponse);
           const expiresOn = tokenResponse.expiresOn / 1000;
           localStorage.setItem("expireTime", expiresOn);
           // store the accesstoken securely
@@ -67,7 +65,6 @@ const OAuth = props => {
             return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
               // get access token
               const accessToken = tokenResponse.accessToken;
-              console.log(tokenResponse);
               const expiresOn = tokenResponse.expiresOn / 1000;
               // store the accesstoken securely
               localStorage.setItem("accessToken", accessToken);
@@ -79,12 +76,11 @@ const OAuth = props => {
               props.router.navigate("/dashboard");
             });
           } else {
-            console.log(error);
+            console.error(error);
             // use acquireTokenPopup to authenticate user silently
             return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
               // get access token
               const accessToken = tokenResponse.accessToken;
-              console.log(tokenResponse);
               // store the accesstoken securely
               localStorage.setItem("accessToken", accessToken);
               const expiresOn = tokenResponse.expiresOn / 1000;
