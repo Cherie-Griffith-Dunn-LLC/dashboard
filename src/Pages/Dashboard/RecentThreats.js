@@ -68,7 +68,7 @@ const RecentThreats = (props) => {
                           />
                         ) : (
                           <div className="avatar-xs">
-                              <span className="avatar-title rounded-circle bg-soft-primary text-success">
+                              <span className={"avatar-title rounded-circle bg-soft-primary text-" + (item.priority_label === "high" ? "bg-soft-danger text-danger" : item.priority_label === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
                                   <i className={item.icon}></i>
                               </span>
                           </div>
