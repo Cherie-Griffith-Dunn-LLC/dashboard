@@ -13,7 +13,7 @@ const AuthProtected = (props) => {
   const authToken = localStorage.getItem("accessToken");
   const expireTime = localStorage.getItem("expireTime");
   const authUser = localStorage.getItem("authUser");
-  const role = localStorage.getItem("role");
+  //const role = localStorage.getItem("role");
 
   const dispatch = useDispatch();
 
@@ -22,7 +22,7 @@ const AuthProtected = (props) => {
       dispatch(getCurrentUser());
       dispatch(getCurrentRole());
     }
-  }, [dispatch]);
+  }, [dispatch, authUser]);
 
   const currentUser = useSelector(state => state.getCurrentUser);
   const currentRole = useSelector(state => state.getCurrentRole);
