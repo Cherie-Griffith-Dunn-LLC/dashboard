@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DWMModal from './dwmModal';
 
 import { Row, Col } from 'reactstrap';
 
@@ -6,6 +7,17 @@ import { Row, Col } from 'reactstrap';
 const DWMList = (props) => {
 
     const alarms = props.alarmsData["_embedded"].eventResources;
+
+
+    //const pageData = props.alarmsData.page;
+
+    const [showAlarmDetails, setShowAlarmDetails] = useState(false);
+    const [alarmDetails, setAlarmDetails] = useState({});
+
+    function tog_alarmDetails (item) {
+        setAlarmDetails(item);
+        setShowAlarmDetails(!showAlarmDetails);
+    }
 
     return (
         <React.Fragment>
@@ -26,7 +38,7 @@ const DWMList = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {alarms.map((item, key) => (<tr key={key}>
+                                        {alarms.map((item, key) => (<tr onClick={() => { tog_alarmDetails(item) }} key={key}>
                                             <td>
                                                <div className="avatar-xs">
                                                     <span className="avatar-title rounded-circle bg-soft-primary text-success">
@@ -55,6 +67,7 @@ const DWMList = (props) => {
                     </div>
                 </Col>
             </Row>
+            <DWMModal leakDetails={alarmDetails} setShowModal={setShowAlarmDetails} tog_alarmDetails={tog_alarmDetails} showModal={showAlarmDetails} />
         </React.Fragment>
     )
 }

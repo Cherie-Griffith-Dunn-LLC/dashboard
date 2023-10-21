@@ -23,7 +23,6 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
         const { error } = useSelector(state => ({
             error: state.alienDWM.error,
         }));
-
         React.useEffect(() => {
             dispatch(getAllDWM(20));
         }, [dispatch]);
