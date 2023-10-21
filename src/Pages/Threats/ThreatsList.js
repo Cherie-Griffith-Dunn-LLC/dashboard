@@ -46,7 +46,7 @@ const ThreatsList = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {alarms.map((item, key) => (<tr key={key}>
+                                        {alarms.map((item, key) => (<tr onClick={() => { tog_threatDetails(item) }} key={key}>
                                             <td>
                                                 <div className="avatar-xs">
                                                     <span className={"avatar-title rounded-circle " + (item.priority_label === "high" ? "bg-soft-danger text-danger" : item.priority_label === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
