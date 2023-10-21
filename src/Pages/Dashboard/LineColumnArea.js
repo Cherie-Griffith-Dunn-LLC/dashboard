@@ -76,6 +76,10 @@ const LineColumnArea = (props) => {
     return item.occurences;
   });
 
+  coursesSeries = coursesSeries.map((item) => {
+    return item.occurences;
+  });
+
 
   const LineColumnAreaData = {
     series: [
