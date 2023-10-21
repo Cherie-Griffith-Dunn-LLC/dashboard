@@ -34,7 +34,7 @@ const Login = props => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
-      dispatch(getTenantId(values.email, props.router.navigate));
+      dispatch(getTenantId(values.email.toLowerCase(), props.router.navigate));
     }
   });
 
