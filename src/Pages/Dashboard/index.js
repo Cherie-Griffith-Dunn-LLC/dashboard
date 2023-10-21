@@ -11,27 +11,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Container } from "reactstrap";
 
 // import api functions
-import { getCurrentUser, getAlarms, getSysEvents, getAllDWM, getCourseStats } from "../../store/actions";
+import { getAlarms, getSysEvents, getAllDWM, getCourseStats } from "../../store/actions";
 import withRouter from "../../components/Common/withRouter";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import { use } from "i18next";
 
 const Dashboard = () => {
   document.title = "Dashboard | CYPROTECK - Security Solutions Dashboard";
 
-  const [userProfile, setUserProfile] = React.useState({});
 
   const dispatch = useDispatch();
 
 
-  React.useEffect(() => {
-    // Get the current user
-    const currentUser = dispatch(getCurrentUser());
-    setUserProfile(currentUser);
-  }, [dispatch]);
 
-  console.log(userProfile);
+
 
   React.useEffect(() => {
     dispatch(getAlarms(20));
@@ -44,6 +39,21 @@ const Dashboard = () => {
   const eventsData  = useSelector(state => state.alienEvents);
   const dwmData     = useSelector(state => state.alienDWM);
   const courseStats = useSelector(state => state.courseStatistics);
+  
+
+
+  if (alarmsData.error || eventsData.error || dwmData.error || courseStats.error) {
+    console.log(alarmsData.error, eventsData.error, dwmData.error, courseStats.error);
+    return (
+      <React.Fragment>
+        <div className="page-content">
+          <Container fluid={true}>
+            <p>An error occured. Please try again.</p>
+          </Container>
+        </div>
+      </React.Fragment>
+    )
+  }
 
 
 

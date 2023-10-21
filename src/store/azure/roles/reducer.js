@@ -7,7 +7,7 @@ import {
 const INIT_STATE = {
     role: "",
     error: "",
-    loading: false,
+    loading: true,
 }
 
 const azureCurrentRole = (state = INIT_STATE, action) => {

@@ -18,7 +18,6 @@ function* fetchCurrentUser() {
         if (response.error) {
             throw new Error(response.error);
         }
-        console.log(response);
         // save the current user in local storage
         localStorage.setItem("authUser", JSON.stringify(response));
         yield put(getCurrentUserSuccess(response));

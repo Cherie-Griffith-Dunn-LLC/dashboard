@@ -9,9 +9,7 @@ import withRouter from "../../components/Common/withRouter";
 import { Link } from "react-router-dom";
 //i18n
 import { withTranslation } from "react-i18next";
-//redux
-import { useDispatch } from "react-redux";
-import { getCurrentRole } from "../../store/actions";
+import { useSelector } from "react-redux";
 const Sidebar = (props) => {
   // get the users role
   const ref = useRef();
@@ -124,14 +122,20 @@ const Sidebar = (props) => {
       }
     }
   }
-  const dispatch = useDispatch();
   // store the current role in state
   const [role, setRole] = React.useState("user");
+  const roleData = useSelector(state => state.getCurrentRole);
   // get the current role from using store actions
   useEffect(() => {
-    dispatch(getCurrentRole());
-    setRole(localStorage.getItem("role"));
-  }, [dispatch]);
+    const storedRole = localStorage.getItem("role");
+    if (storedRole) {
+      setRole(storedRole);
+    } else if (!roleData.loading) {
+      console.log(roleData);
+      setRole(roleData.role);
+    }
+  }, [roleData]);
+  
   return (
     <React.Fragment>
       <div className="vertical-menu">

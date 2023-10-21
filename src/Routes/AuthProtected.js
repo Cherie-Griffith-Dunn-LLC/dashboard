@@ -1,5 +1,9 @@
 import React from "react";
 import { Navigate, Route } from "react-router-dom";
+import { getCurrentUser, getCurrentRole } from "../store/actions";
+import { useDispatch, useSelector } from "react-redux";
+
+import { Container } from "reactstrap";
 
 //import { useProfile } from "../Hooks/UserHooks";
 
@@ -8,6 +12,8 @@ const AuthProtected = (props) => {
   // get the authToken and expiretime from localstorage
   const authToken = localStorage.getItem("accessToken");
   const expireTime = localStorage.getItem("expireTime");
+  const authUser = localStorage.getItem("authUser");
+  const role = localStorage.getItem("role");
 
 
   // check if authToken exist and expireTime is valid
@@ -23,6 +29,43 @@ const AuthProtected = (props) => {
     return (
       <Navigate to={{ pathname: "/login", state: { from: props.location } }} />
     );
+  }
+
+  // get the current user and store it
+  if (!authUser) {
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+      dispatch(getCurrentUser());
+      dispatch(getCurrentRole());
+    }, [dispatch]);
+
+    const currentUser = useSelector(state => state.getCurrentUser);
+    const currentRole = useSelector(state => state.getCurrentRole);
+
+    if (currentUser.loading) {
+      return (
+        <React.Fragment>
+          <div className="page-content">
+            <Container fluid={true}>
+              <p>Loading...</p>
+            </Container>
+          </div>
+        </React.Fragment>
+      )
+    } else if (currentRole.loading) {
+      return (
+        <React.Fragment>
+          <div className="page-content">
+            <Container fluid={true}>
+              <p>Loading...</p>
+            </Container>
+          </div>
+        </React.Fragment>
+      )
+    } else {
+      localStorage.setItem("authUser", JSON.stringify(currentUser.user));
+      localStorage.setItem("role", currentRole.role);
+    }
   }
 
   return <>{props.children}</>;
