@@ -48,7 +48,7 @@ const ThreatsList = (props) => {
                                         {alarms.map((item, key) => (<tr key={key}>
                                             <td>
                                                 <div className="avatar-xs">
-                                                    <span className="avatar-title rounded-circle bg-soft-primary text-success">
+                                                    <span className={"avatar-title rounded-circle " + (item.priority_label === "high" ? "bg-soft-danger text-danger" : item.priority_label === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
                                                         <i className={item.icon}></i>
                                                     </span>
                                                 </div>
@@ -57,7 +57,9 @@ const ThreatsList = (props) => {
                                                 <p className="mb-1 font-size-12">{item.rule_strategy}</p>
                                                 <h5 className="font-size-15 mb-0">{item.rule_method}</h5>
                                             </td>
-                                            <td>{item.priority_label}</td>
+                                            <td>
+                                                {item.priority_label.toUpperCase()}
+                                            </td>
                                             <td>{item.status}</td>
                                             <td>{item.source_name}</td>
 
