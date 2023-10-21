@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Modal, Container } from 'reactstrap';
+import { Modal } from 'reactstrap';
 import { daysAgo } from '../../helpers/data_helper';
 
 
