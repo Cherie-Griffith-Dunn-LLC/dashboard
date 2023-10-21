@@ -49,6 +49,30 @@ const OverView = (props) => {
                                 <p>Loading...</p>
                             </div>
                         </CardBody>
+                        <CardBody className="border-top">
+                        <div className="text-muted text-center">
+                            <Row>
+                                <Col md={4} className="border-end">
+                                    <div>
+                                        <p className="mb-2"><i className="mdi mdi-circle font-size-12 me-1 text-primary"></i> Courses</p>
+                                        <h5 className="font-size-16 mb-0">0</h5>
+                                    </div>
+                                </Col>
+                                <Col md={4} className="border-end">
+                                    <div>
+                                        <p className="mb-2"><i className="mdi mdi-circle font-size-12 me-1 text-light"></i> Events</p>
+                                        <h5 className="font-size-16 mb-0">0</h5>
+                                    </div>
+                                </Col>
+                                <Col md={4} className="border-end">
+                                    <div>
+                                        <p className="mb-2"><i className="mdi mdi-circle font-size-12 me-1 text-danger"></i> Threats</p>
+                                        <h5 className="font-size-16 mb-0">0</h5>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+                    </CardBody>
                     </Card>
                 </Col>
             </React.Fragment>

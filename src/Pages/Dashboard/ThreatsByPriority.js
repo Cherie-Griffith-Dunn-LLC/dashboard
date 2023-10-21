@@ -63,6 +63,47 @@ const ThreatsByPriority = (props) => {
             </div>
             <div>Loading...</div>
           </div>
+          <Row>
+              <div className="col-4">
+                <div className="social-source text-center mt-3">
+                  <div className="avatar-xs mx-auto mb-3">
+                    <span
+                      className="avatar-title rounded-circle font-size-18 bg-success"
+                    >
+                      <i className="mdi mdi-priority-low text-white"></i>
+                    </span>
+                  </div>
+                  <h5 className="font-size-15">Low</h5>
+                  <p className="text-muted mb-0">0 Alarms</p>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="social-source text-center mt-3">
+                  <div className="avatar-xs mx-auto mb-3">
+                    <span
+                      className="avatar-title rounded-circle font-size-18 bg-warning"
+                    >
+                      <i className="mdi mdi-format-align-middle text-white"></i>
+                    </span>
+                  </div>
+                  <h5 className="font-size-15">Medium</h5>
+                  <p className="text-muted mb-0">0 Alarms</p>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="social-source text-center mt-3">
+                  <div className="avatar-xs mx-auto mb-3">
+                    <span
+                      className="avatar-title rounded-circle font-size-18 bg-danger"
+                    >
+                      <i className="mdi mdi-priority-high text-white"></i>
+                    </span>
+                  </div>
+                  <h5 className="font-size-15">High</h5>
+                  <p className="text-muted mb-0">0 Alarms</p>
+                </div>
+              </div>
+            </Row>
         </CardBody>
       </Card>
     </Col>
