@@ -15,6 +15,18 @@ const AuthProtected = (props) => {
   const authUser = localStorage.getItem("authUser");
   const role = localStorage.getItem("role");
 
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (!authUser) {
+      dispatch(getCurrentUser());
+      dispatch(getCurrentRole());
+    }
+  }, [dispatch]);
+
+  const currentUser = useSelector(state => state.getCurrentUser);
+  const currentRole = useSelector(state => state.getCurrentRole);
+
 
   // check if authToken exist and expireTime is valid
   if (!authToken) {
@@ -33,15 +45,6 @@ const AuthProtected = (props) => {
 
   // get the current user and store it
   if (!authUser) {
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-      dispatch(getCurrentUser());
-      dispatch(getCurrentRole());
-    }, [dispatch]);
-
-    const currentUser = useSelector(state => state.getCurrentUser);
-    const currentRole = useSelector(state => state.getCurrentRole);
-
     if (currentUser.loading) {
       return (
         <React.Fragment>
