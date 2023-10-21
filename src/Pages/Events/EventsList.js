@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import EventModal from './eventModal';
 
 import { Row, Col } from 'reactstrap';
 
@@ -7,7 +8,16 @@ import { Row, Col } from 'reactstrap';
 const EventsList = (props) => {
 
     const events = props.eventsData.events["_embedded"].eventResources;
-    console.log(events);
+
+    const [showEventDetails, setShowEventDetails] = useState(false);
+    const [eventDetails, setEventDetails] = useState({});
+
+    function tog_eventDetails (item) {
+        setEventDetails(item);
+        setShowEventDetails(!showEventDetails);
+    }
+
+
     return (
         <React.Fragment>
             <Row>
@@ -28,7 +38,7 @@ const EventsList = (props) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {events.map((item, key) => (<tr key={key}>
+                                        {events.map((item, key) => (<tr onClick={() => { tog_eventDetails(item) }} key={key}>
                                             <td>
                                                 <p className="mb-1 font-size-12">{item.event_name}</p>
                                             </td>
@@ -50,6 +60,7 @@ const EventsList = (props) => {
                     </div>
                 </Col>
             </Row>
+            <EventModal eventDetails={eventDetails} setShowModal={setShowEventDetails} tog_eventDetails={tog_eventDetails} showModal={showEventDetails} />
         </React.Fragment>
     )
 }
