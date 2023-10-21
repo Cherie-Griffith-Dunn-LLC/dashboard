@@ -3,6 +3,8 @@ import ThreatModal from './threatModal';
 
 import { Row, Col } from 'reactstrap';
 
+import { getAlarmIcon } from '../../helpers/data_helper';
+
 //import { ThreatsData } from '../../CommonData/Data/index';
 
 
@@ -10,7 +12,7 @@ import { Row, Col } from 'reactstrap';
 
 const ThreatsList = (props) => {
 
-    const alarms = props.alarmsData["_embedded"].alarms;
+    const alarms = getAlarmIcon(props.alarmsData["_embedded"].alarms);
     //const pageData = props.alarmsData.page;
 
     const [showThreatDetails, setShowThreatDetails] = useState(false);
@@ -47,7 +49,7 @@ const ThreatsList = (props) => {
                                             <td>
                                                 <div className="avatar-xs">
                                                     <span className="avatar-title rounded-circle bg-soft-primary text-success">
-                                                        <i className="mdi mdi-biohazard"></i>
+                                                        <i className={item.icon}></i>
                                                     </span>
                                                 </div>
                                             </td>
@@ -77,8 +79,8 @@ const ThreatsList = (props) => {
                         </div>
                     </div>
                 </Col>
-                <ThreatModal threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
             </Row>
+            <ThreatModal threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
         </React.Fragment>
     )
 }

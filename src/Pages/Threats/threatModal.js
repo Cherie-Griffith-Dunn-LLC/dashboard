@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Row, Col, Modal } from 'reactstrap';
+import { Modal } from 'reactstrap';
 import { daysAgo } from '../../helpers/data_helper';
 
 
@@ -9,10 +9,8 @@ import { daysAgo } from '../../helpers/data_helper';
 const ThreatModal = (props) => {
 
     const showModal = props.showModal;
-    const setShowModal = props.setShowModal;
 
     const threat = props.threatDetails;
-    console.log(threat);
 
     
     return (
