@@ -13,6 +13,7 @@ import { getAlarmIcon } from '../../helpers/data_helper';
 const ThreatsList = (props) => {
 
     const alarms = getAlarmIcon(props.alarmsData["_embedded"].alarms);
+    const dictionary = props.dictionary;
     //const pageData = props.alarmsData.page;
 
     const [showThreatDetails, setShowThreatDetails] = useState(false);
@@ -82,7 +83,7 @@ const ThreatsList = (props) => {
                     </div>
                 </Col>
             </Row>
-            <ThreatModal threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
+            <ThreatModal dictionary={dictionary} threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
         </React.Fragment>
     )
 }

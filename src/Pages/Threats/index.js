@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from "reactstrap";
 import ThreatsList from './ThreatsList';
 
-import { getAlarms } from "../../store/actions";
+import { getAlarms, getDictionary } from "../../store/actions";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -24,10 +24,15 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
         const { error } = useSelector(state => ({
             error: state.alienAlarms.error,
         }));
+        const {dictionary} = useSelector(state => ({
+            dictionary: state.alienDictionary,
+        }));
 
         React.useEffect(() => {
             dispatch(getAlarms(20));
+            dispatch(getDictionary());
         }, [dispatch]);
+
 
         return (
             <>
@@ -35,8 +40,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
                     <Container fluid={true}>
                         <Breadcrumbs title="Dashboard" breadcrumbItem="Threats" />
                         
-                        {loading ? <p>Loading...</p> : error ? <p>Error, try again</p> :
-                            <ThreatsList alarmsData={alarms} />
+                        {(loading || dictionary.loading) ? <p>Loading...</p> : error ? <p>Error, try again</p> :
+                            <ThreatsList dictionary={dictionary.dictionary} alarmsData={alarms} />
                         }
 
                     </Container>
