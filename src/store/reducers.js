@@ -21,6 +21,7 @@ import getCurrentRole from "./azure/roles/reducer";
 import alienAlarms from "./alien/alarms/reducer";
 import alienDWM from "./alien/darkweb/reducer";
 import alienEvents from "./alien/events/reducer";
+import alienDictionary from "./alien/dictionary/reducer";
 
 // LMS
 import lmsTrainingList from "./lms/trainingList/reducer";
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
   alienEvents,
   lmsTrainingList,
   courseStatistics,
+  alienDictionary,
 });
 
 export default rootReducer;

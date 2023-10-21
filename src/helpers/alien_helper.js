@@ -10,15 +10,22 @@ const getAlarms = (size, priority) => {
 const getAllDWM = (size) => {
     const apiClient = new APIClient();
     return apiClient.get(url.GET_ALL_DWM, { size });
-}
+};
 
 const getEvents = (size) => {
     const apiClient = new APIClient();
     return apiClient.get(url.GET_EVENTS, { size });
-}
+};
+
+const getDictionaries = () => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_DICTIONARIES);
+};
+
 
 export {
     getAlarms,
     getAllDWM,
     getEvents,
+    getDictionaries,
 };
