@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ThreatModal from './threatModal';
 
 import { Row, Col } from 'reactstrap';
 
 //import { ThreatsData } from '../../CommonData/Data/index';
+
 
 
 
@@ -11,7 +13,13 @@ const ThreatsList = (props) => {
     const alarms = props.alarmsData["_embedded"].alarms;
     //const pageData = props.alarmsData.page;
 
-    console.log(alarms);
+    const [showThreatDetails, setShowThreatDetails] = useState(false);
+    const [threatDetails, setThreatDetails] = useState({});
+
+    function tog_threatDetails (item) {
+        setThreatDetails(item);
+        setShowThreatDetails(!showThreatDetails);
+    }
     
     return (
         <React.Fragment>
@@ -57,7 +65,10 @@ const ThreatsList = (props) => {
                                             <td>{item.source_username}</td>
                                             <td>{item.destination_username}</td>
                                             <td>
-                                                <button type="button" className="btn btn-outline-success btn-sm me-1">View Details</button>
+                                                <button
+                                                    onClick={() => { tog_threatDetails(item) }}
+                                                    type="button"
+                                                    className="btn btn-outline-success btn-sm me-1">View Details</button>
                                             </td>
                                         </tr>))}
                                     </tbody>
@@ -66,6 +77,7 @@ const ThreatsList = (props) => {
                         </div>
                     </div>
                 </Col>
+                <ThreatModal threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
             </Row>
         </React.Fragment>
     )
