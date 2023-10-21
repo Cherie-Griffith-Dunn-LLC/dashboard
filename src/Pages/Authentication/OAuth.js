@@ -134,6 +134,7 @@ const OAuth = props => {
                             <button
                               className="btn btn-danger waves-effect waves-light"
                               type="submit"
+                              onClick={() => props.router.navigate("/login")}
                             >
                               Cancel
                             </button>
@@ -147,7 +148,7 @@ const OAuth = props => {
               <div className="mt-5 text-center">
                 <p className="text-white-50">
                   Having trouble logging in?{" "}
-                  <Link to="/auth-register" className="fw-medium text-primary">
+                  <Link to="https://cyproteck.com/?page_id=1087" target="_blank" className="fw-medium text-primary">
                     {" "}
                     Help Desk{" "}
                   </Link>{" "}

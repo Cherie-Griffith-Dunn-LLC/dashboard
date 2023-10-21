@@ -170,11 +170,11 @@ const Login = props => {
                           <Col className="col-7">
                             <div className="text-md-end mt-3 mt-md-0">
                               <Link
-                                to="/auth-recoverpw"
+                                to="https://cyproteck.com/?page_id=1087"
+                                target="_blank"
                                 className="text-muted"
                               >
-                                <i className="mdi mdi-lock"></i> Forgot your
-                                password?
+                                <i className="mdi mdi-lock"></i> Need help?
                               </Link>
                             </div>
                           </Col>
@@ -199,7 +199,7 @@ const Login = props => {
             <div className="mt-5 text-center">
               <p className="text-white-50">
                 Don't have an account ?{" "}
-                <Link to="/register" className="fw-medium text-primary">
+                <Link target="_blank" to="https://cyproteck.com/buynow/" className="fw-medium text-primary">
                   {" "}
                   Register{" "}
                 </Link>{" "}
