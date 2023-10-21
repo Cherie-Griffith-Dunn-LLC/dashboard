@@ -65,7 +65,7 @@ const TrainingList = () => {
                                                     </div>}
                                                 </td>
                                                 <td>
-                                                    <p className="mb-1 font-size-12">{item.job_title}</p>
+                                                    <p className="mb-1 font-size-12">{item.job_title.toUpperCase()}</p>
                                                     <h5 className="font-size-15 mb-0">{item.name}</h5>
                                                 </td>
                                                 <td>{item.email}</td>
