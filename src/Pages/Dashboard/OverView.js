@@ -55,7 +55,6 @@ const OverView = (props) => {
         );
     }
 
-    console.log(events, alarms, courseStats);
 
     return (
         <React.Fragment>
@@ -84,7 +83,7 @@ const OverView = (props) => {
                             </div>
                         </div>
                         <div>
-                            <LineColumnArea />
+                            <LineColumnArea alarms={alarms} courses={courseStats} events={events} />
                         </div>
                     </CardBody>
                     <CardBody className="border-top">
