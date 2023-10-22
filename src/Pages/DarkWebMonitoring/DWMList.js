@@ -3,6 +3,8 @@ import DWMModal from './dwmModal';
 
 import { Row, Col } from 'reactstrap';
 
+import { formatDate } from '@fullcalendar/core';
+
 
 const DWMList = (props) => {
 
@@ -51,7 +53,7 @@ const DWMList = (props) => {
                                                 <h5 className="font-size-15 mb-0">{item.source_user_email}</h5>
                                             </td>
                                             <td>{item.customfield_0}</td>
-                                            <td>{item.event_ref_date}</td>
+                                            <td>{formatDate(item.event_ref_date)}</td>
 
                                             <td>
                                                 {item.customfield_1}
