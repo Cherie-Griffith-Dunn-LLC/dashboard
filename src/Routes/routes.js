@@ -14,8 +14,12 @@ import DarkWebMonitoring from "../Pages/DarkWebMonitoring";
 // OAuth Page
 import OAuth from "../Pages/Authentication/OAuth";
 
+// Courses page
+import Courses from "../Pages/Courses";
+
 // Import Calender
 import Calender from "../Pages/Calender";
+
 
 
 // Import E-mail
@@ -117,6 +121,9 @@ const authProtectedRoutes = [
 
   // Dark Web Monitoring
   { path: "/darkweb", component: <DarkWebMonitoring /> },
+
+  // Courses
+  { path: "/courses", component: <Courses /> },
 
   // Calender
   { path: "/calendar", component: <Calender /> },
