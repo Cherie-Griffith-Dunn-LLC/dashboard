@@ -124,6 +124,9 @@ const authProtectedRoutes = [
   // Profile
   { path: "/userprofile", component: <UserProfile /> },
 
+  // Settings
+  { path: "/settings", component: <UserProfile />},
+
   // E-mail
   { path: "/inbox", component: <Inbox /> },
   { path: "/read-email", component: <ReadEmail /> },

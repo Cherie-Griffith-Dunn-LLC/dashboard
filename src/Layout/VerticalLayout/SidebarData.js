@@ -201,6 +201,12 @@ const UserSidebarData = [
         url: "/courses",
     },
     {
+        label: "Settings",
+        icon: "mdi mdi-cog",
+        isHasArrow: true,
+        url: "/settings",
+    },
+    {
         label: "Support",
         isMainMenu: true,
     },

@@ -26,18 +26,20 @@ import withRouter from "../../components/Common/withRouter";
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
+//import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
+//import { set } from "lodash";
 
 const UserProfile = () => {
-  document.title = "Profile | Upzet - React Admin & Dashboard Template";
+  document.title = "Settings | CYPROTECK - Security Solutions Dashboard";
 
   const dispatch = useDispatch();
 
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
   const [idx, setidx] = useState(1);
+  const [ userDetails, setUserDetails ] = useState({});
 
   const { error, success } = useSelector((state) => ({
     error: state.profile.error,
@@ -50,6 +52,7 @@ const UserProfile = () => {
       setname(obj.displayName);
       setemail(obj.mail);
       setidx(obj.id);
+      setUserDetails(obj);
       setTimeout(() => {
         dispatch(resetProfileFlag());
       }, 3000);
@@ -95,17 +98,17 @@ const UserProfile = () => {
                   <CardBody>
                     <div className="d-flex">
                       <div className="ms-3">
-                        <img
-                          src={avatar}
-                          alt=""
-                          className="avatar-md rounded-circle img-thumbnail"
-                        />
+                        <div className="avatar-md">
+                            <span className="avatar-title rounded-circle bg-soft-primary text-success">
+                                {name.charAt(0)}
+                            </span>
+                        </div>
                       </div>
                       <div className="flex-grow-1 align-self-center">
                         <div className="text-muted">
                           <h5>{name}</h5>
                           <p className="mb-1">{email}</p>
-                          <p className="mb-0">Id no: #{idx}</p>
+                          <p className="mb-0">{userDetails.jobTitle}</p>
                         </div>
                       </div>
                     </div>
