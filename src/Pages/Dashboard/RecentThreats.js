@@ -28,7 +28,7 @@ const RecentThreats = (props) => {
         setAlarms(getAlarmIcon(alarmsData.investigation._embedded.alarms));
       }
     }
-  }, [alarmsData, loading]);
+  }, [alarmsData, loading, role]);
 
   if (error) {
     console.error(error);

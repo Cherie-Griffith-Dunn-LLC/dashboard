@@ -39,7 +39,7 @@ const Dashboard = () => {
     } else {
       dispatch(getInvestigations(20));
     }
-  }, [dispatch]);
+  }, [dispatch, role]);
 
   const alarmsData  = useSelector(state => state.alienAlarms);
   const eventsData  = useSelector(state => state.alienEvents);
