@@ -41,7 +41,7 @@ const DWMList = (props) => {
                                         {alarms.map((item, key) => (<tr onClick={() => { tog_alarmDetails(item) }} key={key}>
                                             <td>
                                                <div className="avatar-xs">
-                                                    <span className="avatar-title rounded-circle bg-soft-primary text-success">
+                                                    <span className="avatar-title rounded-circle bg-soft-primary text-primary">
                                                         <i className="mdi mdi-gmail"></i>
                                                     </span>
                                                 </div>
