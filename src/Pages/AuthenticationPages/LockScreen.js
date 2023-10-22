@@ -7,7 +7,7 @@ import { Container, Row, Col, Card, CardBody } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 const LockScreen = () => {
-    document.title = "Lock Screen | Upzet - React Admin & Dashboard Template";
+    document.title = "Lock Screen | CYPROTECK - Security Solutions Dashboard";
     return (
         <React.Fragment>
 
@@ -49,8 +49,8 @@ const LockScreen = () => {
                                     </CardBody>
                                 </Card>
                                 <div className="mt-5 text-center">
-                                    <p className="text-white-50">Not you ? return<Link to="/auth-login" className="fw-medium text-primary"> Sign In </Link> </p>
-                                    <p className="text-white-50">© {new Date().getFullYear()} Upzet. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                                    <p className="text-white-50">Not you ? return<Link to="/login" className="fw-medium text-primary"> Sign In </Link> </p>
+                                    <p className="text-white-50">© {new Date().getFullYear()} CYPROTECK, Inc.</p>
                                 </div>
                             </Col>
                         </Row>
