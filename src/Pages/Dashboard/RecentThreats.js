@@ -13,14 +13,20 @@ import { getAlarmIcon } from "../../helpers/data_helper";
 const RecentThreats = (props) => {
 
   const [alarms, setAlarms] = React.useState([]);
+
+  const role = props.role;
   
-  const alarmsData = props.alarms?.alarms;
+  const alarmsData = props.alarms;
   const error = props.alarms?.error;
   const loading = props.alarms?.loading;
 
   React.useEffect(() => {
     if (!loading && alarmsData) {
-      setAlarms(getAlarmIcon(alarmsData._embedded.alarms));
+      if(role === "admin") {
+        setAlarms(getAlarmIcon(alarmsData.alarms._embedded.alarms));
+      } else {
+        setAlarms(getAlarmIcon(alarmsData.investigation._embedded.alarms));
+      }
     }
   }, [alarmsData, loading]);
 

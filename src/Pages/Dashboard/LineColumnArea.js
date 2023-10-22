@@ -5,9 +5,9 @@ import ReactApexChart from "react-apexcharts";
 
 
 const LineColumnArea = (props) => {
-  
-  const events = props.events.events._embedded.eventResources;
-  const alarms = props.alarms.alarms._embedded.alarms;
+  const role = props.role;
+  const events = props.events.events._embedded?.eventResources;
+  const alarms = role === "admin" ? props.alarms.alarms._embedded.alarms : props.alarms.investigation._embedded.alarms;
   
 
   // create series for events
@@ -26,25 +26,27 @@ const LineColumnArea = (props) => {
     occurences: 0
   }))
 
-  events.forEach((item) => {
-    const currentDate = item.timestamp_occured / 1000;
-    const date = new Date(currentDate * 1000).getHours();
-
-    var result = eventsSeries.find((obj) => {
-      return obj.date === date;
-    });
-
-    if (!result) {
-      eventsSeries.push({ date: date, occurences: 1 });
-    }
-
-    for (var i = 0; i < eventsSeries.length; i++) {
-      if (eventsSeries[i].date === date) {
-        eventsSeries[i].occurences++;
-        break;
+  if (events) {
+    events.forEach((item) => {
+      const currentDate = item.timestamp_occured / 1000;
+      const date = new Date(currentDate * 1000).getHours();
+  
+      var result = eventsSeries.find((obj) => {
+        return obj.date === date;
+      });
+  
+      if (!result) {
+        eventsSeries.push({ date: date, occurences: 1 });
       }
-    }
-  });
+  
+      for (var i = 0; i < eventsSeries.length; i++) {
+        if (eventsSeries[i].date === date) {
+          eventsSeries[i].occurences++;
+          break;
+        }
+      }
+    });
+  }
 
   alarms.forEach((item) => {
     const currentDate = item.timestamp_occured / 1000;
