@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from "reactstrap";
 import ThreatsList from './ThreatsList';
 
-import { getAlarms, getDictionary } from "../../store/actions";
+import { getAlarms, getDictionary, getInvestigations } from "../../store/actions";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -13,25 +13,32 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
     const Threats = () => {
         document.title = "Threats | CYPROTECK - Security Solutions Dashboard";
 
+        const role = localStorage.getItem('role');
+
         const dispatch = useDispatch();
         // dispatch getAlarms and return the alarms
         const { alarms } = useSelector(state => ({
-            alarms: state.alienAlarms.alarms,
+            alarms: role === "admin" ? state.alienAlarms.alarms : state.alienInvestigations.investigation,
         }));
         const { loading } = useSelector(state => ({
-            loading: state.alienAlarms.loading,
+            loading: role === "admin" ? state.alienAlarms.loading : state.alienInvestigations.loading,
         }));
         const { error } = useSelector(state => ({
-            error: state.alienAlarms.error,
+            error: role === "admin" ? state.alienAlarms.error : state.alienInvestigations.error,
         }));
         const {dictionary} = useSelector(state => ({
             dictionary: state.alienDictionary,
         }));
 
         React.useEffect(() => {
-            dispatch(getAlarms(20));
+            if (role === "admin") {
+                dispatch(getAlarms(20));
+            } else {
+                dispatch(getInvestigations(20));
+            }
             dispatch(getDictionary());
-        }, [dispatch]);
+        }, [dispatch, role]);
+
 
 
         return (
