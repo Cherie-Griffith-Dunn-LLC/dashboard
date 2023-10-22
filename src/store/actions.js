@@ -20,6 +20,7 @@ export * from "./alien/alarms/actions"
 export * from "./alien/darkweb/actions"
 export * from "./alien/events/actions"
 export * from "./alien/dictionary/actions"
+export * from "./alien/investigations/actions"
 
 // LMS module
 export * from "./lms/trainingList/actions"

@@ -1,3 +1,4 @@
+import { size } from "lodash";
 import { APIClient } from "./api_helper";
 import * as url from "./url_helper";
                                         
@@ -22,10 +23,15 @@ const getDictionaries = () => {
     return apiClient.get(url.GET_DICTIONARIES);
 };
 
+const getInvestigations = (size) => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_INVESTIGATIONS, { size });
+};
 
 export {
     getAlarms,
     getAllDWM,
     getEvents,
     getDictionaries,
+    getInvestigations
 };

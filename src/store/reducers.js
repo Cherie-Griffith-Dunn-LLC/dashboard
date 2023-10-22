@@ -22,6 +22,7 @@ import alienAlarms from "./alien/alarms/reducer";
 import alienDWM from "./alien/darkweb/reducer";
 import alienEvents from "./alien/events/reducer";
 import alienDictionary from "./alien/dictionary/reducer";
+import alienInvestigations from "./alien/investigations/reducer";
 
 // LMS
 import lmsTrainingList from "./lms/trainingList/reducer";
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   lmsTrainingList,
   courseStatistics,
   alienDictionary,
+  alienInvestigations
 });
 
 export default rootReducer;

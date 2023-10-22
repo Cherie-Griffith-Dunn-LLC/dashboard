@@ -15,6 +15,7 @@ import alarmSaga from "./alien/alarms/saga";
 import darkwebSaga from "./alien/darkweb/saga";
 import eventsSaga from "./alien/events/saga";
 import dictionarySaga from "./alien/dictionary/saga";
+import investigationsSaga from "./alien/investigations/saga";
 
 import trainingListSaga from "./lms/trainingList/saga";
 import courseStatsSaga from "./lms/courseStatistics/saga";
@@ -37,5 +38,6 @@ export default function* rootSaga() {
     fork(trainingListSaga),
     fork(courseStatsSaga),
     fork(dictionarySaga),
+    fork(investigationsSaga)
   ]);
 }
