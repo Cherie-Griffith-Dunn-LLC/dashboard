@@ -47,6 +47,59 @@ const AdminSidebarData = [
         isMainMenu: true,
     },
     {
+        label: "Help Desk",
+        icon: "mdi mdi-school-outline",
+        isHasArrow: true,
+        url: "https://cyproteck.com/?page_id=1087",
+    },
+]
+
+const UserSidebarData = [
+    {
+        label: "Menu",
+        isMainMenu: true,
+    },
+    {
+        label: "Dashboard",
+        isHasArrow: true,
+        icon: "mdi mdi-home-variant-outline",
+        url: "/dashboard"
+    },
+    {
+        label: "Threats",
+        icon: "mdi mdi-lock-open-alert-outline",
+        isHasArrow: true,
+        url: "/threats",
+        issubMenubadge: true,
+        badgeValue: "3",
+        bgcolor: "bg-danger"
+    },
+    {
+        label: "Courses",
+        icon: "mdi mdi-school-outline",
+        isHasArrow: true,
+        url: "/courses",
+    },
+    {
+        label: "Settings",
+        icon: "mdi mdi-cog",
+        isHasArrow: true,
+        url: "/settings",
+    },
+    {
+        label: "Support",
+        isMainMenu: true,
+    },
+    {
+        label: "Help Desk",
+        icon: "mdi mdi-school-outline",
+        isHasArrow: true,
+        url: "https://cyproteck.com/?page_id=1087",
+    },
+]
+
+const DevSidebarData = [
+    {
         label: "Authentication",
         icon: "mdi mdi-account-circle-outline",
         subItem: [
@@ -172,51 +225,7 @@ const AdminSidebarData = [
             },
         ],
     },
-]
-
-const UserSidebarData = [
-    {
-        label: "Menu",
-        isMainMenu: true,
-    },
-    {
-        label: "Dashboard",
-        isHasArrow: true,
-        icon: "mdi mdi-home-variant-outline",
-        url: "/dashboard"
-    },
-    {
-        label: "Threats",
-        icon: "mdi mdi-lock-open-alert-outline",
-        isHasArrow: true,
-        url: "/threats",
-        issubMenubadge: true,
-        badgeValue: "3",
-        bgcolor: "bg-danger"
-    },
-    {
-        label: "Courses",
-        icon: "mdi mdi-school-outline",
-        isHasArrow: true,
-        url: "/courses",
-    },
-    {
-        label: "Settings",
-        icon: "mdi mdi-cog",
-        isHasArrow: true,
-        url: "/settings",
-    },
-    {
-        label: "Support",
-        isMainMenu: true,
-    },
-    {
-        label: "Help Desk",
-        icon: "mdi mdi-school-outline",
-        isHasArrow: true,
-        url: "https://cyproteck.com/?page_id=1087",
-    },
-]
+];
 
 
-export { AdminSidebarData, UserSidebarData }
+export { AdminSidebarData, UserSidebarData, DevSidebarData }
