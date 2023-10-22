@@ -195,42 +195,20 @@ const UserSidebarData = [
         bgcolor: "bg-danger"
     },
     {
-        label: "System Activity",
-        icon: "mdi mdi-clipboard-pulse-outline",
-        isHasArrow: true,
-        url: "/events",
-    },
-    {
         label: "Courses",
         icon: "mdi mdi-school-outline",
         isHasArrow: true,
         url: "/courses",
     },
     {
-        label: "Dark Web Monitoring",
-        icon: "mdi mdi-form-textbox-password",
-        isHasArrow: true,
-        url: "/darkweb",
-    },
-    {
-        label: "Settings",
-        icon: "mdi mdi-cog",
-        isHasArrow: true,
-        url: "/settings",
-    },
-    {
         label: "Support",
         isMainMenu: true,
     },
     {
-        label: "Authentication",
-        icon: "mdi mdi-account-circle-outline",
-        subItem: [
-            { sublabel: "Login", link: "/auth-login" },
-            { sublabel: "Register", link: "/auth-register" },
-            { sublabel: "Recover Password", link: "/auth-recoverpw" },
-            { sublabel: "Lock Screen", link: "/auth-lock-screen" },
-        ],
+        label: "Help Desk",
+        icon: "mdi mdi-school-outline",
+        isHasArrow: true,
+        url: "https://cyproteck.com/?page_id=1087",
     },
 ]
 
