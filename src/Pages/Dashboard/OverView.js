@@ -36,13 +36,7 @@ const OverView = (props) => {
                                             ALL
                                         </button>
                                         <button type="button" className="btn btn-soft-primary btn-sm me-1">
-                                            1M
-                                        </button>
-                                        <button type="button" className="btn btn-soft-secondary btn-sm me-1">
-                                            6M
-                                        </button>
-                                        <button type="button" className="btn btn-soft-secondary btn-sm me-1 active">
-                                            1Y
+                                            1D
                                         </button>
                                     </div>
                                 </div>
@@ -98,13 +92,7 @@ const OverView = (props) => {
                                             ALL
                                         </button>
                                         <button type="button" className="btn btn-soft-primary btn-sm me-1">
-                                            1M
-                                        </button>
-                                        <button type="button" className="btn btn-soft-secondary btn-sm me-1">
-                                            6M
-                                        </button>
-                                        <button type="button" className="btn btn-soft-secondary btn-sm me-1 active">
-                                            1Y
+                                            1D
                                         </button>
                                     </div>
                                 </div>
@@ -159,13 +147,7 @@ const OverView = (props) => {
                                         ALL
                                     </button>
                                     <button type="button" className="btn btn-soft-primary btn-sm me-1">
-                                        1M
-                                    </button>
-                                    <button type="button" className="btn btn-soft-secondary btn-sm me-1">
-                                        6M
-                                    </button>
-                                    <button type="button" className="btn btn-soft-secondary btn-sm me-1 active">
-                                        1Y
+                                        1D
                                     </button>
                                 </div>
                             </div>
