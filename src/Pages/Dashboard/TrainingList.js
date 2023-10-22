@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getEmployeeTrainingList } from "../../store/actions";
 
+import { formatDate } from '@fullcalendar/core';
+
 const TrainingList = () => {
 
     const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const TrainingList = () => {
                                                     <h5 className="font-size-15 mb-0">{item.name}</h5>
                                                 </td>
                                                 <td>{item.email}</td>
-                                                <td>{item.mostRecentCompletion ? item.mostRecentCompletion : "-/-/-"}</td>
+                                                <td>{item.mostRecentCompletion ? formatDate(item.mostRecentCompletion) : "-/-/-"}</td>
                                                 <td>
                                                     <i className={"mdi mdi-checkbox-blank-circle me-1 text-" + (item.totalAssignments > 1 ? "danger" : "success")}></i> {item.totalAssignments > 1 ? "High" : "Low"}
                                                 </td>
