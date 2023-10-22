@@ -79,7 +79,7 @@ const UserProfile = () => {
     <React.Fragment>
         <div className="page-content">
           <Container fluid>
-            <Breadcrumb title="Upzet" breadcrumbItem="Profile" />
+            <Breadcrumb title="Dashboard" breadcrumbItem="Settings" />
 
             <Row>
               <Col lg="12">
