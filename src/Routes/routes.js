@@ -222,6 +222,9 @@ const publicRoutes = [
   { path: "/pages-500", component: <Error500 /> },
   { path: "/pages-maintenance", component: <Maintenance /> },
   { path: "/pages-comingsoon", component: <ComingSoon /> },
+
+  // error pages
+  { path: "*", component: <Error404 />},
 ];
 
 export { authProtectedRoutes, publicRoutes };
