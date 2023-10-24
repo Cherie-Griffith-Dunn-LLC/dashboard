@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardBody, Col, Row } from "reactstrap";
+import { getRiskScore } from "../../helpers/data_helper";
 
 // import RadialChart1 from "./userpanelChart1";
 // import RadialChart2 from "./userpanelChart2";
@@ -11,6 +12,23 @@ const UserPanel = (props) => {
   const alarms = props.alarms;
   const dwmAlarms = props.dwm;
   const role = props.role;
+  const courseStats = props.courseStats;
+
+  const [riskScore, setRiskScore] = useState(0);
+
+  
+
+  React.useEffect(() => {
+    if (role === "admin") {
+      setRiskScore(
+        getRiskScore(
+          alarms?.alarms.page?.totalElements,
+          dwmAlarms?.alarms.page?.totalElements,
+          courseStats?.statistics?.totalInProgressCourses
+          )
+        );
+    }
+  }, [role, alarms, dwmAlarms, courseStats, setRiskScore]);
 
 
   // admin panel
@@ -74,7 +92,7 @@ const UserPanel = (props) => {
                   </div>
   
                   <div className="flex-grow-1 overflow-hidden">
-                    <p className="mb-1">Dark Web Monitoring</p>
+                    <p className="mb-1">Dark Web</p>
                     <h5 className="mb-3">{dwmAlarms.loading !== false ? "loading" : dwmAlarms?.alarms.page.totalElements}</h5>
                   </div>
                 </div>
@@ -95,7 +113,7 @@ const UserPanel = (props) => {
                   </div>
                   <div className="flex-grow-1 overflow-hidden">
                     <p className="mb-1">Risk Score</p>
-                    <h5 className="mb-3">7.0</h5>
+                    <h5 className="mb-3">{(dwmAlarms.loading || alarms.loading) ? "loading" : riskScore}</h5>
                   </div>
                 </div>
               </CardBody>

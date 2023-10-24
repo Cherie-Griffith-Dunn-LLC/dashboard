@@ -73,7 +73,7 @@ const Dashboard = () => {
           <Container fluid={true}>
             <Breadcrumbs title="CYPROTECK" breadcrumbItem="Dashboard" />
             {/* User Panel Charts */}
-            <UsePanel role={role} alarms={alarmsData} events={eventsData} dwm={dwmData} />
+            <UsePanel courseStats={courseStats} role={role} alarms={alarmsData} events={eventsData} dwm={dwmData} />
   
             <Row>
               {/* Overview Chart */}

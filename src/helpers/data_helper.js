@@ -47,7 +47,24 @@ function daysAgo (date) {
     })
   }
 
+// calculate the risk score
+function getRiskScore (alarms = 0, darkweb = 0, coursestats = 0) {
+  // calculate the risk score
+  var riskScore = (alarms * 0.1) + (darkweb * 0.5) + (coursestats * 0.5);
+  // make the risk score between 0 and 10
+  riskScore = riskScore / 10;
+  if (riskScore > 10) {
+    riskScore = 10;
+  } else if (riskScore < 0) {
+    riskScore = 0;
+  }
+  // round to the nearest tenth
+  riskScore = Math.round(riskScore * 10) / 10;
+  return riskScore;
+} 
+
 export {
     daysAgo,
-    getAlarmIcon
+    getAlarmIcon,
+    getRiskScore
 }
