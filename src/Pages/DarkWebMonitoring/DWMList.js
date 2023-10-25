@@ -8,7 +8,7 @@ import { formatDate } from '@fullcalendar/core';
 
 const DWMList = (props) => {
 
-    const alarms = props.alarmsData["_embedded"].eventResources;
+    const alarms = props.alarmsData["_embedded"]?.eventResources ? props.alarmsData["_embedded"]?.eventResources : [];
 
 
     //const pageData = props.alarmsData.page;
