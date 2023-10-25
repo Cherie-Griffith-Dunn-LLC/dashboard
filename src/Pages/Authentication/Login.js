@@ -174,7 +174,7 @@ const Login = props => {
                                 target="_blank"
                                 className="text-muted"
                               >
-                                <i className="mdi mdi-lock"></i> Need help?
+                                <i className="mdi mdi-face-agent"></i> Need help?
                               </Link>
                             </div>
                           </Col>

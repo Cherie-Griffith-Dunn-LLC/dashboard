@@ -48,7 +48,7 @@ const AdminSidebarData = [
     },
     {
         label: "Help Desk",
-        icon: "mdi mdi-school-outline",
+        icon: "mdi mdi-face-agent",
         isHasArrow: true,
         url: "https://cyproteck.com/?page_id=1087",
     },
@@ -92,7 +92,7 @@ const UserSidebarData = [
     },
     {
         label: "Help Desk",
-        icon: "mdi mdi-school-outline",
+        icon: "mdi mdi-face-agent",
         isHasArrow: true,
         url: "https://cyproteck.com/?page_id=1087",
     },
