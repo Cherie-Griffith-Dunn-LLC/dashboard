@@ -23,9 +23,9 @@ const RecentThreats = (props) => {
   React.useEffect(() => {
     if (!loading && alarmsData) {
       if(role === "admin") {
-        setAlarms(getAlarmIcon(alarmsData.alarms._embedded.alarms));
+        setAlarms(alarmsData.alarms._embedded?.alarms ? getAlarmIcon(alarmsData.alarms._embedded.alarms) : []);
       } else {
-        setAlarms(getAlarmIcon(alarmsData.investigation._embedded.alarms));
+        setAlarms(alarmsData.investigation._embedded?.alarms ? getAlarmIcon(alarmsData.investigation._embedded.alarms) : []);
       }
     }
   }, [alarmsData, loading, role]);

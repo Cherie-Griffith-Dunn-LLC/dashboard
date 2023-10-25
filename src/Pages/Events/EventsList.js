@@ -7,7 +7,7 @@ import { Row, Col } from 'reactstrap';
 
 const EventsList = (props) => {
 
-    const events = props.eventsData.events["_embedded"].eventResources;
+    const events = props.eventsData.events["_embedded"]?.eventResources ? props.eventsData.events["_embedded"]?.eventResources : [];
 
     const [showEventDetails, setShowEventDetails] = useState(false);
     const [eventDetails, setEventDetails] = useState({});

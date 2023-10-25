@@ -12,7 +12,7 @@ import { getAlarmIcon } from '../../helpers/data_helper';
 
 const ThreatsList = (props) => {
 
-    const alarms = getAlarmIcon(props.alarmsData["_embedded"].alarms);
+    const alarms = props.alarmsData["_embedded"]?.alarms ? getAlarmIcon(props.alarmsData["_embedded"]?.alarms) : [];
     const dictionary = props.dictionary;
     //const pageData = props.alarmsData.page;
 

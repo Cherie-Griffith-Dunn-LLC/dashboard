@@ -7,7 +7,7 @@ import ReactApexChart from "react-apexcharts";
 const LineColumnArea = (props) => {
   const role = props.role;
   const events = props.events.events._embedded?.eventResources;
-  const alarms = role === "admin" ? props.alarms.alarms._embedded.alarms : props.alarms.investigation._embedded.alarms;
+  const alarms = (role === "admin" && props.alarms.alarms._embedded?.alarms) ? props.alarms.alarms._embedded?.alarms : (role === "user"  && props.alarms.investigation._embedded?.alarms) ? props.alarms.investigation._embedded?.alarms : [];
   
 
   // create series for events

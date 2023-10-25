@@ -17,7 +17,7 @@ const ThreatsByPriority = (props) => {
     var high = 0;
     var medium = 0;
     if (!loading) {
-      alarms._embedded.alarms.forEach((item) => {
+      alarms._embedded?.alarms.forEach((item) => {
         if (item.priority_label === "low") {
           low++;
         } else if (item.priority_label === "medium") {
