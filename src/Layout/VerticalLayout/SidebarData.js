@@ -15,8 +15,6 @@ const AdminSidebarData = [
         isHasArrow: true,
         url: "/threats",
         issubMenubadge: true,
-        badgeValue: "3",
-        bgcolor: "bg-danger"
     },
     {
         label: "System Activity",
@@ -70,8 +68,6 @@ const UserSidebarData = [
         icon: "mdi mdi-lock-open-alert-outline",
         isHasArrow: true,
         url: "/threats",
-        issubMenubadge: true,
-        badgeValue: "3",
         bgcolor: "bg-danger"
     },
     {
