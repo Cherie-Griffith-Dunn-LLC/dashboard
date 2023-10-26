@@ -53,61 +53,15 @@ const NotificationDropdown = props => {
                 <div className="flex-shrink-0 me-3">
                   <div className="avatar-xs">
                     <span className="avatar-title bg-primary rounded-circle font-size-16">
-                      <i className="ri-shopping-cart-line"></i>
+                      <i className="ri-bell-line"></i>
                     </span>
                   </div>
                 </div>
                 <div className="flex-grow-1">
-                  <h6 className="mb-1">Your order is placed</h6>
+                  <h6 className="mb-1">No Notifications</h6>
                   <div className="font-size-12 text-muted">
-                    <p className="mb-1">If several languages coalesce the grammar</p>
+                    <p className="mb-1">No new notifications to display at this time.</p>
                     <p className="mb-0"><i className="mdi mdi-clock-outline"></i> 3 min ago</p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="flex-shrink-0 me-3">
-                  <img src={avatar3} className="rounded-circle avatar-xs" alt="user-pic" />
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mb-1">James Lemire</h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">It will seem like simplified English.</p>
-                    <p className="mb-0"><i className="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="flex-shrink-0 me-3">
-                  <div className="avatar-xs">
-                    <span className="avatar-title bg-success rounded-circle font-size-16">
-                      <i className="ri-checkbox-circle-line"></i>
-                    </span>
-                  </div>
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mb-1">Your item is shipped</h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">If several languages coalesce the grammar</p>
-                    <p className="mb-0"><i className="mdi mdi-clock-outline"></i> 3 min ago</p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="flex-shrink-0 me-3">
-                  <img src={avatar4} className="rounded-circle avatar-xs" alt="user-pic" />
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mb-1">Salena Layfield</h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-                    <p className="mb-0"><i className="mdi mdi-clock-outline"></i> 1 hour ago</p>
                   </div>
                 </div>
               </div>
