@@ -73,7 +73,11 @@ const TrainingList = () => {
                                                 <td>{item.email}</td>
                                                 <td>{item.mostRecentCompletion ? formatDate(item.mostRecentCompletion) : "-/-/-"}</td>
                                                 <td>
-                                                    <i className={"mdi mdi-checkbox-blank-circle me-1 text-" + (item.totalAssignments > 1 ? "danger" : "success")}></i> {item.totalAssignments > 1 ? "High" : "Low"}
+                                                    <i className={"mdi mdi-checkbox-blank-circle me-1 text-" + (item.totalAssignments > 1 ? (
+                                                        item.totalAssignments > 3 ? "danger" : "warning"
+                                                    ) : "success")}></i> {item.totalAssignments > 1 ? (
+                                                        item.totalAssignments > 3 ? "High" : "Medium"
+                                                    ) : "Low"}
                                                 </td>
                                                 <td>{item.totalAssignments}</td>
                                                 <td>
