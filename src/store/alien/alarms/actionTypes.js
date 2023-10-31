@@ -1,0 +1,3 @@
+export const GET_ALARMS = "GET_ALARMS";
+export const GET_ALARMS_SUCCESS = "GET_ALARMS_SUCCESS";
+export const GET_ALARMS_FAIL = "GET_ALARMS_FAIL";
