@@ -124,7 +124,7 @@ const OAuth = props => {
                       Welcome Back !
                     </h4>
                     <p className="mb-5 text-center">
-                      Please login using your Microsoft Organization account in the popup. You will be redirected automatically.
+                      Please login using your Microsoft Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
                     </p>
                     <Form className="form-horizontal" action="#">
                       <Row>
