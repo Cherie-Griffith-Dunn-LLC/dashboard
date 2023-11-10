@@ -101,7 +101,7 @@ const OAuth = props => {
         <Container>
           <Row className="justify-content-center">
             <Col lg={6} md={8} xl={4}>
-              <Card>
+              <Card className="right-auth-card">
                 <CardBody className="p-4">
                   <div>
                     <div className="text-center">
@@ -120,10 +120,10 @@ const OAuth = props => {
                         />
                       </Link>
                     </div>
-                    <h4 className="font-size-18 text-muted mt-2 text-center">
+                    <h4 className="font-size-18 text-light mt-2 text-center">
                       Welcome Back !
                     </h4>
-                    <p className="mb-5 text-center">
+                    <p className="mb-5 text-center text-light">
                       Please login using your Microsoft Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
                     </p>
                     <Form className="form-horizontal" action="#">
