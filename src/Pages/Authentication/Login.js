@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import logolight from "../../assets/images/logo-light.png";
 import logodark from "../../assets/images/logo-dark.png";
 
-import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
+import { Row, Col, Alert, Form, Input, FormFeedback, Label } from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
