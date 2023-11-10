@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import logolight from "../../assets/images/logo-light.png";
 import logodark from "../../assets/images/logo-dark.png";
 
-import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
+import { Row, Col, Alert, Form, Input, FormFeedback, Label } from "reactstrap";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -90,37 +90,38 @@ const Login = props => {
 
   return (
     <React.Fragment>
-    
-    <div className="bg-overlay"></div>
-    <div className="account-pages my-5 pt-5">
-      <Container>
-        <Row className="justify-content-center">
-          <Col lg={6} md={8} xl={4}>
-            <Card>
-              <CardBody className="p-4">
-                <div>
-                  <div className="text-center">
+    <div className="account-pages my-0 pt-0 m-0 p-0">
+        <div className="auth-mobile-container auth-container">
+            <div className="left-auth-card left-auth-mobile-card text-center">
                     <Link to="/">
                       <img
                         src={logodark}
-                        alt=""
-                        height="24"
+                        alt="CYPROTECK"
                         className="auth-logo logo-dark mx-auto"
                       />
                       <img
                         src={logolight}
-                        alt=""
-                        height="24"
+                        alt="CYPROTECK"
                         className="auth-logo logo-light mx-auto"
                       />
                     </Link>
+                  <div className="auth-left-footer">
+                    <Link
+                      target="_blank"
+                      to="https://cyproteck.com/buynow/"
+                      className="text-dark"
+                    >
+                      Don't have an account ? Register
+                    </Link>
                   </div>
-                  <h4 className="font-size-18 text-muted mt-2 text-center">
-                    Welcome Back!
-                  </h4>
-                  <p className="mb-5 text-center">
+            </div>
+            <div className="right-auth-card right-auth-mobile-card">
+                  <h6 className="font-size-18 text-info" style={{marginTop: "50px", fontWeight: "bold"}}>
+                    Welcome Back,
+                  </h6>
+                  <h6 className="font-size-18 text-info" style={{fontWeight: "bold", marginBottom: "50px"}}>
                     Log in continue.
-                  </p>
+                  </h6>
                   <Form
                     className="form-horizontal"
                     onSubmit={(e) => {
@@ -137,8 +138,9 @@ const Login = props => {
                         <Input
                           name="email"
                           className="form-control"
-                          placeholder="Enter email"
+                          placeholder="email@example.com"
                           type="email"
+                          style={{backgroundColor: 'white', borderRadius: '15px'}}
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.email || ""}
@@ -151,66 +153,30 @@ const Login = props => {
                         ) : null}
                         </div>
 
-                        <Row>
-                          <Col>
-                            <div className="form-check">
-                              <input
-                                type="checkbox"
-                                className="form-check-input"
-                                id="customControlInline"
-                              />
-                              <label
-                                className="form-label form-check-label"
-                                htmlFor="customControlInline"
-                              >
-                                Remember me
-                              </label>
-                            </div>
-                          </Col>
-                          <Col className="col-7">
-                            <div className="text-md-end mt-3 mt-md-0">
-                              <Link
-                                to="https://cyproteck.com/?page_id=1087"
-                                target="_blank"
-                                className="text-muted"
-                              >
-                                <i className="mdi mdi-face-agent"></i> Need help?
-                              </Link>
-                            </div>
-                          </Col>
-                        </Row>
+                        
                         <div className="d-grid mt-4">
                           <button
-                            className="btn btn-primary waves-effect waves-light"
+                            className="btn btn-info waves-effect waves-light"
+                            style={{borderRadius: '15px'}}
                             type="submit"
                           >
-                            Log In
+                            Login with Microsoft
                           </button>
                         </div>
-                        <div className="mt-4 text-center">
-                    </div>
-
                       </Col>
                     </Row>
                   </Form>
-                </div>
-              </CardBody>
-            </Card>
-            <div className="mt-5 text-center">
-              <p className="text-white-50">
-                Don't have an account ?{" "}
-                <Link target="_blank" to="https://cyproteck.com/buynow/" className="fw-medium text-primary">
-                  {" "}
-                  Register{" "}
-                </Link>{" "}
-              </p>
-              <p className="text-white-50">
-                © {new Date().getFullYear()} CYPROTECK, Inc.
-              </p>
+                  <div className="right-auth-footer">
+                    <Link
+                      to="https://cyproteck.com/?page_id=1087"
+                      target="_blank"
+                      className="text-light"
+                    >
+                      Need help? Contact Support <i className="mdi mdi-face-agent"></i> 
+                    </Link>
+                  </div>
             </div>
-          </Col>
-        </Row>
-      </Container>
+        </div>
     </div>
   </React.Fragment>
   );
