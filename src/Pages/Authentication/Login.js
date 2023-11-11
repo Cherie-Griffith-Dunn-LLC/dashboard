@@ -111,15 +111,15 @@ const Login = props => {
                       to="https://cyproteck.com/buynow/"
                       className="text-dark"
                     >
-                      Don't have an account ? Register
+                      Don't have an account? Register
                     </Link>
                   </div>
             </div>
             <div className="right-auth-card right-auth-mobile-card">
-                  <h6 className="font-size-18 text-info" style={{marginTop: "50px", fontWeight: "bold"}}>
+                  <h6 className="font-size-18 text-info" style={{marginTop: "50px", fontWeight: 800}}>
                     Welcome Back,
                   </h6>
-                  <h6 className="font-size-18 text-info" style={{fontWeight: "bold", marginBottom: "50px"}}>
+                  <h6 className="font-size-18 text-info" style={{fontWeight: 800, marginBottom: "50px"}}>
                     Log in continue.
                   </h6>
                   <Form
