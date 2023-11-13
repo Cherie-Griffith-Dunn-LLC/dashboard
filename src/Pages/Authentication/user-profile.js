@@ -8,7 +8,6 @@ import {
   Alert,
   CardBody,
   Button,
-  Form,
 } from "reactstrap";
 
 
@@ -34,7 +33,6 @@ const UserProfile = () => {
 
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
-  const [idx, setidx] = useState(1);
   const [ userDetails, setUserDetails ] = useState({});
   const [role, setRole] = useState("");
 
@@ -56,7 +54,6 @@ const UserProfile = () => {
       const obj = JSON.parse(localStorage.getItem("authUser"));
       setname(obj.displayName);
       setemail(obj.mail);
-      setidx(obj.id);
       setUserDetails(obj);
       setTimeout(() => {
         dispatch(resetProfileFlag());
