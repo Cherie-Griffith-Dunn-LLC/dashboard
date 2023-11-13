@@ -18,7 +18,7 @@ function* fetchAlarms() {
         if (response.error) {
             throw new Error(response.error);
         }
-        yield put(getAlarmsSuccess(response.message));
+        yield put(getAlarmsSuccess(response));
     } catch (error) {
         yield put(getAlarmsFail(error));
     }
