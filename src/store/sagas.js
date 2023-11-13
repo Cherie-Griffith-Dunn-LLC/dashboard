@@ -10,6 +10,7 @@ import forgetPasswordSaga from "./auth/forgetpwd/saga"
 import azureSaga from "./azure/tenant/saga";
 import userSaga from "./azure/user/saga";
 import roleSaga from "./azure/roles/saga";
+import usersSaga from "./azure/users/saga";
 
 import alarmSaga from "./alien/alarms/saga";
 import darkwebSaga from "./alien/darkweb/saga";
@@ -38,6 +39,7 @@ export default function* rootSaga() {
     fork(trainingListSaga),
     fork(courseStatsSaga),
     fork(dictionarySaga),
-    fork(investigationsSaga)
+    fork(investigationsSaga),
+    fork(usersSaga)
   ]);
 }

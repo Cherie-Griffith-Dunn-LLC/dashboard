@@ -18,8 +18,14 @@ const getCurrentRole = () => {
     return apiClient.get(url.GET_CURRENT_ROLE);
 };
 
+const postUsers = () => {
+    const apiClient = new APIClient();
+    return apiClient.post(url.POST_ORG_USERS);
+}
+
 export {
     getTenantId,
     getCurrentUser,
     getCurrentRole,
+    postUsers,
 };
