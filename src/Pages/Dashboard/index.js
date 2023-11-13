@@ -17,6 +17,7 @@ import withRouter from "../../components/Common/withRouter";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
+import * as Sentry from "@sentry/react";
 
 const Dashboard = () => {
   document.title = "Dashboard | CYPROTECK - Security Solutions Dashboard";
@@ -52,6 +53,10 @@ const Dashboard = () => {
 
   if (alarmsData.error || eventsData.error || dwmData.error || courseStats.error || investigations.error) {
     console.error(alarmsData.error, eventsData.error, dwmData.error, courseStats.error, investigations.error);
+    Sentry.captureException(alarmsData.error ? alarmsData.error :
+      eventsData.error ? eventsData.error :
+      dwmData.error ? dwmData.error :
+      courseStats.error ? courseStats.error : investigations.error)
     return (
       <React.Fragment>
         <div className="page-content">

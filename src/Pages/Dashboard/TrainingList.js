@@ -50,6 +50,8 @@ const TrainingList = () => {
                                     <tbody>
                                         {trainingList.loading !== false ? (
                                             <tr><td>Loading...</td></tr>
+                                        ) : trainingList.employees.length === 0 ? (
+                                            <tr><td>No employees found. Please import users in settings.</td></tr>
                                         ) : (
                                             trainingList.employees.map((item, key) => (<tr key={key}>
                                                 <td>

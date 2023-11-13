@@ -8,15 +8,8 @@ import {
   Alert,
   CardBody,
   Button,
-  Label,
-  Input,
-  FormFeedback,
-  Form,
 } from "reactstrap";
 
-// Formik Validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -28,8 +21,10 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 //import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
-import { editProfile, resetProfileFlag } from "../../store/actions";
+import { resetProfileFlag } from "../../store/actions";
 //import { set } from "lodash";
+
+import { postOrgUsers } from "../../store/actions";
 
 const UserProfile = () => {
   document.title = "Settings | CYPROTECK - Security Solutions Dashboard";
@@ -38,42 +33,37 @@ const UserProfile = () => {
 
   const [email, setemail] = useState("");
   const [name, setname] = useState("");
-  const [idx, setidx] = useState(1);
   const [ userDetails, setUserDetails ] = useState({});
+  const [role, setRole] = useState("");
 
   const { error, success } = useSelector((state) => ({
     error: state.profile.error,
     success: state.profile.success,
   }));
 
+
+  const postUsersState  = useSelector(state => state.azureAddUsers);
+
+  const handleImport = (e) => {
+    e.preventDefault();
+    dispatch(postOrgUsers());
+  }
+
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser"));
       setname(obj.displayName);
       setemail(obj.mail);
-      setidx(obj.id);
       setUserDetails(obj);
       setTimeout(() => {
         dispatch(resetProfileFlag());
       }, 3000);
     }
+    if (localStorage.getItem("role")) {
+      setRole(localStorage.getItem("role"));
+    }
+    
   }, [dispatch, success]);
-
-  const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      username: name || "",
-      idx: idx || "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Your UserName"),
-    }),
-    onSubmit: (values) => {
-      dispatch(editProfile(values));
-    },
-  });
 
   return (
     <React.Fragment>
@@ -116,53 +106,43 @@ const UserProfile = () => {
                 </Card>
               </Col>
             </Row>
+            {postUsersState.error && postUsersState.error ? (
+                <Alert color="danger">
+                  <div>An error has occured: {postUsersState?.error?.message}</div>
+                </Alert>
+              ) : null}
+              {postUsersState?.message ? (
+                <Alert color="success">
+                  <div>{postUsersState?.message}</div>
+                </Alert>
+              ) : null}
 
-            <h4 className="card-title mb-4">Change User Name</h4>
+            {postUsersState?.loading ? (
+              <div className="text-center mt-4">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Importing...</span>
+                </div>
+              </div>
+            ) : null}
 
-            <Card>
-              <CardBody>
-                <Form
-                  className="form-horizontal"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    validation.handleSubmit();
-                    return false;
-                  }}
-                >
-                  <div className="form-group">
-                    <Label className="form-label">User Name</Label>
-                    <Input
-                      name="username"
-                      // value={name}
-                      className="form-control"
-                      placeholder="Enter User Name"
-                      type="text"
-                      onChange={validation.handleChange}
-                      onBlur={validation.handleBlur}
-                      value={validation.values.username || ""}
-                      invalid={
-                        validation.touched.username &&
-                        validation.errors.username
-                          ? true
-                          : false
-                      }
-                    />
-                    {validation.touched.username &&
-                    validation.errors.username ? (
-                      <FormFeedback type="invalid">
-                        <div>{validation.errors.username}</div>
-                      </FormFeedback>
-                    ) : null}
-                    <Input name="idx" value={idx} type="hidden" />
-                  </div>
-                  <div className="text-center mt-4">
-                    <Button type="submit" color="danger">
-                      Update User Name
-                    </Button>
-                  </div>
-                </Form>
-              </CardBody>
-            </Card>
+            {role === "admin" ? (
+              <>
+              <h4 className="card-title mb-4">Users</h4>
+
+              
+
+              <Card>
+                <CardBody>
+                    
+                    <div className="text-center mt-4">
+                      <Button type="submit" color="primary" onClick={handleImport}>
+                        Import Users
+                      </Button>
+                    </div>
+                </CardBody>
+              </Card>
+              </>
+              ) : null}
           </Container>
         </div>
     </React.Fragment>
