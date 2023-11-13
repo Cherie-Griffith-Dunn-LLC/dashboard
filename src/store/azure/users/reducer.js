@@ -7,7 +7,7 @@ import {
 const INIT_STATE = {
     error: "",
     message: "",
-    loading: true,
+    loading: false,
 }
 
 const azureAddUsers = (state = INIT_STATE, action) => {

@@ -20,7 +20,7 @@ const getCurrentRole = () => {
 
 const postUsers = () => {
     const apiClient = new APIClient();
-    return apiClient.post(url.POST_ORG_USERS);
+    return apiClient.create(url.POST_ORG_USERS);
 }
 
 export {

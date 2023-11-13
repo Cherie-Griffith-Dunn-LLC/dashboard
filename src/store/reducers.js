@@ -16,7 +16,7 @@ import account from "./auth/register/reducer";
 import azure from "./azure/tenant/reducer";
 import getCurrentUser from "./azure/user/reducer";
 import getCurrentRole from "./azure/roles/reducer";
-import postOrgUsers from "./azure/users/reducer";
+import azureAddUsers from "./azure/users/reducer";
 
 // AlienVault
 import alienAlarms from "./alien/alarms/reducer";
@@ -47,7 +47,7 @@ const rootReducer = combineReducers({
   courseStatistics,
   alienDictionary,
   alienInvestigations,
-  postOrgUsers
+  azureAddUsers
 });
 
 export default rootReducer;

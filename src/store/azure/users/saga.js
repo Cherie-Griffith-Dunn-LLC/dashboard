@@ -15,6 +15,7 @@ function* addOrgUsers() {
         // set the authorization header
         setAuthorization(token);
         const response = yield call(postUsers);
+        console.log(response);
         if (response.error) {
             throw new Error(response.error);
         }
