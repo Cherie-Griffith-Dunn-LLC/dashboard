@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Card, CardBody, Col, Row } from "reactstrap";
 import { getRiskScore } from "../../helpers/data_helper";
+import { useSelector, useDispatch } from 'react-redux';
+import { getRequiredCourses } from '../../store/actions';
 
 // import RadialChart1 from "./userpanelChart1";
 // import RadialChart2 from "./userpanelChart2";
@@ -13,10 +15,11 @@ const UserPanel = (props) => {
   const dwmAlarms = props.dwm;
   const role = props.role;
   const courseStats = props.courseStats;
+  const assignments = useSelector(state => state.lmsAssignedCourses);
 
   const [riskScore, setRiskScore] = useState(0);
 
-  
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (role === "admin") {
@@ -29,6 +32,12 @@ const UserPanel = (props) => {
         );
     }
   }, [role, alarms, dwmAlarms, courseStats, setRiskScore]);
+
+  React.useEffect(() => {
+    if (role === "user") {
+      dispatch(getRequiredCourses());
+    }
+  }, [dispatch, role]);
 
 
   // admin panel
@@ -188,11 +197,11 @@ const UserPanel = (props) => {
 
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">Course Assignments</p>
-                  {events.loading !== false ? (
+                  {assignments.loading !== false ? (
                     <h5 className="mb-3 placeholder-glow">
                     <span className="placeholder col-6"></span>
                   </h5>
-                  ) : (<h5 className="mb-3">{events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements}</h5>)}
+                  ) : (<h5 className="mb-3">{assignments.courses.length}</h5>)}
                 </div>
               </div>
             </CardBody>
