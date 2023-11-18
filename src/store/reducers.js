@@ -30,6 +30,7 @@ import lmsTrainingList from "./lms/trainingList/reducer";
 import courseStatistics from "./lms/courseStatistics/reducer";
 import lmsAssignedCourses from "./lms/requiredCourses/reducer";
 import lmsEmployeeCourses from "./lms/employeeCourses/reducer";
+import lmsMyCourses from "./lms/myCourse/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   azureAddUsers,
   lmsAssignedCourses,
   lmsEmployeeCourses,
+  lmsMyCourses,
 });
 
 export default rootReducer;

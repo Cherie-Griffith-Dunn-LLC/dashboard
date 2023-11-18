@@ -17,6 +17,7 @@ export const GET_TRAINING_LIST = "/users/training";
 export const GET_COURSE_STATISTICS = "/courses/statistics";
 export const GET_ASSIGNED_COURSES = "/requiredCourses";
 export const GET_ALL_ASSIGNMENTS_COURSES = "/allCourseAssignments";
+export const GET_COURSE_URL = "/course";
 
 
 //REGISTER
