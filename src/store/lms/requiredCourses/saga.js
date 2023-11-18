@@ -16,7 +16,6 @@ function* getMyCourses() {
         // set the authorization header
         setAuthorization(token);
         const response = yield call(getAssignedCourses);
-        console.log(response);
         if (response.error) {
             throw new Error(response.error);
         }
