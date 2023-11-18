@@ -20,6 +20,7 @@ import investigationsSaga from "./alien/investigations/saga";
 
 import trainingListSaga from "./lms/trainingList/saga";
 import courseStatsSaga from "./lms/courseStatistics/saga";
+import myCoursesSaga  from "./lms/requiredCourses/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -40,6 +41,7 @@ export default function* rootSaga() {
     fork(courseStatsSaga),
     fork(dictionarySaga),
     fork(investigationsSaga),
-    fork(usersSaga)
+    fork(usersSaga),
+    fork(myCoursesSaga)
   ]);
 }

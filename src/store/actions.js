@@ -26,3 +26,4 @@ export * from "./alien/investigations/actions"
 // LMS module
 export * from "./lms/trainingList/actions"
 export * from "./lms/courseStatistics/actions"
+export * from "./lms/requiredCourses/actions"

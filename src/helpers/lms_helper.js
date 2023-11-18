@@ -12,7 +12,13 @@ const getCourseStatistics = () => {
     return apiClient.get(url.GET_COURSE_STATISTICS);
 };
 
+const getAssignedCourses = () => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_ASSIGNED_COURSES);
+}
+
 export {
     getTrainingList,
     getCourseStatistics,
+    getAssignedCourses
 };

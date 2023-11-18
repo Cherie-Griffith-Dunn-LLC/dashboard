@@ -28,6 +28,7 @@ import alienInvestigations from "./alien/investigations/reducer";
 // LMS
 import lmsTrainingList from "./lms/trainingList/reducer";
 import courseStatistics from "./lms/courseStatistics/reducer";
+import lmsAssignedCourses from "./lms/requiredCourses/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -47,7 +48,8 @@ const rootReducer = combineReducers({
   courseStatistics,
   alienDictionary,
   alienInvestigations,
-  azureAddUsers
+  azureAddUsers,
+  lmsAssignedCourses
 });
 
 export default rootReducer;

@@ -15,6 +15,7 @@ export const GET_ALL_DWM = "/darkWebEvents";
 // LMS
 export const GET_TRAINING_LIST = "/users/training";
 export const GET_COURSE_STATISTICS = "/courses/statistics";
+export const GET_ASSIGNED_COURSES = "/requiredCourses";
 
 
 //REGISTER
