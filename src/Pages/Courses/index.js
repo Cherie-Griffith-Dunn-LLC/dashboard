@@ -1,12 +1,19 @@
 import React from 'react';
 import { Container } from "reactstrap";
-
+import RequiredAssignments from "./RequiredAssignments";
+import EmployeeAssignments from "./EmployeeAssignments";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
     const Courses = () => {
         document.title = "Courses | CYPROTECK - Security Solutions Dashboard";
 
+        const [role, setRole] = React.useState('');
+
+        React.useEffect(() => {
+            let role = localStorage.getItem('role');
+            setRole(role);
+        }, []);
 
         return (
             <>
@@ -14,7 +21,11 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
                     <Container fluid={true}>
                         <Breadcrumbs title="Dashboard" breadcrumbItem="Courses" />
                         
-                        <p>Coming soon.</p>
+                        <RequiredAssignments />
+
+                        {role === 'admin' ? (
+                            <EmployeeAssignments />
+                        ) : null}
 
                     </Container>
                 </div>
