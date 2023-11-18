@@ -51,7 +51,13 @@ const UserPanel = (props) => {
   
                   <div className="flex-grow-1 overflow-hidden">
                     <p className="mb-1">Threats</p>
-                    <h5 className="mb-3">{alarms.loading !== false ? "loading" : alarms?.alarms.page.totalElements}</h5>
+                    {alarms.loading !== false ? (
+                      <h5 className="mb-3 placeholder-glow">
+                        <span className="placeholder col-6"></span>
+                      </h5>
+                    ) : (
+                      <h5 className="mb-3">{alarms?.alarms.page.totalElements}</h5>
+                    )}
                   </div>
                 </div>
               </CardBody>
@@ -72,7 +78,13 @@ const UserPanel = (props) => {
   
                   <div className="flex-grow-1 overflow-hidden">
                     <p className="mb-1">System Activity</p>
-                    <h5 className="mb-3">{events.loading !== false ? "loading" : (events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements)}</h5>
+                    {events.loading !== false ? (
+                      <h5 className="mb-3 placeholder-glow">
+                        <span className="placeholder col-6"></span>
+                      </h5>
+                    ) : (<h5 className="mb-3">
+                      {events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements}
+                    </h5>)}
                   </div>
                 </div>
               </CardBody>
@@ -93,7 +105,11 @@ const UserPanel = (props) => {
   
                   <div className="flex-grow-1 overflow-hidden">
                     <p className="mb-1">Dark Web</p>
-                    <h5 className="mb-3">{dwmAlarms.loading !== false ? "loading" : dwmAlarms?.alarms.page.totalElements}</h5>
+                    {dwmAlarms.loading !== false ? (
+                      <h5 className="mb-3 placeholder-glow">
+                        <span className="placeholder col-6"></span>
+                      </h5>
+                    ) : (<h5 className="mb-3">{dwmAlarms?.alarms.page.totalElements}</h5>)}
                   </div>
                 </div>
               </CardBody>
@@ -113,7 +129,11 @@ const UserPanel = (props) => {
                   </div>
                   <div className="flex-grow-1 overflow-hidden">
                     <p className="mb-1">Risk Score</p>
-                    <h5 className="mb-3">{(dwmAlarms.loading || alarms.loading) ? "loading" : riskScore}</h5>
+                    {(dwmAlarms.loading || alarms.loading) ? (
+                      <h5 className="mb-3 placeholder-glow">
+                        <span className="placeholder col-6"></span>
+                      </h5>
+                    ) : (<h5 className="mb-3">{riskScore}</h5>)}
                   </div>
                 </div>
               </CardBody>
@@ -143,7 +163,11 @@ const UserPanel = (props) => {
 
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">Threats</p>
-                  <h5 className="mb-3">{alarms.loading !== false ? "loading" : alarms?.investigation.page.totalElements}</h5>
+                  {alarms.loading !== false ? (
+                    <h5 className="mb-3 placeholder-glow">
+                        <span className="placeholder col-6"></span>
+                      </h5>
+                  ) : (<h5 className="mb-3">{alarms?.investigation.page.totalElements}</h5>)}
                 </div>
               </div>
             </CardBody>
@@ -164,7 +188,11 @@ const UserPanel = (props) => {
 
                 <div className="flex-grow-1 overflow-hidden">
                   <p className="mb-1">Course Assignments</p>
-                  <h5 className="mb-3">{events.loading !== false ? "loading" : (events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements)}</h5>
+                  {events.loading !== false ? (
+                    <h5 className="mb-3 placeholder-glow">
+                    <span className="placeholder col-6"></span>
+                  </h5>
+                  ) : (<h5 className="mb-3">{events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements}</h5>)}
                 </div>
               </div>
             </CardBody>
