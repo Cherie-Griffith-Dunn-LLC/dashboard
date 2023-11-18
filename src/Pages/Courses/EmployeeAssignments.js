@@ -19,7 +19,6 @@ const EmployeeAssignments = () => {
     React.useEffect(() => {
         dispatch(getEmployeeCourses());
     }, [dispatch]);
-    console.log(employeeCourses);
 
     // if loading return loading
     if (employeeCourses.loading) {
