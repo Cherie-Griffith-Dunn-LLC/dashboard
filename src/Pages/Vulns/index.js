@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from "reactstrap";
 import ThreatsList from './ThreatsList';
 
-import { getAlarms, getVulns } from "../../store/actions";
+import { getVulns } from "../../store/actions";
 
 import { useSelector, useDispatch } from "react-redux";
 

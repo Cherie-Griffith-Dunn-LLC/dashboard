@@ -3,9 +3,6 @@ import ThreatModal from './threatModal';
 
 import { Row, Col } from 'reactstrap';
 
-import { getAlarmIcon } from '../../helpers/data_helper';
-
-//import { ThreatsData } from '../../CommonData/Data/index';
 
 import { formatDate } from '@fullcalendar/core';
 
