@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Modal, Container } from 'reactstrap';
 import { daysAgo } from '../../helpers/data_helper';
-
+import { formatDate } from '@fullcalendar/core';
 
 
 
@@ -62,11 +62,11 @@ const ThreatModal = (props) => {
                                 </tr>
                                 <tr>
                                     <td>First Seen</td>
-                                    <td>{threat?.vulnerability?.firstSeen}</td>
+                                    <td>{formatDate(threat?.vulnerability?.firstSeen)}</td>
                                 </tr>
                                 <tr>
                                     <td>Last Seen</td>
-                                    <td>{threat?.vulnerability?.lastSeen[threat?.vulnerability?.lastSeen.length - 1]}</td>
+                                    <td>{formatDate(threat?.vulnerability?.lastSeen[threat?.vulnerability?.lastSeen.length - 1])}</td>
                                 </tr>
                                 <tr>
                                     <td>Rule</td>
