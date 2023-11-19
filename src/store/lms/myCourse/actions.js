@@ -5,9 +5,10 @@ import {
  } from "./actionTypes"
 
 
-export const viewCourse = () => {
+export const viewCourse = (courseId) => {
     return {
         type: GET_COURSE_URL,
+        payload: { courseId },
     }
 }
 

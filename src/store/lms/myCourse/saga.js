@@ -9,13 +9,14 @@ import { getCourseUrl } from "../../../helpers/lms_helper";
 import { setAuthorization } from "../../../helpers/api_helper";
 
 
-function* viewMyCourse() {
+function* viewMyCourse({ payload: { courseId }}) {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getCourseUrl);
+        const response = yield call(getCourseUrl, courseId);
+        console.log(response);
         if (response.error) {
             throw new Error(response.error);
         }
