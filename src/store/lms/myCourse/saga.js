@@ -16,12 +16,11 @@ function* viewMyCourse({ payload: { courseId }}) {
         // set the authorization header
         setAuthorization(token);
         const response = yield call(getCourseUrl, courseId);
-        console.log(response);
         if (response.error) {
             throw new Error(response.error);
         }
         // save the current user in local storage
-        yield put(viewCourseSuccess(response));
+        yield put(viewCourseSuccess(response.goto_url));
     } catch (error) {
         yield put(viewCourseFail(error));
     }

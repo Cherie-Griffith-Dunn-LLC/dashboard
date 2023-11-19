@@ -8,10 +8,12 @@ import {
     CardTitle,
     CardImg,
     CardSubtitle,
+    Modal
 } from "reactstrap";
+import { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getRequiredCourses } from '../../store/actions';
+import { getRequiredCourses, viewCourse } from '../../store/actions';
 import { daysAgo } from '../../helpers/data_helper';
 import { Link } from 'react-router-dom';
 
@@ -23,10 +25,25 @@ const RequiredAssignments = () => {
     const dispatch = useDispatch();
 
     const myCourses = useSelector(state => state.lmsAssignedCourses);
+    const selectedCourse = useSelector(state => state.lmsMyCourses);
+
+    const [modal_fullscreen, setmodal_fullscreen] = useState(false);
+
+    function tog_fullscreen() {
+        setmodal_fullscreen(!modal_fullscreen);
+      }
 
     React.useEffect(() => {
         dispatch(getRequiredCourses());
     }, [dispatch]);
+
+    // a function to handle the view course button
+    const handleViewCourse = (courseId) => {
+        // dispatch the view course action
+        dispatch(viewCourse(courseId));
+        // show the modal for iframe
+        tog_fullscreen();
+    };
 
     // if loading return loading
     if (myCourses.loading) {
@@ -35,12 +52,21 @@ const RequiredAssignments = () => {
 
     // if error return error
     if (myCourses.error) {
-        return <p>An error has occured: {myCourses.error}</p>;
+        return (
+            <React.Fragment>
+                <div className="alert alert-danger mb-0" role="alert">An error has occured: {myCourses.error}</div>
+            </React.Fragment>
+            );
     }
 
     // if no courses return no courses
     if (myCourses.courses.length === 0) {
-        return <p>No courses assigned to you at this time.</p>;
+        return (
+            <React.Fragment>
+                <h2 className="mt-4">My Assignments</h2>
+                <p>No courses assigned to you at this time.</p>
+            </React.Fragment>
+        );
     }
 
     return (
@@ -65,8 +91,8 @@ const RequiredAssignments = () => {
                                 </small>
                             </CardText>
                             <Link
-                                to="#"
-                                className="btn btn-primary disabled"
+                                onClick={() => handleViewCourse(course.id)}
+                                className="btn btn-primary"
                             >
                                 View
                             </Link>
@@ -75,6 +101,49 @@ const RequiredAssignments = () => {
                     </Col>
                 ))}
             </Row>
+            <Modal
+                size="xl"
+                isOpen={modal_fullscreen}
+                toggle={() => {
+                tog_fullscreen();
+                }}
+                className="modal-fullscreen"
+            >
+                <div className="modal-header">
+                <h5
+                    className="modal-title mt-0"
+                    id="exampleModalFullscreenLabel"
+                >
+                    Training Course
+                </h5>
+                <button
+                    onClick={() => {
+                    setmodal_fullscreen(false);
+                    }}
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div className="modal-body">
+                <iframe src={selectedCourse.url} width="100%" height="100%" title="Course"></iframe>
+                </div>
+                <div className="modal-footer">
+                <button
+                    type="button"
+                    onClick={() => {
+                    tog_fullscreen();
+                    }}
+                    className="btn btn-secondary "
+                    data-dismiss="modal"
+                >
+                    Close
+                </button>
+                </div>
+            </Modal>
         </React.Fragment>
     );
 };
