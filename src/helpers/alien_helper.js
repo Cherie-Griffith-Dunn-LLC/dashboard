@@ -27,10 +27,16 @@ const getInvestigations = (size) => {
     return apiClient.get(url.GET_INVESTIGATIONS, { size });
 };
 
+const getVulnerbilities = (size) => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_VULNERABILITIES, { size });
+};
+
 export {
     getAlarms,
     getAllDWM,
     getEvents,
     getDictionaries,
-    getInvestigations
+    getInvestigations,
+    getVulnerbilities
 };

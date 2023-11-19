@@ -11,6 +11,7 @@ export const GET_EVENTS = "/events";
 export const GET_INVESTIGATIONS = "/investigations";
 export const GET_DICTIONARIES = "/dictionaries";
 export const GET_ALL_DWM = "/darkWebEvents";
+export const GET_VULNERABILITIES = "/vulnerabilities";
 
 // LMS
 export const GET_TRAINING_LIST = "/users/training";
