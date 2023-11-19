@@ -61,7 +61,7 @@ const Dashboard = () => {
       <React.Fragment>
         <div className="page-content">
           <Container fluid={true}>
-            <p>An error occured. Please try again.</p>
+                <div className="alert alert-danger mb-0" role="alert">An error occured. Please try again.</div>
           </Container>
         </div>
       </React.Fragment>

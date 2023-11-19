@@ -27,12 +27,23 @@ const EmployeeAssignments = () => {
 
     // if error return error
     if (employeeCourses.error) {
-        return <p>An error has occured: {employeeCourses.error}</p>;
+        return (
+            <React.Fragment>
+                <div className="alert alert-danger mb-0" role="alert">
+                    An error has occured: {employeeCourses.error}
+                </div>
+            </React.Fragment>
+            );
     }
 
     // if no courses return no courses
     if (employeeCourses.courses.length === 0) {
-        return <p>No courses assigned to employees at this time.</p>;
+        return (
+            <React.Fragment>
+                <h2 className="mt-4">Employee Assignments</h2>
+                <p>No courses assigned to employees at this time.</p>
+            </React.Fragment>
+        );
     }
 
     return (
