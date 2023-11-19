@@ -10,6 +10,8 @@ import Threats from "../Pages/Threats";
 import Events from "../Pages/Events";
 // Import Dark Web Monitoring page
 import DarkWebMonitoring from "../Pages/DarkWebMonitoring";
+// import Vulnerabilities page
+import Vulns from "../Pages/Vulns";
 
 // OAuth Page
 import OAuth from "../Pages/Authentication/OAuth";
@@ -121,6 +123,9 @@ const authProtectedRoutes = [
 
   // Dark Web Monitoring
   { path: "/darkweb", component: <DarkWebMonitoring /> },
+
+  // Vulnerbilities
+  { path: "/vulnerabilities", component: <Vulns /> },
 
   // Courses
   { path: "/courses", component: <Courses /> },

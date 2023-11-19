@@ -24,12 +24,14 @@ import alienDWM from "./alien/darkweb/reducer";
 import alienEvents from "./alien/events/reducer";
 import alienDictionary from "./alien/dictionary/reducer";
 import alienInvestigations from "./alien/investigations/reducer";
+import alienVulns from "./alien/vulns/reducer";
 
 // LMS
 import lmsTrainingList from "./lms/trainingList/reducer";
 import courseStatistics from "./lms/courseStatistics/reducer";
 import lmsAssignedCourses from "./lms/requiredCourses/reducer";
 import lmsEmployeeCourses from "./lms/employeeCourses/reducer";
+import lmsMyCourses from "./lms/myCourse/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -45,6 +47,7 @@ const rootReducer = combineReducers({
   alienAlarms,
   alienDWM,
   alienEvents,
+  alienVulns,
   lmsTrainingList,
   courseStatistics,
   alienDictionary,
@@ -52,6 +55,7 @@ const rootReducer = combineReducers({
   azureAddUsers,
   lmsAssignedCourses,
   lmsEmployeeCourses,
+  lmsMyCourses,
 });
 
 export default rootReducer;

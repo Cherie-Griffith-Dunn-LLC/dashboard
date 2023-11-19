@@ -1,0 +1,3 @@
+export const GET_VULNS = "GET_VULNS";
+export const GET_VULNS_SUCCESS = "GET_VULNS_SUCCESS";
+export const GET_VULNS_FAIL = "GET_VULNS_FAIL";

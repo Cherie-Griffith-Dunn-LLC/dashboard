@@ -1,3 +1,4 @@
+
 // Layout
 export * from "./layout/actions";
 
@@ -22,9 +23,11 @@ export * from "./alien/darkweb/actions"
 export * from "./alien/events/actions"
 export * from "./alien/dictionary/actions"
 export * from "./alien/investigations/actions"
+export * from "./alien/vulns/actions"
 
 // LMS module
 export * from "./lms/trainingList/actions"
 export * from "./lms/courseStatistics/actions"
 export * from "./lms/requiredCourses/actions"
 export * from "./lms/employeeCourses/actions"
+export * from "./lms/myCourse/actions"

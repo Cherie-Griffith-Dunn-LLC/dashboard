@@ -22,9 +22,15 @@ const getAllCoursesAssignments = () => {
     return apiClient.get(url.GET_ALL_ASSIGNMENTS_COURSES);
 }
 
+const getCourseUrl = (courseId) => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_COURSE_URL, { courseId });
+}
+
 export {
     getTrainingList,
     getCourseStatistics,
     getAssignedCourses,
-    getAllCoursesAssignments
+    getAllCoursesAssignments,
+    getCourseUrl
 };

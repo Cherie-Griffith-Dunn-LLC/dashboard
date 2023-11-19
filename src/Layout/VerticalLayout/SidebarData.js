@@ -35,6 +35,12 @@ const AdminSidebarData = [
         url: "/darkweb",
     },
     {
+        label: "Vulnerabilities",
+        icon: "mdi mdi-security-network",
+        isHasArrow: true,
+        url: "/vulnerabilities",
+    },
+    {
         label: "Settings",
         icon: "mdi mdi-cog",
         isHasArrow: true,
@@ -129,6 +135,12 @@ const DevSidebarData = [
         icon: "mdi mdi-form-textbox-password",
         isHasArrow: true,
         url: "/darkweb",
+    },
+    {
+        label: "Vulnerabilities",
+        icon: "mdi mdi-security-network",
+        isHasArrow: true,
+        url: "/vulnerabilities",
     },
     {
         label: "Settings",

@@ -17,11 +17,13 @@ import darkwebSaga from "./alien/darkweb/saga";
 import eventsSaga from "./alien/events/saga";
 import dictionarySaga from "./alien/dictionary/saga";
 import investigationsSaga from "./alien/investigations/saga";
+import vulnsSaga from "./alien/vulns/saga";
 
 import trainingListSaga from "./lms/trainingList/saga";
 import courseStatsSaga from "./lms/courseStatistics/saga";
 import myCoursesSaga  from "./lms/requiredCourses/saga";
 import employeeCoursesSaga from "./lms/employeeCourses/saga";
+import myCourseSaga from "./lms/myCourse/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -45,5 +47,7 @@ export default function* rootSaga() {
     fork(usersSaga),
     fork(myCoursesSaga),
     fork(employeeCoursesSaga),
+    fork(myCourseSaga),
+    fork(vulnsSaga),
   ]);
 }
