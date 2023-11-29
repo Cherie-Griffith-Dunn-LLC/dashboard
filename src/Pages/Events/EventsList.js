@@ -3,6 +3,8 @@ import EventModal from './eventModal';
 
 import { Row, Col } from 'reactstrap';
 
+import { daysAgo } from '../../helpers/data_helper';
+
 //import { EventsData } from '../../CommonData/Data/index';
 
 const EventsList = (props) => {
@@ -42,7 +44,7 @@ const EventsList = (props) => {
                                             <td>
                                                 <p className="mb-1 font-size-12">{item.event_name}</p>
                                             </td>
-                                            <td>{item.timestamp_occured}</td>
+                                            <td>{daysAgo(item.timestamp_occured)}</td>
                                             <td>{item.source_address}</td>
 
                                             <td>
