@@ -16,7 +16,35 @@ const OAuth = props => {
 
   document.title = "OAuth | CYPROTECK - Security Solutions Dashboard";
     useEffect(() => {
-        login();
+      const identityProvider = "azure"
+      if (identityProvider === "azure") {
+          const msalConfig = {
+            auth: {
+              clientId: "acb25fbc-4413-4920-b5f1-04ce0e49fc86",
+              // Set the authority to our tenant ID passed in from props
+              authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
+              //authority: `https://cyproteckcustomers.b2clogin.com/cyproteckcustomers.onmicrosoft.com/B2C_1_cyproteck/`,
+              //knownAuthorities: ["cyproteckcustomers.b2clogin.com"],
+              // set redirect based on production env
+              redirectUri: "/",
+            },
+          };
+          login(msalConfig);
+        } else {
+          const msalConfig = {
+            auth: {
+              clientId: "acb25fbc-4413-4920-b5f1-04ce0e49fc86",
+              // Set the authority to our tenant ID passed in from props
+              // authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
+              authority: `https://cyproteckcustomers.b2clogin.com/cyproteckcustomers.onmicrosoft.com/B2C_1_cyproteck/`,
+              knownAuthorities: ["cyproteckcustomers.b2clogin.com"],
+              // set redirect based on production env
+              redirectUri: "/",
+            },
+          };
+          login(msalConfig);
+        } 
+        
         document.body.className = "bg-pattern";
         // remove classname when component will unmount
         return function cleanup() {
@@ -25,17 +53,8 @@ const OAuth = props => {
       });
 
       // msal function
-      const login = async () => {
-        // initialize msal
-        const msalConfig = {
-          auth: {
-            clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
-            // Set the authority to our tenant ID passed in from props
-            authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
-            // set redirect based on production env
-            redirectUri: "/",
-          },
-        };
+      const login = async (msalConfig) => {
+       
         const msalInstance = new PublicClientApplication(msalConfig);
         await msalInstance.initialize();
 
@@ -43,9 +62,9 @@ const OAuth = props => {
           scopes: [
           'openid',
           'offline_access',
-          'Directory.Read.All',
-          'User.Read.All'
-          ]
+          ],
+          redirectUri: "/",
+          // extraQueryParameters: { domain_hint: "microsoft.com" }
         };
 
         // login the user
