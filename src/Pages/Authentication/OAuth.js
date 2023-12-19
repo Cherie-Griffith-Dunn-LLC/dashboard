@@ -6,8 +6,10 @@ import { Container, Row, Col, Card, CardBody, Form } from "reactstrap";
 import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
+import { useSelector, useDispatch } from "react-redux";
+
 // import msal
-import { InteractionRequiredAuthError, PublicClientApplication } from "@azure/msal-browser";
+import { InteractionRequiredAuthError, InteractionType, PublicClientApplication } from "@azure/msal-browser";
 
 import { setAuthorization } from "../../helpers/api_helper"; 
 
@@ -15,9 +17,11 @@ const OAuth = props => {
   
 
   document.title = "OAuth | CYPROTECK - Security Solutions Dashboard";
+
+  const platform  = useSelector(state => state.azure.tenantId.platform);
+  const email = useSelector(state => state.azure.tenantId.email);
     useEffect(() => {
-      const identityProvider = "azure"
-      if (identityProvider === "azure") {
+      if (platform === "azure") {
           const msalConfig = {
             auth: {
               clientId: "acb25fbc-4413-4920-b5f1-04ce0e49fc86",
@@ -28,6 +32,21 @@ const OAuth = props => {
               // set redirect based on production env
               redirectUri: "/",
             },
+            cache: {
+              cacheLocation: "localStorage",
+              storeAuthStateInCookie: false,
+            },
+            interactionType: InteractionType.Popup,
+            prompt: "select_account",
+            scopes: [
+              "openid",
+              "offline_access",
+              "Directory.Read.All",
+              "User.Read.All"
+            ],
+            extraQueryParameters: {
+              login_hint: email
+            }
           };
           login(msalConfig);
         } else {
@@ -40,6 +59,19 @@ const OAuth = props => {
               knownAuthorities: ["cyproteckcustomers.b2clogin.com"],
               // set redirect based on production env
               redirectUri: "/",
+              cache: {
+                cacheLocation: "localStorage",
+                storeAuthStateInCookie: false,
+              },
+              interactionType: InteractionType.Popup,
+              scopes: [
+                'openid',
+                'offline_access',
+              ],
+              extraQueryParameters: {
+                domain_hint: "microsoft.com",
+                loginHint: email
+              }
             },
           };
           login(msalConfig);
@@ -68,7 +100,7 @@ const OAuth = props => {
         };
 
         // login the user
-        msalInstance.acquireTokenSilent(request).then(tokenResponse => {
+        msalInstance.loginPopup(msalConfig).then(tokenResponse => {
           // get access token
           const accessToken = tokenResponse.accessToken;
           const expiresOn = tokenResponse.expiresOn / 1000;
@@ -81,7 +113,7 @@ const OAuth = props => {
           props.router.navigate("/dashboard");
         }).catch(error => {
           if (error instanceof InteractionRequiredAuthError) {
-            return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
+            return msalInstance.loginPopup(msalConfig).then(tokenResponse => {
               // get access token
               const accessToken = tokenResponse.accessToken;
               const expiresOn = tokenResponse.expiresOn / 1000;
@@ -97,7 +129,7 @@ const OAuth = props => {
           } else {
             console.error(error);
             // use acquireTokenPopup to authenticate user silently
-            return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
+            return msalInstance.loginPopup(msalConfig).then(tokenResponse => {
               // get access token
               const accessToken = tokenResponse.accessToken;
               // store the accesstoken securely
