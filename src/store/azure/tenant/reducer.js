@@ -2,6 +2,7 @@ import { GET_TENANT_ID_FAIL, GET_TENANT_ID_SUCCESS, GET_TENANT_ID  } from "./act
 
 const INIT_STATE = {
     tenantId: "",
+    platform: "",
     error: "",
     loading: true,
 }

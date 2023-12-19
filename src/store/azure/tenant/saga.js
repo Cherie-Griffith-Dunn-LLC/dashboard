@@ -15,7 +15,9 @@ function* fetchTenantId({ payload: { email, history }}) {
             // throw error
             throw new Error(response.error);
         } else if (response.tenantId) {
-            yield put(getTenantIdSuccess(response.tenantId));
+            // add the email to the response
+            response.email = email;
+            yield put(getTenantIdSuccess(response));
             // redirect to OAuth page with tenantId as param
             history(`/OAuth/${response.tenantId}`)
         }
