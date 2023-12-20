@@ -24,7 +24,7 @@ const OAuth = props => {
       if (platform === "azure") {
           const msalConfig = {
             auth: {
-              clientId: "acb25fbc-4413-4920-b5f1-04ce0e49fc86",
+              clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
               // Set the authority to our tenant ID passed in from props
               authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
               //authority: `https://cyproteckcustomers.b2clogin.com/cyproteckcustomers.onmicrosoft.com/B2C_1_cyproteck/`,
@@ -69,7 +69,7 @@ const OAuth = props => {
                 'offline_access',
               ],
               extraQueryParameters: {
-                domain_hint: "microsoft.com",
+                domain_hint: "google.com",
                 loginHint: email
               }
             },
@@ -84,7 +84,7 @@ const OAuth = props => {
         };
       });
 
-      // msal function
+      // msal function 
       const login = async (msalConfig) => {
        
         const msalInstance = new PublicClientApplication(msalConfig);
@@ -101,6 +101,20 @@ const OAuth = props => {
 
         // login the user
         msalInstance.loginPopup(msalConfig).then(tokenResponse => {
+          // check if access token is blank
+          // if it is blank get the IDP access token instead
+          if (tokenResponse.accessToken === "") {
+              // get access token
+              const accessToken = tokenResponse.idTokenClaims.idp_access_token;
+              const expiresOn = tokenResponse.idTokenClaims.exp / 1000;
+              // store the accesstoken securely
+              localStorage.setItem("accessToken", accessToken);
+              localStorage.setItem("expireTime", expiresOn);
+              // set Authorization to the accesstoken
+              setAuthorization(accessToken);
+              // redirect to dashboard
+              props.router.navigate("/dashboard");
+          }
           // get access token
           const accessToken = tokenResponse.accessToken;
           const expiresOn = tokenResponse.expiresOn / 1000;
