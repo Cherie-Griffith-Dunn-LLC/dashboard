@@ -8,16 +8,20 @@ import { getCurrentRoleSuccess, getCurrentRoleFail } from "./actions";
 import { getCurrentRole } from "../../../helpers/azure_helper";
 import { setAuthorization } from "../../../helpers/api_helper";
 
+
 function* fetchCurrentRole() {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform  = localStorage.getItem("platform");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getCurrentRole);
+        const response = yield call(getCurrentRole, platform);
         if (response.error) {
             throw new Error(response.error);
         }
+        console.log(response.role)
         localStorage.setItem("role", response.role);
         yield put(getCurrentRoleSuccess(response.role));
     } catch (error) {

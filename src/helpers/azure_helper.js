@@ -8,14 +8,14 @@ const getTenantId = (email) => {
 };
 
 // Get the current logged in user's information
-const getCurrentUser = () => {
+const getCurrentUser = (platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_CURRENT_USER);
+    return apiClient.get(url.GET_CURRENT_USER, { platform });
 };
 
-const getCurrentRole = () => {
+const getCurrentRole = (platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_CURRENT_ROLE);
+    return apiClient.get(url.GET_CURRENT_ROLE, { platform });
 };
 
 const postUsers = () => {
