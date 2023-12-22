@@ -11,6 +11,9 @@ import { useSelector, useDispatch } from "react-redux";
 // import msal
 import { InteractionRequiredAuthError, InteractionType, PublicClientApplication } from "@azure/msal-browser";
 
+// import google oauth
+import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin  } from "@react-oauth/google";
+
 import { setAuthorization } from "../../helpers/api_helper"; 
 
 const OAuth = props => {
@@ -21,7 +24,8 @@ const OAuth = props => {
   const platform  = useSelector(state => state.azure.tenantId.platform);
   const email = useSelector(state => state.azure.tenantId.email);
     useEffect(() => {
-      if (platform === "azure") {
+      localStorage.setItem("platform", "google");
+      if (platform !== "azure") {
           const msalConfig = {
             auth: {
               clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
@@ -49,40 +53,51 @@ const OAuth = props => {
             }
           };
           login(msalConfig);
-        } else {
-          const msalConfig = {
-            auth: {
-              clientId: "acb25fbc-4413-4920-b5f1-04ce0e49fc86",
-              // Set the authority to our tenant ID passed in from props
-              // authority: `https://login.microsoftonline.com/` + props.router.params.tenantId,
-              authority: `https://cyproteckcustomers.b2clogin.com/cyproteckcustomers.onmicrosoft.com/B2C_1_cyproteck/`,
-              knownAuthorities: ["cyproteckcustomers.b2clogin.com"],
-              // set redirect based on production env
-              redirectUri: "/",
-              cache: {
-                cacheLocation: "localStorage",
-                storeAuthStateInCookie: false,
-              },
-              interactionType: InteractionType.Popup,
-              scopes: [
-                'openid',
-                'offline_access',
-              ],
-              extraQueryParameters: {
-                domain_hint: "google.com",
-                loginHint: email
-              }
-            },
-          };
-          login(msalConfig);
-        } 
+        }
         
         document.body.className = "bg-pattern";
         // remove classname when component will unmount
         return function cleanup() {
           document.body.className = "";
         };
+      }, [platform, email]);
+
+      //Google config
+      const googleConfig = {
+        clientId: '732273834739-9j52tp4eodrs1tbkdam90ifhqp27k0fi.apps.googleusercontent.com',
+        redirectUri: 'http://localhost/',
+        scope: 'openid profile email https://www.googleapis.com/auth/admin.directory.user.readonly https://www.googleapis.com/auth/admin.directory.rolemanagement.readonly https://www.googleapis.com/auth/admin.directory.domain.readonly https://www.googleapis.com/auth/admin.directory.group.readonly'
+      };
+
+      // handle google login
+      const handleGoogleLogin = async (response) => {
+        const accessToken = response.access_token;
+        const expiresIn = response.expires_in;
+        // create our own expire time
+        const expiresOn = new Date();
+        expiresOn.setSeconds(expiresOn.getSeconds() + expiresIn);
+        // store the accesstoken securely
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("expireTime", expiresOn);
+        // set Authorization to the accesstoken
+        setAuthorization(accessToken);
+        // redirect to dashboard
+        props.router.navigate("/dashboard");
+
+      }
+
+      const gLogin = useGoogleLogin({
+        onSuccess: (tokenResponse) => handleGoogleLogin(tokenResponse),
+        onError: (error) => console.error(error),
+        prompt: 'consent', // Add this line to force the consent screen
+        clientId: googleConfig.clientId,
+        redirectUri: googleConfig.redirectUri,
+        scope: googleConfig.scope,
+        hint: email,
+        flow: 'implicit'
       });
+      
+
 
       // msal function 
       const login = async (msalConfig) => {
@@ -101,12 +116,14 @@ const OAuth = props => {
 
         // login the user
         msalInstance.loginPopup(msalConfig).then(tokenResponse => {
+          console.log(tokenResponse);
           // check if access token is blank
           // if it is blank get the IDP access token instead
           if (tokenResponse.accessToken === "") {
               // get access token
               const accessToken = tokenResponse.idTokenClaims.idp_access_token;
-              const expiresOn = tokenResponse.idTokenClaims.exp / 1000;
+              const expiresOn = tokenResponse.idTokenClaims.exp * 1000;
+              console.log(expiresOn)
               // store the accesstoken securely
               localStorage.setItem("accessToken", accessToken);
               localStorage.setItem("expireTime", expiresOn);
@@ -114,50 +131,106 @@ const OAuth = props => {
               setAuthorization(accessToken);
               // redirect to dashboard
               props.router.navigate("/dashboard");
-          }
-          // get access token
-          const accessToken = tokenResponse.accessToken;
-          const expiresOn = tokenResponse.expiresOn / 1000;
-          localStorage.setItem("expireTime", expiresOn);
-          // store the accesstoken securely
-          localStorage.setItem("accessToken", accessToken);
-          // set Authorization to the accesstoken
-          setAuthorization(accessToken);
-          // redirect to dashboard
-          props.router.navigate("/dashboard");
-        }).catch(error => {
-          if (error instanceof InteractionRequiredAuthError) {
-            return msalInstance.loginPopup(msalConfig).then(tokenResponse => {
-              // get access token
-              const accessToken = tokenResponse.accessToken;
-              const expiresOn = tokenResponse.expiresOn / 1000;
-              // store the accesstoken securely
-              localStorage.setItem("accessToken", accessToken);
-              // store the expireTime
-              localStorage.setItem("expireTime", expiresOn);
-              // set Authorization to the accesstoken
-              setAuthorization(accessToken);
-              // redirect to dashboard
-              props.router.navigate("/dashboard");
-            });
           } else {
-            console.error(error);
-            // use acquireTokenPopup to authenticate user silently
-            return msalInstance.loginPopup(msalConfig).then(tokenResponse => {
-              // get access token
-              const accessToken = tokenResponse.accessToken;
-              // store the accesstoken securely
-              localStorage.setItem("accessToken", accessToken);
-              const expiresOn = tokenResponse.expiresOn / 1000;
-              localStorage.setItem("expireTime", expiresOn);
-              // set Authorization to the accesstoken
-              setAuthorization(accessToken);
-              // redirect to dashboard
-              props.router.navigate("/dashboard");
-            });
+            // get access token
+            const accessToken = tokenResponse.accessToken;
+            const expiresOn = tokenResponse.expiresOn / 1000;
+            localStorage.setItem("expireTime", expiresOn);
+            // store the accesstoken securely
+            localStorage.setItem("accessToken", accessToken);
+            // set Authorization to the accesstoken
+            setAuthorization(accessToken);
+            // redirect to dashboard
+            props.router.navigate("/dashboard");
           }
+        }).catch(error => {
+          console.error(error);
         })
       }
+
+  if (platform === "azure") {
+    return (
+      <React.Fragment>
+        <div className="bg-overlay"></div>
+        <div className="account-pages my-5 pt-5">
+          <Container>
+            <Row className="justify-content-center">
+              <Col lg={6} md={8} xl={4}>
+                <Card className="right-auth-card">
+                  <CardBody className="p-4">
+                    <div>
+                      <div className="text-center">
+                        <Link to="/">
+                          <img
+                            src={logodark}
+                            alt=""
+                            height="24"
+                            className="auth-logo logo-dark mx-auto"
+                          />
+                          <img
+                            src={logolight}
+                            alt=""
+                            height="24"
+                            className="auth-logo logo-light mx-auto"
+                          />
+                        </Link>
+                      </div>
+                      <h4 className="font-size-18 text-light mt-2 text-center">
+                        Welcome Back !
+                      </h4>
+                      <p className="mb-5 text-center text-light">
+                        Please login using your {platform.toUpperCase()} Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
+                      </p>
+                      <Form className="form-horizontal" action="#">
+                        <Row>
+                          <Col md={12}>
+                            <div className="d-grid mt-4">
+                              <button
+                                className="btn btn-primary waves-effect waves-light"
+                                type="reset"
+                                onClick={() => gLogin()}
+                              >
+                                Continue with Google
+                              </button>
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={12}>
+                            <div className="d-grid mt-4">
+                              <button
+                                className="btn btn-danger waves-effect waves-light"
+                                type="reset"
+                                onClick={() => props.router.navigate("/login")}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </div>
+                  </CardBody>
+                </Card>
+                <div className="mt-5 text-center">
+                  <p className="text-white-50">
+                    Having trouble logging in?{" "}
+                    <Link to="https://cyproteck.com/?page_id=1087" target="_blank" className="fw-medium text-primary">
+                      {" "}
+                      Help Desk{" "}
+                    </Link>{" "}
+                  </p>
+                  <p className="text-white-50">
+                    © {new Date().getFullYear()} CYPROTECK, Inc.
+                  </p>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -189,16 +262,15 @@ const OAuth = props => {
                       Welcome Back !
                     </h4>
                     <p className="mb-5 text-center text-light">
-                      Please login using your Microsoft Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
+                      Please login using your {platform.toUpperCase()} Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
                     </p>
                     <Form className="form-horizontal" action="#">
                       <Row>
                         <Col md={12}>
-
                           <div className="d-grid mt-4">
                             <button
                               className="btn btn-danger waves-effect waves-light"
-                              type="submit"
+                              type="reset"
                               onClick={() => props.router.navigate("/login")}
                             >
                               Cancel

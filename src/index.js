@@ -18,6 +18,8 @@ import "./i18n";
 
 import {configureStore} from "./store/store";
 
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 // Initialize Sentry
 Sentry.init({
   dsn: "https://12eef28bf24c483e98e6a9b2aeaf2e24@o4505110341812224.ingest.sentry.io/4505143868129280",
@@ -47,6 +49,7 @@ Sentry.init({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  <GoogleOAuthProvider clientId="732273834739-9j52tp4eodrs1tbkdam90ifhqp27k0fi.apps.googleusercontent.com">
   <Provider store={configureStore({})}>
     <React.Fragment>
       <BrowserRouter>
@@ -54,6 +57,7 @@ root.render(
       </BrowserRouter>
     </React.Fragment>
   </Provider>
+  </GoogleOAuthProvider>
 );
 reportWebVitals();
 // serviceWorker.unregister();
