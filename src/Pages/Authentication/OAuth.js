@@ -24,8 +24,8 @@ const OAuth = props => {
   const platform  = useSelector(state => state.azure.tenantId.platform);
   const email = useSelector(state => state.azure.tenantId.email);
     useEffect(() => {
-      localStorage.setItem("platform", "google");
-      if (platform !== "azure") {
+      localStorage.setItem("platform", platform);
+      if (platform === "azure") {
           const msalConfig = {
             auth: {
               clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
