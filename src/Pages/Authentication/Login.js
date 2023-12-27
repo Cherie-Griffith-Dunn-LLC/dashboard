@@ -160,7 +160,7 @@ const Login = props => {
                             style={{borderRadius: '15px'}}
                             type="submit"
                           >
-                            Login with Microsoft
+                            Login <i className="mdi mdi-login"></i>
                           </button>
                         </div>
                       </Col>
