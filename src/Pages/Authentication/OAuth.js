@@ -148,7 +148,7 @@ const OAuth = props => {
         })
       }
 
-  if (platform === "azure") {
+  if (platform === "google") {
     return (
       <React.Fragment>
         <div className="bg-overlay"></div>
@@ -179,7 +179,7 @@ const OAuth = props => {
                         Welcome Back !
                       </h4>
                       <p className="mb-5 text-center text-light">
-                        Please login using your {platform.toUpperCase()} Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
+                        Please login using your organization's Google Workspace account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
                       </p>
                       <Form className="form-horizontal" action="#">
                         <Row>
