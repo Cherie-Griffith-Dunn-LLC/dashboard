@@ -89,7 +89,7 @@ const OAuth = props => {
       const gLogin = useGoogleLogin({
         onSuccess: (tokenResponse) => handleGoogleLogin(tokenResponse),
         onError: (error) => console.error(error),
-        prompt: 'consent', // Add this line to force the consent screen
+        prompt: 'select_account', // Add this line to force the consent screen
         clientId: googleConfig.clientId,
         redirectUri: googleConfig.redirectUri,
         scope: googleConfig.scope,
