@@ -4,6 +4,9 @@ import { Navigate } from "react-router-dom";
 //Dashboard
 import Dashboard from "../Pages/Dashboard";
 
+//Onboarding
+import Onboarding from "../Pages/Onboarding";
+
 // Import Threats pages
 import Threats from "../Pages/Threats";
 // Import Events page
@@ -138,6 +141,9 @@ const authProtectedRoutes = [
 
   // Settings
   { path: "/settings", component: <UserProfile />},
+
+  // Onboarding
+  { path: "/setup", component: <Onboarding /> },
 
   // E-mail
   { path: "/inbox", component: <Inbox /> },
