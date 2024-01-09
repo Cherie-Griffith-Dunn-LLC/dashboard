@@ -35,7 +35,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
                     <Container fluid={true}>
                         <Breadcrumbs title="Dashboard" breadcrumbItem="System Activity" />
                         
-                        {loading ? <p>Loading...</p> : error ? <p>Error, try again</p> :
+                        {loading ? <p>Loading...</p> : error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> :
                             <EventsList eventsData={events} />
                         }
 
