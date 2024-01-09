@@ -113,13 +113,13 @@ const OverView = (props) => {
                                     <Col md={4} className="border-end">
                                         <div>
                                             <p className="mb-2"><i className="mdi mdi-circle font-size-12 me-1 text-light"></i> Events</p>
-                                            <h5 className="font-size-16 mb-0">{events.events.page.totalElements}</h5>
+                                            <h5 className="font-size-16 mb-0">{events.events.page?.totalElements}</h5>
                                         </div>
                                     </Col>
                                     <Col md={4} className="border-end">
                                         <div>
                                             <p className="mb-2"><i className="mdi mdi-circle font-size-12 me-1 text-danger"></i> Threats</p>
-                                            <h5 className="font-size-16 mb-0">{alarms.alarms.page.totalElements}</h5>
+                                            <h5 className="font-size-16 mb-0">{alarms.alarms.page?.totalElements}</h5>
                                         </div>
                                     </Col>
                                 </Row>
@@ -174,7 +174,7 @@ const OverView = (props) => {
                                 <Col md={4} className="border-end">
                                     <div>
                                         <p className="mb-2"><i className="mdi mdi-circle font-size-12 me-1 text-danger"></i> Threats</p>
-                                        <h5 className="font-size-16 mb-0">{alarms.investigation.page.totalElements}</h5>
+                                        <h5 className="font-size-16 mb-0">{alarms.investigation.page?.totalElements}</h5>
                                     </div>
                                 </Col>
                             </Row>
