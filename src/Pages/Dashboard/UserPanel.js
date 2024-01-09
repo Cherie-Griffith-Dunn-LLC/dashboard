@@ -65,7 +65,7 @@ const UserPanel = (props) => {
                         <span className="placeholder col-6"></span>
                       </h5>
                     ) : (
-                      <h5 className="mb-3">{alarms?.alarms.page.totalElements}</h5>
+                      <h5 className="mb-3">{alarms?.alarms.page?.totalElements}</h5>
                     )}
                   </div>
                 </div>
@@ -92,7 +92,7 @@ const UserPanel = (props) => {
                         <span className="placeholder col-6"></span>
                       </h5>
                     ) : (<h5 className="mb-3">
-                      {events?.events.page.totalElements >= 10000 ? "10k" : events?.events.page.totalElements}
+                      {events?.events.page?.totalElements >= 10000 ? "10k" : events?.events.page?.totalElements}
                     </h5>)}
                   </div>
                 </div>
@@ -118,7 +118,7 @@ const UserPanel = (props) => {
                       <h5 className="mb-3 placeholder-glow">
                         <span className="placeholder col-6"></span>
                       </h5>
-                    ) : (<h5 className="mb-3">{dwmAlarms?.alarms.page.totalElements}</h5>)}
+                    ) : (<h5 className="mb-3">{dwmAlarms?.alarms.page?.totalElements}</h5>)}
                   </div>
                 </div>
               </CardBody>
@@ -176,7 +176,7 @@ const UserPanel = (props) => {
                     <h5 className="mb-3 placeholder-glow">
                         <span className="placeholder col-6"></span>
                       </h5>
-                  ) : (<h5 className="mb-3">{alarms?.investigation.page.totalElements}</h5>)}
+                  ) : (<h5 className="mb-3">{alarms?.investigation.page?.totalElements}</h5>)}
                 </div>
               </div>
             </CardBody>
