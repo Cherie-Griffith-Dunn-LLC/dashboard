@@ -13,6 +13,9 @@ export const GET_DICTIONARIES = "/dictionaries";
 export const GET_ALL_DWM = "/darkWebEvents";
 export const GET_VULNERABILITIES = "/vulnerabilities";
 
+// Lookout
+export const GET_THREATS = "/mobile/threats";
+
 // LMS
 export const GET_TRAINING_LIST = "/users/training";
 export const GET_COURSE_STATISTICS = "/courses/statistics";

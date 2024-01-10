@@ -25,6 +25,8 @@ import myCoursesSaga  from "./lms/requiredCourses/saga";
 import employeeCoursesSaga from "./lms/employeeCourses/saga";
 import myCourseSaga from "./lms/myCourse/saga";
 
+import lookoutThreatsSaga from "./mobilesecurity/threats/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
@@ -49,5 +51,6 @@ export default function* rootSaga() {
     fork(employeeCoursesSaga),
     fork(myCourseSaga),
     fork(vulnsSaga),
+    fork(lookoutThreatsSaga),
   ]);
 }

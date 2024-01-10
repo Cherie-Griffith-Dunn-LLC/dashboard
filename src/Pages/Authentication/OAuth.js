@@ -7,12 +7,14 @@ import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 // import msal
-import { InteractionRequiredAuthError, PublicClientApplication } from "@azure/msal-browser";
+import { InteractionRequiredAuthError, PublicClientApplication, InteractionType } from "@azure/msal-browser";
 
 import { setAuthorization } from "../../helpers/api_helper"; 
 
+import { useSelector } from "react-redux";
+
 const OAuth = props => {
-  
+  const email = useSelector(state => state.azure.tenantId.email);
 
   document.title = "OAuth | CYPROTECK - Security Solutions Dashboard";
     useEffect(() => {
@@ -35,6 +37,11 @@ const OAuth = props => {
             // set redirect based on production env
             redirectUri: "/",
           },
+          interactionType: InteractionType.Popup,
+          prompt: "select_account",
+          extraQueryParameters: {
+            login_hint: email
+          }
         };
         const msalInstance = new PublicClientApplication(msalConfig);
         await msalInstance.initialize();
@@ -49,7 +56,7 @@ const OAuth = props => {
         };
 
         // login the user
-        msalInstance.acquireTokenSilent(request).then(tokenResponse => {
+        msalInstance.loginPopup(msalConfig).then(tokenResponse => {
           // get access token
           const accessToken = tokenResponse.accessToken;
           const expiresOn = tokenResponse.expiresOn / 1000;

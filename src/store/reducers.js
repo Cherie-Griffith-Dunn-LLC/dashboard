@@ -33,6 +33,9 @@ import lmsAssignedCourses from "./lms/requiredCourses/reducer";
 import lmsEmployeeCourses from "./lms/employeeCourses/reducer";
 import lmsMyCourses from "./lms/myCourse/reducer";
 
+// Lookout
+import lookoutThreats from "./mobilesecurity/threats/reducer";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -56,6 +59,7 @@ const rootReducer = combineReducers({
   lmsAssignedCourses,
   lmsEmployeeCourses,
   lmsMyCourses,
+  lookoutThreats,
 });
 
 export default rootReducer;

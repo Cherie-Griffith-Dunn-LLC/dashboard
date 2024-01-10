@@ -9,10 +9,11 @@ import { getRequiredCourses } from '../../store/actions';
 // import RadialChart3 from "./userpanelChart3";
 
 const UserPanel = (props) => {
-
-  const events = props.events;
+  // no longer showing events, so comment to fix error
+  //const events = props.events;
   const alarms = props.alarms;
   const dwmAlarms = props.dwm;
+  const mobileThreats = props.mobileThreats;
   const role = props.role;
   const courseStats = props.courseStats;
   const assignments = useSelector(state => state.lmsAssignedCourses);
@@ -80,19 +81,19 @@ const UserPanel = (props) => {
                   <div className="flex-shrink-0 me-3 align-self-center">
                     <div className="avatar-sm">
                       <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                        <i className="mdi mdi-clipboard-pulse-outline"></i>
+                        <i className="mdi mdi-cellphone-lock"></i>
                       </div>
                     </div>
                   </div>
   
                   <div className="flex-grow-1 overflow-hidden">
-                    <p className="mb-1">System Activity</p>
-                    {events.loading !== false ? (
+                    <p className="mb-1">Mobile Security</p>
+                    {mobileThreats.loading !== false ? (
                       <h5 className="mb-3 placeholder-glow">
                         <span className="placeholder col-6"></span>
                       </h5>
                     ) : (<h5 className="mb-3">
-                      {events?.events.page?.totalElements >= 10000 ? "10k" : events?.events.page?.totalElements}
+                      {mobileThreats?.threats?.count >= 10000 ? "10k" : mobileThreats?.threats?.count}
                     </h5>)}
                   </div>
                 </div>
