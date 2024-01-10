@@ -9,8 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployeeTrainingList } from "../../store/actions";
 
 import { formatDate } from '@fullcalendar/core';
+import withRouter from "../../components/Common/withRouter";
 
-const TrainingList = () => {
+
+const TrainingList = (props) => {
 
     const dispatch = useDispatch();
 
@@ -83,7 +85,7 @@ const TrainingList = () => {
                                                 </td>
                                                 <td>{item.totalAssignments}</td>
                                                 <td>
-                                                    <button type="button" className="btn btn-outline-success btn-sm me-1">Details</button>
+                                                    <button type="button" className="btn btn-outline-success btn-sm me-1" onClick={() => props.router.navigate("/courses")}>Details</button>
                                                 </td>
                                             </tr>))
                                         )}
@@ -98,4 +100,4 @@ const TrainingList = () => {
     )
 }
 
-export default TrainingList;
+export default withRouter(TrainingList);
