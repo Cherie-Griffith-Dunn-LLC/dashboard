@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Container } from "reactstrap";
 
 // import api functions
-import { getAlarms, getSysEvents, getAllDWM, getCourseStats, getInvestigations } from "../../store/actions";
+import { getAlarms, getSysEvents, getAllDWM, getCourseStats, getInvestigations, getThreats } from "../../store/actions";
 import withRouter from "../../components/Common/withRouter";
 
 //Import Breadcrumb
@@ -37,6 +37,7 @@ const Dashboard = () => {
       dispatch(getSysEvents(20));
       dispatch(getAllDWM(20));
       dispatch(getCourseStats());
+      dispatch(getThreats(20));
     } else {
       dispatch(getInvestigations(20));
     }
@@ -47,12 +48,13 @@ const Dashboard = () => {
   const dwmData     = useSelector(state => state.alienDWM);
   const courseStats = useSelector(state => state.courseStatistics);
   const investigations = useSelector(state => state.alienInvestigations);
+  const lookoutThreatsData= useSelector(state => state.lookoutThreats);
 
   
 
 
-  if (alarmsData.error || eventsData.error || dwmData.error || courseStats.error || investigations.error) {
-    console.error(alarmsData.error, eventsData.error, dwmData.error, courseStats.error, investigations.error);
+  if (alarmsData.error || eventsData.error || dwmData.error || courseStats.error || investigations.error || lookoutThreatsData.error) {
+    console.error(alarmsData.error, eventsData.error, dwmData.error, courseStats.error, investigations.error, lookoutThreatsData.error);
     Sentry.captureException(alarmsData.error ? alarmsData.error :
       eventsData.error ? eventsData.error :
       dwmData.error ? dwmData.error :
@@ -70,7 +72,7 @@ const Dashboard = () => {
             <Breadcrumbs title="CYPROTECK" breadcrumbItem="Dashboard" />
             {alarmsData.error || eventsData.error || dwmData.error || courseStats.error || investigations.error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> : null}
             {/* User Panel Charts */}
-            <UsePanel courseStats={courseStats} role={role} alarms={alarmsData} events={eventsData} dwm={dwmData} />
+            <UsePanel mobileThreats={lookoutThreatsData} courseStats={courseStats} role={role} alarms={alarmsData} events={eventsData} dwm={dwmData} />
   
             <Row>
               {/* Overview Chart */}
