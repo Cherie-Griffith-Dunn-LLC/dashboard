@@ -9,8 +9,8 @@ import { getRequiredCourses } from '../../store/actions';
 // import RadialChart3 from "./userpanelChart3";
 
 const UserPanel = (props) => {
-
-  const events = props.events;
+  // no longer showing events, so comment to fix error
+  //const events = props.events;
   const alarms = props.alarms;
   const dwmAlarms = props.dwm;
   const mobileThreats = props.mobileThreats;
