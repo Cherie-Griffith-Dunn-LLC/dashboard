@@ -22,6 +22,9 @@ import Courses from "../Pages/Courses";
 // Import Calender
 import Calender from "../Pages/Calender";
 
+// Mobile Security
+import MobileSecurity from "../Pages/MobileSecurity";
+
 
 
 // Import E-mail
@@ -126,6 +129,9 @@ const authProtectedRoutes = [
 
   // Vulnerbilities
   { path: "/vulnerabilities", component: <Vulns /> },
+
+  // Mobile Security
+  { path: "/mobile", component: <MobileSecurity /> },
 
   // Courses
   { path: "/courses", component: <Courses /> },
