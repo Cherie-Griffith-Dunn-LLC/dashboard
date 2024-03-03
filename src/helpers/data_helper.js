@@ -47,6 +47,47 @@ function daysAgo (date) {
     })
   }
 
+// Get the icon for a mobile threat
+function getLookoutThreatIcon (threats = []) {
+  return threats.map(threat => {
+    if (threat.type === "APPLICATION") {
+      return {
+        ...threat,
+        icon: "mdi mdi-application",
+      }
+    } else if (threat.type === "FILE") {
+      return {
+        ...threat,
+        icon: "mdi mdi-file-alert",
+      }
+    } else if (threat.type === "OS") {
+      return {
+        ...threat,
+        icon: "mdi mdi-cellphone-iphone",
+      }
+    } else if (threat.type === "NETWORK") {
+      return {
+        ...threat,
+        icon: "mdi mdi-close-network",
+      }
+    } else if (threat.type === "CONFIGURATION") {
+      return {
+        ...threat,
+        icon: "mdi mdi-cog",
+      }
+    } else if (threat.type === "WEB_CONTENT") {
+      return {
+        ...threat,
+        icon: "mdi mdi-web",
+      }
+    } else {
+      return {
+        ...threat
+      }
+    }
+  })
+}
+
 // calculate the risk score
 function getRiskScore (alarms = 0, darkweb = 0, coursestats = 0) {
   // calculate the risk score
@@ -66,5 +107,6 @@ function getRiskScore (alarms = 0, darkweb = 0, coursestats = 0) {
 export {
     daysAgo,
     getAlarmIcon,
-    getRiskScore
+    getRiskScore,
+    getLookoutThreatIcon,
 }

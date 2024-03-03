@@ -17,6 +17,12 @@ const AdminSidebarData = [
         issubMenubadge: true,
     },
     {
+        label: "Mobile Security",
+        icon: "mdi mdi-cellphone-lock",
+        url: "/mobile",
+        isHasArrow: true,
+    },
+    {
         label: "System Activity",
         icon: "mdi mdi-clipboard-pulse-outline",
         isHasArrow: true,
@@ -116,7 +122,12 @@ const DevSidebarData = [
         icon: "mdi mdi-lock-open-alert-outline",
         isHasArrow: true,
         url: "/threats",
-        issubMenubadge: true,
+    },
+    {
+        label: "Mobile Security",
+        icon: "mdi mdi-cellphone-lock",
+        url: "/mobile",
+        isHasArrow: true,
     },
     {
         label: "System Activity",

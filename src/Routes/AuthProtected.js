@@ -38,6 +38,8 @@ const AuthProtected = (props) => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("expireTime");
     localStorage.removeItem("authUser");
+    localStorage.removeItem("role");
+    localStorage.removeItem("token");
     return (
       <Navigate to={{ pathname: "/login", state: { from: props.location } }} />
     );
