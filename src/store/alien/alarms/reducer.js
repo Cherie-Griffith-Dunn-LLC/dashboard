@@ -5,7 +5,7 @@ import {
   } from "./actionTypes";
 
 const INIT_STATE = {
-    alarms: [],
+    alarms: {},
     error: "",
     loading: true,
 }

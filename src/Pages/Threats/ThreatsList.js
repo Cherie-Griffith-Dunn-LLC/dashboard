@@ -12,13 +12,10 @@ import { getAlarmIcon } from '../../helpers/data_helper';
 
 const ThreatsList = (props) => {
 
-    const alarms = props.alarmsData["_embedded"]?.alarms ? getAlarmIcon(props.alarmsData["_embedded"]?.alarms) : [];
-    const dictionary = props.dictionary;
+    const alarms = props.alarmsData.data ? getAlarmIcon(props.alarmsData.data) : [];
     //const pageData = props.alarmsData.page;
-
     const [showThreatDetails, setShowThreatDetails] = useState(false);
     const [threatDetails, setThreatDetails] = useState({});
-
     function tog_threatDetails (item) {
         setThreatDetails(item);
         setShowThreatDetails(!showThreatDetails);
@@ -40,34 +37,33 @@ const ThreatsList = (props) => {
                                             <th scope="col">Priority</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Sources</th>
-                                            <th scope="col">Destinations</th>
-                                            <th scope="col">Source users</th>
-                                            <th scope="col">Destination Users</th>
+                                            <th scope="col">Machine</th>
+                                            <th scope="col">User</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {alarms.map((item, key) => (<tr onClick={() => { tog_threatDetails(item) }} key={key}>
                                             <td>
                                                 <div className="avatar-xs">
-                                                    <span className={"avatar-title rounded-circle " + (item.priority_label === "high" ? "bg-soft-danger text-danger" : item.priority_label === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
+                                                    <span className={"avatar-title rounded-circle " + (item.threatInfo.confidenceLevel === "malicious" ? "bg-soft-danger text-danger" : item.threatInfo.confidenceLevel === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
                                                         <i className={item.icon}></i>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <p className="mb-1 font-size-12">{item.rule_strategy}</p>
-                                                <h5 className="font-size-15 mb-0">{item.rule_method}</h5>
+                                                <p className="mb-1 font-size-12">{item.threatInfo.threatName}</p>
+                                                <h5 className="font-size-15 mb-0">{item.threatInfo.classification}</h5>
                                             </td>
                                             <td>
-                                                {item.priority_label.toUpperCase()}
+                                                {item.threatInfo.confidenceLevel.toUpperCase()}
                                             </td>
-                                            <td>{item.status}</td>
-                                            <td>{item.source_name}</td>
+                                            <td>{item.threatInfo.mitigationStatusDescription}</td>
+                                            <td>{item.threatInfo.classificationSource}</td>
 
                                             <td>
-                                                {item.destination_name}
+                                                {item.agentRealtimeInfo.agentComputerName}
                                             </td>
-                                            <td>{item.source_username}</td>
+                                            <td>{item.threatInfo.processUser}</td>
                                             <td>{item.destination_username}</td>
                                             <td>
                                                 <button
@@ -83,7 +79,7 @@ const ThreatsList = (props) => {
                     </div>
                 </Col>
             </Row>
-            <ThreatModal dictionary={dictionary} threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
+            <ThreatModal threatDetails={threatDetails} setShowModal={setShowThreatDetails} tog_threatDetails={tog_threatDetails} showModal={showThreatDetails} />
         </React.Fragment>
     )
 }

@@ -23,7 +23,7 @@ const RecentThreats = (props) => {
   React.useEffect(() => {
     if (!loading && alarmsData) {
       if(role === "admin") {
-        setAlarms(alarmsData.alarms._embedded?.alarms ? getAlarmIcon(alarmsData.alarms._embedded.alarms) : []);
+        setAlarms(alarmsData.alarms?.data ? getAlarmIcon(alarmsData.alarms?.data) : []);
       } else {
         setAlarms(alarmsData.investigation._embedded?.alarms ? getAlarmIcon(alarmsData.investigation._embedded.alarms) : []);
       }
@@ -74,7 +74,7 @@ const RecentThreats = (props) => {
                           />
                         ) : (
                           <div className="avatar-xs">
-                              <span className={"avatar-title rounded-circle bg-soft-primary text-" + (item.priority_label === "high" ? "bg-soft-danger text-danger" : item.priority_label === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
+                              <span className={"avatar-title rounded-circle bg-soft-primary text-" + (item?.threatInfo?.confidenceLevel === "malicious" ? "bg-soft-danger text-danger" : item.priority_label === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
                                   <i className={item.icon}></i>
                               </span>
                           </div>
@@ -82,8 +82,8 @@ const RecentThreats = (props) => {
                       </div>
 
                       <div className="flex-grow-1 overflow-hidden">
-                        <h5 className="font-size-14 mb-1">{item.rule_strategy}</h5>
-                        <p className="text-truncate mb-0">{item.rule_method}</p>
+                        <h5 className="font-size-14 mb-1">{item?.threatInfo?.classification}</h5>
+                        <p className="text-truncate mb-0">{item?.threatInfo?.threatName}</p>
                       </div>
                       <div className="flex-shrink-0 font-size-13">
                         {item.time}

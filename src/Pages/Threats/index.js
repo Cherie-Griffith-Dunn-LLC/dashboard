@@ -26,9 +26,6 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
         const { error } = useSelector(state => ({
             error: role === "admin" ? state.alienAlarms.error : state.alienInvestigations.error,
         }));
-        const {dictionary} = useSelector(state => ({
-            dictionary: state.alienDictionary,
-        }));
 
         React.useEffect(() => {
             if (role === "admin") {
@@ -36,6 +33,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
             } else {
                 dispatch(getInvestigations(20));
             }
+            
             dispatch(getDictionary());
         }, [dispatch, role]);
 
@@ -47,8 +45,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
                     <Container fluid={true}>
                         <Breadcrumbs title="Dashboard" breadcrumbItem="Threats" />
                         
-                        {(loading || dictionary.loading) ? <p>Loading...</p> : error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> :
-                            <ThreatsList dictionary={dictionary.dictionary} alarmsData={alarms} />
+                        {(loading) ? <p>Loading...</p> : error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> :
+                            <ThreatsList alarmsData={alarms} />
                         }
 
                     </Container>

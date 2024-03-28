@@ -9,7 +9,6 @@ const RadialChart = (props) => {
   if (error) {
     console.error(error);
   }
-
   const series = props.series;
 
   
@@ -42,7 +41,7 @@ const RadialChart = (props) => {
             formatter: function (w) {
               // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
               // check if loading
-                return alarms.page?.size;
+                return alarms?.pagination?.totalItems;
             },
           },
         },

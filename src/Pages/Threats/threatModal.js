@@ -12,7 +12,6 @@ const ThreatModal = (props) => {
 
     const threat = props.threatDetails;
 
-    const dictionary = props.dictionary;
 
     
     return (
@@ -29,7 +28,7 @@ const ThreatModal = (props) => {
                         className="modal-title mt-0"
                         id="myExtraLargeModalLabel"
                     >
-                        {threat?.rule_strategy}
+                        {threat?.threatInfo?.classification}
                     </h5>
                 <button
                     onClick={() => {
@@ -44,8 +43,8 @@ const ThreatModal = (props) => {
                 </button>
                 </div>
                 <div className="modal-body">
-                    <h6>{threat?.rule_method}</h6>
-                    <p>{daysAgo(threat?.timestamp_occured)}</p>
+                    <h6>{threat?.threatInfo?.threatName}</h6>
+                    <p>{daysAgo(threat?.threatInfo?.createdAt)}</p>
                     <div className="table-responsive">
                         <table className="table table-centered table-nowrap mb-0">
                             <tbody>
@@ -55,7 +54,7 @@ const ThreatModal = (props) => {
                                 </tr>
                                 <tr>
                                     <td>Status</td>
-                                    <td>{threat?.status}</td>
+                                    <td>{threat?.threatInfo?.mitigationStatus.toUpperCase()}</td>
                                 </tr>
                                 {threat?.icon === "mdi mdi-biohazard" ? (
                                     <>
@@ -69,11 +68,11 @@ const ThreatModal = (props) => {
                                         </tr>
                                         <tr>
                                             <td>File Name:</td>
-                                            <td>{threat?.file_name}</td>
+                                            <td>{threat?.threatInfo?.threatName}</td>
                                         </tr>
                                         <tr>
-                                            <td>Malware Family:</td>
-                                            <td>{threat?.malware_family}</td>
+                                            <td>Confidence level:</td>
+                                            <td>{threat?.threatInfo?.confidenceLevel.toUpperCase()}</td>
                                         </tr>
                                     </>
                                 ) : (
@@ -107,13 +106,13 @@ const ThreatModal = (props) => {
                         <h6>Description</h6>
                         <div className="row mb-0">
                             <p className="col-sm-3">Method:</p>
-                            <p className="col-sm-9">{dictionary[threat?.rule_dictionary]?.Method[threat?.rule_method]}</p>
+                            <p className="col-sm-9"></p>
 
                             <p className="col-sm-3">Strategy:</p>
-                            <p className="col-sm-9">{dictionary[threat?.rule_dictionary]?.Strategy[threat?.rule_strategy]}</p>
+                            <p className="col-sm-9"></p>
 
                             <p className="col-sm-3">Intent:</p>
-                            <p className="col-sm-9">{dictionary[threat?.rule_dictionary]?.Intent[threat?.rule_intent]}</p>
+                            <p className="col-sm-9"></p>
                         </div>
                     </Container>
                 </div>
