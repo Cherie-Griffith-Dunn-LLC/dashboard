@@ -12,18 +12,19 @@ const ThreatsByPriority = (props) => {
   // create a series in state
   const [series, setSeries] = React.useState([]);
 
+
   React.useEffect(() => {
     var low = 0;
     var high = 0;
     var medium = 0;
     if (!loading) {
-      alarms._embedded?.alarms.forEach((item) => {
-        if (item.priority_label === "low") {
-          low++;
-        } else if (item.priority_label === "medium") {
-          medium++;
-        } else if (item.priority_label === "high") {
+      alarms?.data.forEach((item) => {
+        if (item.threatInfo.confidenceLevel === "malicious") {
           high++;
+        } else if (item.priority_label === "suspicious") {
+          medium++;
+        } else if (item.priority_label === "n/a") {
+          low++;
         }
       });
     }

@@ -26,7 +26,7 @@ const UserPanel = (props) => {
     if (role === "admin") {
       setRiskScore(
         getRiskScore(
-          alarms?.alarms.page?.totalElements,
+          alarms?.alarms.pagination?.totalItems,
           dwmAlarms?.alarms.page?.totalElements,
           courseStats?.statistics?.totalInProgressCourses
           )
@@ -66,7 +66,7 @@ const UserPanel = (props) => {
                         <span className="placeholder col-6"></span>
                       </h5>
                     ) : (
-                      <h5 className="mb-3">{alarms?.alarms.page?.totalElements}</h5>
+                      <h5 className="mb-3">{alarms?.alarms.pagination?.totalItems}</h5>
                     )}
                   </div>
                 </div>

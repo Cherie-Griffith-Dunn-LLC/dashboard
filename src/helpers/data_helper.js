@@ -1,10 +1,10 @@
 // returns time since timestamp in human readable form
 function daysAgo (date) {
     // Math.round((new Date().getTime() - new Date(Math.round(currentData?.timestamp_occured))) / (1000 * 3600 * 24))
-    const days = Math.round((new Date().getTime() - new Date(Math.round(date))) / (1000 * 3600 * 24));
+    const days = Math.round((new Date().getTime() - new Date(date)) / (1000 * 3600 * 24));
     if (days === 0) {
       // return the local time of the date
-      return new Date(Math.round(date)).toLocaleTimeString();
+      return new Date(date).toLocaleTimeString();
     } else {
       return `${days} days ago`;
     }
@@ -14,27 +14,27 @@ function daysAgo (date) {
   // give an icon based on the rule intent
   function getAlarmIcon (threats = []) {
     return threats.map(alarm => {
-      if (alarm.rule_intent === "System Compromise") {
+      if (alarm.threatInfo.classification === "Malware") {
         return {
           ...alarm,
           icon: "mdi mdi-biohazard",
         }
-      } else if (alarm.rule_intent === "Environmental Awareness") {
+      } else if (alarm.threatInfo.classification === "Environmental Awareness") {
         return {
           ...alarm,
           icon: "mdi mdi-web",
         }
-      } else if (alarm.rule_intent === "Exploit & Installation") {
+      } else if (alarm.threatInfo.classification === "Exploit & Installation") {
         return {
           ...alarm,
           icon: "mdi mdi-alarm",
         }
-      } else if (alarm.rule_intent === "Delivery & Attack") {
+      } else if (alarm.threatInfo.classification === "Delivery & Attack") {
         return {
           ...alarm,
           icon: "mdi mdi-crosshairs-gps",
         }
-      } else if (alarm.rule_intent === "Reconnaisannce & Probing") {
+      } else if (alarm.threatInfo.classification === "Reconnaisannce & Probing") {
         return {
           ...alarm,
           icon: "mdi mdi-radar",
