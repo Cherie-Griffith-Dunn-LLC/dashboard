@@ -35,12 +35,6 @@ const AdminSidebarData = [
         url: "/courses",
     },
     {
-        label: "Dark Web Monitoring",
-        icon: "mdi mdi-form-textbox-password",
-        isHasArrow: true,
-        url: "/darkweb",
-    },
-    {
         label: "Vulnerabilities",
         icon: "mdi mdi-security-network",
         isHasArrow: true,
@@ -140,12 +134,6 @@ const DevSidebarData = [
         icon: "mdi mdi-school-outline",
         isHasArrow: true,
         url: "/courses",
-    },
-    {
-        label: "Dark Web Monitoring",
-        icon: "mdi mdi-form-textbox-password",
-        isHasArrow: true,
-        url: "/darkweb",
     },
     {
         label: "Vulnerabilities",

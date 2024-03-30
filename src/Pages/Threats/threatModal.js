@@ -12,8 +12,6 @@ const ThreatModal = (props) => {
 
     const threat = props.threatDetails;
 
-
-    
     return (
         <React.Fragment>
             <Modal
@@ -49,70 +47,44 @@ const ThreatModal = (props) => {
                         <table className="table table-centered table-nowrap mb-0">
                             <tbody>
                                 <tr>
-                                    <td>Priority</td>
-                                    <td>{threat?.priority_label}</td>
+                                    <td>Status:</td>
+                                    <td>{threat?.threatInfo?.incidentStatusDescription}</td>
                                 </tr>
                                 <tr>
-                                    <td>Status</td>
-                                    <td>{threat?.threatInfo?.mitigationStatus.toUpperCase()}</td>
+                                    <td>AI Confidence Level:</td>
+                                    <td>{threat?.threatInfo?.confidenceLevel}</td>
                                 </tr>
-                                {threat?.icon === "mdi mdi-biohazard" ? (
-                                    <>
-                                        <tr>
-                                            <td>Username:</td>
-                                            <td>{threat?.source_username}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Source NT Domain:</td>
-                                            <td>{threat?.source_ntdomain}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>File Name:</td>
-                                            <td>{threat?.threatInfo?.threatName}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Confidence level:</td>
-                                            <td>{threat?.threatInfo?.confidenceLevel.toUpperCase()}</td>
-                                        </tr>
-                                    </>
-                                ) : (
-                                    <>
-                                        <tr>
-                                            <td>Destination Username:</td>
-                                            <td>{threat?.destination_username}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Audit Reason:</td>
-                                            <td>{threat?.audit_reason}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Rule Attack Tactic:</td>
-                                            <td>{threat?.rule_attack_tactic}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Rule Attack Technique:</td>
-                                            <td>{threat?.rule_attack_technique}</td>
-                                        </tr>
-                                    </>
-                                )}
                                 <tr>
-                                    <td>Sensors</td>
-                                    <td>{threat?.sensor_uuid}</td>
+                                    <td>Analyst Verdict:</td>
+                                    <td>{threat?.threatInfo?.analystVerdictDescription}</td>
+                                </tr>
+                                <tr>
+                                    <td>Endpoints:</td>
+                                    <td>{threat?.agentRealtimeInfo?.agentComputerName}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <Container>
-                        <h6>Description</h6>
+                        <h6>Details</h6>
                         <div className="row mb-0">
-                            <p className="col-sm-3">Method:</p>
-                            <p className="col-sm-9"></p>
+                            <p className="col-sm-3">File Path:</p>
+                            <p className="col-sm-9">{threat?.threatInfo?.filePath}</p>
 
-                            <p className="col-sm-3">Strategy:</p>
-                            <p className="col-sm-9"></p>
+                            <p className="col-sm-3">Originating Process:</p>
+                            <p className="col-sm-9">{threat?.threatInfo?.originatorProcess}</p>
 
-                            <p className="col-sm-3">Intent:</p>
-                            <p className="col-sm-9"></p>
+                            <p className="col-sm-3">Mitigation Actions:</p>
+                            <p className="col-sm-9">
+                                {threat?.mitigationStatus?.map((item, index) => (
+                                    <span key={index}>
+                                        {item.status ? <i className="mdi mdi-lock-check text-success"> </i> : null}
+                                        {item.action}
+                                        {item.actionsCounters ? (` ` + item.actionsCounters.success + `/` + item.actionsCounters.total) : null}
+                                        <br />
+                                    </span>
+                                ))}
+                            </p>
                         </div>
                     </Container>
                 </div>

@@ -12,7 +12,6 @@ const UserPanel = (props) => {
   // no longer showing events, so comment to fix error
   //const events = props.events;
   const alarms = props.alarms;
-  const dwmAlarms = props.dwm;
   const mobileThreats = props.mobileThreats;
   const role = props.role;
   const courseStats = props.courseStats;
@@ -22,17 +21,18 @@ const UserPanel = (props) => {
 
   const dispatch = useDispatch();
 
+
   React.useEffect(() => {
     if (role === "admin") {
       setRiskScore(
         getRiskScore(
           alarms?.alarms.pagination?.totalItems,
-          dwmAlarms?.alarms.page?.totalElements,
-          courseStats?.statistics?.totalInProgressCourses
+          0,
+          courseStats?.statistics?.totalAssignedCourses
           )
         );
     }
-  }, [role, alarms, dwmAlarms, courseStats, setRiskScore]);
+  }, [role, alarms, courseStats, setRiskScore]);
 
   React.useEffect(() => {
     if (role === "user") {
@@ -108,18 +108,18 @@ const UserPanel = (props) => {
                   <div className="flex-shrink-0 me-3 align-self-center">
                     <div className="avatar-sm">
                       <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
-                        <i className="mdi mdi-form-textbox-password"></i>
+                        <i className="mdi mdi-school-outline"></i>
                       </div>
                     </div>
                   </div>
   
                   <div className="flex-grow-1 overflow-hidden">
-                    <p className="mb-1">Dark Web</p>
-                    {dwmAlarms.loading !== false ? (
+                    <p className="mb-1">Courses</p>
+                    {courseStats.loading !== false ? (
                       <h5 className="mb-3 placeholder-glow">
                         <span className="placeholder col-6"></span>
                       </h5>
-                    ) : (<h5 className="mb-3">{dwmAlarms?.alarms.page?.totalElements}</h5>)}
+                    ) : (<h5 className="mb-3">{courseStats?.statistics?.totalAssignedCourses}</h5>)}
                   </div>
                 </div>
               </CardBody>
@@ -139,7 +139,7 @@ const UserPanel = (props) => {
                   </div>
                   <div className="flex-grow-1 overflow-hidden">
                     <p className="mb-1">Risk Score</p>
-                    {(dwmAlarms.loading || alarms.loading) ? (
+                    {(courseStats.loading || alarms.loading) ? (
                       <h5 className="mb-3 placeholder-glow">
                         <span className="placeholder col-6"></span>
                       </h5>
