@@ -12,8 +12,6 @@ const ThreatModal = (props) => {
 
     const threat = props.threatDetails;
 
-
-    console.log(threat);
     return (
         <React.Fragment>
             <Modal
@@ -80,7 +78,7 @@ const ThreatModal = (props) => {
                             <p className="col-sm-9">
                                 {threat?.mitigationStatus?.map((item, index) => (
                                     <span key={index}>
-                                        {item.status ? <span className="text-success">&#10003; </span> : null}
+                                        {item.status ? <i className="mdi mdi-lock-check text-success"> </i> : null}
                                         {item.action}
                                         {item.actionsCounters ? (` ` + item.actionsCounters.success + `/` + item.actionsCounters.total) : null}
                                         <br />
