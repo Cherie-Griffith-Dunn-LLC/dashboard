@@ -53,7 +53,7 @@ const Dashboard = () => {
   
 
 
-  if (alarmsData.error || eventsData.error || dwmData.error || courseStats.error || investigations.error || lookoutThreatsData.error) {
+  if (alarmsData.error || eventsData.error || courseStats.error || investigations.error || lookoutThreatsData.error) {
     console.error(alarmsData.error, eventsData.error, dwmData.error, courseStats.error, investigations.error, lookoutThreatsData.error);
     Sentry.captureException(alarmsData.error ? alarmsData.error :
       eventsData.error ? eventsData.error :
@@ -70,9 +70,9 @@ const Dashboard = () => {
         <div className="page-content">
           <Container fluid={true}>
             <Breadcrumbs title="CYPROTECK" breadcrumbItem="Dashboard" />
-            {alarmsData.error || eventsData.error || dwmData.error || courseStats.error || investigations.error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> : null}
+            {alarmsData.error || eventsData.error || courseStats.error || investigations.error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> : null}
             {/* User Panel Charts */}
-            <UsePanel mobileThreats={lookoutThreatsData} courseStats={courseStats} role={role} alarms={alarmsData} events={eventsData} dwm={dwmData} />
+            <UsePanel mobileThreats={lookoutThreatsData} courseStats={courseStats} role={role} alarms={alarmsData} events={eventsData} />
   
             <Row>
               {/* Overview Chart */}
