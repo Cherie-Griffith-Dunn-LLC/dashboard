@@ -9,7 +9,7 @@ import { formatDate } from '@fullcalendar/core';
 
 const ThreatsList = (props) => {
 
-    const alarms = props.alarmsData?.results;
+    const alarms = props.alarmsData?.data;
 
     //const pageData = props.alarmsData.page;
 
@@ -33,42 +33,42 @@ const ThreatsList = (props) => {
                                     <thead>
                                         <tr>
                                             <th scope="col" style={{ width: "60px" }}></th>
-                                            <th scope="col">Vulnerability ID</th>
-                                            <th scope="col">Vulnerability Name</th>
-                                            <th scope="col">Asset</th>
+                                            <th scope="col">Application Name</th>
+                                            <th scope="col">Vendor</th>
                                             <th scope="col">Severity</th>
-                                            <th scope="col">Score</th>
+                                            <th scope="col">Endpoints</th>
+                                            <th scope="col">NVD Score</th>
                                             <th scope="col">First Seen</th>
-                                            <th scope="col">Last Seen</th>
+                                            <th scope="col">Days from detection</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {alarms.map((item, key) => (<tr onClick={() => { tog_threatDetails(item) }} key={key}>
                                             <td>
                                                 <div className="avatar-xs">
-                                                    <span className={"avatar-title rounded-circle " + (item.vulnerability.cvssSeverity === "High" ? "bg-soft-danger text-danger" : item.vulnerability.cvssSeverity === "Medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
+                                                    <span className={"avatar-title rounded-circle " + (item?.highestSeverity === "CRITICAL" ? "bg-soft-danger text-danger" : item?.highestSeverity === "HIGH" ? "bg-soft-danger text-danger" : item?.highestSeverity === "MEDIUM" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
                                                         <i className="mdi mdi-security"></i>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
-                                            {item.vulnerability.cve}
+                                            {item?.name}
                                             </td>
                                             <td>
-                                                {item.vulnerability?.name}
+                                                {item?.vendor}
                                             </td>
-                                            <td>{item.asset?.name}</td>
+                                            <td><span className={item?.highestSeverity === "CRITICAL" ? "badge rounded-pill text-bg-danger" : item?.highestSeverity === "HIGH" ? "badge rounded-pill text-bg-danger" : item?.highestSeverity === "MEDIUM" ? "badge rounded-pill text-bg-warning" : "badge rounded-pill text-bg-secondary"}>
+                                                    {item?.highestSeverity}
+                                                </span></td>
                                             <td>
-                                                <span className={item.vulnerability.cvssSeverity === "High" ? "badge rounded-pill text-bg-danger" : item.vulnerability.cvssSeverity === "Medium" ? "badge rounded-pill text-bg-warning" : "badge rounded-pill text-bg-secondary"}>
-                                                    {item.vulnerability.cvssSeverity}
-                                                </span>
+                                            {item?.highestSeverity}
                                             </td>
 
                                             <td>
-                                                {item.vulnerability.cvssScore}
+                                                {item?.vulnerability?.cvssScore}
                                             </td>
-                                            <td>{formatDate(item.vulnerability.firstSeen)}</td>
-                                            <td>{formatDate(item.vulnerability.lastSeen[item.vulnerability.lastSeen.length - 1])}</td>
+                                            <td>{formatDate(item?.detectionDate)}</td>
+                                            <td>{item?.daysDetected} Days</td>
                                             <td>
                                                 <button
                                                     onClick={() => { tog_threatDetails(item) }}

@@ -34,7 +34,7 @@ const ThreatsList = (props) => {
                                         <tr>
                                             <th scope="col" style={{ width: "60px" }}></th>
                                             <th scope="col">Threat Summary</th>
-                                            <th scope="col">Priority</th>
+                                            <th scope="col">AI Analysis</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Sources</th>
                                             <th scope="col">Machine</th>
@@ -45,26 +45,31 @@ const ThreatsList = (props) => {
                                         {alarms.map((item, key) => (<tr onClick={() => { tog_threatDetails(item) }} key={key}>
                                             <td>
                                                 <div className="avatar-xs">
-                                                    <span className={"avatar-title rounded-circle " + (item.threatInfo.confidenceLevel === "malicious" ? "bg-soft-danger text-danger" : item.threatInfo.confidenceLevel === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
-                                                        <i className={item.icon}></i>
+                                                    <span className={"avatar-title rounded-circle " + (item?.threatInfo?.confidenceLevel === "malicious" ? "bg-soft-danger text-danger" : item?.threatInfo?.confidenceLevel === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
+                                                        <i className={item?.icon}></i>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <p className="mb-1 font-size-12">{item.threatInfo.threatName}</p>
-                                                <h5 className="font-size-15 mb-0">{item.threatInfo.classification}</h5>
+                                                <p className="mb-1 font-size-12">{item?.threatInfo?.threatName}</p>
+                                                <h5 className="font-size-15 mb-0">{item?.threatInfo?.classification}</h5>
                                             </td>
                                             <td>
-                                                {item.threatInfo.confidenceLevel.toUpperCase()}
+                                                <span className={item?.threatInfo?.confidenceLevel === "malicious" ? "badge rounded-pill text-bg-danger" : item?.threatInfo?.confidenceLevel === "suspicious" ? "badge rounded-pill text-bg-warning" : "badge rounded-pill text-bg-secondary"}>
+                                                    {item?.threatInfo?.confidenceLevel.toUpperCase()}
+                                                </span>
                                             </td>
-                                            <td>{item.threatInfo.mitigationStatusDescription}</td>
-                                            <td>{item.threatInfo.classificationSource}</td>
+                                            <td>
+                                                {item?.threatInfo?.mitigationStatus === "mitigated" ? <i className="mdi mdi-lock-check text-success"> </i> : null}
+                                                {item?.threatInfo?.mitigationStatusDescription}
+                                            </td>
+                                            <td>{item?.threatInfo?.classificationSource}</td>
 
                                             <td>
-                                                {item.agentRealtimeInfo.agentComputerName}
+                                                {item?.agentRealtimeInfo.agentComputerName}
                                             </td>
-                                            <td>{item.threatInfo.processUser}</td>
-                                            <td>{item.destination_username}</td>
+                                            <td>{item?.threatInfo?.processUser}</td>
+                                            <td>{item?.destination_username}</td>
                                             <td>
                                                 <button
                                                     onClick={() => { tog_threatDetails(item) }}
