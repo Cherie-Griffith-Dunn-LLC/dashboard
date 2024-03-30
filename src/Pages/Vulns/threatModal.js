@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Modal, Container } from 'reactstrap';
-import { daysAgo } from '../../helpers/data_helper';
+import { Modal } from 'reactstrap';
 import { formatDate } from '@fullcalendar/core';
 
 
