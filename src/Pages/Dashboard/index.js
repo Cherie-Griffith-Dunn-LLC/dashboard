@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Container } from "reactstrap";
 
 // import api functions
-import { getAlarms, getSysEvents, getAllDWM, getCourseStats, getInvestigations, getThreats } from "../../store/actions";
+import { getAlarms, getCourseStats, getInvestigations, getThreats } from "../../store/actions";
 import withRouter from "../../components/Common/withRouter";
 
 //Import Breadcrumb
@@ -34,8 +34,8 @@ const Dashboard = () => {
   React.useEffect(() => {
     if (role === "admin") {
       dispatch(getAlarms(20));
-      dispatch(getSysEvents(20));
-      dispatch(getAllDWM(20));
+      //dispatch(getSysEvents(20));
+      //dispatch(getAllDWM(20));
       dispatch(getCourseStats());
       dispatch(getThreats(20));
     } else {
@@ -44,7 +44,11 @@ const Dashboard = () => {
   }, [dispatch, role]);
 
   const alarmsData  = useSelector(state => state.alienAlarms);
-  const eventsData  = useSelector(state => state.alienEvents);
+  //const eventsData  = useSelector(state => state.alienEvents);
+  const eventsData = {
+    loading: false,
+    events: []
+  }
   const dwmData     = useSelector(state => state.alienDWM);
   const courseStats = useSelector(state => state.courseStatistics);
   const investigations = useSelector(state => state.alienInvestigations);
