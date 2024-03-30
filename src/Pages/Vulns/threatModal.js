@@ -12,7 +12,6 @@ const ThreatModal = (props) => {
 
     const threat = props.threatDetails;
 
-
     
     return (
         <React.Fragment>
@@ -28,7 +27,7 @@ const ThreatModal = (props) => {
                         className="modal-title mt-0"
                         id="myExtraLargeModalLabel"
                     >
-                        {threat?.vulnerability?.name}
+                        {threat?.name}
                     </h5>
                 <button
                     onClick={() => {
@@ -44,45 +43,37 @@ const ThreatModal = (props) => {
                 </div>
                 <div className="modal-body">
                     <h6>Vulnerabilities Details</h6>
-                    <p>{threat?.vulnerability?.lastSeen ? daysAgo(threat?.vulnerability?.lastSeen[threat?.vulnerability?.lastSeen.length - 1]) : "-/-/-"}</p>
+                    <p>First seen {threat?.daysDetected} days ago.</p>
                     <div className="table-responsive">
                         <table className="table table-centered table-nowrap mb-0">
                             <tbody>
                                 <tr>
-                                    <td>Reference ID</td>
-                                    <td>{threat?.vulnerability?.cve}</td>
+                                    <td>Vendor</td>
+                                    <td>{threat?.vendor}</td>
                                 </tr>
                                 <tr>
                                     <td>Severity</td>
-                                    <td>{threat?.vulnerability?.cvssSeverity}</td>
+                                    <td>{threat?.highestSeverity}</td>
                                 </tr>
                                 <tr>
-                                    <td>Reliability</td>
-                                    <td>{threat?.vulnerability?.reliability}</td>
+                                    <td>NVD Score</td>
+                                    <td>{threat?.highestNvdBaseScore}</td>
                                 </tr>
                                 <tr>
-                                    <td>First Seen</td>
-                                    <td>{formatDate(threat?.vulnerability?.firstSeen)}</td>
+                                    <td>Endpoints</td>
+                                    <td>{threat?.endpointCount}</td>
                                 </tr>
                                 <tr>
-                                    <td>Last Seen</td>
-                                    <td>{formatDate(threat?.vulnerability?.lastSeen[threat?.vulnerability?.lastSeen.length - 1])}</td>
+                                    <td>Detection Date</td>
+                                    <td>{formatDate(threat?.detectionDate)}</td>
                                 </tr>
                                 <tr>
-                                    <td>Rule</td>
-                                    <td>{threat?.vulnerability?.ovalRuleId}</td>
-                                </tr>
-                                <tr>
-                                    <td>Asset</td>
-                                    <td>{threat?.asset?.name}</td>
+                                    <td>CVE Count</td>
+                                    <td>{threat?.cveCount}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <Container>
-                        <h6>Description</h6>
-                        <p>{threat?.vulnerability?.description}</p>
-                    </Container>
                 </div>
                 <div className="modal-footer">
                     <button
