@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Container } from "reactstrap";
 
 // import api functions
-import { getAlarms, getSysEvents, getAllDWM, getCourseStats, getInvestigations, getThreats } from "../../store/actions";
+import { getAlarms, getCourseStats, getInvestigations, getThreats } from "../../store/actions";
 import withRouter from "../../components/Common/withRouter";
 
 //Import Breadcrumb
