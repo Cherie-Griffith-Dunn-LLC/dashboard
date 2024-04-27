@@ -23,6 +23,7 @@ export * from "./alien/events/actions"
 export * from "./alien/dictionary/actions"
 export * from "./alien/investigations/actions"
 export * from "./alien/vulns/actions"
+export * from "./alien/packages/actions"
 
 // LMS module
 export * from "./lms/trainingList/actions"

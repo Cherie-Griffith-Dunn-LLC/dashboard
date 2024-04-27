@@ -18,6 +18,7 @@ import eventsSaga from "./alien/events/saga";
 import dictionarySaga from "./alien/dictionary/saga";
 import investigationsSaga from "./alien/investigations/saga";
 import vulnsSaga from "./alien/vulns/saga";
+import packagesSaga from "./alien/packages/saga";
 
 import trainingListSaga from "./lms/trainingList/saga";
 import courseStatsSaga from "./lms/courseStatistics/saga";
@@ -52,5 +53,6 @@ export default function* rootSaga() {
     fork(myCourseSaga),
     fork(vulnsSaga),
     fork(lookoutThreatsSaga),
+    fork(packagesSaga),
   ]);
 }
