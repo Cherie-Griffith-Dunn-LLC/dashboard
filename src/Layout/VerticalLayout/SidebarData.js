@@ -41,6 +41,12 @@ const AdminSidebarData = [
         url: "/vulnerabilities",
     },
     {
+        label: "Packages",
+        icon: "mdi mdi-package-down",
+        isHasArrow: true,
+        url: "/packages",
+    },
+    {
         label: "Settings",
         icon: "mdi mdi-cog",
         isHasArrow: true,
@@ -140,6 +146,12 @@ const DevSidebarData = [
         icon: "mdi mdi-security-network",
         isHasArrow: true,
         url: "/vulnerabilities",
+    },
+    {
+        label: "Packages",
+        icon: "mdi mdi-package-down",
+        isHasArrow: true,
+        url: "/packages",
     },
     {
         label: "Settings",
