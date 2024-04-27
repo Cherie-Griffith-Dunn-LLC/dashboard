@@ -12,6 +12,7 @@ export const GET_INVESTIGATIONS = "/investigations";
 export const GET_DICTIONARIES = "/dictionaries";
 export const GET_ALL_DWM = "/darkWebEvents";
 export const GET_VULNERABILITIES = "/vulnerabilities";
+export const GET_PACKAGES = "/packages";
 
 // Lookout
 export const GET_THREATS = "/mobile/threats";

@@ -32,11 +32,17 @@ const getVulnerbilities = (size) => {
     return apiClient.get(url.GET_VULNERABILITIES, { size });
 };
 
+const getPackages = (platform) => {
+    const apiClient = new APIClient();
+    return apiClient.get(url.GET_PACKAGES, { platform });
+}
+
 export {
     getAlarms,
     getAllDWM,
     getEvents,
     getDictionaries,
     getInvestigations,
-    getVulnerbilities
+    getVulnerbilities,
+    getPackages
 };
