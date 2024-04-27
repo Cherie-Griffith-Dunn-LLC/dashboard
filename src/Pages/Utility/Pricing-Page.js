@@ -70,8 +70,8 @@ const installInstructions = {
   ],
   "macos": [
     { id: "1", features: "Download Installer" },
-    { id: "2", features: "Right Click and Open the Installer" },
-    { id: "3", features: "Enter Your E-Mail" },
+    { id: "2", features: "Open 'Terminal' App" },
+    { id: "3", features: "Drag the installer into the 'Terminal' Window and press Enter" },
     { id: "4", features: "Restart Computer" },
   ],
   "linux": [
@@ -133,7 +133,7 @@ const Pricing = () => {
                       <div className="flex-shrink-0 me-3">
                         <div className="avatar-sm">
                           <span className="avatar-title rounded-circle bg-primary">
-                            <i className={item?.platform == "windows" ? "fab fa-windows font-size-20" : item?.platform == "macos" ? "fas fa-shield-alt font-size-20" : item?.platform == "linux" ? "fab fa-linux font-size-20" : "fas fa-shield-alt font-size-20"}></i>
+                            <i className={item?.platform == "windows" ? "fab fa-windows font-size-20" : item?.platform == "macos" ? "fab fa-apple font-size-20" : item?.platform == "linux" ? "fab fa-linux font-size-20" : "fas fa-shield-alt font-size-20"}></i>
                           </span>
                         </div>
                       </div>
