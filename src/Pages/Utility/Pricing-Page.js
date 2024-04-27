@@ -9,57 +9,6 @@ import { getPackages } from "../../store/actions";
 
 import { useSelector, useDispatch } from "react-redux";
 
-const PricingData = [
-  
-  {
-    title: "Starter",
-    caption: "Neque quis est",
-    icon: "fas fa-cube",
-    price: "19",
-    isChild: [
-      { id: "1", features: "Free Live Support" },
-      { id: "2", features: "Unlimited User" },
-      { id: "3", features: "No Time Tracking" },
-      { id: "4", features: "Free Setup" },
-    ],
-  },
-  {
-    title: "Professional",
-    caption: "Quis autem iure",
-    icon: "fas fa-trophy",
-    price: "29",
-    isChild: [
-      { id: "1", features: "Free Live Support" },
-      { id: "2", features: "Unlimited User" },
-      { id: "3", features: "No Time Tracking" },
-      { id: "4", features: "Free Setup" },
-    ],
-  },
-  {
-    title: "Enterprise",
-    caption: "Sed neque unde",
-    icon: "fas fa-shield-alt",
-    price: "39",
-    isChild: [
-      { id: "1", features: "Free Live Support" },
-      { id: "2", features: "Unlimited User" },
-      { id: "3", features: "No Time Tracking" },
-      { id: "4", features: "Free Setup" },
-    ],
-  },
-  {
-    title: "Unlimited",
-    caption: "Itque eam rerum",
-    icon: "fas fa-headset",
-    price: "49",
-    isChild: [
-      { id: "1", features: "Free Live Support" },
-      { id: "2", features: "Unlimited User" },
-      { id: "3", features: "No Time Tracking" },
-      { id: "4", features: "Free Setup" },
-    ],
-  },
-];
 
 const installInstructions = {
   "windows": [
@@ -133,7 +82,7 @@ const Pricing = () => {
                       <div className="flex-shrink-0 me-3">
                         <div className="avatar-sm">
                           <span className="avatar-title rounded-circle bg-primary">
-                            <i className={item?.platform == "windows" ? "fab fa-windows font-size-20" : item?.platform == "macos" ? "fab fa-apple font-size-20" : item?.platform == "linux" ? "fab fa-linux font-size-20" : "fas fa-shield-alt font-size-20"}></i>
+                            <i className={item?.platform === "windows" ? "fab fa-windows font-size-20" : item?.platform === "macos" ? "fab fa-apple font-size-20" : item?.platform === "linux" ? "fab fa-linux font-size-20" : "fas fa-shield-alt font-size-20"}></i>
                           </span>
                         </div>
                       </div>
