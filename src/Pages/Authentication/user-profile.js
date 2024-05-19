@@ -90,7 +90,7 @@ const UserProfile = () => {
                       <div className="ms-3">
                         <div className="avatar-md">
                             <span className="avatar-title rounded-circle bg-soft-primary text-success">
-                                {name.charAt(0)}
+                                {name ? name.charAt(0) : "A"}
                             </span>
                         </div>
                       </div>
@@ -98,7 +98,7 @@ const UserProfile = () => {
                         <div className="text-muted">
                           <h5>{name}</h5>
                           <p className="mb-1">{email}</p>
-                          <p className="mb-0">{userDetails.jobTitle}</p>
+                          <p className="mb-0">{userDetails?.jobTitle}</p>
                         </div>
                       </div>
                     </div>
