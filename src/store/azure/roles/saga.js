@@ -16,7 +16,13 @@ function* fetchCurrentRole() {
         setAuthorization(token);
         const response = yield call(getCurrentRole);
         if (response.error) {
-            throw new Error(response.error);
+            // try one more time
+            const secondresponse = yield call(getCurrentRole);
+            if (secondresponse.error) {
+                throw new Error(secondresponse.error);
+            }
+            localStorage.setItem("role", secondresponse.role);
+            yield put(getCurrentRoleSuccess(secondresponse.role));
         }
         localStorage.setItem("role", response.role);
         yield put(getCurrentRoleSuccess(response.role));

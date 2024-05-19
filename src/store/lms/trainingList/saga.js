@@ -8,6 +8,9 @@ import { getTrainingListFail, getTrainingListSuccess } from "./actions";
 import { getTrainingList } from "../../../helpers/lms_helper";
 import { setAuthorization } from "../../../helpers/api_helper";
 
+import { postUsers } from "../../../helpers/azure_helper";
+
+
 function* fetchTrainingList() {
     try {
         // get the auth token
@@ -18,7 +21,25 @@ function* fetchTrainingList() {
         if (response.error) {
             throw new Error(response.error);
         }
-        yield put(getTrainingListSuccess(response));
+        // if no users found, import them
+        if (response.length === 0) {
+            console.log("No users found. Importing users in settings.")
+            const usersResponse = yield call(postUsers);
+            if (usersResponse.error) {
+                throw new Error(usersResponse.error);
+            }
+
+            // get the training list again
+            const updatedResponse = yield call(getTrainingList);
+            if (updatedResponse.error) {
+                throw new Error(updatedResponse.error);
+            }
+            yield put(getTrainingListSuccess(updatedResponse));
+
+        } else {
+            yield put(getTrainingListSuccess(response));
+        }
+        
     } catch (error) {
         yield put(getTrainingListFail(error));
     }

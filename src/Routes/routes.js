@@ -78,7 +78,6 @@ import UiTypography from "../Pages/UiElements/UiTypography";
 import UiToasts from "../Pages/UiElements/UiToasts";
 import UiVideo from "../Pages/UiElements/UiVideo";
 import UiPopovers from "../Pages/UiElements/UiPopovers&Tooltips";
-import UiRating from "../Pages/UiElements/UiRating";
 
 // Import Forms
 import FormEditors from "../Pages/Forms/FormEditors";
@@ -181,7 +180,6 @@ const authProtectedRoutes = [
   { path: "/ui-toasts", component: <UiToasts /> },
   { path: "/ui-video", component: <UiVideo /> },
   { path: "/ui-popovers", component: <UiPopovers /> },
-  { path: "/ui-rating", component: <UiRating /> },
 
   // Forms pages
   { path: "/form-elements", component: <FormElements /> },
