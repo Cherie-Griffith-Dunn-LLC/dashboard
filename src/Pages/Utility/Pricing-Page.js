@@ -66,7 +66,7 @@ const Pricing = () => {
             <Col lg={5}>
               <div className="text-center mb-5">
                 <h4>Download CYPROTECK for your device</h4>
-                <p className="text-muted">
+                <p>
                   Select the package that matches your device's operating system. For more information, please visit our <Link to="https://cyproteck.com/?page_id=1087" target="_BLANK" className="text-primary">FAQ</Link> page.
                 </p>
               </div>
@@ -88,7 +88,7 @@ const Pricing = () => {
                       </div>
                       <div className="flex-grow-1">
                         <h5 className="font-size-16">{item?.platform.toUpperCase()}</h5>
-                        <p className="text-muted text-wrap" style={{width: "8rem"}}>{item?.filename}</p>
+                        <p className="text-wrap" style={{width: "8rem"}}>{item?.filename}</p>
                       </div>
                     </div>
                     <div className="py-4 border-bottom">

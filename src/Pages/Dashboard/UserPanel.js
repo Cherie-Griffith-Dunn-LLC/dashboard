@@ -50,7 +50,7 @@ const UserPanel = (props) => {
           <Col xl={3} sm={6}>
             <Card>
               <CardBody>
-                <div className="d-flex text-muted">
+                <div className="d-flex">
                   <div className="flex-shrink-0 me-3 align-self-center">
                     <div className="avatar-sm">
                       <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
@@ -104,7 +104,7 @@ const UserPanel = (props) => {
           <Col xl={3} sm={6}>
             <Card>
               <CardBody>
-                <div className="d-flex text-muted">
+                <div className="d-flex">
                   <div className="flex-shrink-0 me-3 align-self-center">
                     <div className="avatar-sm">
                       <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
@@ -129,7 +129,7 @@ const UserPanel = (props) => {
           <Col xl={3} sm={6}>
             <Card>
               <CardBody>
-                <div className="d-flex text-muted">
+                <div className="d-flex">
                   <div className="flex-shrink-0 me-3 align-self-center">
                     <div className="avatar-sm">
                       <div className="avatar-title bg-light rounded-circle text-primary font-size-20">
