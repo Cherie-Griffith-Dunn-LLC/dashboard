@@ -95,7 +95,7 @@ const UserProfile = () => {
                         </div>
                       </div>
                       <div className="flex-grow-1 align-self-center">
-                        <div className="text-muted">
+                        <div>
                           <h5>{name}</h5>
                           <p className="mb-1">{email}</p>
                           <p className="mb-0">{userDetails?.jobTitle}</p>
