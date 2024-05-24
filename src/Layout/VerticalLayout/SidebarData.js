@@ -89,6 +89,12 @@ const UserSidebarData = [
         url: "/courses",
     },
     {
+        label: "Packages",
+        icon: "mdi mdi-package-down",
+        isHasArrow: true,
+        url: "/packages",
+    },
+    {
         label: "Settings",
         icon: "mdi mdi-cog",
         isHasArrow: true,
