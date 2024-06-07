@@ -8,8 +8,9 @@ import { daysAgo } from '../../helpers/data_helper';
 //import { EventsData } from '../../CommonData/Data/index';
 
 const EventsList = (props) => {
+    console.log(props.eventsData);
 
-    const events = props.eventsData.events["_embedded"]?.eventResources ? props.eventsData.events["_embedded"]?.eventResources : [];
+    const events = props.eventsData.events?.data ? props.eventsData.events?.data : [];
 
     const [showEventDetails, setShowEventDetails] = useState(false);
     const [eventDetails, setEventDetails] = useState({});
@@ -18,7 +19,7 @@ const EventsList = (props) => {
         setEventDetails(item);
         setShowEventDetails(!showEventDetails);
     }
-
+    console.log(events);
 
     return (
         <React.Fragment>
@@ -27,36 +28,56 @@ const EventsList = (props) => {
                     <div className="card">
                         <div className="card-body">
                             <div className="table-responsive">
-                                <table className="table table-centered table-nowrap mb-0">
+                            <table className="table table-centered table-nowrap mb-0">
 
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Event Name</th>
-                                            <th scope="col">Time Occured</th>
-                                            <th scope="col">Source Asset</th>
-                                            <th scope="col">Destination Asset</th>
-                                            <th scope="col">Username</th>
-                                            <th scope="col" style={{ width: "60px" }}></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {events.map((item, key) => (<tr onClick={() => { tog_eventDetails(item) }} key={key}>
-                                            <td>
-                                                <p className="mb-1 font-size-12">{item.event_name}</p>
-                                            </td>
-                                            <td>{daysAgo(item.timestamp_occured)}</td>
-                                            <td>{item.source_address}</td>
+<thead>
+    <tr>
+        <th scope="col" style={{ width: "60px" }}></th>
+        <th scope="col">Device Name</th>
+        <th scope="col">Health</th>
+        <th scope="col">Logged in User</th>
+        <th scope="col">Domain</th>
+        <th scope="col">Last Active</th>
+        <th scope="col">Last Scan</th>
+    </tr>
+</thead>
+<tbody>
+    {events.map((item, key) => (<tr onClick={() => { tog_eventDetails(item) }} key={key}>
+        <td>
+            <div className="avatar-xs">
+                <span className={"avatar-title rounded-circle " + (item?.machineType === "malicious" ? "bg-soft-danger text-danger" : item?.machineType === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
+                    <i className={item?.icon}></i>
+                </span>
+            </div>
+        </td>
+        <td>
+            <p className="mb-1 font-size-12">{item?.computerName}</p>
+            <h5 className="font-size-15 mb-0">{item?.threatInfo?.classification}</h5>
+        </td>
+        <td>
+            <span className={item?.infected ? "badge rounded-pill text-bg-danger" : "badge rounded-pill text-bg-success"}>
+                {item?.infected ? "Infected" : "Healthy"}
+            </span>
+        </td>
+        <td>
+            {item?.threatInfo?.mitigationStatus === "mitigated" ? <i className="mdi mdi-lock-check text-success"> </i> : null}
+            {item?.lastLoggedInUserName}
+        </td>
+        <td>{item?.domain}</td>
 
-                                            <td>
-                                                {item.destination_address}
-                                            </td>
-                                            <td>{item.source_username}</td>
-                                            <td>
-                                                <button type="button" className="btn btn-outline-success btn-sm me-1">View Details</button>
-                                            </td>
-                                        </tr>))}
-                                    </tbody>
-                                </table>
+        <td>
+            {item?.lastActiveDate ? daysAgo(item?.lastActiveDate) : "N/A"}
+        </td>
+        <td>{item?.lastSuccessfulScanDate ? daysAgo(item?.lastSuccessfulScanDate) : "N/A"}</td>
+        <td>
+            <button
+                onClick={() => { tog_eventDetails(item) }}
+                type="button"
+                className="btn btn-outline-success btn-sm me-1">View Details</button>
+        </td>
+    </tr>))}
+</tbody>
+</table>
                             </div>
                         </div>
                     </div>

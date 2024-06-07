@@ -66,7 +66,7 @@ const ThreatsList = (props) => {
                                             <td>{item?.threatInfo?.classificationSource}</td>
 
                                             <td>
-                                                {item?.agentRealtimeInfo.agentComputerName}
+                                                {item?.agentRealtimeInfo?.agentComputerName}
                                             </td>
                                             <td>{item?.threatInfo?.processUser}</td>
                                             <td>{item?.destination_username}</td>
