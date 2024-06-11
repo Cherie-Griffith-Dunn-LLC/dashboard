@@ -46,7 +46,7 @@ const OverView = (props) => {
                             </div>
                         </CardBody>
                         <CardBody className="border-top">
-                        <div className="text-muted text-center">
+                        <div className="text-center">
                             <Row>
                                 <Col md={4} className="border-end">
                                     <div>
@@ -102,7 +102,7 @@ const OverView = (props) => {
                             </div>
                         </CardBody>
                         <CardBody className="border-top">
-                            <div className="text-muted text-center">
+                            <div className="text-center">
                                 <Row>
                                     <Col md={4} className="border-end">
                                         <div>
@@ -157,7 +157,7 @@ const OverView = (props) => {
                         </div>
                     </CardBody>
                     <CardBody className="border-top">
-                        <div className="text-muted text-center">
+                        <div className="text-center">
                             <Row>
                                 <Col md={4} className="border-end">
                                     <div>

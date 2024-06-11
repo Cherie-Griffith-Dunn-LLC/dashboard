@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
     const Events = () => {
-        document.title = "System Activity | CYPROTECK - Security Solutions Dashboard";
+        document.title = "Devices | CYPROTECK - Security Solutions Dashboard";
 
         const dispatch = useDispatch();
         
@@ -33,7 +33,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
             <>
                 <div className="page-content">
                     <Container fluid={true}>
-                        <Breadcrumbs title="Dashboard" breadcrumbItem="System Activity" />
+                        <Breadcrumbs title="Dashboard" breadcrumbItem="Devices" />
                         
                         {loading ? <p>Loading...</p> : error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> :
                             <EventsList eventsData={events} />

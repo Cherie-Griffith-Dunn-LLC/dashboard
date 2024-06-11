@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from "reactstrap";
 import ThreatsList from './ThreatsList';
 
-import { getAlarms, getDictionary, getInvestigations } from "../../store/actions";
+import { getAlarms, getInvestigations } from "../../store/actions";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -34,7 +34,6 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
                 dispatch(getInvestigations(20));
             }
             
-            dispatch(getDictionary());
         }, [dispatch, role]);
 
 

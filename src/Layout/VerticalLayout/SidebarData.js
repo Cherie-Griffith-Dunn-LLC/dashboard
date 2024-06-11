@@ -23,10 +23,10 @@ const AdminSidebarData = [
         isHasArrow: true,
     },
     {
-        label: "System Activity",
-        icon: "mdi mdi-clipboard-pulse-outline",
+        label: "Devices",
+        icon: "mdi mdi-devices",
         isHasArrow: true,
-        url: "/events",
+        url: "/devices",
     },
     {
         label: "Courses",
@@ -136,10 +136,10 @@ const DevSidebarData = [
         isHasArrow: true,
     },
     {
-        label: "System Activity",
-        icon: "mdi mdi-clipboard-pulse-outline",
+        label: "Devices",
+        icon: "mdi mdi-devices",
         isHasArrow: true,
-        url: "/events",
+        url: "/devices",
     },
     {
         label: "Courses",
