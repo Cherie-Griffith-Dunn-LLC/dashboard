@@ -7,10 +7,11 @@ import { daysAgo } from '../../helpers/data_helper';
 
 //import { EventsData } from '../../CommonData/Data/index';
 
-const EventsList = (props) => {
-    console.log(props.eventsData);
+import { getDeviceIcon } from '../../helpers/data_helper';
 
-    const events = props.eventsData.events?.data ? props.eventsData.events?.data : [];
+const EventsList = (props) => {
+
+    const events = props.eventsData.events?.data ? getDeviceIcon(props.eventsData.events?.data) : [];
 
     const [showEventDetails, setShowEventDetails] = useState(false);
     const [eventDetails, setEventDetails] = useState({});
@@ -19,7 +20,6 @@ const EventsList = (props) => {
         setEventDetails(item);
         setShowEventDetails(!showEventDetails);
     }
-    console.log(events);
 
     return (
         <React.Fragment>
@@ -45,7 +45,7 @@ const EventsList = (props) => {
     {events.map((item, key) => (<tr onClick={() => { tog_eventDetails(item) }} key={key}>
         <td>
             <div className="avatar-xs">
-                <span className={"avatar-title rounded-circle " + (item?.machineType === "malicious" ? "bg-soft-danger text-danger" : item?.machineType === "medium" ? "bg-soft-warning text-warning":"bg-soft-primary text-success")}>
+                <span className={"avatar-title rounded-circle " + (item?.activeThreats > 0 ? "bg-soft-danger text-danger" : "bg-soft-primary text-success")}>
                     <i className={item?.icon}></i>
                 </span>
             </div>

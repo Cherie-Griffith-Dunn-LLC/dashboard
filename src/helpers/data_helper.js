@@ -10,6 +10,22 @@ function daysAgo (date) {
     }
   };
 
+  const machineTypes = {
+    "linux": "mdi mdi-linux",
+    "windows": "mdi mdi-windows",
+    "macos": "mdi mdi-apple",
+    "windows_legacy": "mdi mdi-windows"
+  }
+
+  // give an icon based on the osType
+  function getDeviceIcon (devices) {
+    return devices.map(device => {
+      return {
+        ...device,
+        icon: machineTypes[device?.osType]
+      }
+    })
+  }
 
   // give an icon based on the rule intent
   function getAlarmIcon (threats = []) {
@@ -109,4 +125,5 @@ export {
     getAlarmIcon,
     getRiskScore,
     getLookoutThreatIcon,
+    getDeviceIcon
 }

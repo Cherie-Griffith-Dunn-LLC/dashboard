@@ -121,7 +121,7 @@ const authProtectedRoutes = [
   { path: "/threats", component: <Threats /> },
 
   // Events
-  { path: "/events", component: <Events /> },
+  { path: "/devices", component: <Events /> },
 
   // Dark Web Monitoring
   { path: "/darkweb", component: <DarkWebMonitoring /> },

@@ -43,44 +43,23 @@ const EventModal = (props) => {
                 </button>
                 </div>
                 <div className="modal-body">
-                    <h6>{event?.event_name}</h6>
-                    <p>{event?.plugin_device_type}</p>
-                    <p>{daysAgo(event?.timestamp_occured)}</p>
+                    <h6>{event?.computerName} • {event?.osName}</h6>
+                    <p>{event?.infected ? "Infected" : "Healthy"}</p>
+                    <p>{daysAgo(event?.lastActiveDate)}</p>
                     <div className="table-responsive">
                         <table className="table table-centered table-nowrap mb-0">
                             <tbody>
-                                {event?.event_severity && (
-                                    <tr>
-                                        <td>Event Severity</td>
-                                        <td>{event?.event_severity}</td>
-                                    </tr>
-                                )}
-                                {event?.highlight_fields?.map((item, index) => (
-                                    event[item] && (
-                                        item.includes('customfield') ? (
-                                            <tr key={index}>
-                                                <td>{event["customheader_" + item.match(/\d+/g)[0]]}</td>
-                                                <td>{event[item]}</td>
-                                            </tr>
-                                        ) : (
-                                            <tr key={index}>
-                                                <td>{item.replaceAll('_', ' ')}</td>
-                                                <td>{event[item]}</td>
-                                            </tr>
-                                        )
-                                    )
-                                ))}
                                 <tr>
-                                    <td>Event Type</td>
-                                    <td>{event?.event_type}</td>
+                                    <td>Last logged in</td>
+                                    <td>{event?.lastLoggedInUserName}</td>
                                 </tr>
                                 <tr>
-                                    <td>Event Source</td>
-                                    <td>{event?.source_name ? event?.source_name : event?.source_username}</td>
+                                    <td>Full Disk Scan</td>
+                                    <td>{event?.scanStatus?.toUpperCase()}</td>
                                 </tr>
                                 <tr>
-                                    <td>Packet Type</td>
-                                    <td>{event?.packet_type}</td>
+                                    <td>Device Model</td>
+                                    <td>{event?.modelName}</td>
                                 </tr>
                             </tbody>
                         </table>
