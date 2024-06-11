@@ -58,7 +58,7 @@ const TrainingStats = (props) => {
                                         </div>
 
                                         <div className="flex-grow-1">
-                                            <p className="text-muted mb-2">Completed</p>
+                                            <p className="mb-2">Completed</p>
                                             <div className="progress progress-sm animated-progess">
                                                 <div className="progress-bar bg-success" role="progressbar" style={{ width: ((statistics.totalCompletedCourses / statistics.totalAssignedCourses) * 100)  + "%" }} aria-valuenow={statistics.totalCompletedCourses} aria-valuemin="0" aria-valuemax={statistics.totalAssignedCourses}></div>
                                             </div>
@@ -74,7 +74,7 @@ const TrainingStats = (props) => {
                                         </div>
 
                                         <div className="flex-grow-1">
-                                            <p className="text-muted mb-2">In Progress</p>
+                                            <p className="mb-2">In Progress</p>
                                             <div className="progress progress-sm animated-progess">
                                                 <div className="progress-bar bg-warning" role="progressbar" style={{ width: ((statistics.totalInProgressCourses / statistics.totalAssignedCourses) * 100)  + "%" }} aria-valuenow={statistics.totalInProgressCourses} aria-valuemin="0" aria-valuemax={statistics.totalAssignedCourses}></div>
                                             </div>
@@ -90,7 +90,7 @@ const TrainingStats = (props) => {
                                         </div>
 
                                         <div className="flex-grow-1">
-                                            <p className="text-muted mb-2">Not Started</p>
+                                            <p className="mb-2">Not Started</p>
                                             <div className="progress progress-sm animated-progess">
                                                 <div className="progress-bar bg-danger" role="progressbar" style={{ width: (((statistics.totalAssignedCourses - statistics.totalInProgressCourses - statistics.totalCompletedCourses) / statistics.totalAssignedCourses) * 100)  + "%" }} aria-valuenow={(statistics.totalAssignedCourses - statistics.totalInProgressCourses - statistics.totalCompletedCourses)} aria-valuemin="0" aria-valuemax={statistics.totalAssignedCourses}></div>
                                             </div>
@@ -106,19 +106,19 @@ const TrainingStats = (props) => {
                             <Row>
                                 <div className="col-4">
                                     <div className="mt-2">
-                                        <p className="text-muted mb-2">Completed</p>
+                                        <p className="mb-2">Completed</p>
                                         <h5 className="font-size-16 mb-0">{statistics.totalCompletedCourses}</h5>
                                     </div>
                                 </div>
                                 <div className="col-4">
                                     <div className="mt-2">
-                                        <p className="text-muted mb-2">In Progress</p>
+                                        <p className="mb-2">In Progress</p>
                                         <h5 className="font-size-16 mb-0">{statistics.totalInProgressCourses}</h5>
                                     </div>
                                 </div>
                                 <div className="col-4">
                                     <div className="mt-2">
-                                        <p className="text-muted mb-2">Total</p>
+                                        <p className="mb-2">Total</p>
                                         <h5 className="font-size-16 mb-0">{statistics.totalAssignedCourses}</h5>
                                     </div>
                                 </div>
