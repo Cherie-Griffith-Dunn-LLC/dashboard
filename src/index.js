@@ -23,17 +23,19 @@ Sentry.init({
   dsn: "https://12eef28bf24c483e98e6a9b2aeaf2e24@o4505110341812224.ingest.sentry.io/4505143868129280",
   environment: process.env?.NODE_ENV ? process.env.NODE_ENV : "production",
   integrations: [
-    new Sentry.BrowserTracing({
-      // https://docs.sentry.io/platforms/javascript/guides/react/configuration/integrations/react-router/
-      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-        React.useEffect,
-        useLocation,
-        useNavigationType,
-        createRoutesFromChildren,
-        matchRoutes
-      ),
+    Sentry.browserTracingIntegration(),
+    // https://docs.sentry.io/platforms/javascript/guides/react/configuration/integrations/react-router
+    Sentry.reactRouterV6BrowserTracingIntegration({
+      useEffect: React.useEffect,
+      useLocation,
+      useNavigationType,
+      createRoutesFromChildren,
+      matchRoutes,
     }),
-    new Sentry.Replay()
+    Sentry.replayIntegration({
+      maskAllText: false,
+      blockAllMedia: true,
+    })
   ],
   traceSampleRate: 0.5,
   tracePropagationTargets: [
