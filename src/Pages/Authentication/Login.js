@@ -108,7 +108,7 @@ const Login = props => {
                   <div className="auth-left-footer">
                     <Link
                       target="_blank"
-                      to="https://cyproteck.com/buynow/"
+                      to="https://cyproteck.com/"
                       className="text-dark"
                     >
                       Don't have an account? Register
