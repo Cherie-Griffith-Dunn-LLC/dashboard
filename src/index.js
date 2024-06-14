@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import {
   BrowserRouter,
@@ -49,13 +50,15 @@ Sentry.init({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Provider store={configureStore({})}>
-    <React.Fragment>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </React.Fragment>
-  </Provider>
+  <GoogleOAuthProvider clientId='569515826831-bqhd1afnbub87vhioe23g1nb7ctukp5r.apps.googleusercontent.com'>
+    <Provider store={configureStore({})}>
+      <React.Fragment>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </React.Fragment>
+    </Provider>
+  </GoogleOAuthProvider>
 );
 reportWebVitals();
 // serviceWorker.unregister();

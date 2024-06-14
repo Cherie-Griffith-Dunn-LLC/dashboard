@@ -12,9 +12,11 @@ function* fetchVulns() {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform = localStorage.getItem("platform");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getVulnerbilities);
+        const response = yield call(getVulnerbilities, 20, platform);
         if (response.error) {
             throw new Error(response.error);
         }

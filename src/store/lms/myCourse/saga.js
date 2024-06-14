@@ -13,9 +13,11 @@ function* viewMyCourse({ payload: { courseId }}) {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform = localStorage.getItem("platform");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getCourseUrl, courseId);
+        const response = yield call(getCourseUrl, courseId, platform);
         if (response.error) {
             throw new Error(response.error);
         }

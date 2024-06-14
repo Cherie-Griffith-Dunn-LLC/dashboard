@@ -120,7 +120,7 @@ const Login = props => {
                     Welcome Back,
                   </h6>
                   <h6 className="font-size-18 text-info" style={{fontWeight: 800, marginBottom: "50px"}}>
-                    Log in continue.
+                    Log in to continue.
                   </h6>
                   <Form
                     className="form-horizontal"
@@ -160,7 +160,7 @@ const Login = props => {
                             style={{borderRadius: '15px'}}
                             type="submit"
                           >
-                            Login with Microsoft
+                            Login <i className="mdi mdi-login"></i>
                           </button>
                         </div>
                       </Col>

@@ -12,12 +12,15 @@ function* fetchCurrentRole() {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform = localStorage.getItem("platform");
+
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getCurrentRole);
+        const response = yield call(getCurrentRole, platform);
         if (response.error) {
             // try one more time
-            const secondresponse = yield call(getCurrentRole);
+            const secondresponse = yield call(getCurrentRole, platform);
             if (secondresponse.error) {
                 throw new Error(secondresponse.error);
             }
