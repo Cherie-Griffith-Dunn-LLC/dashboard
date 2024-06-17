@@ -12,9 +12,11 @@ function* addOrgUsers() {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform = localStorage.getItem("platform");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(postUsers);
+        const response = yield call(postUsers, platform);
         if (response.error) {
             throw new Error(response.error);
         }

@@ -2,19 +2,19 @@ import { APIClient } from "./api_helper";
 import * as url from "./url_helper";
                                         
 // get tenant ID using email in POST request
-const getAlarms = (size, priority) => {
+const getAlarms = (size, platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_ALARMS, { size, priority });
+    return apiClient.get(url.GET_ALARMS, { size, platform });
 };
 
-const getAllDWM = (size) => {
+const getAllDWM = (size, platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_ALL_DWM, { size });
+    return apiClient.get(url.GET_ALL_DWM, { size, platform});
 };
 
-const getEvents = (size) => {
+const getEvents = (size, platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_EVENTS, { size });
+    return apiClient.get(url.GET_EVENTS, { size, platform});
 };
 
 const getDictionaries = () => {
@@ -22,14 +22,14 @@ const getDictionaries = () => {
     return apiClient.get(url.GET_DICTIONARIES);
 };
 
-const getInvestigations = (size) => {
+const getInvestigations = (size, platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_INVESTIGATIONS, { size });
+    return apiClient.get(url.GET_INVESTIGATIONS, { size, platform});
 };
 
-const getVulnerbilities = (size) => {
+const getVulnerbilities = (size, platform) => {
     const apiClient = new APIClient();
-    return apiClient.get(url.GET_VULNERABILITIES, { size });
+    return apiClient.get(url.GET_VULNERABILITIES, { size, platform});
 };
 
 const getPackages = (platform) => {

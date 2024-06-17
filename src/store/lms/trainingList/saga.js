@@ -15,22 +15,24 @@ function* fetchTrainingList() {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform = localStorage.getItem("platform");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getTrainingList);
+        const response = yield call(getTrainingList, platform);
         if (response.error) {
             throw new Error(response.error);
         }
         // if no users found, import them
         if (response.length === 0) {
             console.log("No users found. Importing users in settings.")
-            const usersResponse = yield call(postUsers);
+            const usersResponse = yield call(postUsers, platform);
             if (usersResponse.error) {
                 throw new Error(usersResponse.error);
             }
 
             // get the training list again
-            const updatedResponse = yield call(getTrainingList);
+            const updatedResponse = yield call(getTrainingList, platform);
             if (updatedResponse.error) {
                 throw new Error(updatedResponse.error);
             }

@@ -60,8 +60,9 @@ const Pricing = () => {
         <Container fluid>
           <Breadcrumbs title="Dashboard" breadcrumbItem="Packages" />
 
-          {(loading) ? <p>Loading...</p> : error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> :
+          {(loading) ? <p>Loading...</p> :
             <>
+            {error && <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div>}
             <Row className="justify-content-center">
             <Col lg={5}>
               <div className="text-center mb-5">
@@ -74,7 +75,7 @@ const Pricing = () => {
           </Row>
 
           <Row>
-            {packages.map((item, key) => (
+            {packages?.map((item, key) => (
               <Col xl={3} md={60} key={key}>
                 <Card>
                   <CardBody className="p-4">

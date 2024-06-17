@@ -12,9 +12,11 @@ function* fetchCurrentUser() {
     try {
         // get the auth token
         const token = localStorage.getItem("accessToken");
+        // get the platform
+        const platform = localStorage.getItem("platform");
         // set the authorization header
         setAuthorization(token);
-        const response = yield call(getCurrentUser);
+        const response = yield call(getCurrentUser, platform);
         if (response.error) {
             throw new Error(response.error);
         }
