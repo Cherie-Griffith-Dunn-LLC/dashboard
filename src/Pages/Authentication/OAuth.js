@@ -32,7 +32,7 @@ const OAuth = props => {
         return function cleanup() {
           document.body.className = "";
         };
-      }, [platform]);
+      }, []);
 
       //Google config
       const googleConfig = {
