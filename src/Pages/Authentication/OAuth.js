@@ -10,7 +10,7 @@ import withRouter from "../../components/Common/withRouter";
 import { InteractionRequiredAuthError, PublicClientApplication, InteractionType } from "@azure/msal-browser";
 
 // import google oauth
-import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin  } from "@react-oauth/google";
+import { useGoogleLogin  } from "@react-oauth/google";
 
 import { setAuthorization } from "../../helpers/api_helper"; 
 
@@ -32,7 +32,7 @@ const OAuth = props => {
         return function cleanup() {
           document.body.className = "";
         };
-      }, [platform]);
+      }, [platform, login]);
 
       //Google config
       const googleConfig = {
