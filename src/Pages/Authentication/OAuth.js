@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 // import msal
-import { InteractionRequiredAuthError, PublicClientApplication, InteractionType, BrowserAuthError } from "@azure/msal-browser";
+import { PublicClientApplication, InteractionType, BrowserAuthError } from "@azure/msal-browser";
 
 // import google oauth
 import { useGoogleLogin  } from "@react-oauth/google";
