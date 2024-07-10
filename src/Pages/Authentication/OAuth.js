@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 // import msal
-import { PublicClientApplication, InteractionType, BrowserAuthError } from "@azure/msal-browser";
+import { InteractionRequiredAuthError, PublicClientApplication, InteractionType, BrowserAuthError } from "@azure/msal-browser";
 
 // import google oauth
 import { useGoogleLogin  } from "@react-oauth/google";
@@ -77,6 +77,12 @@ const OAuth = props => {
       const login = async () => {
         // initialize msal
         const msalConfig = {
+          scopes: [
+            'openid',
+            'offline_access',
+            'Directory.Read.All',
+            'User.Read.All'
+            ],
           auth: {
             clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
             // Set the authority to our tenant ID passed in from props
@@ -88,13 +94,7 @@ const OAuth = props => {
           prompt: "select_account",
           extraQueryParameters: {
             login_hint: email
-          },
-          scopes: [
-            'openid',
-            'offline_access',
-            'Directory.Read.All',
-            'User.Read.All'
-            ]
+          }
         };
 
 
@@ -115,7 +115,23 @@ const OAuth = props => {
           props.router.navigate("/dashboard");
         }).catch(error => {
           console.log("caught error",error);
-           if (error instanceof BrowserAuthError) {
+          if (error instanceof InteractionRequiredAuthError) {
+            msalInstance.acquireTokenPopup(msalConfig).then(tokenResponse => {
+              // get access token
+              const accessToken = tokenResponse.accessToken;
+              const expiresOn = tokenResponse.expiresOn / 1000;
+              localStorage.setItem("expireTime", expiresOn);
+              // store the accesstoken securely
+              localStorage.setItem("accessToken", accessToken);
+              // set Authorization to the accesstoken
+              setAuthorization(accessToken);
+              // redirect to dashboard
+              props.router.navigate("/dashboard");
+            }).catch(error => {
+              console.log(error);
+              setError("An error occurred. Please try again or contact customer support.");
+            });
+          } else if (error instanceof BrowserAuthError) {
             if (error.errorCode === "popup_window_error") {
               setError("Popup window error. Please ensure your browser is not blocking popups.");
             } else {
@@ -158,7 +174,7 @@ const OAuth = props => {
                       Welcome Back !
                     </h4>
                     {error && (
-                      <p className="mb-5 text-center text-light">
+                      <p className="mb-5 text-center text-danger">
                         {error}
                       </p>
                     )}
@@ -245,7 +261,7 @@ const OAuth = props => {
                       Welcome Back !
                     </h4>
                     {error && (
-                      <p className="mb-5 text-center text-light">
+                      <p className="mb-5 text-center text-danger">
                         {error}
                       </p>
                     )}
