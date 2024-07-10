@@ -88,22 +88,21 @@ const OAuth = props => {
           prompt: "select_account",
           extraQueryParameters: {
             login_hint: email
-          }
+          },
+          scopes: [
+            'openid',
+            'offline_access',
+            'Directory.Read.All',
+            'User.Read.All'
+            ]
         };
+
+
         const msalInstance = new PublicClientApplication(msalConfig);
         await msalInstance.initialize();
 
-        const request ={ 
-          scopes: [
-          'openid',
-          'offline_access',
-          'Directory.Read.All',
-          'User.Read.All'
-          ]
-        };
-
         // login the user
-        msalInstance.loginPopup(msalConfig).then(tokenResponse => {
+        msalInstance.acquireTokenPopup(msalConfig).then(tokenResponse => {
           // get access token
           const accessToken = tokenResponse.accessToken;
           const expiresOn = tokenResponse.expiresOn / 1000;
@@ -115,18 +114,14 @@ const OAuth = props => {
           // redirect to dashboard
           props.router.navigate("/dashboard");
         }).catch(error => {
-          console.log("caught error",error)
-          if (error instanceof BrowserAuthError) {
+          console.log("caught error",error);
+           if (error instanceof BrowserAuthError) {
             if (error.errorCode === "popup_window_error") {
-              console.log("popup window error")
               setError("Popup window error. Please ensure your browser is not blocking popups.");
             } else {
-              console.log("other error")
-              setError("An error occurred. Please try again.");
+              setError("An error occurred with your browser. Please try again.");
             }
           } else {
-            console.log("other error");
-            console.log(error);
             setError("An error occurred. Please try again.");
           }
         })
