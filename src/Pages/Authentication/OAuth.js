@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import withRouter from "../../components/Common/withRouter";
 
 // import msal
-import { InteractionRequiredAuthError, PublicClientApplication, InteractionType } from "@azure/msal-browser";
+import { InteractionRequiredAuthError, PublicClientApplication, InteractionType, BrowserAuthError } from "@azure/msal-browser";
 
 // import google oauth
 import { useGoogleLogin  } from "@react-oauth/google";
@@ -19,6 +19,10 @@ import { useSelector } from "react-redux";
 const OAuth = props => {
   const platform = useSelector(state => state.azure.tenantId?.platform);
   const email = useSelector(state => state.azure.tenantId?.email);
+  const onboarded = useSelector(state => state.azure.tenantId?.onboarded);
+
+  // create a state for error
+  const [error, setError] = React.useState(null);
 
   document.title = "OAuth | CYPROTECK - Security Solutions Dashboard";
     useEffect(() => {
@@ -61,7 +65,7 @@ const OAuth = props => {
       const gLogin = useGoogleLogin({
         onSuccess: (tokenResponse) => handleGoogleLogin(tokenResponse),
         onError: (error) => console.error(error),
-        prompt: 'select_account', // Add this line to force the consent screen
+        prompt: onboarded === 0 ? 'consent' : 'select_account',
         clientId: googleConfig.clientId,
         redirectUri: googleConfig.redirectUri,
         scope: googleConfig.scope,
@@ -111,35 +115,19 @@ const OAuth = props => {
           // redirect to dashboard
           props.router.navigate("/dashboard");
         }).catch(error => {
-          if (error instanceof InteractionRequiredAuthError) {
-            return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
-              // get access token
-              const accessToken = tokenResponse.accessToken;
-              const expiresOn = tokenResponse.expiresOn / 1000;
-              // store the accesstoken securely
-              localStorage.setItem("accessToken", accessToken);
-              // store the expireTime
-              localStorage.setItem("expireTime", expiresOn);
-              // set Authorization to the accesstoken
-              setAuthorization(accessToken);
-              // redirect to dashboard
-              props.router.navigate("/dashboard");
-            });
+          console.log("caught error",error)
+          if (error instanceof BrowserAuthError) {
+            if (error.errorCode === "popup_window_error") {
+              console.log("popup window error")
+              setError("Popup window error. Please ensure your browser is not blocking popups.");
+            } else {
+              console.log("other error")
+              setError("An error occurred. Please try again.");
+            }
           } else {
-            console.error(error);
-            // use acquireTokenPopup to authenticate user silently
-            return msalInstance.acquireTokenPopup(request).then(tokenResponse => {
-              // get access token
-              const accessToken = tokenResponse.accessToken;
-              // store the accesstoken securely
-              localStorage.setItem("accessToken", accessToken);
-              const expiresOn = tokenResponse.expiresOn / 1000;
-              localStorage.setItem("expireTime", expiresOn);
-              // set Authorization to the accesstoken
-              setAuthorization(accessToken);
-              // redirect to dashboard
-              props.router.navigate("/dashboard");
-            });
+            console.log("other error");
+            console.log(error);
+            setError("An error occurred. Please try again.");
           }
         })
       }
@@ -174,6 +162,11 @@ const OAuth = props => {
                     <h4 className="font-size-18 text-light mt-2 text-center">
                       Welcome Back !
                     </h4>
+                    {error && (
+                      <p className="mb-5 text-center text-light">
+                        {error}
+                      </p>
+                    )}
                     <p className="mb-5 text-center text-light">
                       Please login using your Google Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
                     </p>
@@ -256,6 +249,11 @@ const OAuth = props => {
                     <h4 className="font-size-18 text-light mt-2 text-center">
                       Welcome Back !
                     </h4>
+                    {error && (
+                      <p className="mb-5 text-center text-light">
+                        {error}
+                      </p>
+                    )}
                     <p className="mb-5 text-center text-light">
                       Please login using your {platform?.toUpperCase()} Organization account in the popup. You will be redirected automatically. If you do not see a popup, ensure your browser is not blocking popups.
                     </p>
