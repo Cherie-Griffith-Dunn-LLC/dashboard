@@ -12,9 +12,9 @@ function daysAgo (date) {
 
   const machineTypes = {
     "linux": "mdi mdi-linux",
-    "windows": "mdi mdi-windows",
+    "windows": "mdi mdi-microsoft-windows",
     "macos": "mdi mdi-apple",
-    "windows_legacy": "mdi mdi-windows"
+    "windows_legacy": "mdi mdi-microsoft-windows-classic"
   }
 
   // give an icon based on the osType
