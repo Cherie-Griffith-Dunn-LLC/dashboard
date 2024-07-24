@@ -59,7 +59,7 @@ const NotificationDropdown = props => {
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mb-1">No Notifications</h6>
-                  <div className="font-size-12 text-muted">
+                  <div className="font-size-12 text-dark">
                     <p className="mb-1">No new notifications to display at this time.</p>
                     <p className="mb-0"><i className="mdi mdi-clock-outline"></i> 3 min ago</p>
                   </div>
