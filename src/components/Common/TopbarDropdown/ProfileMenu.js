@@ -59,7 +59,7 @@ const ProfileMenu = props => {
             {props.t("Profile")}{" "}
           </DropdownItem>
           <DropdownItem tag="a" href="/settings">
-            <span className="badge bg-success float-end mt-1">11</span>
+            <span className="badge bg-success float-end mt-1">1</span>
             <i className="ri-settings-2-line align-middle me-2" />
             {props.t("Settings")}
           </DropdownItem>

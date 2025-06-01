@@ -55,6 +55,16 @@ function daysAgo (date) {
           ...alarm,
           icon: "mdi mdi-radar",
         }
+      } else if (alarm.threatInfo.classification === "Cryptominer") {
+        return {
+          ...alarm,
+          icon: "mdi mdi-currency-btc",
+        }
+      } else if (alarm.threatInfo.classification === "Ransomware") {
+        return {
+          ...alarm,
+          icon: "mdi mdi-lock-open-alert",
+        }
       } else {
         return {
           ...alarm
