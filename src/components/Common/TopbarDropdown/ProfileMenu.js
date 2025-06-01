@@ -58,7 +58,7 @@ const ProfileMenu = props => {
             <i className="ri-user-line align-middle me-2" />
             {props.t("Profile")}{" "}
           </DropdownItem>
-          <DropdownItem tag="a" href="#">
+          <DropdownItem tag="a" href="/settings">
             <span className="badge bg-success float-end mt-1">11</span>
             <i className="ri-settings-2-line align-middle me-2" />
             {props.t("Settings")}
