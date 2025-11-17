@@ -24,6 +24,7 @@ import Calender from "../Pages/Calender";
 
 // Mobile Security
 import MobileSecurity from "../Pages/MobileSecurity";
+import Support from "../Pages/Support";
 
 
 
@@ -131,6 +132,9 @@ const authProtectedRoutes = [
 
   // Mobile Security
   { path: "/mobile", component: <MobileSecurity /> },
+      // Support
+    { path: "/support", component: <Support /> },
+
 
   // Courses
   { path: "/courses", component: <Courses /> },
