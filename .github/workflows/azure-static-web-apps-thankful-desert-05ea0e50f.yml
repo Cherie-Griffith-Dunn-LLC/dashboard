@@ -14,28 +14,26 @@ env:
   MY_ENVIRONMENT: 'production'
   REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
   REACT_APP_SUPPORT_ENABLED: ${{ secrets.REACT_APP_SUPPORT_ENABLED }}
+
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-uses:  Cherie-Griffith-Dunn-LLC/checkout@v3
+      - uses: Cherie-Griffith-Dunn-LLC/checkout@v3
         with:
           submodules: true
       - name: Build And Deploy
         id: builddeploy
-uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@v1
+        uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (e.g., PR comments)
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "/build" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          app_location: "/"      # App source code path
+          api_location: ""       # API source code path (leave blank if none)
+          output_location: "/build" # Built app content directory
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -44,9 +42,7 @@ uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@v1
     steps:
       - name: Close Pull Request
         id: closepullrequest
-uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@v1
+        uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
           action: "close"
-
-
