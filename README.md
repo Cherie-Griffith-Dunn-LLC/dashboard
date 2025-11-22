@@ -23,3 +23,6 @@ Run the API locally by default on port 3000.
 - [Expo](https://docs.expo.io/)
 - [React Navigation](https://reactnavigation.org/docs/getting-started)
 - [UI Kitten](https://akveo.github.io/react-native-ui-kitten/docs/getting-started/what-is-ui-kitten#what-is-ui-kitten)
+
+
+<!-- Trigger redeploy after backend URL update -->
