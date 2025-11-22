@@ -21,37 +21,35 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
+      # ✅ Use your enterprise-owned checkout action
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: Cherie-Griffith-Dunn-LLC/checkout@main
         with:
           submodules: true
 
-      # Optional: build step (use this if you prefer to build yourself)
-      # If you rely on Azure Static Web Apps action to build, you can remove this step.
+      # 🔨 Build your React app
       - name: Install dependencies and build
         run: |
           npm install
           npm run build
 
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (e.g., PR comments)
-          action: "upload"
-          app_location: "/"          # Path to your app source
-          api_location: ""           # Set if you have an API
-          output_location: "build"   # Build output folder (no leading slash)
+      # 🚀 Deploy using Azure Static Web Apps CLI (no external GitHub Action)
+      - name: Deploy with Azure Static Web Apps CLI
+        env:
+          # This secret is your SWA deployment token (same one used before)
+          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
+        run: |
+          npm install -g @azure/static-web-apps-cli
+          # Deploy the built app from the build folder to the production environment
+          swa deploy ./build --env production
 
+  # 🔁 PR close: SWA automatically tears down preview environments when the PR is closed,
+  # so we don't need the Azure/static-web-apps-deploy@v1 "close" action anymore.
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-          action: "close"
+      - name: No-op (preview env cleanup is automatic)
+        run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
+
