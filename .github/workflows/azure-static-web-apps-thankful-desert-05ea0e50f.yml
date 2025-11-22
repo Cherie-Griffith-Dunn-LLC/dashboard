@@ -14,6 +14,7 @@ env:
   MY_ENVIRONMENT: 'production'
   REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
   REACT_APP_SUPPORT_ENABLED: ${{ secrets.REACT_APP_SUPPORT_ENABLED }}
+  REACT_APP_DEFAULTAUTH: 'jwt'   # ← add this line here
 
 jobs:
   build_and_deploy_job:
@@ -52,4 +53,5 @@ jobs:
     steps:
       - name: No-op (preview env cleanup is automatic)
         run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
+
 
