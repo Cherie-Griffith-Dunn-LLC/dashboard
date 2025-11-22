@@ -114,7 +114,7 @@ const UserSidebarData = [
       isHasArrow: true,
       url: "https://cyproteck.com/?page_id=1087",
     },
-},
+
 ]
 
 const DevSidebarData = [
