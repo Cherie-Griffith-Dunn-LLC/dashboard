@@ -115,7 +115,8 @@ import GoogleMap from "../Pages/Maps/GoogleMap";
 
 
 const authProtectedRoutes = [
-  //dashboard
+  // dashboard – root loads dashboard directly
+  { path: "/", component: <Dashboard /> },
   { path: "/dashboard", component: <Dashboard /> },
 
   // threats
@@ -127,28 +128,29 @@ const authProtectedRoutes = [
   // Dark Web Monitoring
   { path: "/darkweb", component: <DarkWebMonitoring /> },
 
-  // Vulnerbilities
+  // Vulnerabilities
   { path: "/vulnerabilities", component: <Vulns /> },
 
   // Mobile Security
   { path: "/mobile", component: <MobileSecurity /> },
-      // Support
-    { path: "/support", component: <Support /> },
 
+  // Support
+  { path: "/support", component: <Support /> },
 
   // Courses
   { path: "/courses", component: <Courses /> },
 
-  // Calender
+  // Calendar
   { path: "/calendar", component: <Calender /> },
 
   // Profile
   { path: "/userprofile", component: <UserProfile /> },
 
   // Settings
-  { path: "/settings", component: <UserProfile />},
-  // Downloads
-  { path: "/packages", component: <Pricing />},
+  { path: "/settings", component: <UserProfile /> },
+
+  // Downloads / Packages
+  { path: "/packages", component: <Pricing /> },
 
   // E-mail
   { path: "/inbox", component: <Inbox /> },
@@ -216,14 +218,6 @@ const authProtectedRoutes = [
   // Maps Pages
   { path: "/maps-vector", component: <VectorMaps /> },
   { path: "/maps-google", component: <GoogleMap /> },
-
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
-  {
-    path: "/",
-    exact: true,
-    component: <Navigate to="/dashboard" />,
-  },
 ];
 
 const publicRoutes = [
