@@ -1,123 +1,230 @@
+import Dashboard from "../Pages/Dashboard";
+```)
+
+Open that file and **replace everything in it** with the code below.
+
+---
+
+## 2️⃣ New Dashboard UI code
+
+```jsx
 import React from "react";
-import UsePanel from "./UserPanel";
-import TrainingStats from "./TrainingStats";
-import RecentThreats from "./RecentThreats";
-import ThreatsByPriority from "./ThreatsByPriority";
-import OverView from "./OverView";
-//import RevenueByLocation from "./RevenueByLocation";
-import TrainingList from "./TrainingList";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Row, Container } from "reactstrap";
-
-// import api functions
-import { getAlarms, getCourseStats, getInvestigations, getThreats } from "../../store/actions";
-import withRouter from "../../components/Common/withRouter";
-
-//Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-
-import * as Sentry from "@sentry/react";
+import {
+  Row,
+  Col,
+  Card,
+  CardBody,
+  CardTitle,
+  Progress,
+  Table,
+  Badge,
+  Button,
+} from "reactstrap";
 
 const Dashboard = () => {
-  document.title = "Dashboard | CYPROTECK - Security Solutions Dashboard";
+  // You can later wire these to real API data:
+  const vulnerabilityScore = 72;
+  const threatAttempts = 15;
+  const trainingCompletion = 80;
 
+  const employees = [
+    { name: "Claire Holt", risk: "High", training: "Completed" },
+    { name: "Juan Wong", risk: "Low", training: "Completed" },
+    { name: "Olivia Carter", risk: "Medium", training: "In Progress" },
+    { name: "Casey Abbott", risk: "Medium", training: "Not Started" },
+    { name: "Peter Shin", risk: "Medium", training: "In Progress" },
+  ];
 
-  const dispatch = useDispatch();
-
-  // get role from local storage
-  const role = localStorage.getItem("role");
-
-
-
-
-  React.useEffect(() => {
-    if (role === "admin") {
-      dispatch(getAlarms(20));
-      //dispatch(getSysEvents(20));
-      //dispatch(getAllDWM(20));
-      dispatch(getCourseStats());
-      dispatch(getThreats(20));
-    } else {
-      dispatch(getInvestigations(20));
+  const getRiskBadgeColor = (risk) => {
+    switch (risk) {
+      case "High":
+        return "danger";
+      case "Low":
+        return "success";
+      case "Medium":
+      default:
+        return "warning";
     }
-  }, [dispatch, role]);
+  };
 
-  const alarmsData  = useSelector(state => state.alienAlarms);
-  //const eventsData  = useSelector(state => state.alienEvents);
-  const eventsData = {
-    loading: false,
-    events: []
-  }
-  const dwmData     = useSelector(state => state.alienDWM);
-  const courseStats = useSelector(state => state.courseStatistics);
-  const investigations = useSelector(state => state.alienInvestigations);
-  const lookoutThreatsData= useSelector(state => state.lookoutThreats);
+  const getTrainingBadgeColor = (status) => {
+    switch (status) {
+      case "Completed":
+        return "success";
+      case "In Progress":
+        return "info";
+      case "Not Started":
+      default:
+        return "secondary";
+    }
+  };
 
-  
-
-
-  if (alarmsData.error || eventsData.error || courseStats.error || investigations.error || lookoutThreatsData.error) {
-    console.error(alarmsData.error, eventsData.error, dwmData.error, courseStats.error, investigations.error, lookoutThreatsData.error);
-    Sentry.captureException(alarmsData.error ? alarmsData.error :
-      eventsData.error ? eventsData.error :
-      dwmData.error ? dwmData.error :
-      courseStats.error ? courseStats.error : investigations.error);
-  }
-
-
-
-  // admin dashboard
-  if (role === "admin") {
-    return (
-      <React.Fragment>
-        <div className="page-content">
-          <Container fluid={true}>
-            <Breadcrumbs title="CYPROTECK" breadcrumbItem="Dashboard" />
-            {alarmsData.error || eventsData.error || courseStats.error || investigations.error ? <div className="alert alert-danger mb-4" role="alert">An error occured. Please try again.</div> : null}
-            {/* User Panel Charts */}
-            <UsePanel mobileThreats={lookoutThreatsData} courseStats={courseStats} role={role} alarms={alarmsData} events={eventsData} />
-  
-            <Row>
-              {/* Overview Chart */}
-              <OverView role={role} alarms={alarmsData} events={eventsData} dwm={dwmData} courseStats={courseStats} />
-              {/* Threats Pie Chart */}
-              <ThreatsByPriority alarms={alarmsData} />
-            </Row>
-  
-            <Row>
-              {/* Order Stats */}
-              <TrainingStats courseStats={courseStats} />
-              {/* Notifications */}
-              <RecentThreats role={role} alarms={alarmsData} />
-            </Row>
-  
-            {/* Latest Transaction Table */}
-            <TrainingList />
-          </Container>
-        </div>
-      </React.Fragment>
-    );
-  }
-  // user dashboard
   return (
-    <React.Fragment>
-      <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs title="CYPROTECK" breadcrumbItem="Dashboard" />
-          {/* User Panel Charts */}
-          <UsePanel role={role} alarms={investigations} events={eventsData} dwm={dwmData} />
+    <div className="page-content">
+      {/* Top welcome/header */}
+      <Row className="mb-4">
+        <Col>
+          <h4 className="mb-1">Welcome back, Security Leader</h4>
+          <p className="text-muted mb-0">
+            Here’s a quick view of your organization’s security posture today.
+          </p>
+        </Col>
+        <Col className="text-end" md="3">
+          <Button color="primary">Switch Tenant</Button>
+        </Col>
+      </Row>
 
-          <Row>
-            {/* Overview Chart */}
-            <OverView role={role} alarms={investigations} events={eventsData} dwm={dwmData} courseStats={courseStats} />
-            {/* Threats Pie Chart */}
-            <RecentThreats role={role} alarms={investigations} />
-          </Row>
-        </Container>
-      </div>
-    </React.Fragment>
+      {/* KPI cards */}
+      <Row>
+        <Col md="4">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-3">
+                Vulnerability Score
+              </CardTitle>
+              <h2 className="fw-bold mb-1">{vulnerabilityScore}</h2>
+              <p className="text-muted mb-0">
+                Overall security risk index across your tenants.
+              </p>
+            </CardBody>
+          </Card>
+        </Col>
+
+        <Col md="4">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-3">
+                Threat Attempts
+              </CardTitle>
+              <h2 className="fw-bold mb-1">{threatAttempts}</h2>
+              <p className="text-muted mb-0">
+                Blocked in the last 30 days (Defender + Sentinel).
+              </p>
+            </CardBody>
+          </Card>
+        </Col>
+
+        <Col md="4">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-3">
+                Training Completion
+              </CardTitle>
+              <div className="d-flex align-items-center">
+                <div style={{ flex: 1, marginRight: 16 }}>
+                  <Progress
+                    value={trainingCompletion}
+                    color="success"
+                    className="progress-md"
+                  />
+                </div>
+                <div>
+                  <h2 className="fw-bold mb-0">{trainingCompletion}%</h2>
+                  <p className="text-muted mb-0">Employees completed</p>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Employees / risk table */}
+      <Row className="mt-4">
+        <Col lg="8">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-3">
+                Employees
+              </CardTitle>
+              <Table responsive className="align-middle mb-0">
+                <thead className="table-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Risk Level</th>
+                    <th>Training Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employees.map((emp) => (
+                    <tr key={emp.name}>
+                      <td>{emp.name}</td>
+                      <td>
+                        <Badge color={getRiskBadgeColor(emp.risk)}>
+                          {emp.risk}
+                        </Badge>
+                      </td>
+                      <td>
+                        <Badge color={getTrainingBadgeColor(emp.training)}>
+                          {emp.training}
+                        </Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </CardBody>
+          </Card>
+        </Col>
+
+        {/* Right-side summary card */}
+        <Col lg="4">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-3">
+                Training & Awareness
+              </CardTitle>
+              <p className="text-muted">
+                Keep your team ahead of emerging threats with ongoing training,
+                phishing simulations, and just-in-time micro-learning.
+              </p>
+              <ul className="list-unstyled mb-3">
+                <li className="mb-1">• Security awareness campaigns</li>
+                <li className="mb-1">• Phishing simulations</li>
+                <li className="mb-1">• Role-based training paths</li>
+              </ul>
+              <Button color="primary" block>
+                View Courses
+              </Button>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Bottom CTA / devices / mobile */}
+      <Row className="mt-4">
+        <Col md="6">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-2">
+                Device Security
+              </CardTitle>
+              <p className="text-muted mb-3">
+                Ensure endpoints across all tenants are protected and compliant.
+              </p>
+              <Button color="secondary" size="sm">
+                View Devices
+              </Button>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col md="6">
+          <Card>
+            <CardBody>
+              <CardTitle tag="h5" className="mb-2">
+                Mobile Security
+              </CardTitle>
+              <p className="text-muted mb-3">
+                Extend protection to employee mobiles with policy-based access.
+              </p>
+              <Button color="primary" size="sm">
+                Download Mobile App
+              </Button>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 };
 
-export default withRouter(Dashboard);
+export default Dashboard;
