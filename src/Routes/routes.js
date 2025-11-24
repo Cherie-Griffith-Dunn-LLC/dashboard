@@ -1,5 +1,4 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 
 //Dashboard
 import Dashboard from "../Pages/Dashboard";
