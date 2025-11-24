@@ -1,15 +1,23 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const OAuth = () => {
+  const navigate = useNavigate();
   const { tenantId } = useParams();
 
+  useEffect(() => {
+    // Optional: store tenant ID for multi-tenant context
+    if (tenantId) {
+      localStorage.setItem("currentTenantId", tenantId);
+    }
+
+    // After OAuth completes, go straight to dashboard
+    navigate("/dashboard", { replace: true });
+  }, [tenantId, navigate]);
+
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h2>OAuth Callback</h2>
-      <p>Tenant ID detected:</p>
-      <pre>{tenantId}</pre>
-      <p>If you can see this, routing is working and the component is rendering.</p>
+    <div className="page-content d-flex justify-content-center align-items-center">
+      <p>Signing you in… redirecting to your dashboard.</p>
     </div>
   );
 };
