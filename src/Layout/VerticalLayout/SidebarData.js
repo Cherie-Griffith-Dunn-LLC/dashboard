@@ -62,7 +62,7 @@ const AdminSidebarData = [
         label: "Help Desk",
         icon: "mdi mdi-face-agent",
         isHasArrow: true,
-        url: "https://cyproteck.com/?page_id=1087",
+        url: "https://cyproteck.co/",
     },
 ]
 
