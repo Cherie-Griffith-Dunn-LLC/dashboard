@@ -106,7 +106,7 @@ import JknobCharts from "../Pages/Charts/JqueryKnobCharts";
 import IconMaterialdesign from "../Pages/Icons/IconMaterialdesign";
 import IconFontawesome from "../Pages/Icons/IconFontAwesome";
 import IconDripicons from "../Pages/Icons/IconDrip";
-import IconBoxicons from "../Pages/Icons/IconBoxicons"
+import IconBoxicons from "../Pages/Icons/IconBoxicons";
 
 // Import Map Pages
 import VectorMaps from "../Pages/Maps/VectorMap";
