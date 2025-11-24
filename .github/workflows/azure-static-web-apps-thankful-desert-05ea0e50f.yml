@@ -22,35 +22,34 @@ jobs:
     name: Build and Deploy Job
 
     steps:
-      - name: Checkout repository
-        uses: Cherie-Griffith-Dunn-LLC/checkout@main
-        with:
-          submodules: true
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+    with:
+      submodules: true
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+  - name: Setup Node
+    uses: actions/setup-node@v4
+    with:
+      node-version: "20"
 
-      - name: Install dependencies
-        run: npm install
+  - name: Install dependencies
+    run: npm install
 
-      - name: Build React app
-        run: npm run build
+  - name: Build React app
+    run: npm run build
 
-      - name: Deploy with Azure Static Web Apps CLI
-        env:
-          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-        run: |
-          npm install -g @azure/static-web-apps-cli
-          swa deploy ./build \
-            --env production \
-            --deployment-token "$SWA_CLI_DEPLOYMENT_TOKEN"
+  - name: Deploy with Azure Static Web Apps CLI
+    env:
+      SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
+    run: |
+      npm install -g @azure/static-web-apps-cli
+      swa deploy ./build --env production
 
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: No-op (preview env cleanup is automatic)
-        run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
+close_pull_request_job:
+  if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  runs-on: ubuntu-latest
+  name: Close Pull Request Job
+  steps:
+    - name: No-op (preview env cleanup is automatic)
+      run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
