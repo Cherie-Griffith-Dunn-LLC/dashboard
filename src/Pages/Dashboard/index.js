@@ -1,14 +1,4 @@
-import Dashboard from "../Pages/Dashboard";
-```)
-
-Open that file and **replace everything in it** with the code below.
-
----
-
-## 2️⃣ New Dashboard UI code
-
-```jsx
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Row,
   Col,
@@ -22,7 +12,12 @@ import {
 } from "reactstrap";
 
 const Dashboard = () => {
-  // You can later wire these to real API data:
+  // Set the page title
+  useEffect(() => {
+    document.title = "Dashboard | CYPROTECK - Security Solutions";
+  }, []);
+
+  // Static sample values – wire to real data later
   const vulnerabilityScore = 72;
   const threatAttempts = 15;
   const trainingCompletion = 80;
@@ -61,7 +56,7 @@ const Dashboard = () => {
 
   return (
     <div className="page-content">
-      {/* Top welcome/header */}
+      {/* Top header */}
       <Row className="mb-4">
         <Col>
           <h4 className="mb-1">Welcome back, Security Leader</h4>
@@ -128,7 +123,7 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      {/* Employees / risk table */}
+      {/* Employees / risk table + training summary */}
       <Row className="mt-4">
         <Col lg="8">
           <Card>
@@ -166,7 +161,6 @@ const Dashboard = () => {
           </Card>
         </Col>
 
-        {/* Right-side summary card */}
         <Col lg="4">
           <Card>
             <CardBody>
@@ -190,7 +184,7 @@ const Dashboard = () => {
         </Col>
       </Row>
 
-      {/* Bottom CTA / devices / mobile */}
+      {/* Bottom cards */}
       <Row className="mt-4">
         <Col md="6">
           <Card>
