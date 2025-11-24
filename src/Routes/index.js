@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 // redux
 import { useSelector } from "react-redux";
 
-//constants
+// constants
 import { layoutTypes } from "../constants/layout";
 
 // layouts
@@ -31,7 +31,6 @@ const getLayout = (layoutType) => {
 };
 
 const Index = () => {
-
   const { layoutType } = useSelector((state) => ({
     layoutType: state.Layout.layoutType,
   }));
@@ -40,33 +39,34 @@ const Index = () => {
 
   return (
     <Routes>
+      {/* Public (unauthenticated) routes */}
       <Route>
         {publicRoutes.map((route, idx) => (
           <Route
+            key={idx}
             path={route.path}
             element={
               <NonAuthLayout>
-                  {route.component}
+                {route.component}
               </NonAuthLayout>
-          }
-            key={idx}
-            exact={true}
+            }
           />
         ))}
       </Route>
 
+      {/* Auth-protected routes */}
       <Route>
-          {authProtectedRoutes.map((route, idx) => (
-            <Route
-              path={route.path}
-              element={
-                <AuthProtected>
-                    <Layout>{route.component}</Layout>
-                </AuthProtected>}
-              key={idx}
-              exact={true}
-            />
-          ))}
+        {authProtectedRoutes.map((route, idx) => (
+          <Route
+            key={idx}
+            path={route.path}
+            element={
+              <AuthProtected>
+                <Layout>{route.component}</Layout>
+              </AuthProtected>
+            }
+          />
+        ))}
       </Route>
     </Routes>
   );
