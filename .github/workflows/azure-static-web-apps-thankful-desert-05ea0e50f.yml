@@ -71,3 +71,4 @@ jobs:
     steps:
       - name: No-op (preview env cleanup is automatic)
         run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
+
