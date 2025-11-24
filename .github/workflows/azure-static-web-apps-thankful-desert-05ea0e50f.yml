@@ -21,20 +21,28 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: Cherie-Griffith-Dunn-LLC/checkout@main
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           submodules: true
 
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@main
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "/"
-          api_location: ""
-          output_location: "/build"
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run build
+
+      - name: Deploy with Azure Static Web Apps CLI
+        env:
+          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
+        run: |
+          npm install -g @azure/static-web-apps-cli
+          swa deploy ./build --env production
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -42,11 +50,4 @@ jobs:
     name: Close Pull Request Job
     steps:
       - name: Close Pull Request
-        id: closepullrequest
-        uses: Cherie-Griffith-Dunn-LLC/static-web-apps-deploy@main
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-          action: "close"
-
-
-
+        run: echo "Pull request closed – no deployment needed."
