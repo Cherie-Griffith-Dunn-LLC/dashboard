@@ -2,54 +2,39 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
-
-env:
-  NPM_CONFIG_LEGACY_PEER_DEPS: true
-  MY_ENVIRONMENT: "production"
-  REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
-  REACT_APP_SUPPORT_ENABLED: ${{ secrets.REACT_APP_SUPPORT_ENABLED }}
-  REACT_APP_DEFAULTAUTH: "jwt"
+    branches: [main]
 
 jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-
     steps:
-steps:
-  - name: Checkout
-    uses: actions/checkout@v4
-    with:
-      submodules: true
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  - name: Setup Node
-    uses: actions/setup-node@v4
-    with:
-      node-version: "20"
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-  - name: Install dependencies
-    run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  - name: Build React app
-    run: npm run build
+      - name: Build React app
+        run: npm run build
 
-  - name: Deploy with Azure Static Web Apps CLI
-    env:
-      SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
-    run: |
-      npm install -g @azure/static-web-apps-cli
-      swa deploy ./build --env production
+      - name: Deploy with Azure Static Web Apps CLI
+        env:
+          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_DESERT_05EA0E50F }}
+        run: |
+          npm install -g @azure/static-web-apps-cli
+          swa deploy ./build --env production
 
-close_pull_request_job:
-  if: github.event_name == 'pull_request' && github.event.action == 'closed'
-  runs-on: ubuntu-latest
-  name: Close Pull Request Job
-  steps:
-    - name: No-op (preview env cleanup is automatic)
-      run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: No-op (preview env cleanup is automatic)
+        run: echo "Pull request closed. Azure Static Web Apps will automatically remove the preview environment."
