@@ -1,0 +1,43 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/static/*", "/*.{png,jpg,jpeg,gif,ico,css,js,svg}"]
+  },
+  "auth": {
+    "rolesSource": "/api/GetRoles",
+    "identityProviders": {
+      "azureActiveDirectory": {
+        "enabled": true,
+        "registration": {
+          "openIdIssuer": "https://login.microsoftonline.com/common"
+        }
+      }
+    }
+  },
+  "routes": [
+    {
+      "route": "/owner/*",
+      "allowedRoles": ["Owner"]
+    },
+    {
+      "route": "/company/*",
+      "allowedRoles": ["BusinessOwner"]
+    },
+    {
+      "route": "/employee/*",
+      "allowedRoles": ["Employee"]
+    },
+    {
+      "route": "/dashboard",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/login",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/OAuth/:tenantId",
+      "rewrite": "/index.html"
+    }
+  ]
+}
