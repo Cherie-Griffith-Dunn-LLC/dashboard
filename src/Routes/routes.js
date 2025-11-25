@@ -23,7 +23,6 @@ import Calender from "../Pages/Calender";
 
 // Mobile Security
 import MobileSecurity from "../Pages/MobileSecurity";
-import Support from "../Pages/Support";
 
 
 
@@ -132,9 +131,12 @@ const authProtectedRoutes = [
 
   // Mobile Security
   { path: "/mobile", component: <MobileSecurity /> },
+<<<<<<< HEAD
 
   // Support
   { path: "/support", component: <Support /> },
+=======
+>>>>>>> parent of c45cf02 (Merge pull request #116 from Cherie-Griffith-Dunn-LLC/sentinel-integration)
 
   // Courses
   { path: "/courses", component: <Courses /> },
