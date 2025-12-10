@@ -18,7 +18,7 @@ export const msalConfig = {
     postLogoutRedirectUri: "https://app.cyproteck.com",
     
     // Set to true for production
-    navigateToLoginRequestUrl: false,
+    navigateToLoginRequestUrl: true,
   },
   cache: {
     cacheLocation: "sessionStorage", // Use sessionStorage for security
