@@ -1,1 +1,231 @@
+/* ============================================
+   CYPROSECURE Dashboard Layout Styles
+   Professional, Modern, Enterprise-Grade Design
+   ============================================ */
 
+/* ===== Layout Structure ===== */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fa;
+  transition: all 0.3s ease;
+}
+
+.dashboard-layout.dark-mode {
+  background: #0f1419;
+  color: #e4e6eb;
+}
+
+/* ===== Main Content Area ===== */
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+}
+
+.dashboard-main.sidebar-collapsed {
+  margin-left: 80px;
+}
+
+/* ===== Content Container ===== */
+.dashboard-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  animation: contentFadeIn 0.4s ease;
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Copilot Chat Widget ===== */
+.copilot-widget {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 30px rgba(0, 120, 212, 0.4),
+    0 0 0 0 rgba(0, 188, 242, 0.6);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: copilotPulse 2s ease-in-out infinite;
+}
+
+@keyframes copilotPulse {
+  0%, 100% {
+    box-shadow: 
+      0 8px 30px rgba(0, 120, 212, 0.4),
+      0 0 0 0 rgba(0, 188, 242, 0.6);
+  }
+  50% {
+    box-shadow: 
+      0 12px 40px rgba(0, 120, 212, 0.5),
+      0 0 0 8px rgba(0, 188, 242, 0.3);
+  }
+}
+
+.copilot-widget:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(0, 120, 212, 0.6);
+}
+
+.copilot-widget:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.copilot-widget svg {
+  flex-shrink: 0;
+}
+
+.copilot-widget span {
+  white-space: nowrap;
+}
+
+/* ===== Dark Mode Styles ===== */
+.dashboard-layout.dark-mode .dashboard-main {
+  background: #0f1419;
+}
+
+.dashboard-layout.dark-mode .dashboard-content {
+  color: #e4e6eb;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1200px) {
+  .dashboard-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    margin-left: 0;
+  }
+
+  .dashboard-main.sidebar-collapsed {
+    margin-left: 0;
+  }
+
+  .dashboard-content {
+    padding: 15px;
+  }
+
+  .copilot-widget {
+    bottom: 20px;
+    right: 20px;
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+
+  .copilot-widget span {
+    display: none;
+  }
+
+  .copilot-widget {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 12px;
+  }
+
+  .copilot-widget {
+    bottom: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .copilot-widget {
+    display: none;
+  }
+  
+  .dashboard-main {
+    margin-left: 0 !important;
+  }
+}
+
+/* ===== Accessibility ===== */
+.copilot-widget:focus-visible {
+  outline: 3px solid #00bcf2;
+  outline-offset: 3px;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-layout,
+  .dashboard-main,
+  .dashboard-content,
+  .copilot-widget {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== Loading State ===== */
+.dashboard-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.dashboard-loading.dark-mode {
+  background: #0f1419;
+}
+
+.loading-spinner-container {
+  text-align: center;
+}
+
+.loading-spinner-large {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(0, 120, 212, 0.2);
+  border-top-color: #0078d4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.loading-text {
+  font-size: 18px;
+  color: #666;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
