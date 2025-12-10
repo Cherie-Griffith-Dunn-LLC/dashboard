@@ -1,0 +1,30 @@
+# Azure AD Authentication Configuration
+# Get these values from Azure Portal → Azure Active Directory
+
+# Your Azure AD Application (Client) ID
+# Find in: Azure Portal → App registrations → Your app → Overview → Application (client) ID
+REACT_APP_AZURE_CLIENT_ID=your-client-id-here
+
+# Your Azure AD Tenant (Directory) ID
+# Find in: Azure Portal → Azure Active Directory → Overview → Tenant ID
+REACT_APP_AZURE_TENANT_ID=your-tenant-id-here
+
+# Your Application Redirect URI
+# This should match what you configured in Azure AD App Registration
+# For production: https://app.cyproteck.com
+# For local dev: http://localhost:3000
+REACT_APP_REDIRECT_URI=https://app.cyproteck.com
+
+# Optional: Enable GitHub Integration
+# Set to 'true' if you've configured GitHub as an identity provider in Azure AD
+REACT_APP_GITHUB_ENABLED=true
+
+# Azure Subscription Details (for Sentinel and Defender APIs)
+# Find in: Azure Portal → Subscriptions
+REACT_APP_AZURE_SUBSCRIPTION_ID=your-subscription-id-here
+
+# Sentinel Workspace Details (optional, for direct API access)
+REACT_APP_SENTINEL_WORKSPACE_ID=your-workspace-id-here
+
+# Defender Tenant Details (optional, for direct API access)
+REACT_APP_DEFENDER_TENANT_ID=your-defender-tenant-id-here

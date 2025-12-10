@@ -1,43 +1,42 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/static/*", "/*.{png,jpg,jpeg,gif,ico,css,js,svg}"]
-  },
-  "auth": {
-    "rolesSource": "/api/GetRoles",
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "enabled": true,
-        "registration": {
-          "openIdIssuer": "https://login.microsoftonline.com/common"
-        }
-      }
-    }
+    "exclude": ["/images/*.{png,jpg,gif,ico}", "/css/*", "/js/*", "/api/*"]
   },
   "routes": [
     {
-      "route": "/owner/*",
-      "allowedRoles": ["Owner"]
-    },
-    {
-      "route": "/company/*",
-      "allowedRoles": ["BusinessOwner"]
-    },
-    {
-      "route": "/employee/*",
-      "allowedRoles": ["Employee"]
+      "route": "/login",
+      "rewrite": "/index.html"
     },
     {
       "route": "/dashboard",
       "rewrite": "/index.html"
     },
     {
-      "route": "/login",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/OAuth/:tenantId",
+      "route": "/*",
       "rewrite": "/index.html"
     }
-  ]
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-XSS-Protection": "1; mode=block",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Content-Security-Policy": "default-src 'self' https://login.microsoftonline.com https://*.msauth.net https://*.microsoft.com https://management.azure.com https://api.securitycenter.microsoft.com https://graph.microsoft.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://login.microsoftonline.com https://*.msauth.net https://*.microsoft.com https://management.azure.com https://api.securitycenter.microsoft.com https://graph.microsoft.com"
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".html": "text/html"
+  },
+  "platform": {
+    "apiRuntime": "node:18"
+  }
 }
