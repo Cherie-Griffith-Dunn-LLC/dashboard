@@ -5,21 +5,19 @@
 
 export const msalConfig = {
   auth: {
-    // REQUIRED: Your Azure AD Tenant ID
-    // Find this in Azure Portal → Azure Active Directory → Overview → Tenant ID
-    clientId: process.env.REACT_APP_AZURE_CLIENT_ID || "YOUR_CLIENT_ID_HERE",
+    // Your Azure AD Application (Client) ID
+    clientId: "1d40f6b3-9072-4a0a-af48-6e423e58d0d6",
     
-    // REQUIRED: Your Azure AD Tenant ID
-    // Find this in Azure Portal → Azure Active Directory → Overview → Tenant ID
-    authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID || "YOUR_TENANT_ID_HERE"}`,
+    // Your Azure AD Tenant ID
+    authority: "https://login.microsoftonline.com/ff4945f1-e101-4ac8-a78f-798156ea9cdf",
     
-    // REQUIRED: Redirect URI after login
-    redirectUri: process.env.REACT_APP_REDIRECT_URI || "https://app.cyproteck.com",
+    // Redirect URI after login
+    redirectUri: "https://app.cyproteck.com",
     
     // Post-logout redirect
-    postLogoutRedirectUri: process.env.REACT_APP_REDIRECT_URI || "https://app.cyproteck.com",
+    postLogoutRedirectUri: "https://app.cyproteck.com",
     
-    // IMPORTANT: Set to true for production
+    // Set to true for production
     navigateToLoginRequestUrl: false,
   },
   cache: {
