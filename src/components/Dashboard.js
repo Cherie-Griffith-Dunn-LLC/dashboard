@@ -16,6 +16,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchUserProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
