@@ -11,13 +11,13 @@ export const msalConfig = {
     // Your Azure AD Tenant ID
     authority: "https://login.microsoftonline.com/ff4945f1-e101-4ac8-a78f-798156ea9cdf",
     
-    // Redirect URI after login
+    // Redirect URI after login (must match Azure AD exactly)
     redirectUri: "https://app.cyproteck.com",
     
     // Post-logout redirect
     postLogoutRedirectUri: "https://app.cyproteck.com",
     
-    // Set to true for production
+    // Navigate to original request URL after login
     navigateToLoginRequestUrl: true,
   },
   cache: {
