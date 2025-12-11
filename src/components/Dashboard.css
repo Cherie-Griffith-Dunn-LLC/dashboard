@@ -861,6 +861,70 @@
   font-size: 20px;
 }
 
+/* ===== Organization Selector at Top ===== */
+.org-selector-top {
+  margin-bottom: 25px;
+}
+
+.org-dropdown {
+  min-width: 250px;
+  padding: 12px 40px 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892b0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.org-dropdown:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.org-dropdown:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(93, 228, 199, 0.1);
+}
+
+/* ===== Simple Page Styles ===== */
+.page-simple {
+  padding: 40px 0 0 0;
+  max-width: 1200px;
+}
+
+.page-simple h1 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.page-simple p {
+  margin: 0 0 30px 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.coming-soon {
+  padding: 60px 40px;
+  background: var(--bg-card);
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .world-map-container {
