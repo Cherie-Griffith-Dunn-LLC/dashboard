@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useMsal } from '@azure/msal-react';
 import './Dashboard.css';
 
 // Import page components
-import EmployeeDashboardPage from './pages/EmployeeDashboardPage';
+import DashboardHome from './pages/DashboardHome';
 import SecurityScorePage from './pages/SecurityScorePage';
 import ThreatsPage from './pages/ThreatsPage';
 import TrainingPage from './pages/TrainingPage';
 import AlertsPage from './pages/AlertsPage';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
-import CustomersPage from './pages/CustomersPage';
-import UsersPage from './pages/UsersPage';
-import AnalyticsPage from './pages/AnalyticsPage';
 
 /**
- * CYPROSECURE - Complete Multi-Tenant Dashboard
- * Roles: cyproteck_admin, customer_admin, employee
+ * CYPROSECURE Dashboard - With Organization Selector
+ * Same sidebar for everyone, just switch which org you're viewing
  */
-function Dashboard() {
+function DashboardContent() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
-  const [userRole, setUserRole] = useState('employee'); // Default role
+  const [selectedOrg, setSelectedOrg] = useState('all');
+  const location = useLocation();
 
   const user = accounts[0];
   const userName = user?.name || 'User';
 
-  // Get role from localStorage (temporary - will come from Azure AD token)
-  useEffect(() => {
-    const storedRole = localStorage.getItem('userRole') || 'employee';
-    setUserRole(storedRole);
-  }, []);
+  // Mock organizations list (replace with real data later)
+  const organizations = [
+    { id: 'all', name: 'All Organizations' },
+    { id: 'org1', name: 'Acme Healthcare' },
+    { id: 'org2', name: 'Tech Solutions Inc' },
+    { id: 'org3', name: 'Finance Group LLC' },
+  ];
 
   const handleLogout = () => {
     instance.logoutPopup().catch((error) => {
@@ -48,184 +48,164 @@ function Dashboard() {
     setDarkMode(!darkMode);
   };
 
-  // Role selector (temporary - for testing)
-  const handleRoleChange = (e) => {
-    const newRole = e.target.value;
-    setUserRole(newRole);
-    localStorage.setItem('userRole', newRole);
-    window.location.reload(); // Refresh to update navigation
+  const handleOrgChange = (e) => {
+    setSelectedOrg(e.target.value);
   };
 
-  // Navigation items based on role
-  const getNavigationItems = () => {
-    if (userRole === 'cyproteck_admin') {
-      return [
-        { path: '/dashboard', icon: '📊', label: 'Dashboard' },
-        { path: '/customers', icon: '🏢', label: 'Customers' },
-        { path: '/analytics', icon: '📈', label: 'Analytics' },
-        { path: '/training', icon: '🎓', label: 'Training' },
-        { path: '/alerts', icon: '🚨', label: 'Alerts', badge: 3 },
-        { path: '/reports', icon: '📄', label: 'Reports' },
-        { path: '/settings', icon: '⚙️', label: 'Settings' },
-      ];
-    } else if (userRole === 'customer_admin') {
-      return [
-        { path: '/dashboard', icon: '📊', label: 'Dashboard' },
-        { path: '/users', icon: '👥', label: 'Users' },
-        { path: '/security', icon: '🛡️', label: 'Security' },
-        { path: '/reports', icon: '📄', label: 'Reports' },
-        { path: '/training', icon: '🎓', label: 'Training' },
-        { path: '/alerts', icon: '🚨', label: 'Alerts', badge: 3 },
-        { path: '/settings', icon: '⚙️', label: 'Settings' },
-      ];
-    } else { // employee
-      return [
-        { path: '/dashboard', icon: '📊', label: 'My Dashboard' },
-        { path: '/security', icon: '🛡️', label: 'Security Score' },
-        { path: '/training', icon: '🎓', label: 'My Training', badge: 2 },
-        { path: '/alerts', icon: '🚨', label: 'My Alerts', badge: 3 },
-        { path: '/reports', icon: '📄', label: 'Reports' },
-        { path: '/settings', icon: '⚙️', label: 'Settings' },
-      ];
-    }
+  // Check if current path matches
+  const isActive = (path) => {
+    return location.pathname === path;
   };
-
-  const navigationItems = getNavigationItems();
 
   return (
-    <Router>
-      <div className={`dashboard-layout ${darkMode ? 'dark-theme' : 'light-theme'}`}>
-        {/* Sidebar */}
-        <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
-          <div className="sidebar-logo">
-            <img 
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              alt="CYPROSECURE" 
-              className="logo-image"
-              onError={(e) => {
-                // Fallback if logo doesn't load
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
-            />
-            <div className="logo-fallback" style={{display: 'none', width: '38px', height: '38px', background: 'linear-gradient(135deg, #5de4c7 0%, #4ea8de 100%)', borderRadius: '8px', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: '800', color: '#0f1419'}}>C</div>
-            {!sidebarCollapsed && (
-              <div className="logo-text">
-                <h2>CYPROSECURE</h2>
-                <p>Security Platform</p>
-              </div>
-            )}
-          </div>
-
-          <nav className="sidebar-nav">
-            {navigationItems.map((item, index) => (
-              <Link 
-                key={index}
-                to={item.path} 
-                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-              >
-                <span className="nav-icon">{item.icon}</span>
-                {!sidebarCollapsed && (
-                  <>
-                    <span className="nav-label">{item.label}</span>
-                    {item.badge && <span className="nav-badge">{item.badge}</span>}
-                  </>
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Role Selector (Temporary - for testing) */}
+    <div className={`dashboard-layout ${darkMode ? 'dark-theme' : 'light-theme'}`}>
+      {/* Sidebar - SAME AS BEFORE */}
+      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+        <div className="sidebar-logo">
+          <img 
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="CYPROSECURE" 
+            className="logo-image"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextElementSibling.style.display = 'flex';
+            }}
+          />
+          <div className="logo-fallback" style={{display: 'none'}}>C</div>
           {!sidebarCollapsed && (
-            <div className="role-selector">
-              <label>Test Role:</label>
-              <select value={userRole} onChange={handleRoleChange}>
-                <option value="employee">Employee</option>
-                <option value="customer_admin">Customer Admin</option>
-                <option value="cyproteck_admin">Cyproteck Admin</option>
-              </select>
+            <div className="logo-text">
+              <h2>CYPROSECURE</h2>
+              <p>Security Platform</p>
             </div>
           )}
+        </div>
 
-          <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-              {sidebarCollapsed ? (
-                <path d="M7 10l5 5V5l-5 5z"/>
-              ) : (
-                <path d="M13 10l-5 5V5l5 5z"/>
-              )}
-            </svg>
-          </button>
-        </aside>
+        <nav className="sidebar-nav">
+          <Link to="/dashboard" className={`nav-item ${isActive('/dashboard') ? 'active' : ''}`}>
+            <span className="nav-icon">📊</span>
+            {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
+          </Link>
+          
+          <Link to="/security" className={`nav-item ${isActive('/security') ? 'active' : ''}`}>
+            <span className="nav-icon">🛡️</span>
+            {!sidebarCollapsed && <span className="nav-label">Security Score</span>}
+          </Link>
+          
+          <Link to="/threats" className={`nav-item ${isActive('/threats') ? 'active' : ''}`}>
+            <span className="nav-icon">⚠️</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Threats</span>
+                <span className="nav-badge">8</span>
+              </>
+            )}
+          </Link>
+          
+          <Link to="/training" className={`nav-item ${isActive('/training') ? 'active' : ''}`}>
+            <span className="nav-icon">🎓</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Training</span>
+                <span className="nav-badge">2</span>
+              </>
+            )}
+          </Link>
+          
+          <Link to="/alerts" className={`nav-item ${isActive('/alerts') ? 'active' : ''}`}>
+            <span className="nav-icon">🚨</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Alerts</span>
+                <span className="nav-badge">3</span>
+              </>
+            )}
+          </Link>
+          
+          <Link to="/reports" className={`nav-item ${isActive('/reports') ? 'active' : ''}`}>
+            <span className="nav-icon">📈</span>
+            {!sidebarCollapsed && <span className="nav-label">Reports</span>}
+          </Link>
+          
+          <Link to="/settings" className={`nav-item ${isActive('/settings') ? 'active' : ''}`}>
+            <span className="nav-icon">⚙️</span>
+            {!sidebarCollapsed && <span className="nav-label">Settings</span>}
+          </Link>
+        </nav>
 
-        {/* Main Content */}
-        <div className={`dashboard-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-          {/* Top Bar */}
-          <header className="top-bar">
-            <div className="top-bar-left">
-              <button className="mobile-menu-btn" onClick={toggleSidebar}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-                </svg>
-              </button>
-              <h1 className="page-title">
-                {userRole === 'cyproteck_admin' && 'Cyproteck Admin Dashboard'}
-                {userRole === 'customer_admin' && 'Customer Admin Dashboard'}
-                {userRole === 'employee' && 'Security Dashboard'}
-              </h1>
-            </div>
-            <div className="top-bar-right">
-              <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
-                {darkMode ? '☀️' : '🌙'}
-              </button>
-              <div className="user-profile">
-                <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
-                <div className="user-info-text">
-                  <span className="user-name">{userName}</span>
-                  <span className="user-role-label">
-                    {userRole === 'cyproteck_admin' && 'Cyproteck Admin'}
-                    {userRole === 'customer_admin' && 'Customer Admin'}
-                    {userRole === 'employee' && 'Employee'}
-                  </span>
-                </div>
-              </div>
-              <button className="logout-btn" onClick={handleLogout}>
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/>
-                </svg>
-                Logout
-              </button>
-            </div>
-          </header>
-
-          {/* Routes */}
-          <div className="content-area">
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<EmployeeDashboardPage userRole={userRole} userName={userName} />} />
-              <Route path="/security" element={<SecurityScorePage userRole={userRole} />} />
-              <Route path="/threats" element={<ThreatsPage userRole={userRole} />} />
-              <Route path="/training" element={<TrainingPage userRole={userRole} />} />
-              <Route path="/alerts" element={<AlertsPage userRole={userRole} />} />
-              <Route path="/reports" element={<ReportsPage userRole={userRole} />} />
-              <Route path="/settings" element={<SettingsPage userRole={userRole} />} />
-              
-              {/* Admin-only routes */}
-              {userRole === 'cyproteck_admin' && (
-                <>
-                  <Route path="/customers" element={<CustomersPage />} />
-                  <Route path="/analytics" element={<AnalyticsPage />} />
-                </>
-              )}
-              
-              {/* Customer admin routes */}
-              {userRole === 'customer_admin' && (
-                <Route path="/users" element={<UsersPage />} />
-              )}
-            </Routes>
+        {/* Organization Selector - NEW */}
+        {!sidebarCollapsed && (
+          <div className="org-selector">
+            <label>View Organization:</label>
+            <select value={selectedOrg} onChange={handleOrgChange}>
+              {organizations.map(org => (
+                <option key={org.id} value={org.id}>{org.name}</option>
+              ))}
+            </select>
           </div>
+        )}
+
+        <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            {sidebarCollapsed ? (
+              <path d="M7 10l5 5V5l-5 5z"/>
+            ) : (
+              <path d="M13 10l-5 5V5l5 5z"/>
+            )}
+          </svg>
+        </button>
+      </aside>
+
+      {/* Main Content */}
+      <div className={`dashboard-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        {/* Top Bar */}
+        <header className="top-bar">
+          <div className="top-bar-left">
+            <button className="mobile-menu-btn" onClick={toggleSidebar}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+              </svg>
+            </button>
+            <h1 className="page-title">Security Dashboard</h1>
+          </div>
+          <div className="top-bar-right">
+            <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+            <div className="user-profile">
+              <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+              <span className="user-name">{userName}</span>
+            </div>
+            <button className="logout-btn" onClick={handleLogout}>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/>
+              </svg>
+              Logout
+            </button>
+          </div>
+        </header>
+
+        {/* Routes */}
+        <div className="content-area">
+          <Routes>
+            <Route path="/" element={<DashboardHome userName={userName} selectedOrg={selectedOrg} />} />
+            <Route path="/dashboard" element={<DashboardHome userName={userName} selectedOrg={selectedOrg} />} />
+            <Route path="/security" element={<SecurityScorePage selectedOrg={selectedOrg} />} />
+            <Route path="/threats" element={<ThreatsPage selectedOrg={selectedOrg} />} />
+            <Route path="/training" element={<TrainingPage selectedOrg={selectedOrg} />} />
+            <Route path="/alerts" element={<AlertsPage selectedOrg={selectedOrg} />} />
+            <Route path="/reports" element={<ReportsPage selectedOrg={selectedOrg} />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Dashboard() {
+  return (
+    <Router>
+      <DashboardContent />
     </Router>
   );
 }
