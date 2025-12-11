@@ -1143,6 +1143,362 @@
   border-color: var(--accent-secondary);
 }
 
+/* ===== Employee View ===== */
+/* Employee Hero */
+.employee-hero {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.employee-hero-content h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.employee-subtitle {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.employee-score-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.score-ring-medium {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.score-ring-medium svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.score-num-large {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.score-status-text {
+  text-align: left;
+}
+
+.score-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.score-status {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.score-status.high {
+  color: var(--alert-high);
+}
+
+.score-status.medium {
+  color: var(--alert-medium);
+}
+
+.score-status.low {
+  color: var(--success);
+}
+
+.training-progress-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+/* Training Courses List */
+.training-courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.training-course-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.training-course-item:hover {
+  background: var(--border-color);
+  transform: translateX(3px);
+}
+
+.training-course-item.completed {
+  border-left-color: var(--success);
+}
+
+.training-course-item.in_progress {
+  border-left-color: var(--accent-secondary);
+}
+
+.training-course-item.not_started {
+  border-left-color: var(--text-muted);
+}
+
+.course-status-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.course-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.course-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.course-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.course-progress-bar {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.course-action {
+  flex-shrink: 0;
+}
+
+.course-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.course-btn.primary {
+  background: var(--accent-primary);
+  border: none;
+  color: var(--bg-primary);
+}
+
+.course-btn.primary:hover {
+  background: var(--accent-secondary);
+  transform: scale(1.05);
+}
+
+.course-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.course-btn.secondary:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Threats List */
+.threats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.threat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.threat-item:hover {
+  background: var(--border-color);
+}
+
+.threat-item.high {
+  border-left-color: var(--alert-high);
+}
+
+.threat-item.medium {
+  border-left-color: var(--alert-medium);
+}
+
+.threat-item.low {
+  border-left-color: var(--success);
+}
+
+.threat-severity-badge {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.threat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.threat-type {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.threat-time {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.threat-action-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.threat-action-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Devices Grid */
+.devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.device-card {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.device-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.device-card.needs_update {
+  border-color: var(--alert-medium);
+  background: linear-gradient(135deg, rgba(237, 137, 54, 0.05) 0%, var(--bg-hover) 100%);
+}
+
+.device-icon {
+  font-size: 32px;
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.device-status {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.device-status.secure {
+  color: var(--success);
+}
+
+.device-status.needs_update {
+  color: var(--alert-medium);
+}
+
+.device-last-seen {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.device-action-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.device-action-btn.primary {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.device-action-btn.primary:hover {
+  background: var(--accent-secondary);
+  transform: scale(1.05);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .world-map-container {
@@ -1155,6 +1511,20 @@
 
   .risk-highlights {
     grid-template-columns: 1fr;
+  }
+
+  .employee-hero {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .employee-score-card {
+    flex-direction: column;
+  }
+
+  .score-status-text {
+    text-align: center;
   }
 }
 
@@ -1212,6 +1582,22 @@
 
   .device-cell {
     display: none;
+  }
+
+  .training-course-item {
+    flex-wrap: wrap;
+  }
+
+  .course-action {
+    width: 100%;
+  }
+
+  .course-btn {
+    width: 100%;
+  }
+
+  .devices-grid {
+    grid-template-columns: 1fr;
   }
 }
 
