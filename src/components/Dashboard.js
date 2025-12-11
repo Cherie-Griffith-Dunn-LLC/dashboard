@@ -22,8 +22,45 @@ function Dashboard() {
   // Cyproteck MSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  // Determine if this is MSP owner or business owner
+  // Check user roles
+  const userRoles = user?.idTokenClaims?.roles || [];
+  const hasAdminRole = userRoles.some(role => 
+    role.toLowerCase().includes('admin') || 
+    role.toLowerCase().includes('administrator')
+  );
+  
+  // Determine user type
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID;
+  const isBusinessOwner = !isMSPOwner && hasAdminRole;
+  const isEmployee = !isMSPOwner && !hasAdminRole;
+  
+  // Current user data (for employee view)
+  const currentUserData = {
+    name: userName,
+    riskScore: 71,
+    training: {
+      completed: 2,
+      total: 4,
+      courses: [
+        { id: 1, name: 'Password Security', status: 'completed', completedDate: '2024-11-15' },
+        { id: 2, name: 'Phishing Awareness', status: 'completed', completedDate: '2024-11-28' },
+        { id: 3, name: 'Data Protection', status: 'in_progress', progress: 60 },
+        { id: 4, name: 'Secure Remote Work', status: 'not_started' },
+      ]
+    },
+    threats: [
+      { id: 1, type: 'Suspicious Email Blocked', severity: 'medium', time: '2 hours ago' },
+      { id: 2, type: 'Failed Login Attempt', severity: 'high', time: 'Yesterday' },
+      { id: 3, type: 'Weak Password Detected', severity: 'low', time: '3 days ago' },
+      { id: 4, type: 'Malicious Link Blocked', severity: 'high', time: '5 days ago' },
+      { id: 5, type: 'Suspicious Download Prevented', severity: 'medium', time: '1 week ago' },
+    ],
+    devices: [
+      { id: 1, name: 'Windows Laptop', type: 'laptop', status: 'secure', lastSeen: 'Active now' },
+      { id: 2, name: 'iPhone 12', type: 'mobile', status: 'needs_update', lastSeen: '2 hours ago' },
+    ],
+    threatCount: 5,
+  };
 
   // Organizations list (for MSP view)
   const organizations = [
@@ -177,7 +214,11 @@ function Dashboard() {
                 <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
               </svg>
             </button>
-            <h1 className="page-title">{isMSPOwner ? 'MSP Security Dashboard' : `${companyName} Security Dashboard`}</h1>
+            <h1 className="page-title">
+              {isMSPOwner && 'MSP Security Dashboard'}
+              {isBusinessOwner && `${companyName} Security Dashboard`}
+              {isEmployee && 'My Security Dashboard'}
+            </h1>
           </div>
           <div className="top-bar-right">
             <button className="theme-toggle" onClick={toggleTheme}>
@@ -210,7 +251,7 @@ function Dashboard() {
           )}
 
           {/* Business Owner View - Risk Highlights */}
-          {!isMSPOwner && (
+          {isBusinessOwner && (
             <div className="risk-highlights">
               <div className="risk-highlight-card high">
                 <div className="risk-icon">🔴</div>
@@ -440,7 +481,7 @@ function Dashboard() {
           )}
 
           {/* Business Owner Content - Employee Risk Table */}
-          {!isMSPOwner && (
+          {isBusinessOwner && (
             <>
               {/* Company Overview */}
               <div className="metrics-compact">
@@ -566,6 +607,206 @@ function Dashboard() {
                   <button className="action-btn-sm">
                     <span className="action-icon-sm">⚙️</span>
                     <span>Security Settings</span>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Employee View - Personal Dashboard */}
+          {isEmployee && (
+            <>
+              {/* Personal Hero */}
+              <div className="employee-hero">
+                <div className="employee-hero-content">
+                  <h1>My Security Dashboard</h1>
+                  <p className="employee-subtitle">Welcome back, {userName.split(' ')[0]}!</p>
+                </div>
+                <div className="employee-score-card">
+                  <div className="score-ring-medium">
+                    <svg viewBox="0 0 120 120">
+                      <circle className="ring-bg" cx="60" cy="60" r="50"/>
+                      <circle 
+                        className="ring-progress" 
+                        cx="60" 
+                        cy="60" 
+                        r="50"
+                        style={{ strokeDasharray: `${currentUserData.riskScore * 3.14} 314` }}
+                      />
+                    </svg>
+                    <div className="score-num-large">{currentUserData.riskScore}</div>
+                  </div>
+                  <div className="score-status-text">
+                    <div className="score-label">Your Security Score</div>
+                    <div className={`score-status ${getRiskColor(currentUserData.riskScore)}`}>
+                      {currentUserData.riskScore >= 70 ? 'Needs Improvement' : currentUserData.riskScore >= 50 ? 'Good' : 'Excellent'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Metrics */}
+              <div className="metrics-compact">
+                <div className="metric-box">
+                  <div className="metric-icon-sm">🎯</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.riskScore}</div>
+                    <div className="metric-lbl">My Risk Score</div>
+                  </div>
+                  <div className={`metric-trend ${getRiskColor(currentUserData.riskScore)}`}>
+                    {currentUserData.riskScore >= 70 ? 'High' : currentUserData.riskScore >= 50 ? 'Medium' : 'Low'}
+                  </div>
+                </div>
+
+                <div className="metric-box">
+                  <div className="metric-icon-sm">🎓</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.training.completed}/{currentUserData.training.total}</div>
+                    <div className="metric-lbl">Training Complete</div>
+                  </div>
+                  <div className="metric-trend neutral">
+                    {currentUserData.training.total - currentUserData.training.completed} remaining
+                  </div>
+                </div>
+
+                <div className="metric-box">
+                  <div className="metric-icon-sm">⚠️</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.threatCount}</div>
+                    <div className="metric-lbl">Threats Blocked</div>
+                  </div>
+                  <div className="metric-trend up">This week</div>
+                </div>
+
+                <div className="metric-box">
+                  <div className="metric-icon-sm">📱</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.devices.length}</div>
+                    <div className="metric-lbl">My Devices</div>
+                  </div>
+                  <div className="metric-trend neutral">Monitored</div>
+                </div>
+              </div>
+
+              {/* My Training */}
+              <div className="section-compact">
+                <div className="section-hdr">
+                  <h2>My Training Courses</h2>
+                  <span className="training-progress-text">
+                    {Math.round((currentUserData.training.completed / currentUserData.training.total) * 100)}% Complete
+                  </span>
+                </div>
+                <div className="training-courses-list">
+                  {currentUserData.training.courses.map(course => (
+                    <div key={course.id} className={`training-course-item ${course.status}`}>
+                      <div className="course-status-icon">
+                        {course.status === 'completed' && '✅'}
+                        {course.status === 'in_progress' && '🔄'}
+                        {course.status === 'not_started' && '⏳'}
+                      </div>
+                      <div className="course-info">
+                        <div className="course-name">{course.name}</div>
+                        {course.status === 'completed' && (
+                          <div className="course-meta">Completed {course.completedDate}</div>
+                        )}
+                        {course.status === 'in_progress' && (
+                          <div className="course-progress-bar">
+                            <div className="progress-fill" style={{width: `${course.progress}%`}}></div>
+                          </div>
+                        )}
+                        {course.status === 'not_started' && (
+                          <div className="course-meta">Not started</div>
+                        )}
+                      </div>
+                      <div className="course-action">
+                        {course.status === 'completed' && (
+                          <button className="course-btn secondary">Review</button>
+                        )}
+                        {course.status === 'in_progress' && (
+                          <button className="course-btn primary">Continue</button>
+                        )}
+                        {course.status === 'not_started' && (
+                          <button className="course-btn primary">Start</button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* My Recent Threats */}
+              <div className="section-compact">
+                <div className="section-hdr">
+                  <h2>My Recent Threats</h2>
+                  <button className="view-all-sm">View All →</button>
+                </div>
+                <div className="threats-list">
+                  {currentUserData.threats.slice(0, 3).map(threat => (
+                    <div key={threat.id} className={`threat-item ${threat.severity}`}>
+                      <div className={`threat-severity-badge ${threat.severity}`}>
+                        {threat.severity === 'high' && '🔴'}
+                        {threat.severity === 'medium' && '🟡'}
+                        {threat.severity === 'low' && '🟢'}
+                      </div>
+                      <div className="threat-content">
+                        <div className="threat-type">{threat.type}</div>
+                        <div className="threat-time">{threat.time}</div>
+                      </div>
+                      <button className="threat-action-btn">Details</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* My Devices */}
+              <div className="section-compact">
+                <div className="section-hdr">
+                  <h2>My Devices</h2>
+                </div>
+                <div className="devices-grid">
+                  {currentUserData.devices.map(device => (
+                    <div key={device.id} className={`device-card ${device.status}`}>
+                      <div className="device-icon">
+                        {device.type === 'laptop' && '💻'}
+                        {device.type === 'mobile' && '📱'}
+                      </div>
+                      <div className="device-info">
+                        <div className="device-name">{device.name}</div>
+                        <div className={`device-status ${device.status}`}>
+                          {device.status === 'secure' && '✅ Secure'}
+                          {device.status === 'needs_update' && '⚠️ Update Required'}
+                        </div>
+                        <div className="device-last-seen">Last seen: {device.lastSeen}</div>
+                      </div>
+                      {device.status === 'needs_update' && (
+                        <button className="device-action-btn primary">Update Now</button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Personal Quick Actions */}
+              <div className="section-compact">
+                <div className="section-hdr">
+                  <h2>Quick Actions</h2>
+                </div>
+                <div className="actions-compact">
+                  <button className="action-btn-sm">
+                    <span className="action-icon-sm">🔑</span>
+                    <span>Change My Password</span>
+                  </button>
+                  <button className="action-btn-sm">
+                    <span className="action-icon-sm">📱</span>
+                    <span>Enable MFA</span>
+                  </button>
+                  <button className="action-btn-sm">
+                    <span className="action-icon-sm">🎓</span>
+                    <span>Continue Training</span>
+                  </button>
+                  <button className="action-btn-sm">
+                    <span className="action-icon-sm">📊</span>
+                    <span>View My Report</span>
                   </button>
                 </div>
               </div>
