@@ -1499,25 +1499,6 @@
   transform: scale(1.05);
 }
 
-/* ===== Simple Page Styling ===== */
-.page-simple {
-  padding: 40px 0;
-  max-width: 1200px;
-}
-
-.page-simple h1 {
-  margin: 0 0 20px 0;
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.page-simple p {
-  margin: 0;
-  font-size: 16px;
-  color: var(--text-secondary);
-}
-
 /* Responsive */
 @media (max-width: 1024px) {
   .world-map-container {
