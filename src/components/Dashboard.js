@@ -3,16 +3,27 @@ import { useMsal } from '@azure/msal-react';
 import './Dashboard.css';
 
 /**
- * CYPROSECURE - Professional Refined Dashboard
- * Smaller sizing, Logo integration, World threat map
+ * CYPROSECURE - Multi-Tenant Dashboard
+ * Organization selector at TOP of content (not sidebar)
  */
 function Dashboard() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
+  const [currentPage, setCurrentPage] = useState('dashboard');
+  const [selectedOrg, setSelectedOrg] = useState('all');
 
   const user = accounts[0];
   const userName = user?.name || 'User';
+
+  // Organizations list
+  const organizations = [
+    { id: 'all', name: 'All Organizations' },
+    { id: 'acme', name: 'Acme Healthcare' },
+    { id: 'tech', name: 'Tech Solutions Inc' },
+    { id: 'finance', name: 'Finance Group LLC' },
+    { id: 'edu', name: 'Education Systems' },
+  ];
 
   // Mock data
   const securityData = {
@@ -27,7 +38,7 @@ function Dashboard() {
     monitored: 32,
   };
 
-  // World threat locations (mock data)
+  // World threat locations
   const threatLocations = [
     { country: 'United States', threats: 45, lat: 37, lng: -95 },
     { country: 'China', threats: 38, lat: 35, lng: 105 },
@@ -51,113 +62,20 @@ function Dashboard() {
     setDarkMode(!darkMode);
   };
 
-  return (
-    <div className={`dashboard-layout ${darkMode ? 'dark-theme' : 'light-theme'}`}>
-      {/* Sidebar with Logo */}
-      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
-        <div className="sidebar-logo">
-          <img 
-            src="/logo.png" 
-            alt="CYPROSECURE" 
-            className="logo-image"
-          />
-          {!sidebarCollapsed && (
-            <div className="logo-text">
-              <h2>CYPROSECURE</h2>
-              <p>Security Platform</p>
-            </div>
-          )}
-        </div>
+  const handleOrgChange = (e) => {
+    setSelectedOrg(e.target.value);
+  };
 
-        <nav className="sidebar-nav">
-          <a href="#dashboard" className="nav-item active">
-            <span className="nav-icon">📊</span>
-            {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
-          </a>
-          <a href="#security" className="nav-item">
-            <span className="nav-icon">🛡️</span>
-            {!sidebarCollapsed && <span className="nav-label">Security</span>}
-          </a>
-          <a href="#threats" className="nav-item">
-            <span className="nav-icon">⚠️</span>
-            {!sidebarCollapsed && (
-              <>
-                <span className="nav-label">Threats</span>
-                <span className="nav-badge">{securityData.highAlerts}</span>
-              </>
-            )}
-          </a>
-          <a href="#training" className="nav-item">
-            <span className="nav-icon">🎓</span>
-            {!sidebarCollapsed && (
-              <>
-                <span className="nav-label">Training</span>
-                <span className="nav-badge">2</span>
-              </>
-            )}
-          </a>
-          <a href="#alerts" className="nav-item">
-            <span className="nav-icon">🚨</span>
-            {!sidebarCollapsed && (
-              <>
-                <span className="nav-label">Alerts</span>
-                <span className="nav-badge">{securityData.activeAlerts}</span>
-              </>
-            )}
-          </a>
-          <a href="#reports" className="nav-item">
-            <span className="nav-icon">📈</span>
-            {!sidebarCollapsed && <span className="nav-label">Reports</span>}
-          </a>
-          <a href="#settings" className="nav-item">
-            <span className="nav-icon">⚙️</span>
-            {!sidebarCollapsed && <span className="nav-label">Settings</span>}
-          </a>
-        </nav>
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+  };
 
-        <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-            {sidebarCollapsed ? (
-              <path d="M7 10l5 5V5l-5 5z"/>
-            ) : (
-              <path d="M13 10l-5 5V5l5 5z"/>
-            )}
-          </svg>
-        </button>
-      </aside>
-
-      {/* Main Content */}
-      <div className={`dashboard-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {/* Top Bar */}
-        <header className="top-bar">
-          <div className="top-bar-left">
-            <button className="mobile-menu-btn" onClick={toggleSidebar}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-              </svg>
-            </button>
-            <h1 className="page-title">Security Dashboard</h1>
-          </div>
-          <div className="top-bar-right">
-            <button className="theme-toggle" onClick={toggleTheme}>
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-            <div className="user-profile">
-              <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
-              <span className="user-name">{userName}</span>
-            </div>
-            <button className="logout-btn" onClick={handleLogout}>
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/>
-              </svg>
-              Logout
-            </button>
-          </div>
-        </header>
-
-        {/* Content */}
-        <div className="content-area">
-          {/* Compact Hero */}
+  // Render page content based on currentPage
+  const renderPageContent = () => {
+    if (currentPage === 'dashboard') {
+      return (
+        <>
+          {/* Hero Compact */}
           <div className="hero-compact">
             <div className="hero-text">
               <h1>Welcome, {userName.split(' ')[0]}</h1>
@@ -234,7 +152,6 @@ function Dashboard() {
               <div className="world-map">
                 <div className="map-overlay">
                   <svg className="connection-lines" viewBox="0 0 1000 500">
-                    {/* Connection lines */}
                     <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
                       <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
                     </line>
@@ -246,7 +163,6 @@ function Dashboard() {
                     </line>
                   </svg>
                   
-                  {/* Threat markers */}
                   <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
                     <div className="marker-pulse"></div>
                   </div>
@@ -267,17 +183,14 @@ function Dashboard() {
                   </div>
                 </div>
                 
-                {/* World map SVG simplified */}
                 <svg viewBox="0 0 1000 500" className="world-svg">
                   <rect width="1000" height="500" fill="transparent"/>
-                  {/* Simplified continent shapes */}
                   <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
                     🌍 Global Network Monitoring
                   </text>
                 </svg>
               </div>
               
-              {/* Threat Location List */}
               <div className="threat-locations">
                 <h3>Top Threat Sources</h3>
                 {threatLocations.map((location, idx) => (
@@ -361,6 +274,191 @@ function Dashboard() {
               </button>
             </div>
           </div>
+        </>
+      );
+    } else if (currentPage === 'security') {
+      return (
+        <div className="page-simple">
+          <h1>🛡️ Security Score</h1>
+          <p>Comprehensive security assessment</p>
+          <div className="coming-soon">Detailed security metrics coming soon...</div>
+        </div>
+      );
+    } else if (currentPage === 'training') {
+      return (
+        <div className="page-simple">
+          <h1>🎓 Training Center</h1>
+          <p>Security awareness training</p>
+          <div className="coming-soon">Training modules coming soon...</div>
+        </div>
+      );
+    } else if (currentPage === 'alerts') {
+      return (
+        <div className="page-simple">
+          <h1>🚨 Security Alerts</h1>
+          <p>Active security alerts</p>
+          <div className="coming-soon">Alert management coming soon...</div>
+        </div>
+      );
+    } else if (currentPage === 'reports') {
+      return (
+        <div className="page-simple">
+          <h1>📈 Reports & Analytics</h1>
+          <p>Security reports and analytics</p>
+          <div className="coming-soon">Reporting dashboard coming soon...</div>
+        </div>
+      );
+    } else if (currentPage === 'settings') {
+      return (
+        <div className="page-simple">
+          <h1>⚙️ Settings</h1>
+          <p>Account and system settings</p>
+          <div className="coming-soon">Settings panel coming soon...</div>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className={`dashboard-layout ${darkMode ? 'dark-theme' : 'light-theme'}`}>
+      {/* Sidebar - NO ORG SELECTOR HERE */}
+      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+        <div className="sidebar-logo">
+          <img 
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="CYPROSECURE" 
+            className="logo-image"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextElementSibling.style.display = 'flex';
+            }}
+          />
+          <div className="logo-fallback" style={{display: 'none'}}>C</div>
+          {!sidebarCollapsed && (
+            <div className="logo-text">
+              <h2>CYPROSECURE</h2>
+              <p>Security Platform</p>
+            </div>
+          )}
+        </div>
+
+        <nav className="sidebar-nav">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('dashboard'); }}
+          >
+            <span className="nav-icon">📊</span>
+            {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
+          </a>
+          
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'security' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('security'); }}
+          >
+            <span className="nav-icon">🛡️</span>
+            {!sidebarCollapsed && <span className="nav-label">Security Score</span>}
+          </a>
+          
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'training' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('training'); }}
+          >
+            <span className="nav-icon">🎓</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Training</span>
+                <span className="nav-badge">2</span>
+              </>
+            )}
+          </a>
+          
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'alerts' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('alerts'); }}
+          >
+            <span className="nav-icon">🚨</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Alerts</span>
+                <span className="nav-badge">{securityData.activeAlerts}</span>
+              </>
+            )}
+          </a>
+          
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('reports'); }}
+          >
+            <span className="nav-icon">📈</span>
+            {!sidebarCollapsed && <span className="nav-label">Reports</span>}
+          </a>
+          
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('settings'); }}
+          >
+            <span className="nav-icon">⚙️</span>
+            {!sidebarCollapsed && <span className="nav-label">Settings</span>}
+          </a>
+        </nav>
+
+        <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            {sidebarCollapsed ? (
+              <path d="M7 10l5 5V5l-5 5z"/>
+            ) : (
+              <path d="M13 10l-5 5V5l5 5z"/>
+            )}
+          </svg>
+        </button>
+      </aside>
+
+      {/* Main Content */}
+      <div className={`dashboard-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <header className="top-bar">
+          <div className="top-bar-left">
+            <button className="mobile-menu-btn" onClick={toggleSidebar}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+              </svg>
+            </button>
+            <h1 className="page-title">Security Dashboard</h1>
+          </div>
+          <div className="top-bar-right">
+            <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+            <div className="user-profile">
+              <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+              <span className="user-name">{userName}</span>
+            </div>
+            <button className="logout-btn" onClick={handleLogout}>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/>
+              </svg>
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <div className="content-area">
+          {/* Organization Selector - AT TOP OF CONTENT */}
+          <div className="org-selector-top">
+            <select value={selectedOrg} onChange={handleOrgChange} className="org-dropdown">
+              {organizations.map(org => (
+                <option key={org.id} value={org.id}>{org.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Page Content */}
+          {renderPageContent()}
         </div>
       </div>
     </div>
