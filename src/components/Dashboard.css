@@ -1,11 +1,115 @@
 /* ============================================
-   Employee Dashboard Styles
-   Beautiful, Professional, User-Friendly Design
+   CYPROSECURE Beautiful Dashboard Styles
+   Professional, Modern, User-Friendly Design
    ============================================ */
 
-.employee-dashboard {
+/* ===== Container ===== */
+.dashboard-container {
+  min-height: 100vh;
+  background: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Professional Header ===== */
+.dashboard-header {
+  background: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-bottom: 3px solid #0078d4;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.dashboard-logo {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-subtitle {
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+  padding-left: 15px;
+  border-left: 2px solid #e0e0e0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #00bcf2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+/* ===== Main Content ===== */
+.dashboard-main {
+  flex: 1;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 30px;
+  width: 100%;
 }
 
 /* ===== Welcome Banner ===== */
@@ -131,7 +235,7 @@
   gap: 20px;
   align-items: flex-start;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f0f3f7;
+  border: 2px solid transparent;
   transition: all 0.3s ease;
 }
 
@@ -164,8 +268,8 @@
   background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
 }
 
-.metric-icon.incident {
-  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+.metric-icon.status {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
 }
 
 .metric-content {
@@ -466,7 +570,7 @@
 }
 
 /* ===== Quick Actions ===== */
-.quick-actions {
+.quick-actions-section {
   background: white;
   border-radius: 16px;
   padding: 30px;
@@ -474,7 +578,7 @@
   border: 1px solid #f0f3f7;
 }
 
-.quick-actions h2 {
+.quick-actions-section h2 {
   margin: 0 0 20px 0;
   font-size: 22px;
   font-weight: 800;
@@ -535,6 +639,12 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
   .welcome-banner {
     padding: 30px 25px;
   }
@@ -567,6 +677,10 @@
 }
 
 @media (max-width: 480px) {
+  .dashboard-main {
+    padding: 15px;
+  }
+
   .dashboard-section {
     padding: 20px;
   }
@@ -580,28 +694,4 @@
   .actions-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* ===== Dark Mode ===== */
-.dark-mode .metric-card,
-.dark-mode .dashboard-section,
-.dark-mode .training-card,
-.dark-mode .quick-actions {
-  background: #1a1f3a;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark-mode .metric-value,
-.dark-mode .section-header h2,
-.dark-mode .alert-title,
-.dark-mode .training-info h3,
-.dark-mode .quick-actions h2,
-.dark-mode .action-label {
-  color: #e4e6eb;
-}
-
-.dark-mode .metric-label,
-.dark-mode .alert-description,
-.dark-mode .training-info p {
-  color: #b8c5d6;
 }
