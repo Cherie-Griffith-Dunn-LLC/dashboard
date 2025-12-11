@@ -1,37 +1,40 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useMsal } from '@azure/msal-react';
 import './Dashboard.css';
 
-// Import page components
-import DashboardHome from './pages/DashboardHome';
-import SecurityScorePage from './pages/SecurityScorePage';
-import ThreatsPage from './pages/ThreatsPage';
-import TrainingPage from './pages/TrainingPage';
-import AlertsPage from './pages/AlertsPage';
-import ReportsPage from './pages/ReportsPage';
-import SettingsPage from './pages/SettingsPage';
-
 /**
- * CYPROSECURE Dashboard - With Organization Selector
- * Same sidebar for everyone, just switch which org you're viewing
+ * CYPROSECURE - Professional Refined Dashboard
+ * Smaller sizing, Logo integration, World threat map
  */
-function DashboardContent() {
+function Dashboard() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
-  const [selectedOrg, setSelectedOrg] = useState('all');
-  const location = useLocation();
 
   const user = accounts[0];
   const userName = user?.name || 'User';
 
-  // Mock organizations list (replace with real data later)
-  const organizations = [
-    { id: 'all', name: 'All Organizations' },
-    { id: 'org1', name: 'Acme Healthcare' },
-    { id: 'org2', name: 'Tech Solutions Inc' },
-    { id: 'org3', name: 'Finance Group LLC' },
+  // Mock data
+  const securityData = {
+    securityScore: 85,
+    threatsBlocked: 127,
+    highAlerts: 8,
+    mediumAlerts: 6,
+    lowAlerts: 10,
+    trainingProgress: 75,
+    activeAlerts: 3,
+    secureConnections: 1523,
+    monitored: 32,
+  };
+
+  // World threat locations (mock data)
+  const threatLocations = [
+    { country: 'United States', threats: 45, lat: 37, lng: -95 },
+    { country: 'China', threats: 38, lat: 35, lng: 105 },
+    { country: 'Russia', threats: 32, lat: 60, lng: 100 },
+    { country: 'Germany', threats: 18, lat: 51, lng: 10 },
+    { country: 'Brazil', threats: 15, lat: -10, lng: -55 },
+    { country: 'India', threats: 12, lat: 20, lng: 77 },
   ];
 
   const handleLogout = () => {
@@ -48,30 +51,16 @@ function DashboardContent() {
     setDarkMode(!darkMode);
   };
 
-  const handleOrgChange = (e) => {
-    setSelectedOrg(e.target.value);
-  };
-
-  // Check if current path matches
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
-
   return (
     <div className={`dashboard-layout ${darkMode ? 'dark-theme' : 'light-theme'}`}>
-      {/* Sidebar - SAME AS BEFORE */}
+      {/* Sidebar with Logo */}
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-logo">
           <img 
-            src={`${process.env.PUBLIC_URL}/logo.png`}
+            src="/logo.png" 
             alt="CYPROSECURE" 
             className="logo-image"
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextElementSibling.style.display = 'flex';
-            }}
           />
-          <div className="logo-fallback" style={{display: 'none'}}>C</div>
           {!sidebarCollapsed && (
             <div className="logo-text">
               <h2>CYPROSECURE</h2>
@@ -81,27 +70,24 @@ function DashboardContent() {
         </div>
 
         <nav className="sidebar-nav">
-          <Link to="/dashboard" className={`nav-item ${isActive('/dashboard') ? 'active' : ''}`}>
+          <a href="#dashboard" className="nav-item active">
             <span className="nav-icon">📊</span>
             {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
-          </Link>
-          
-          <Link to="/security" className={`nav-item ${isActive('/security') ? 'active' : ''}`}>
+          </a>
+          <a href="#security" className="nav-item">
             <span className="nav-icon">🛡️</span>
-            {!sidebarCollapsed && <span className="nav-label">Security Score</span>}
-          </Link>
-          
-          <Link to="/threats" className={`nav-item ${isActive('/threats') ? 'active' : ''}`}>
+            {!sidebarCollapsed && <span className="nav-label">Security</span>}
+          </a>
+          <a href="#threats" className="nav-item">
             <span className="nav-icon">⚠️</span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
-                <span className="nav-badge">8</span>
+                <span className="nav-badge">{securityData.highAlerts}</span>
               </>
             )}
-          </Link>
-          
-          <Link to="/training" className={`nav-item ${isActive('/training') ? 'active' : ''}`}>
+          </a>
+          <a href="#training" className="nav-item">
             <span className="nav-icon">🎓</span>
             {!sidebarCollapsed && (
               <>
@@ -109,40 +95,25 @@ function DashboardContent() {
                 <span className="nav-badge">2</span>
               </>
             )}
-          </Link>
-          
-          <Link to="/alerts" className={`nav-item ${isActive('/alerts') ? 'active' : ''}`}>
+          </a>
+          <a href="#alerts" className="nav-item">
             <span className="nav-icon">🚨</span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Alerts</span>
-                <span className="nav-badge">3</span>
+                <span className="nav-badge">{securityData.activeAlerts}</span>
               </>
             )}
-          </Link>
-          
-          <Link to="/reports" className={`nav-item ${isActive('/reports') ? 'active' : ''}`}>
+          </a>
+          <a href="#reports" className="nav-item">
             <span className="nav-icon">📈</span>
             {!sidebarCollapsed && <span className="nav-label">Reports</span>}
-          </Link>
-          
-          <Link to="/settings" className={`nav-item ${isActive('/settings') ? 'active' : ''}`}>
+          </a>
+          <a href="#settings" className="nav-item">
             <span className="nav-icon">⚙️</span>
             {!sidebarCollapsed && <span className="nav-label">Settings</span>}
-          </Link>
+          </a>
         </nav>
-
-        {/* Organization Selector - NEW */}
-        {!sidebarCollapsed && (
-          <div className="org-selector">
-            <label>View Organization:</label>
-            <select value={selectedOrg} onChange={handleOrgChange}>
-              {organizations.map(org => (
-                <option key={org.id} value={org.id}>{org.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
 
         <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
           <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
@@ -168,7 +139,7 @@ function DashboardContent() {
             <h1 className="page-title">Security Dashboard</h1>
           </div>
           <div className="top-bar-right">
-            <button className="theme-toggle" onClick={toggleTheme} title="Toggle theme">
+            <button className="theme-toggle" onClick={toggleTheme}>
               {darkMode ? '☀️' : '🌙'}
             </button>
             <div className="user-profile">
@@ -184,29 +155,215 @@ function DashboardContent() {
           </div>
         </header>
 
-        {/* Routes */}
+        {/* Content */}
         <div className="content-area">
-          <Routes>
-            <Route path="/" element={<DashboardHome userName={userName} selectedOrg={selectedOrg} />} />
-            <Route path="/dashboard" element={<DashboardHome userName={userName} selectedOrg={selectedOrg} />} />
-            <Route path="/security" element={<SecurityScorePage selectedOrg={selectedOrg} />} />
-            <Route path="/threats" element={<ThreatsPage selectedOrg={selectedOrg} />} />
-            <Route path="/training" element={<TrainingPage selectedOrg={selectedOrg} />} />
-            <Route path="/alerts" element={<AlertsPage selectedOrg={selectedOrg} />} />
-            <Route path="/reports" element={<ReportsPage selectedOrg={selectedOrg} />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Routes>
+          {/* Compact Hero */}
+          <div className="hero-compact">
+            <div className="hero-text">
+              <h1>Welcome, {userName.split(' ')[0]}</h1>
+              <p>Security status: <span className="status-good">Excellent</span></p>
+            </div>
+            <div className="hero-score-compact">
+              <div className="score-ring-small">
+                <svg viewBox="0 0 80 80">
+                  <circle className="ring-bg" cx="40" cy="40" r="35"/>
+                  <circle 
+                    className="ring-progress" 
+                    cx="40" 
+                    cy="40" 
+                    r="35"
+                    style={{ strokeDasharray: `${securityData.securityScore * 2.2} 220` }}
+                  />
+                </svg>
+                <div className="score-num">{securityData.securityScore}</div>
+              </div>
+              <div className="score-label-small">Security Score</div>
+            </div>
+          </div>
+
+          {/* Compact Metrics */}
+          <div className="metrics-compact">
+            <div className="metric-box">
+              <div className="metric-icon-sm">🛡️</div>
+              <div className="metric-data">
+                <div className="metric-val">{securityData.threatsBlocked}</div>
+                <div className="metric-lbl">Threats Blocked</div>
+              </div>
+              <div className="metric-trend up">+12</div>
+            </div>
+
+            <div className="metric-box">
+              <div className="metric-icon-sm">⚠️</div>
+              <div className="metric-data">
+                <div className="metric-val">{securityData.highAlerts + securityData.mediumAlerts + securityData.lowAlerts}</div>
+                <div className="metric-lbl">Active Threats</div>
+              </div>
+              <div className="metric-breakdown">
+                <span className="high">{securityData.highAlerts}H</span>
+                <span className="medium">{securityData.mediumAlerts}M</span>
+                <span className="low">{securityData.lowAlerts}L</span>
+              </div>
+            </div>
+
+            <div className="metric-box">
+              <div className="metric-icon-sm">🎓</div>
+              <div className="metric-data">
+                <div className="metric-val">{securityData.trainingProgress}%</div>
+                <div className="metric-lbl">Training Progress</div>
+              </div>
+              <div className="metric-trend neutral">2 left</div>
+            </div>
+
+            <div className="metric-box success">
+              <div className="metric-icon-sm">✅</div>
+              <div className="metric-data">
+                <div className="metric-val">Protected</div>
+                <div className="metric-lbl">Current Status</div>
+              </div>
+              <div className="metric-trend success">Secure</div>
+            </div>
+          </div>
+
+          {/* World Threat Map */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Global Threat Map</h2>
+              <span className="live-indicator">🔴 Live</span>
+            </div>
+            <div className="world-map-container">
+              <div className="world-map">
+                <div className="map-overlay">
+                  <svg className="connection-lines" viewBox="0 0 1000 500">
+                    {/* Connection lines */}
+                    <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="700" y1="200" x2="500" y2="250" className="threat-line medium" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="400" y1="350" x2="500" y2="250" className="threat-line low" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                  </svg>
+                  
+                  {/* Threat markers */}
+                  <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker high" style={{left: '70%', top: '40%'}} title="China: 38 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker medium" style={{left: '65%', top: '25%'}} title="Russia: 32 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker medium" style={{left: '48%', top: '30%'}} title="Germany: 18 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker low" style={{left: '40%', top: '70%'}} title="Brazil: 15 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker low" style={{left: '72%', top: '50%'}} title="India: 12 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                </div>
+                
+                {/* World map SVG simplified */}
+                <svg viewBox="0 0 1000 500" className="world-svg">
+                  <rect width="1000" height="500" fill="transparent"/>
+                  {/* Simplified continent shapes */}
+                  <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
+                    🌍 Global Network Monitoring
+                  </text>
+                </svg>
+              </div>
+              
+              {/* Threat Location List */}
+              <div className="threat-locations">
+                <h3>Top Threat Sources</h3>
+                {threatLocations.map((location, idx) => (
+                  <div key={idx} className="location-item">
+                    <div className="location-info">
+                      <span className="location-name">{location.country}</span>
+                      <span className="location-threats">{location.threats} threats</span>
+                    </div>
+                    <div className="location-bar">
+                      <div 
+                        className="location-fill" 
+                        style={{width: `${(location.threats / 45) * 100}%`}}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Compact Alerts */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Recent Alerts</h2>
+              <button className="view-all-sm">View All →</button>
+            </div>
+            <div className="alerts-compact">
+              <div className="alert-row high">
+                <div className="alert-sev">HIGH</div>
+                <div className="alert-info">
+                  <div className="alert-ttl">Suspicious Login Attempt</div>
+                  <div className="alert-dsc">Unknown device in New York</div>
+                </div>
+                <div className="alert-tm">2h ago</div>
+                <button className="alert-act">Review</button>
+              </div>
+
+              <div className="alert-row medium">
+                <div className="alert-sev">MED</div>
+                <div className="alert-info">
+                  <div className="alert-ttl">Unusual Network Activity</div>
+                  <div className="alert-dsc">Increased traffic on port 8080</div>
+                </div>
+                <div className="alert-tm">5h ago</div>
+                <button className="alert-act">Check</button>
+              </div>
+
+              <div className="alert-row low">
+                <div className="alert-sev">LOW</div>
+                <div className="alert-info">
+                  <div className="alert-ttl">Password Expiring Soon</div>
+                  <div className="alert-dsc">7 days remaining</div>
+                </div>
+                <div className="alert-tm">1d ago</div>
+                <button className="alert-act secondary">Update</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Compact Actions */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Quick Actions</h2>
+            </div>
+            <div className="actions-compact">
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">🔑</span>
+                <span>Change Password</span>
+              </button>
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">📱</span>
+                <span>Enable MFA</span>
+              </button>
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">🆘</span>
+                <span>Report Incident</span>
+              </button>
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">📊</span>
+                <span>Full Report</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <Router>
-      <DashboardContent />
-    </Router>
   );
 }
 
