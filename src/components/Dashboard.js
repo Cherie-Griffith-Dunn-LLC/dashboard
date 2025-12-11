@@ -272,19 +272,16 @@ function Dashboard() {
 
         {/* Content */}
         <div className="content-area">
-          {/* Dashboard Page */}
-          {currentPage === 'dashboard' && (
-            <>
-              {/* MSP Owner View - Organization Selector */}
-              {isMSPOwner && (
-                <div className="org-selector-top">
-                  <select value={selectedOrg} onChange={handleOrgChange} className="org-dropdown">
-                    {organizations.map(org => (
-                      <option key={org.id} value={org.id}>{org.name}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
+          {/* MSP Owner View - Organization Selector */}
+          {isMSPOwner && (
+            <div className="org-selector-top">
+              <select value={selectedOrg} onChange={handleOrgChange} className="org-dropdown">
+                {organizations.map(org => (
+                  <option key={org.id} value={org.id}>{org.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Business Owner View - Risk Highlights */}
           {isBusinessOwner && (
@@ -848,26 +845,19 @@ function Dashboard() {
               </div>
             </>
           )}
-            </>
-          )}
 
-          {/* Other Pages - Simple Placeholders */}
+          {/* Other Pages */}
           {currentPage !== 'dashboard' && (
             <div className="page-simple">
               <h1>
                 {currentPage === 'security' && '🛡️ Security'}
-                {currentPage === 'threats' && '⚠️ Threats'}
+                {currentPage === 'threats' && '⚠️ Threats'}  
                 {currentPage === 'training' && '🎓 Training'}
                 {currentPage === 'alerts' && '🚨 Alerts'}
                 {currentPage === 'reports' && '📈 Reports'}
                 {currentPage === 'settings' && '⚙️ Settings'}
               </h1>
-              <p>
-                {isMSPOwner && 'MSP view'}
-                {isBusinessOwner && `${companyName} view`}
-                {isEmployee && 'Personal view'}
-              </p>
-              <div className="coming-soon">This page is coming soon...</div>
+              <p>This page is coming soon...</p>
             </div>
           )}
         </div>
