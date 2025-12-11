@@ -3,18 +3,18 @@ import { useMsal } from '@azure/msal-react';
 import './Dashboard.css';
 
 /**
- * CYPROSECURE Dashboard with Theme Toggle
- * Light & Dark Mode | Professional Sidebar | Cybersecurity Focus
+ * CYPROSECURE - Professional Refined Dashboard
+ * Smaller sizing, Logo integration, World threat map
  */
 function Dashboard() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(true); // Default to dark theme
+  const [darkMode, setDarkMode] = useState(true);
 
   const user = accounts[0];
   const userName = user?.name || 'User';
 
-  // Mock cybersecurity data
+  // Mock data
   const securityData = {
     securityScore: 85,
     threatsBlocked: 127,
@@ -26,6 +26,16 @@ function Dashboard() {
     secureConnections: 1523,
     monitored: 32,
   };
+
+  // World threat locations (mock data)
+  const threatLocations = [
+    { country: 'United States', threats: 45, lat: 37, lng: -95 },
+    { country: 'China', threats: 38, lat: 35, lng: 105 },
+    { country: 'Russia', threats: 32, lat: 60, lng: 100 },
+    { country: 'Germany', threats: 18, lat: 51, lng: 10 },
+    { country: 'Brazil', threats: 15, lat: -10, lng: -55 },
+    { country: 'India', threats: 12, lat: 20, lng: 77 },
+  ];
 
   const handleLogout = () => {
     instance.logoutPopup().catch((error) => {
@@ -43,10 +53,14 @@ function Dashboard() {
 
   return (
     <div className={`dashboard-layout ${darkMode ? 'dark-theme' : 'light-theme'}`}>
-      {/* Professional Sidebar */}
+      {/* Sidebar with Logo */}
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-logo">
-          <div className="logo-icon">C</div>
+          <img 
+            src="/logo.png" 
+            alt="CYPROSECURE" 
+            className="logo-image"
+          />
           {!sidebarCollapsed && (
             <div className="logo-text">
               <h2>CYPROSECURE</h2>
@@ -62,7 +76,7 @@ function Dashboard() {
           </a>
           <a href="#security" className="nav-item">
             <span className="nav-icon">🛡️</span>
-            {!sidebarCollapsed && <span className="nav-label">Security Score</span>}
+            {!sidebarCollapsed && <span className="nav-label">Security</span>}
           </a>
           <a href="#threats" className="nav-item">
             <span className="nav-icon">⚠️</span>
@@ -99,14 +113,10 @@ function Dashboard() {
             <span className="nav-icon">⚙️</span>
             {!sidebarCollapsed && <span className="nav-label">Settings</span>}
           </a>
-          <a href="#help" className="nav-item">
-            <span className="nav-icon">❓</span>
-            {!sidebarCollapsed && <span className="nav-label">Help</span>}
-          </a>
         </nav>
 
         <button className="sidebar-collapse-btn" onClick={toggleSidebar}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
             {sidebarCollapsed ? (
               <path d="M7 10l5 5V5l-5 5z"/>
             ) : (
@@ -122,31 +132,22 @@ function Dashboard() {
         <header className="top-bar">
           <div className="top-bar-left">
             <button className="mobile-menu-btn" onClick={toggleSidebar}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
               </svg>
             </button>
             <h1 className="page-title">Security Dashboard</h1>
           </div>
           <div className="top-bar-right">
-            {/* Theme Toggle */}
-            <button className="theme-toggle" onClick={toggleTheme} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
-              {darkMode ? (
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
-                </svg>
-              )}
+            <button className="theme-toggle" onClick={toggleTheme}>
+              {darkMode ? '☀️' : '🌙'}
             </button>
             <div className="user-profile">
               <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
               <span className="user-name">{userName}</span>
             </div>
             <button className="logout-btn" onClick={handleLogout}>
-              <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"/>
               </svg>
               Logout
@@ -154,200 +155,209 @@ function Dashboard() {
           </div>
         </header>
 
-        {/* Content Area */}
+        {/* Content */}
         <div className="content-area">
-          {/* Hero Section with Security Score */}
-          <div className="hero-section">
-            <div className="hero-content">
-              <h1>Welcome back, {userName.split(' ')[0]}</h1>
-              <p>Your security posture is strong. {securityData.activeAlerts} items need attention.</p>
+          {/* Compact Hero */}
+          <div className="hero-compact">
+            <div className="hero-text">
+              <h1>Welcome, {userName.split(' ')[0]}</h1>
+              <p>Security status: <span className="status-good">Excellent</span></p>
             </div>
-            <div className="hero-score">
-              <div className="score-ring">
-                <svg viewBox="0 0 100 100">
-                  <circle className="ring-bg" cx="50" cy="50" r="45"/>
+            <div className="hero-score-compact">
+              <div className="score-ring-small">
+                <svg viewBox="0 0 80 80">
+                  <circle className="ring-bg" cx="40" cy="40" r="35"/>
                   <circle 
                     className="ring-progress" 
-                    cx="50" 
-                    cy="50" 
-                    r="45"
-                    style={{ strokeDasharray: `${securityData.securityScore * 2.83} 283` }}
+                    cx="40" 
+                    cy="40" 
+                    r="35"
+                    style={{ strokeDasharray: `${securityData.securityScore * 2.2} 220` }}
                   />
                 </svg>
-                <div className="score-value">{securityData.securityScore}</div>
+                <div className="score-num">{securityData.securityScore}</div>
               </div>
-              <div className="score-info">
-                <div className="score-label">Security Score</div>
-                <div className="score-status">Excellent</div>
+              <div className="score-label-small">Security Score</div>
+            </div>
+          </div>
+
+          {/* Compact Metrics */}
+          <div className="metrics-compact">
+            <div className="metric-box">
+              <div className="metric-icon-sm">🛡️</div>
+              <div className="metric-data">
+                <div className="metric-val">{securityData.threatsBlocked}</div>
+                <div className="metric-lbl">Threats Blocked</div>
+              </div>
+              <div className="metric-trend up">+12</div>
+            </div>
+
+            <div className="metric-box">
+              <div className="metric-icon-sm">⚠️</div>
+              <div className="metric-data">
+                <div className="metric-val">{securityData.highAlerts + securityData.mediumAlerts + securityData.lowAlerts}</div>
+                <div className="metric-lbl">Active Threats</div>
+              </div>
+              <div className="metric-breakdown">
+                <span className="high">{securityData.highAlerts}H</span>
+                <span className="medium">{securityData.mediumAlerts}M</span>
+                <span className="low">{securityData.lowAlerts}L</span>
+              </div>
+            </div>
+
+            <div className="metric-box">
+              <div className="metric-icon-sm">🎓</div>
+              <div className="metric-data">
+                <div className="metric-val">{securityData.trainingProgress}%</div>
+                <div className="metric-lbl">Training Progress</div>
+              </div>
+              <div className="metric-trend neutral">2 left</div>
+            </div>
+
+            <div className="metric-box success">
+              <div className="metric-icon-sm">✅</div>
+              <div className="metric-data">
+                <div className="metric-val">Protected</div>
+                <div className="metric-lbl">Current Status</div>
+              </div>
+              <div className="metric-trend success">Secure</div>
+            </div>
+          </div>
+
+          {/* World Threat Map */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Global Threat Map</h2>
+              <span className="live-indicator">🔴 Live</span>
+            </div>
+            <div className="world-map-container">
+              <div className="world-map">
+                <div className="map-overlay">
+                  <svg className="connection-lines" viewBox="0 0 1000 500">
+                    {/* Connection lines */}
+                    <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="700" y1="200" x2="500" y2="250" className="threat-line medium" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="400" y1="350" x2="500" y2="250" className="threat-line low" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                  </svg>
+                  
+                  {/* Threat markers */}
+                  <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker high" style={{left: '70%', top: '40%'}} title="China: 38 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker medium" style={{left: '65%', top: '25%'}} title="Russia: 32 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker medium" style={{left: '48%', top: '30%'}} title="Germany: 18 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker low" style={{left: '40%', top: '70%'}} title="Brazil: 15 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker low" style={{left: '72%', top: '50%'}} title="India: 12 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                </div>
+                
+                {/* World map SVG simplified */}
+                <svg viewBox="0 0 1000 500" className="world-svg">
+                  <rect width="1000" height="500" fill="transparent"/>
+                  {/* Simplified continent shapes */}
+                  <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
+                    🌍 Global Network Monitoring
+                  </text>
+                </svg>
+              </div>
+              
+              {/* Threat Location List */}
+              <div className="threat-locations">
+                <h3>Top Threat Sources</h3>
+                {threatLocations.map((location, idx) => (
+                  <div key={idx} className="location-item">
+                    <div className="location-info">
+                      <span className="location-name">{location.country}</span>
+                      <span className="location-threats">{location.threats} threats</span>
+                    </div>
+                    <div className="location-bar">
+                      <div 
+                        className="location-fill" 
+                        style={{width: `${(location.threats / 45) * 100}%`}}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Cybersecurity Metrics Grid */}
-          <div className="cyber-grid">
-            {/* Threats Card */}
-            <div className="cyber-card threats-card">
-              <div className="card-header">
-                <h3>THREATS</h3>
-                <span className="card-icon">🛡️</span>
-              </div>
-              <div className="threats-total">{securityData.highAlerts + securityData.mediumAlerts + securityData.lowAlerts}</div>
-              <div className="threats-breakdown">
-                <div className="threat-item high">
-                  <span className="threat-count">{securityData.highAlerts}</span>
-                  <span className="threat-label">High</span>
-                </div>
-                <div className="threat-item medium">
-                  <span className="threat-count">{securityData.mediumAlerts}</span>
-                  <span className="threat-label">Medium</span>
-                </div>
-                <div className="threat-item low">
-                  <span className="threat-count">{securityData.lowAlerts}</span>
-                  <span className="threat-label">Low</span>
-                </div>
-              </div>
+          {/* Compact Alerts */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Recent Alerts</h2>
+              <button className="view-all-sm">View All →</button>
             </div>
-
-            {/* Network Monitoring Card */}
-            <div className="cyber-card monitoring-card">
-              <div className="card-header">
-                <h3>NETWORK MONITORING</h3>
-              </div>
-              <div className="monitoring-ring">
-                <svg viewBox="0 0 100 100">
-                  <circle className="ring-bg" cx="50" cy="50" r="40"/>
-                  <circle 
-                    className="ring-progress" 
-                    cx="50" 
-                    cy="50" 
-                    r="40"
-                    style={{ strokeDasharray: `${72 * 2.51} 251` }}
-                  />
-                </svg>
-                <div className="ring-value">72%</div>
-              </div>
-              <div className="monitoring-stats">
-                <div className="stat-item">
-                  <span className="stat-value">{securityData.secureConnections}</span>
-                  <span className="stat-label">Secure connections</span>
+            <div className="alerts-compact">
+              <div className="alert-row high">
+                <div className="alert-sev">HIGH</div>
+                <div className="alert-info">
+                  <div className="alert-ttl">Suspicious Login Attempt</div>
+                  <div className="alert-dsc">Unknown device in New York</div>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-value">{securityData.monitored}</span>
-                  <span className="stat-label">Monitored</span>
+                <div className="alert-tm">2h ago</div>
+                <button className="alert-act">Review</button>
+              </div>
+
+              <div className="alert-row medium">
+                <div className="alert-sev">MED</div>
+                <div className="alert-info">
+                  <div className="alert-ttl">Unusual Network Activity</div>
+                  <div className="alert-dsc">Increased traffic on port 8080</div>
                 </div>
+                <div className="alert-tm">5h ago</div>
+                <button className="alert-act">Check</button>
               </div>
-            </div>
 
-            {/* Threats Blocked Card */}
-            <div className="cyber-card blocked-card">
-              <div className="card-header">
-                <h3>THREATS BLOCKED</h3>
-                <span className="trend-up">+12</span>
-              </div>
-              <div className="blocked-value">{securityData.threatsBlocked}</div>
-              <div className="blocked-label">Last 30 days</div>
-              <div className="mini-chart">
-                <div className="chart-bar" style={{height: '60%'}}></div>
-                <div className="chart-bar" style={{height: '75%'}}></div>
-                <div className="chart-bar" style={{height: '45%'}}></div>
-                <div className="chart-bar" style={{height: '85%'}}></div>
-                <div className="chart-bar" style={{height: '70%'}}></div>
-                <div className="chart-bar" style={{height: '90%'}}></div>
-                <div className="chart-bar" style={{height: '65%'}}></div>
-              </div>
-            </div>
-
-            {/* Training Progress Card */}
-            <div className="cyber-card training-card">
-              <div className="card-header">
-                <h3>TRAINING PROGRESS</h3>
-              </div>
-              <div className="training-ring">
-                <svg viewBox="0 0 100 100">
-                  <circle className="ring-bg" cx="50" cy="50" r="40"/>
-                  <circle 
-                    className="ring-progress" 
-                    cx="50" 
-                    cy="50" 
-                    r="40"
-                    style={{ strokeDasharray: `${securityData.trainingProgress * 2.51} 251` }}
-                  />
-                </svg>
-                <div className="ring-value">{securityData.trainingProgress}%</div>
-              </div>
-              <div className="training-info">
-                <div className="info-item">2 courses remaining</div>
-                <div className="info-item">On track for completion</div>
+              <div className="alert-row low">
+                <div className="alert-sev">LOW</div>
+                <div className="alert-info">
+                  <div className="alert-ttl">Password Expiring Soon</div>
+                  <div className="alert-dsc">7 days remaining</div>
+                </div>
+                <div className="alert-tm">1d ago</div>
+                <button className="alert-act secondary">Update</button>
               </div>
             </div>
           </div>
 
-          {/* Recent Alerts */}
-          <div className="section-card">
-            <div className="section-header">
-              <h2>Recent Security Alerts</h2>
-              <button className="view-all">View All →</button>
-            </div>
-            <div className="alerts-list">
-              <div className="alert-item high">
-                <div className="alert-left">
-                  <div className="alert-severity">HIGH</div>
-                  <div className="alert-content">
-                    <div className="alert-title">Suspicious Login Attempt</div>
-                    <div className="alert-desc">Login attempt from unknown device in New York</div>
-                    <div className="alert-time">2 hours ago</div>
-                  </div>
-                </div>
-                <button className="alert-btn">Review</button>
-              </div>
-
-              <div className="alert-item medium">
-                <div className="alert-left">
-                  <div className="alert-severity">MEDIUM</div>
-                  <div className="alert-content">
-                    <div className="alert-title">Unusual Network Activity</div>
-                    <div className="alert-desc">Increased data transfer detected on port 8080</div>
-                    <div className="alert-time">5 hours ago</div>
-                  </div>
-                </div>
-                <button className="alert-btn">Investigate</button>
-              </div>
-
-              <div className="alert-item low">
-                <div className="alert-left">
-                  <div className="alert-severity">LOW</div>
-                  <div className="alert-content">
-                    <div className="alert-title">Password Expiring Soon</div>
-                    <div className="alert-desc">Your password will expire in 7 days</div>
-                    <div className="alert-time">1 day ago</div>
-                  </div>
-                </div>
-                <button className="alert-btn secondary">Change Password</button>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="section-card">
-            <div className="section-header">
+          {/* Compact Actions */}
+          <div className="section-compact">
+            <div className="section-hdr">
               <h2>Quick Actions</h2>
             </div>
-            <div className="actions-grid">
-              <button className="action-card">
-                <span className="action-icon">🔑</span>
-                <span className="action-label">Change Password</span>
+            <div className="actions-compact">
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">🔑</span>
+                <span>Change Password</span>
               </button>
-              <button className="action-card">
-                <span className="action-icon">📱</span>
-                <span className="action-label">Enable MFA</span>
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">📱</span>
+                <span>Enable MFA</span>
               </button>
-              <button className="action-card">
-                <span className="action-icon">🆘</span>
-                <span className="action-label">Report Incident</span>
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">🆘</span>
+                <span>Report Incident</span>
               </button>
-              <button className="action-card">
-                <span className="action-icon">📊</span>
-                <span className="action-label">View Full Report</span>
+              <button className="action-btn-sm">
+                <span className="action-icon-sm">📊</span>
+                <span>Full Report</span>
               </button>
             </div>
           </div>
