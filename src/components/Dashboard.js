@@ -358,76 +358,84 @@ Keep responses concise but helpful.`,
             </div>
           )}
 
-          {/* Global Threat Map - Shows for Everyone */}
-          <div className="section-compact">
-            <div className="section-hdr">
-              <h2>Global Threat Map</h2>
-              <span className="live-indicator">🔴 Live</span>
-            </div>
-            <div className="world-map-container">
-              <div className="world-map">
-                <div className="map-overlay">
-                  <svg className="connection-lines" viewBox="0 0 1000 500">
-                    <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
-                    </line>
-                    <line x1="700" y1="200" x2="500" y2="250" className="threat-line medium" strokeDasharray="5,5">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
-                    </line>
-                    <line x1="400" y1="350" x2="500" y2="250" className="threat-line low" strokeDasharray="5,5">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
-                    </line>
-                  </svg>
-                  
-                  <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
-                    <div className="marker-pulse"></div>
+          {/* Employee View - Welcome Section (Shows First) */}
+          {isEmployee && (
+            <>
+              {/* Personal Hero */}
+              <div className="employee-hero">
+                <div className="employee-hero-content">
+                  <h1>My Security Dashboard</h1>
+                  <p className="employee-subtitle">Welcome back, {userName.split(' ')[0]}!</p>
+                </div>
+                <div className="employee-score-card">
+                  <div className="score-ring-medium">
+                    <svg viewBox="0 0 120 120">
+                      <circle className="ring-bg" cx="60" cy="60" r="50"/>
+                      <circle 
+                        className="ring-progress" 
+                        cx="60" 
+                        cy="60" 
+                        r="50"
+                        style={{ strokeDasharray: `${currentUserData.riskScore * 3.14} 314` }}
+                      />
+                    </svg>
+                    <div className="score-num-large">{currentUserData.riskScore}</div>
                   </div>
-                  <div className="threat-marker high" style={{left: '70%', top: '40%'}} title="China: 38 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker medium" style={{left: '65%', top: '25%'}} title="Russia: 32 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker medium" style={{left: '48%', top: '30%'}} title="Germany: 18 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker low" style={{left: '40%', top: '70%'}} title="Brazil: 15 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker low" style={{left: '72%', top: '50%'}} title="India: 12 threats">
-                    <div className="marker-pulse"></div>
+                  <div className="score-status-text">
+                    <div className="score-label">Your Security Score</div>
+                    <div className={`score-status ${getRiskColor(currentUserData.riskScore)}`}>
+                      {currentUserData.riskScore >= 70 ? 'Needs Improvement' : currentUserData.riskScore >= 50 ? 'Good' : 'Excellent'}
+                    </div>
                   </div>
                 </div>
-                
-                <svg viewBox="0 0 1000 500" className="world-svg">
-                  <rect width="1000" height="500" fill="transparent"/>
-                  <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
-                    🌍 Global Network Monitoring
-                  </text>
-                </svg>
               </div>
-              
-              <div className="threat-locations">
-                <h3>Top Threat Sources</h3>
-                {threatLocations.map((location, idx) => (
-                  <div key={idx} className="location-item">
-                    <div className="location-info">
-                      <span className="location-name">{location.country}</span>
-                      <span className="location-threats">{location.threats} threats</span>
-                    </div>
-                    <div className="location-bar">
-                      <div 
-                        className="location-fill" 
-                        style={{width: `${(location.threats / 45) * 100}%`}}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
 
-          {/* MSP Owner Content */}
+              {/* Personal Metrics */}
+              <div className="metrics-compact">
+                <div className="metric-box">
+                  <div className="metric-icon-sm">🎯</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.riskScore}</div>
+                    <div className="metric-lbl">My Risk Score</div>
+                  </div>
+                  <div className={`metric-trend ${getRiskColor(currentUserData.riskScore)}`}>
+                    {currentUserData.riskScore >= 70 ? 'High' : currentUserData.riskScore >= 50 ? 'Medium' : 'Low'}
+                  </div>
+                </div>
+
+                <div className="metric-box">
+                  <div className="metric-icon-sm">🎓</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.training.completed}/{currentUserData.training.total}</div>
+                    <div className="metric-lbl">Training Complete</div>
+                  </div>
+                  <div className="metric-trend neutral">
+                    {currentUserData.training.total - currentUserData.training.completed} remaining
+                  </div>
+                </div>
+
+                <div className="metric-box">
+                  <div className="metric-icon-sm">⚠️</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.threatCount}</div>
+                    <div className="metric-lbl">Threats Blocked</div>
+                  </div>
+                  <div className="metric-trend up">This week</div>
+                </div>
+
+                <div className="metric-box">
+                  <div className="metric-icon-sm">📱</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{currentUserData.devices.length}</div>
+                    <div className="metric-lbl">My Devices</div>
+                  </div>
+                  <div className="metric-trend neutral">Monitored</div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* MSP Owner Content - Heat Map Dashboard */}
           {isMSPOwner && (
             <>
               {/* Compact Hero */}
@@ -539,8 +547,37 @@ Keep responses concise but helpful.`,
                     </div>
                     
                     <svg viewBox="0 0 1000 500" className="world-svg">
-                      <rect width="1000" height="500" fill="transparent"/>
-                      <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
+                      {/* Simplified World Map Continents */}
+                      {/* North America */}
+                      <path d="M 150 100 L 180 80 L 220 90 L 250 110 L 270 140 L 260 170 L 240 200 L 210 210 L 180 200 L 150 170 Z" 
+                            fill="var(--text-muted)" opacity="0.15" stroke="var(--border-color)" strokeWidth="1"/>
+                      
+                      {/* South America */}
+                      <path d="M 230 250 L 250 230 L 270 240 L 280 270 L 290 310 L 280 350 L 260 380 L 240 370 L 220 340 L 210 300 L 220 270 Z" 
+                            fill="var(--text-muted)" opacity="0.15" stroke="var(--border-color)" strokeWidth="1"/>
+                      
+                      {/* Europe */}
+                      <path d="M 460 120 L 490 110 L 520 120 L 530 140 L 520 160 L 490 170 L 470 165 L 450 150 Z" 
+                            fill="var(--text-muted)" opacity="0.15" stroke="var(--border-color)" strokeWidth="1"/>
+                      
+                      {/* Africa */}
+                      <path d="M 480 200 L 510 190 L 540 210 L 550 250 L 560 300 L 550 350 L 520 370 L 490 360 L 470 330 L 460 280 L 470 230 Z" 
+                            fill="var(--text-muted)" opacity="0.15" stroke="var(--border-color)" strokeWidth="1"/>
+                      
+                      {/* Asia */}
+                      <path d="M 580 80 L 650 70 L 720 90 L 750 120 L 770 150 L 760 180 L 730 200 L 680 210 L 630 200 L 590 180 L 570 150 L 575 110 Z" 
+                            fill="var(--text-muted)" opacity="0.15" stroke="var(--border-color)" strokeWidth="1"/>
+                      
+                      {/* Australia */}
+                      <path d="M 720 330 L 760 320 L 790 340 L 800 370 L 780 390 L 750 395 L 720 380 L 710 355 Z" 
+                            fill="var(--text-muted)" opacity="0.15" stroke="var(--border-color)" strokeWidth="1"/>
+                      
+                      {/* Grid lines for reference */}
+                      <line x1="0" y1="250" x2="1000" y2="250" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.2" strokeDasharray="5,5"/>
+                      <line x1="500" y1="0" x2="500" y2="500" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.2" strokeDasharray="5,5"/>
+                      
+                      {/* Label */}
+                      <text x="500" y="480" textAnchor="middle" fill="var(--text-muted)" fontSize="12" opacity="0.4">
                         🌍 Global Network Monitoring
                       </text>
                     </svg>
@@ -632,7 +669,10 @@ Keep responses concise but helpful.`,
             </>
           )}
 
-          {/* Employee View - Personal Dashboard */}              {/* Company Overview */}
+          {/* Business Owner Content - Employee Risk Table */}
+          {isBusinessOwner && (
+            <>
+              {/* Company Overview */}
               <div className="metrics-compact">
                 <div className="metric-box">
                   <div className="metric-icon-sm">👥</div>
@@ -759,82 +799,12 @@ Keep responses concise but helpful.`,
                   </button>
                 </div>
               </div>
+            </>
+          )}
 
-          {/* Employee View - Personal Dashboard */}
+          {/* Employee View - Training & Devices (Continued) */}
           {isEmployee && (
             <>
-              {/* Personal Hero */}
-              <div className="employee-hero">
-                <div className="employee-hero-content">
-                  <h1>My Security Dashboard</h1>
-                  <p className="employee-subtitle">Welcome back, {userName.split(' ')[0]}!</p>
-                </div>
-                <div className="employee-score-card">
-                  <div className="score-ring-medium">
-                    <svg viewBox="0 0 120 120">
-                      <circle className="ring-bg" cx="60" cy="60" r="50"/>
-                      <circle 
-                        className="ring-progress" 
-                        cx="60" 
-                        cy="60" 
-                        r="50"
-                        style={{ strokeDasharray: `${currentUserData.riskScore * 3.14} 314` }}
-                      />
-                    </svg>
-                    <div className="score-num-large">{currentUserData.riskScore}</div>
-                  </div>
-                  <div className="score-status-text">
-                    <div className="score-label">Your Security Score</div>
-                    <div className={`score-status ${getRiskColor(currentUserData.riskScore)}`}>
-                      {currentUserData.riskScore >= 70 ? 'Needs Improvement' : currentUserData.riskScore >= 50 ? 'Good' : 'Excellent'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Personal Metrics */}
-              <div className="metrics-compact">
-                <div className="metric-box">
-                  <div className="metric-icon-sm">🎯</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.riskScore}</div>
-                    <div className="metric-lbl">My Risk Score</div>
-                  </div>
-                  <div className={`metric-trend ${getRiskColor(currentUserData.riskScore)}`}>
-                    {currentUserData.riskScore >= 70 ? 'High' : currentUserData.riskScore >= 50 ? 'Medium' : 'Low'}
-                  </div>
-                </div>
-
-                <div className="metric-box">
-                  <div className="metric-icon-sm">🎓</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.training.completed}/{currentUserData.training.total}</div>
-                    <div className="metric-lbl">Training Complete</div>
-                  </div>
-                  <div className="metric-trend neutral">
-                    {currentUserData.training.total - currentUserData.training.completed} remaining
-                  </div>
-                </div>
-
-                <div className="metric-box">
-                  <div className="metric-icon-sm">⚠️</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.threatCount}</div>
-                    <div className="metric-lbl">Threats Blocked</div>
-                  </div>
-                  <div className="metric-trend up">This week</div>
-                </div>
-
-                <div className="metric-box">
-                  <div className="metric-icon-sm">📱</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.devices.length}</div>
-                    <div className="metric-lbl">My Devices</div>
-                  </div>
-                  <div className="metric-trend neutral">Monitored</div>
-                </div>
-              </div>
-
               {/* My Training */}
               <div className="section-compact">
                 <div className="section-hdr">
