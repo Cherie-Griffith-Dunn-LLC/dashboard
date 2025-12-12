@@ -358,7 +358,76 @@ Keep responses concise but helpful.`,
             </div>
           )}
 
-          {/* MSP Owner Content - Heat Map Dashboard */}
+          {/* Global Threat Map - Shows for Everyone */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Global Threat Map</h2>
+              <span className="live-indicator">🔴 Live</span>
+            </div>
+            <div className="world-map-container">
+              <div className="world-map">
+                <div className="map-overlay">
+                  <svg className="connection-lines" viewBox="0 0 1000 500">
+                    <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="700" y1="200" x2="500" y2="250" className="threat-line medium" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="400" y1="350" x2="500" y2="250" className="threat-line low" strokeDasharray="5,5">
+                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                    </line>
+                  </svg>
+                  
+                  <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker high" style={{left: '70%', top: '40%'}} title="China: 38 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker medium" style={{left: '65%', top: '25%'}} title="Russia: 32 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker medium" style={{left: '48%', top: '30%'}} title="Germany: 18 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker low" style={{left: '40%', top: '70%'}} title="Brazil: 15 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                  <div className="threat-marker low" style={{left: '72%', top: '50%'}} title="India: 12 threats">
+                    <div className="marker-pulse"></div>
+                  </div>
+                </div>
+                
+                <svg viewBox="0 0 1000 500" className="world-svg">
+                  <rect width="1000" height="500" fill="transparent"/>
+                  <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
+                    🌍 Global Network Monitoring
+                  </text>
+                </svg>
+              </div>
+              
+              <div className="threat-locations">
+                <h3>Top Threat Sources</h3>
+                {threatLocations.map((location, idx) => (
+                  <div key={idx} className="location-item">
+                    <div className="location-info">
+                      <span className="location-name">{location.country}</span>
+                      <span className="location-threats">{location.threats} threats</span>
+                    </div>
+                    <div className="location-bar">
+                      <div 
+                        className="location-fill" 
+                        style={{width: `${(location.threats / 45) * 100}%`}}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* MSP Owner Content */}
           {isMSPOwner && (
             <>
               {/* Compact Hero */}
@@ -563,10 +632,7 @@ Keep responses concise but helpful.`,
             </>
           )}
 
-          {/* Business Owner Content - Employee Risk Table */}
-          {isBusinessOwner && (
-            <>
-              {/* Company Overview */}
+          {/* Employee View - Personal Dashboard */}              {/* Company Overview */}
               <div className="metrics-compact">
                 <div className="metric-box">
                   <div className="metric-icon-sm">👥</div>
@@ -693,8 +759,6 @@ Keep responses concise but helpful.`,
                   </button>
                 </div>
               </div>
-            </>
-          )}
 
           {/* Employee View - Personal Dashboard */}
           {isEmployee && (
