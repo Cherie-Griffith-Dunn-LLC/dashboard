@@ -33,34 +33,26 @@ function Dashboard() {
   // Cyproteck MSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  // Check user roles - FIXED for actual Azure AD roles
+  // Check user roles - FIXED
   const userRoles = user?.idTokenClaims?.roles || [];
   const userEmail = user?.username || user?.idTokenClaims?.preferred_username || '';
   const isCyproteckEmail = userEmail.toLowerCase().includes('@cyproteck.com');
   
-  // Check for MSSP Owner roles (supports both Azure AD apps)
   const hasTenantRole = userRoles.some(role => 
-    role === 'Tenant' || 
-    role === 'Cyprotenant' ||
-    role === 'TenantOwner' ||
-    role.toLowerCase() === 'tenant' ||
-    role.toLowerCase() === 'tenantowner'
+    role === 'Tenant' || role === 'Cyprotenant' || role === 'TenantOwner' ||
+    role.toLowerCase() === 'tenant' || role.toLowerCase() === 'tenantowner'
   );
   
-  // Check for Business Owner role
   const hasBusinessOwnerRole = userRoles.some(role => 
-    role === 'BusinessOwner' ||
-    role === 'Businessowner' ||
-    role.toLowerCase() === 'businessowner'
+    role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
   );
+  
+  const hasAdminRole = hasTenantRole || hasBusinessOwnerRole || isCyproteckEmail;
   
   // Determine user type
-  // MSP Owner = Cyproteck tenant + (Tenant role OR @cyproteck.com email)
-  // Business Owner = Other tenant + BusinessOwner role  
-  // Employee = Everyone else
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && (hasTenantRole || isCyproteckEmail);
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole;
-  const isEmployee = !isMSPOwner && !isBusinessOwner;
+  const isEmployee = !hasAdminRole;
   
   // Current user data (for employee view)
   const currentUserData = {
@@ -336,38 +328,6 @@ Keep responses concise but helpful.`,
 
         {/* Content */}
         <div className="content-area">
-          {/* DEBUG INFO - Shows role detection status */}
-          <div style={{
-            padding: '20px',
-            background: '#1e293b',
-            border: '2px solid #5de4c7',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            fontFamily: 'monospace',
-            fontSize: '14px'
-          }}>
-            <h3 style={{margin: '0 0 15px 0', color: '#5de4c7'}}>🔍 Login Status</h3>
-            <div style={{display: 'grid', gap: '10px'}}>
-              <div><strong>Tenant ID:</strong> {tenantId}</div>
-              <div><strong>Cyproteck Tenant:</strong> {CYPROTECK_TENANT_ID}</div>
-              <div><strong>Match:</strong> {tenantId === CYPROTECK_TENANT_ID ? '✅ YES' : '❌ NO'}</div>
-              <div><strong>Email:</strong> {userEmail}</div>
-              <div><strong>Has @cyproteck.com:</strong> {isCyproteckEmail ? '✅ YES' : '❌ NO'}</div>
-              <div><strong>Roles:</strong> {userRoles.length > 0 ? userRoles.join(', ') : '❌ No roles'}</div>
-              <div><strong>Has Tenant Role:</strong> {hasTenantRole ? '✅ YES' : '❌ NO'}</div>
-              <div style={{
-                marginTop: '10px',
-                padding: '10px',
-                background: isMSPOwner ? '#22c55e' : '#ef4444',
-                borderRadius: '6px',
-                fontWeight: 'bold',
-                fontSize: '16px'
-              }}>
-                Detected As: {isMSPOwner ? '🏢 MSSP OWNER' : isBusinessOwner ? '👔 BUSINESS OWNER' : '👤 EMPLOYEE'}
-              </div>
-            </div>
-          </div>
-
           {/* MSP Owner View - Organization Selector */}
           {isMSPOwner && (
             <div className="org-selector-top">
@@ -516,57 +476,63 @@ Keep responses concise but helpful.`,
                     </div>
                     
                     <svg viewBox="0 0 1000 500" className="world-svg">
-                      {/* Realistic World Map - Continents */}
+                      {/* Professional World Map - Based on reference image */}
+                      <defs>
+                        <filter id="glow">
+                          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                          <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                          </feMerge>
+                        </filter>
+                      </defs>
+                      
+                      {/* Background */}
+                      <rect width="1000" height="500" fill="#f8fafc"/>
                       
                       {/* North America */}
-                      <path d="M 80,160 L 95,145 L 115,135 L 140,130 L 165,130 L 185,135 L 205,145 L 220,160 L 230,180 L 235,200 L 235,220 L 225,238 L 210,250 L 190,258 L 170,260 L 150,255 L 135,245 L 122,230 L 115,210 L 112,190 L 115,170 Z" 
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      <path d="M 80,120 L 90,100 L 110,85 L 135,75 L 160,70 L 185,70 L 205,75 L 220,85 L 235,100 L 245,120 L 255,145 L 260,170 L 260,195 L 255,215 L 245,235 L 230,250 L 210,260 L 185,265 L 160,263 L 140,255 L 125,242 L 112,225 L 105,205 L 100,180 L 95,155 L 90,135 Z M 175,90 L 195,85 L 215,87 L 235,95 L 250,107 L 258,122 L 260,140 L 255,155 L 245,167 L 230,175 L 210,178 L 190,175 L 175,167 L 165,155 L 160,140 L 160,125 L 165,110 L 170,100 Z" 
+                            fill="#1e3a5f" opacity="0.95"/>
                       
                       {/* Central America */}
-                      <path d="M 190,258 L 198,268 L 203,280 L 205,292 L 203,302 L 198,310 L 190,315 L 182,310 L 178,300 L 178,288 L 182,275 L 186,265 Z"
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      <path d="M 185,265 L 195,275 L 202,287 L 205,300 L 203,312 L 198,322 L 190,328 L 180,323 L 175,313 L 173,300 L 175,287 L 178,277 Z"
+                            fill="#1e3a5f" opacity="0.95"/>
                       
                       {/* South America */}
-                      <path d="M 195,320 L 210,318 L 225,325 L 235,340 L 240,360 L 242,385 L 238,405 L 228,420 L 212,430 L 195,432 L 180,428 L 168,418 L 160,402 L 158,383 L 160,365 L 165,345 L 175,328 Z"
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
-                      
-                      {/* Europe */}
-                      <path d="M 460,120 L 475,115 L 492,112 L 508,112 L 522,116 L 535,123 L 543,135 L 545,148 L 542,160 L 532,170 L 518,175 L 502,176 L 486,173 L 473,165 L 464,152 L 460,138 Z"
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
-                      
-                      {/* Scandinavia */}
-                      <path d="M 495,75 L 507,70 L 518,70 L 528,75 L 535,85 L 538,98 L 535,110 L 525,118 L 512,120 L 500,116 L 492,105 L 490,92 L 492,82 Z"
-                            fill="#1e293b" opacity="0.6" stroke="#334155" strokeWidth="1"/>
-                      
-                      {/* Africa */}
-                      <path d="M 480,185 L 500,182 L 520,185 L 538,195 L 552,210 L 560,230 L 565,255 L 565,280 L 560,305 L 548,325 L 532,340 L 515,348 L 498,350 L 482,345 L 470,332 L 462,315 L 458,295 L 458,270 L 462,245 L 470,220 L 478,200 Z"
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
-                      
-                      {/* Asia - Large continent */}
-                      <path d="M 550,90 L 580,85 L 615,82 L 650,85 L 685,95 L 715,110 L 738,130 L 755,155 L 765,180 L 768,205 L 763,228 L 748,245 L 725,255 L 695,260 L 665,258 L 635,248 L 608,233 L 585,215 L 568,193 L 558,170 L 552,145 L 550,120 Z"
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
-                      
-                      {/* Southeast Asia / India */}
-                      <path d="M 720,260 L 735,258 L 748,263 L 758,273 L 763,288 L 763,303 L 755,315 L 742,320 L 728,318 L 718,308 L 715,293 L 718,278 Z"
-                            fill="#1e293b" opacity="0.6" stroke="#334155" strokeWidth="1"/>
-                      
-                      {/* Australia */}
-                      <path d="M 720,330 L 745,327 L 770,330 L 792,340 L 808,355 L 815,375 L 815,395 L 805,410 L 785,420 L 760,422 L 738,418 L 722,408 L 713,393 L 710,375 L 713,358 L 718,343 Z"
-                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      <path d="M 190,330 L 205,328 L 222,333 L 235,343 L 245,358 L 252,378 L 255,400 L 253,422 L 245,440 L 232,453 L 215,460 L 195,462 L 178,458 L 165,448 L 155,433 L 150,415 L 148,395 L 150,375 L 155,355 L 163,340 L 175,332 Z"
+                            fill="#1e3a5f" opacity="0.95"/>
                       
                       {/* Greenland */}
-                      <path d="M 310,45 L 340,40 L 368,42 L 390,50 L 405,65 L 410,85 L 408,105 L 395,120 L 375,128 L 350,130 L 325,125 L 305,112 L 295,95 L 292,75 L 298,58 Z"
-                            fill="#1e293b" opacity="0.5" stroke="#334155" strokeWidth="1"/>
+                      <path d="M 305,30 L 330,25 L 355,27 L 375,35 L 390,48 L 398,65 L 400,85 L 395,103 L 383,117 L 365,125 L 345,128 L 325,125 L 310,115 L 300,100 L 295,83 L 295,65 L 300,48 Z"
+                            fill="#1e3a5f" opacity="0.85"/>
                       
-                      {/* Grid lines for reference */}
-                      <line x1="0" y1="250" x2="1000" y2="250" stroke="#334155" strokeWidth="0.5" opacity="0.2" strokeDasharray="8,4"/>
-                      <line x1="500" y1="0" x2="500" y2="500" stroke="#334155" strokeWidth="0.5" opacity="0.2" strokeDasharray="8,4"/>
-                      <line x1="250" y1="0" x2="250" y2="500" stroke="#334155" strokeWidth="0.5" opacity="0.15" strokeDasharray="6,3"/>
-                      <line x1="750" y1="0" x2="750" y2="500" stroke="#334155" strokeWidth="0.5" opacity="0.15" strokeDasharray="6,3"/>
+                      {/* Europe */}
+                      <path d="M 455,95 L 470,90 L 488,88 L 505,90 L 520,95 L 533,103 L 543,115 L 548,130 L 548,145 L 543,158 L 533,168 L 518,175 L 500,178 L 482,176 L 467,168 L 457,155 L 452,140 L 452,123 L 455,108 Z M 480,100 L 490,98 L 502,98 L 512,102 L 520,110 L 523,122 L 522,135 L 515,145 L 503,150 L 490,150 L 478,145 L 470,135 L 467,122 L 468,110 L 473,103 Z"
+                            fill="#1e3a5f" opacity="0.95"/>
                       
-                      <text x="500" y="485" textAnchor="middle" fill="var(--text-muted)" fontSize="13" opacity="0.4" fontWeight="600">
-                        🌍 Global Threat Monitoring
-                      </text>
+                      {/* Scandinavia */}
+                      <path d="M 490,50 L 505,45 L 520,45 L 532,50 L 540,60 L 545,73 L 545,88 L 538,100 L 525,107 L 510,110 L 495,107 L 485,98 L 480,85 L 480,70 L 483,58 Z"
+                            fill="#1e3a5f" opacity="0.9"/>
+                      
+                      {/* Africa */}
+                      <path d="M 475,180 L 495,177 L 515,180 L 535,188 L 552,200 L 565,218 L 573,240 L 578,265 L 578,290 L 573,315 L 562,338 L 545,358 L 525,372 L 505,380 L 485,382 L 468,378 L 455,368 L 445,353 L 440,335 L 438,315 L 438,290 L 440,265 L 445,240 L 453,218 L 463,200 Z M 505,215 L 495,220 L 488,230 L 485,245 L 485,265 L 488,283 L 495,298 L 507,308 L 522,313 L 537,313 L 550,308 L 558,298 L 562,283 L 563,265 L 562,245 L 558,230 L 550,220 L 537,215 L 522,213 Z"
+                            fill="#1e3a5f" opacity="0.95"/>
+                      
+                      {/* Asia */}
+                      <path d="M 555,75 L 585,70 L 620,68 L 655,70 L 690,77 L 720,88 L 745,103 L 765,122 L 780,145 L 788,170 L 790,195 L 785,218 L 772,238 L 750,252 L 720,260 L 685,263 L 650,258 L 618,247 L 590,230 L 568,210 L 553,188 L 545,165 L 542,140 L 543,115 L 548,95 Z"
+                            fill="#1e3a5f" opacity="0.95"/>
+                      
+                      {/* India/Southeast Asia */}
+                      <path d="M 720,265 L 738,263 L 755,268 L 768,278 L 775,293 L 778,310 L 775,327 L 765,340 L 750,347 L 733,348 L 718,343 L 708,333 L 703,318 L 703,300 L 708,283 L 713,273 Z"
+                            fill="#1e3a5f" opacity="0.9"/>
+                      
+                      {/* Australia */}
+                      <path d="M 720,355 L 750,352 L 780,355 L 805,365 L 825,380 L 838,398 L 843,418 L 840,438 L 828,453 L 808,463 L 780,467 L 750,465 L 725,458 L 708,445 L 698,428 L 693,408 L 695,388 L 703,372 L 710,363 Z"
+                            fill="#1e3a5f" opacity="0.95"/>
+                      
+                      {/* New Zealand */}
+                      <path d="M 870,420 L 885,418 L 898,423 L 905,433 L 908,448 L 905,463 L 895,473 L 880,476 L 865,473 L 855,463 L 850,448 L 850,433 L 855,423 Z"
+                            fill="#1e3a5f" opacity="0.85"/>
                     </svg>
                   </div>
                   
