@@ -11,6 +11,7 @@ function Dashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
+  const [currentPage, setCurrentPage] = useState('dashboard');
   
   // Chatbot state
   const [chatOpen, setChatOpen] = useState(false);
@@ -41,9 +42,12 @@ function Dashboard() {
   );
   
   // Determine user type
-  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID;
-  const isBusinessOwner = !isMSPOwner && hasAdminRole;
-  const isEmployee = !isMSPOwner && !hasAdminRole;
+  // MSP Owner = Cyproteck tenant + Admin role
+  // Business Owner = Client tenant + Admin role
+  // Employee = Any tenant + No admin role
+  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
+  const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasAdminRole;
+  const isEmployee = !hasAdminRole;
   
   // Current user data (for employee view)
   const currentUserData = {
@@ -141,6 +145,10 @@ function Dashboard() {
     return 'low';
   };
 
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+  };
+
   // Chatbot functions
   const toggleChat = () => {
     setChatOpen(!chatOpen);
@@ -229,24 +237,40 @@ Keep responses concise but helpful.`,
         </div>
 
         <nav className="sidebar-nav">
-          <a href="#dashboard" className="nav-item active">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('dashboard'); }}
+          >
             <span className="nav-icon">📊</span>
             {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
           </a>
-          <a href="#security" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'security' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('security'); }}
+          >
             <span className="nav-icon">🛡️</span>
             {!sidebarCollapsed && <span className="nav-label">Security</span>}
           </a>
-          <a href="#threats" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'threats' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('threats'); }}
+          >
             <span className="nav-icon">⚠️</span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
-                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
+                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : isBusinessOwner ? employees.reduce((sum, e) => sum + e.threats, 0) : currentUserData.threatCount}</span>
               </>
             )}
           </a>
-          <a href="#training" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'training' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('training'); }}
+          >
             <span className="nav-icon">🎓</span>
             {!sidebarCollapsed && (
               <>
@@ -255,7 +279,11 @@ Keep responses concise but helpful.`,
               </>
             )}
           </a>
-          <a href="#alerts" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'alerts' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('alerts'); }}
+          >
             <span className="nav-icon">🚨</span>
             {!sidebarCollapsed && (
               <>
@@ -264,11 +292,19 @@ Keep responses concise but helpful.`,
               </>
             )}
           </a>
-          <a href="#reports" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('reports'); }}
+          >
             <span className="nav-icon">📈</span>
             {!sidebarCollapsed && <span className="nav-label">Reports</span>}
           </a>
-          <a href="#settings" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('settings'); }}
+          >
             <span className="nav-icon">⚙️</span>
             {!sidebarCollapsed && <span className="nav-label">Settings</span>}
           </a>
@@ -319,6 +355,9 @@ Keep responses concise but helpful.`,
 
         {/* Content */}
         <div className="content-area">
+          {/* DASHBOARD PAGE */}
+          {currentPage === 'dashboard' && (
+            <>
           {/* MSP Owner View - Organization Selector */}
           {isMSPOwner && (
             <div className="org-selector-top">
@@ -891,6 +930,39 @@ Keep responses concise but helpful.`,
                 </div>
               </div>
             </>
+          )}
+            </>
+          )}
+
+          {/* OTHER PAGES */}
+          {currentPage !== 'dashboard' && (
+            <div style={{padding: '40px 0'}}>
+              <h1 style={{fontSize: '32px', fontWeight: '800', marginBottom: '20px', color: 'var(--text-primary)'}}>
+                {currentPage === 'security' && '🛡️ Security Overview'}
+                {currentPage === 'threats' && '⚠️ Threat Monitoring'}
+                {currentPage === 'training' && '🎓 Training Management'}
+                {currentPage === 'alerts' && '🚨 Alert Center'}
+                {currentPage === 'reports' && '📈 Reports & Analytics'}
+                {currentPage === 'settings' && '⚙️ Settings'}
+              </h1>
+              <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '30px'}}>
+                {isMSPOwner && 'MSP management view - Monitor all organizations'}
+                {isBusinessOwner && `${companyName} management view - Company-wide data`}
+                {isEmployee && 'Personal view - Your information'}
+              </p>
+              <div style={{marginTop: '30px', padding: '60px 40px', background: 'var(--bg-card)', border: '2px dashed var(--border-color)', borderRadius: '12px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '16px'}}>
+                <div style={{fontSize: '48px', marginBottom: '20px'}}>
+                  {currentPage === 'security' && '🛡️'}
+                  {currentPage === 'threats' && '⚠️'}
+                  {currentPage === 'training' && '🎓'}
+                  {currentPage === 'alerts' && '🚨'}
+                  {currentPage === 'reports' && '📈'}
+                  {currentPage === 'settings' && '⚙️'}
+                </div>
+                <div style={{fontWeight: '600', marginBottom: '10px'}}>This page is coming soon...</div>
+                <div style={{fontSize: '14px', opacity: '0.7'}}>We're building out this section. Check back later!</div>
+              </div>
+            </div>
           )}
         </div>
       </div>
