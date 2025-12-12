@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMsal } from '@azure/msal-react';
 import './Dashboard.css';
 
@@ -24,15 +24,6 @@ function Dashboard() {
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Microsoft data state
-  const [microsoftData, setMicrosoftData] = useState({
-    secureScore: null,
-    threats: [],
-    alerts: [],
-    devices: [],
-    loading: true
-  });
-
   const user = accounts[0];
   const userName = user?.name || 'User';
   
@@ -57,67 +48,6 @@ function Dashboard() {
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasAdminRole;
   const isEmployee = !hasAdminRole;
-  
-  // Fetch Microsoft Defender and Sentinel data
-  useEffect(() => {
-    const fetchMicrosoftData = async () => {
-      try {
-        // Get access token for Microsoft Graph API
-        const tokenResponse = await instance.acquireTokenSilent({
-          scopes: ['https://graph.microsoft.com/.default'],
-          account: accounts[0]
-        });
-
-        const headers = {
-          'Authorization': `Bearer ${tokenResponse.accessToken}`,
-          'Content-Type': 'application/json'
-        };
-
-        // Fetch Secure Score
-        const secureScoreResponse = await fetch(
-          'https://graph.microsoft.com/v1.0/security/secureScores?$top=1',
-          { headers }
-        );
-        const secureScoreData = await secureScoreResponse.json();
-
-        // Fetch Security Alerts
-        const alertsResponse = await fetch(
-          'https://graph.microsoft.com/v1.0/security/alerts_v2?$top=50&$orderby=createdDateTime desc',
-          { headers }
-        );
-        const alertsData = await alertsResponse.json();
-
-        // Fetch Threat Analytics (Defender XDR)
-        const threatsResponse = await fetch(
-          'https://graph.microsoft.com/v1.0/security/incidents?$top=50&$orderby=createdDateTime desc',
-          { headers }
-        );
-        const threatsData = await threatsResponse.json();
-
-        // Fetch Managed Devices
-        const devicesResponse = await fetch(
-          'https://graph.microsoft.com/v1.0/deviceManagement/managedDevices?$top=100',
-          { headers }
-        );
-        const devicesData = await devicesResponse.json();
-
-        setMicrosoftData({
-          secureScore: secureScoreData.value?.[0] || null,
-          threats: threatsData.value || [],
-          alerts: alertsData.value || [],
-          devices: devicesData.value || [],
-          loading: false
-        });
-      } catch (error) {
-        console.error('Error fetching Microsoft data:', error);
-        setMicrosoftData(prev => ({ ...prev, loading: false }));
-      }
-    };
-
-    if (accounts[0]) {
-      fetchMicrosoftData();
-    }
-  }, [instance, accounts]);
   
   // Current user data (for employee view)
   const currentUserData = {
@@ -1003,330 +933,14 @@ Keep responses concise but helpful.`,
             </>
           )}
 
-          {/* SECURITY PAGE */}
-          {currentPage === 'security' && (
-            <div>
-              <h1 style={{fontSize: '32px', fontWeight: '800', marginBottom: '10px', color: 'var(--text-primary)'}}>
-                🛡️ Security Overview
-              </h1>
-              <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '30px'}}>
-                Microsoft Defender XDR & Sentinel Security Posture
-              </p>
-
-              {microsoftData.loading ? (
-                <div style={{textAlign: 'center', padding: '60px', color: 'var(--text-secondary)'}}>
-                  Loading security data from Microsoft Defender...
-                </div>
-              ) : (
-                <>
-                  {/* Secure Score */}
-                  {microsoftData.secureScore && (
-                    <div className="metrics-compact" style={{marginBottom: '30px'}}>
-                      <div className="metric-box">
-                        <div className="metric-icon-sm">🎯</div>
-                        <div className="metric-data">
-                          <div className="metric-val">{microsoftData.secureScore.currentScore || 0}</div>
-                          <div className="metric-lbl">Current Secure Score</div>
-                        </div>
-                        <div className="metric-trend">Max: {microsoftData.secureScore.maxScore || 0}</div>
-                      </div>
-                      <div className="metric-box">
-                        <div className="metric-icon-sm">📊</div>
-                        <div className="metric-data">
-                          <div className="metric-val">{Math.round((microsoftData.secureScore.currentScore / microsoftData.secureScore.maxScore) * 100)}%</div>
-                          <div className="metric-lbl">Security Coverage</div>
-                        </div>
-                        <div className="metric-trend success">Active</div>
-                      </div>
-                      <div className="metric-box">
-                        <div className="metric-icon-sm">💻</div>
-                        <div className="metric-data">
-                          <div className="metric-val">{microsoftData.devices.length}</div>
-                          <div className="metric-lbl">Managed Devices</div>
-                        </div>
-                        <div className="metric-trend neutral">Protected</div>
-                      </div>
-                      <div className="metric-box">
-                        <div className="metric-icon-sm">🛡️</div>
-                        <div className="metric-data">
-                          <div className="metric-val">{microsoftData.alerts.filter(a => a.severity === 'high').length}</div>
-                          <div className="metric-lbl">High Severity Alerts</div>
-                        </div>
-                        <div className="metric-trend warning">Active</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Security Controls */}
-                  <div className="section-compact">
-                    <div className="section-hdr">
-                      <h2>Security Controls Status</h2>
-                    </div>
-                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '15px'}}>
-                      <div style={{padding: '20px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '10px'}}>
-                        <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px'}}>
-                          <span style={{fontSize: '24px'}}>✅</span>
-                          <span style={{fontWeight: '600', color: 'var(--text-primary)'}}>Defender XDR</span>
-                        </div>
-                        <div style={{fontSize: '14px', color: 'var(--text-secondary)'}}>
-                          Endpoint protection active on {microsoftData.devices.length} devices
-                        </div>
-                      </div>
-                      <div style={{padding: '20px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '10px'}}>
-                        <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px'}}>
-                          <span style={{fontSize: '24px'}}>✅</span>
-                          <span style={{fontWeight: '600', color: 'var(--text-primary)'}}>Azure Sentinel</span>
-                        </div>
-                        <div style={{fontSize: '14px', color: 'var(--text-secondary)'}}>
-                          SIEM monitoring {microsoftData.alerts.length} active alerts
-                        </div>
-                      </div>
-                      <div style={{padding: '20px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '10px'}}>
-                        <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px'}}>
-                          <span style={{fontSize: '24px'}}>✅</span>
-                          <span style={{fontWeight: '600', color: 'var(--text-primary)'}}>MFA Enforcement</span>
-                        </div>
-                        <div style={{fontSize: '14px', color: 'var(--text-secondary)'}}>
-                          Multi-factor authentication enabled
-                        </div>
-                      </div>
-                      <div style={{padding: '20px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '10px'}}>
-                        <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px'}}>
-                          <span style={{fontSize: '24px'}}>✅</span>
-                          <span style={{fontWeight: '600', color: 'var(--text-primary)'}}>Conditional Access</span>
-                        </div>
-                        <div style={{fontSize: '14px', color: 'var(--text-secondary)'}}>
-                          Zero-trust policies active
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* THREATS PAGE */}
-          {currentPage === 'threats' && (
-            <div>
-              <h1 style={{fontSize: '32px', fontWeight: '800', marginBottom: '10px', color: 'var(--text-primary)'}}>
-                ⚠️ Threat Monitoring
-              </h1>
-              <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '30px'}}>
-                Real-time threats detected by Microsoft Defender XDR
-              </p>
-
-              {microsoftData.loading ? (
-                <div style={{textAlign: 'center', padding: '60px', color: 'var(--text-secondary)'}}>
-                  Loading threat data from Microsoft Defender...
-                </div>
-              ) : (
-                <>
-                  <div className="metrics-compact" style={{marginBottom: '30px'}}>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">🚨</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.threats.length}</div>
-                        <div className="metric-lbl">Active Incidents</div>
-                      </div>
-                      <div className="metric-trend warning">Last 30 days</div>
-                    </div>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">🔴</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.threats.filter(t => t.severity === 'high').length}</div>
-                        <div className="metric-lbl">High Severity</div>
-                      </div>
-                      <div className="metric-trend warning">Needs attention</div>
-                    </div>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">🟡</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.threats.filter(t => t.severity === 'medium').length}</div>
-                        <div className="metric-lbl">Medium Severity</div>
-                      </div>
-                      <div className="metric-trend neutral">Monitoring</div>
-                    </div>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">🛡️</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.threats.filter(t => t.status === 'resolved').length}</div>
-                        <div className="metric-lbl">Resolved</div>
-                      </div>
-                      <div className="metric-trend success">Protected</div>
-                    </div>
-                  </div>
-
-                  <div className="section-compact">
-                    <div className="section-hdr">
-                      <h2>Recent Security Incidents</h2>
-                      <span style={{fontSize: '14px', color: 'var(--text-secondary)'}}>From Microsoft Defender XDR</span>
-                    </div>
-                    {microsoftData.threats.length > 0 ? (
-                      <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-                        {microsoftData.threats.slice(0, 10).map((threat, idx) => (
-                          <div key={idx} style={{padding: '16px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px'}}>
-                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px'}}>
-                              <div style={{flex: 1}}>
-                                <div style={{fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px'}}>
-                                  {threat.displayName || threat.title || 'Security Incident'}
-                                </div>
-                                <div style={{fontSize: '13px', color: 'var(--text-secondary)'}}>
-                                  {threat.classification || 'Unknown'} • Created: {new Date(threat.createdDateTime).toLocaleDateString()}
-                                </div>
-                              </div>
-                              <span style={{
-                                padding: '4px 12px',
-                                borderRadius: '12px',
-                                fontSize: '12px',
-                                fontWeight: '600',
-                                background: threat.severity === 'high' ? 'rgba(255, 59, 48, 0.1)' : threat.severity === 'medium' ? 'rgba(255, 159, 10, 0.1)' : 'rgba(142, 142, 147, 0.1)',
-                                color: threat.severity === 'high' ? '#ff3b30' : threat.severity === 'medium' ? '#ff9f0a' : '#8e8e93'
-                              }}>
-                                {threat.severity?.toUpperCase() || 'INFO'}
-                              </span>
-                            </div>
-                            <div style={{fontSize: '14px', color: 'var(--text-primary)', marginBottom: '8px'}}>
-                              {threat.description || 'No description available'}
-                            </div>
-                            <div style={{display: 'flex', gap: '12px', fontSize: '13px', color: 'var(--text-secondary)'}}>
-                              <span>Status: {threat.status}</span>
-                              {threat.assignedTo && <span>• Assigned: {threat.assignedTo}</span>}
-                              {threat.determination && <span>• Type: {threat.determination}</span>}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>
-                        No active threats detected. Your environment is secure! 🎉
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* ALERTS PAGE */}
-          {currentPage === 'alerts' && (
-            <div>
-              <h1 style={{fontSize: '32px', fontWeight: '800', marginBottom: '10px', color: 'var(--text-primary)'}}>
-                🚨 Alert Center
-              </h1>
-              <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '30px'}}>
-                Security alerts from Microsoft Sentinel & Defender
-              </p>
-
-              {microsoftData.loading ? (
-                <div style={{textAlign: 'center', padding: '60px', color: 'var(--text-secondary)'}}>
-                  Loading alerts from Microsoft Sentinel...
-                </div>
-              ) : (
-                <>
-                  <div className="metrics-compact" style={{marginBottom: '30px'}}>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">🔔</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.alerts.length}</div>
-                        <div className="metric-lbl">Total Alerts</div>
-                      </div>
-                      <div className="metric-trend">Last 30 days</div>
-                    </div>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">🔴</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.alerts.filter(a => a.severity === 'high').length}</div>
-                        <div className="metric-lbl">High Priority</div>
-                      </div>
-                      <div className="metric-trend warning">Urgent</div>
-                    </div>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">👁️</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.alerts.filter(a => a.status === 'new').length}</div>
-                        <div className="metric-lbl">Unreviewed</div>
-                      </div>
-                      <div className="metric-trend warning">Action needed</div>
-                    </div>
-                    <div className="metric-box">
-                      <div className="metric-icon-sm">✅</div>
-                      <div className="metric-data">
-                        <div className="metric-val">{microsoftData.alerts.filter(a => a.status === 'resolved').length}</div>
-                        <div className="metric-lbl">Resolved</div>
-                      </div>
-                      <div className="metric-trend success">Handled</div>
-                    </div>
-                  </div>
-
-                  <div className="section-compact">
-                    <div className="section-hdr">
-                      <h2>Recent Security Alerts</h2>
-                      <span style={{fontSize: '14px', color: 'var(--text-secondary)'}}>From Microsoft Sentinel</span>
-                    </div>
-                    {microsoftData.alerts.length > 0 ? (
-                      <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-                        {microsoftData.alerts.slice(0, 15).map((alert, idx) => (
-                          <div key={idx} style={{padding: '16px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px'}}>
-                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px'}}>
-                              <div style={{flex: 1}}>
-                                <div style={{fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px'}}>
-                                  {alert.title || 'Security Alert'}
-                                </div>
-                                <div style={{fontSize: '13px', color: 'var(--text-secondary)'}}>
-                                  {alert.category || 'Unknown category'} • {new Date(alert.createdDateTime).toLocaleString()}
-                                </div>
-                              </div>
-                              <div style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
-                                <span style={{
-                                  padding: '4px 12px',
-                                  borderRadius: '12px',
-                                  fontSize: '12px',
-                                  fontWeight: '600',
-                                  background: alert.severity === 'high' ? 'rgba(255, 59, 48, 0.1)' : alert.severity === 'medium' ? 'rgba(255, 159, 10, 0.1)' : alert.severity === 'low' ? 'rgba(52, 199, 89, 0.1)' : 'rgba(142, 142, 147, 0.1)',
-                                  color: alert.severity === 'high' ? '#ff3b30' : alert.severity === 'medium' ? '#ff9f0a' : alert.severity === 'low' ? '#34c759' : '#8e8e93'
-                                }}>
-                                  {alert.severity?.toUpperCase() || 'INFO'}
-                                </span>
-                                <span style={{
-                                  padding: '4px 12px',
-                                  borderRadius: '12px',
-                                  fontSize: '12px',
-                                  fontWeight: '600',
-                                  background: alert.status === 'new' ? 'rgba(93, 228, 199, 0.1)' : 'rgba(142, 142, 147, 0.1)',
-                                  color: alert.status === 'new' ? 'var(--accent-primary)' : '#8e8e93'
-                                }}>
-                                  {alert.status?.toUpperCase() || 'UNKNOWN'}
-                                </span>
-                              </div>
-                            </div>
-                            <div style={{fontSize: '14px', color: 'var(--text-primary)', marginBottom: '8px'}}>
-                              {alert.description || 'No description available'}
-                            </div>
-                            {alert.recommendedActions && (
-                              <div style={{fontSize: '13px', color: 'var(--accent-primary)', marginTop: '8px'}}>
-                                💡 {alert.recommendedActions}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div style={{textAlign: 'center', padding: '40px', color: 'var(--text-secondary)'}}>
-                        No alerts detected. All systems are secure! 🎉
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* TRAINING, REPORTS, SETTINGS - Still Coming Soon */}
-          {(currentPage === 'training' || currentPage === 'reports' || currentPage === 'settings') && (
+          {/* OTHER PAGES */}
+          {currentPage !== 'dashboard' && (
             <div style={{padding: '40px 0'}}>
               <h1 style={{fontSize: '32px', fontWeight: '800', marginBottom: '20px', color: 'var(--text-primary)'}}>
+                {currentPage === 'security' && '🛡️ Security Overview'}
+                {currentPage === 'threats' && '⚠️ Threat Monitoring'}
                 {currentPage === 'training' && '🎓 Training Management'}
+                {currentPage === 'alerts' && '🚨 Alert Center'}
                 {currentPage === 'reports' && '📈 Reports & Analytics'}
                 {currentPage === 'settings' && '⚙️ Settings'}
               </h1>
@@ -1337,7 +951,10 @@ Keep responses concise but helpful.`,
               </p>
               <div style={{marginTop: '30px', padding: '60px 40px', background: 'var(--bg-card)', border: '2px dashed var(--border-color)', borderRadius: '12px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '16px'}}>
                 <div style={{fontSize: '48px', marginBottom: '20px'}}>
+                  {currentPage === 'security' && '🛡️'}
+                  {currentPage === 'threats' && '⚠️'}
                   {currentPage === 'training' && '🎓'}
+                  {currentPage === 'alerts' && '🚨'}
                   {currentPage === 'reports' && '📈'}
                   {currentPage === 'settings' && '⚙️'}
                 </div>
