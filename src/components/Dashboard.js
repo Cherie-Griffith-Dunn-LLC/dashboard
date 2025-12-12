@@ -11,6 +11,7 @@ function Dashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
+  const [currentPage, setCurrentPage] = useState('dashboard');
   
   // Chatbot state
   const [chatOpen, setChatOpen] = useState(false);
@@ -144,6 +145,10 @@ function Dashboard() {
     return 'low';
   };
 
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+  };
+
   // Chatbot functions
   const toggleChat = () => {
     setChatOpen(!chatOpen);
@@ -232,24 +237,40 @@ Keep responses concise but helpful.`,
         </div>
 
         <nav className="sidebar-nav">
-          <a href="#dashboard" className="nav-item active">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('dashboard'); }}
+          >
             <span className="nav-icon">📊</span>
             {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
           </a>
-          <a href="#security" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'security' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('security'); }}
+          >
             <span className="nav-icon">🛡️</span>
             {!sidebarCollapsed && <span className="nav-label">Security</span>}
           </a>
-          <a href="#threats" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'threats' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('threats'); }}
+          >
             <span className="nav-icon">⚠️</span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
-                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
+                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : isBusinessOwner ? employees.reduce((sum, e) => sum + e.threats, 0) : currentUserData.threatCount}</span>
               </>
             )}
           </a>
-          <a href="#training" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'training' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('training'); }}
+          >
             <span className="nav-icon">🎓</span>
             {!sidebarCollapsed && (
               <>
@@ -258,7 +279,11 @@ Keep responses concise but helpful.`,
               </>
             )}
           </a>
-          <a href="#alerts" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'alerts' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('alerts'); }}
+          >
             <span className="nav-icon">🚨</span>
             {!sidebarCollapsed && (
               <>
@@ -267,11 +292,19 @@ Keep responses concise but helpful.`,
               </>
             )}
           </a>
-          <a href="#reports" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('reports'); }}
+          >
             <span className="nav-icon">📈</span>
             {!sidebarCollapsed && <span className="nav-label">Reports</span>}
           </a>
-          <a href="#settings" className="nav-item">
+          <a 
+            href="#" 
+            className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('settings'); }}
+          >
             <span className="nav-icon">⚙️</span>
             {!sidebarCollapsed && <span className="nav-label">Settings</span>}
           </a>
@@ -322,6 +355,8 @@ Keep responses concise but helpful.`,
 
         {/* Content */}
         <div className="content-area">
+          {currentPage === 'dashboard' ? (
+            <>
           {/* MSP Owner View - Organization Selector */}
           {isMSPOwner && (
             <div className="org-selector-top">
@@ -894,6 +929,22 @@ Keep responses concise but helpful.`,
                 </div>
               </div>
             </>
+          )}
+            </>
+          ) : (
+            <div style={{padding: '40px 0'}}>
+              <h1 style={{fontSize: '32px', fontWeight: '800', marginBottom: '20px'}}>
+                {currentPage === 'security' && '🛡️ Security'}
+                {currentPage === 'threats' && '⚠️ Threats'}
+                {currentPage === 'training' && '🎓 Training'}
+                {currentPage === 'alerts' && '🚨 Alerts'}
+                {currentPage === 'reports' && '📈 Reports'}
+                {currentPage === 'settings' && '⚙️ Settings'}
+              </h1>
+              <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '30px'}}>
+                Coming soon...
+              </p>
+            </div>
           )}
         </div>
       </div>
