@@ -30,7 +30,7 @@ function Dashboard() {
   const tenantId = user?.tenantId || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  // Cyproteck MSSP tenant ID
+  // Cyproteck MSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
   // Check user roles
@@ -41,12 +41,12 @@ function Dashboard() {
   );
   
   // Determine user type
-  // MSSP Owner = Cyproteck tenant + Admin role
+  // MSP Owner = Cyproteck tenant + Admin role
   // Business Owner = Other tenant + Admin role  
   // Employee = Any tenant + No admin role
   const isMSSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasAdminRole;
-  const isEmployee = !hasNoAdminRole;
+  const isEmployee = !hasAdminRole;
   
   // Current user data (for employee view)
   const currentUserData = {
@@ -76,7 +76,7 @@ function Dashboard() {
     threatCount: 5,
   };
 
-  // Organizations list (for MSSP view)
+  // Organizations list (for MSP view)
   const organizations = [
     { id: 'all', name: 'All Organizations' },
     { id: 'acme', name: 'Acme Healthcare' },
@@ -226,7 +226,7 @@ Keep responses concise but helpful.`,
           {!sidebarCollapsed && (
             <div className="logo-text">
               <h2>CYPROSECURE</h2>
-              <p>Network Security Platform</p>
+              <p>Security Platform</p>
             </div>
           )}
         </div>
@@ -298,7 +298,7 @@ Keep responses concise but helpful.`,
               </svg>
             </button>
             <h1 className="page-title">
-              {isMSSPOwner && 'MSSP Security Dashboard'}
+              {isMSSPOwner && 'MSP Security Dashboard'}
               {isBusinessOwner && `${companyName} Security Dashboard`}
               {isEmployee && 'My Security Dashboard'}
             </h1>
@@ -322,7 +322,7 @@ Keep responses concise but helpful.`,
 
         {/* Content */}
         <div className="content-area">
-          {/* MSSP Owner View - Organization Selector */}
+          {/* MSP Owner View - Organization Selector */}
           {isMSSPOwner && (
             <div className="org-selector-top">
               <select value={selectedOrg} onChange={handleOrgChange} className="org-dropdown">
@@ -358,7 +358,24 @@ Keep responses concise but helpful.`,
             </div>
           )}
 
-          {/* MSSP Owner Content - Heat Map Dashboard */}
+          {/* DEBUG INFO - Remove after testing */}
+          <div style={{padding: '20px', background: '#ff0000', color: '#fff', marginBottom: '20px', borderRadius: '8px'}}>
+            <h3>🔍 DEBUG INFO - Your Login Status:</h3>
+            <p><strong>Your Tenant ID:</strong> {tenantId}</p>
+            <p><strong>Cyproteck Tenant ID:</strong> {CYPROTECK_TENANT_ID}</p>
+            <p><strong>Tenant Match:</strong> {tenantId === CYPROTECK_TENANT_ID ? '✅ YES - You are Cyproteck' : '❌ NO - Different tenant'}</p>
+            <p><strong>Your Roles:</strong> {userRoles.length > 0 ? userRoles.join(', ') : 'No roles assigned'}</p>
+            <p><strong>Has Admin Role:</strong> {hasAdminRole ? '✅ YES' : '❌ NO'}</p>
+            <p><strong>Detected As:</strong> {isMSSPOwner ? '🏢 MSSP Owner' : isBusinessOwner ? '👔 Business Owner' : '👤 Employee'}</p>
+          </div>
+
+          {/* Universal Welcome - Shows for Everyone */}
+          <div className="universal-welcome">
+            <h1>Welcome back, {userName.split(' ')[0]}! 👋</h1>
+            <p className="welcome-subtitle">Your security overview and global threat monitoring</p>
+          </div>
+
+          {/* MSP Owner Content - Heat Map Dashboard */}
           {isMSSPOwner && (
             <>
               {/* Compact Hero */}
@@ -425,6 +442,104 @@ Keep responses concise but helpful.`,
                     <div className="metric-lbl">Current Status</div>
                   </div>
                   <div className="metric-trend success">Secure</div>
+                </div>
+              </div>
+
+              {/* World Threat Map */}
+              <div className="section-compact">
+                <div className="section-hdr">
+                  <h2>Global Threat Map</h2>
+                  <span className="live-indicator">🔴 Live</span>
+                </div>
+                <div className="world-map-container">
+                  <div className="world-map">
+                    <div className="map-overlay">
+                      <svg className="connection-lines" viewBox="0 0 1000 500">
+                        <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
+                          <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="700" y1="200" x2="500" y2="250" className="threat-line medium" strokeDasharray="5,5">
+                          <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="400" y1="350" x2="500" y2="250" className="threat-line low" strokeDasharray="5,5">
+                          <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+                        </line>
+                      </svg>
+                      
+                      <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
+                        <div className="marker-pulse"></div>
+                      </div>
+                      <div className="threat-marker high" style={{left: '70%', top: '40%'}} title="China: 38 threats">
+                        <div className="marker-pulse"></div>
+                      </div>
+                      <div className="threat-marker medium" style={{left: '65%', top: '25%'}} title="Russia: 32 threats">
+                        <div className="marker-pulse"></div>
+                      </div>
+                      <div className="threat-marker medium" style={{left: '48%', top: '30%'}} title="Germany: 18 threats">
+                        <div className="marker-pulse"></div>
+                      </div>
+                      <div className="threat-marker low" style={{left: '40%', top: '70%'}} title="Brazil: 15 threats">
+                        <div className="marker-pulse"></div>
+                      </div>
+                      <div className="threat-marker low" style={{left: '72%', top: '50%'}} title="India: 12 threats">
+                        <div className="marker-pulse"></div>
+                      </div>
+                    </div>
+                    
+                    <svg viewBox="0 0 1000 500" className="world-svg">
+                      {/* Detailed World Map Continents */}
+                      
+                      {/* North America */}
+                      <path d="M 120,180 L 140,160 L 160,150 L 185,145 L 210,140 L 230,135 L 245,130 L 260,140 L 270,160 L 275,180 L 270,200 L 260,220 L 250,235 L 235,245 L 220,250 L 200,248 L 180,240 L 165,230 L 150,218 L 140,205 L 130,190 Z M 245,160 L 255,150 L 268,155 L 275,165 L 270,175 L 260,180 L 250,175 Z" 
+                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      
+                      {/* South America */}
+                      <path d="M 240,260 L 255,255 L 270,258 L 280,265 L 288,280 L 293,300 L 295,320 L 293,340 L 288,360 L 280,375 L 268,385 L 255,390 L 245,388 L 235,380 L 228,365 L 223,345 L 220,325 L 218,305 L 220,285 L 225,270 Z" 
+                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      
+                      {/* Europe */}
+                      <path d="M 465,130 L 475,125 L 490,123 L 505,125 L 520,130 L 530,138 L 535,148 L 533,158 L 528,165 L 518,170 L 505,172 L 492,170 L 480,165 L 470,155 L 465,145 Z M 510,115 L 520,112 L 528,115 L 530,122 L 525,128 L 515,130 L 508,125 Z" 
+                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      
+                      {/* Africa */}
+                      <path d="M 485,195 L 500,190 L 515,192 L 530,198 L 542,208 L 550,220 L 555,235 L 558,255 L 560,275 L 558,295 L 555,315 L 548,335 L 538,352 L 525,365 L 510,372 L 495,373 L 482,368 L 472,358 L 465,343 L 462,325 L 460,305 L 462,285 L 465,265 L 470,245 L 478,225 L 485,210 Z" 
+                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      
+                      {/* Asia */}
+                      <path d="M 545,85 L 565,78 L 590,75 L 615,77 L 640,82 L 665,90 L 690,100 L 710,112 L 728,125 L 742,140 L 752,155 L 758,172 L 760,188 L 755,203 L 745,215 L 730,223 L 710,228 L 688,230 L 665,228 L 642,223 L 620,215 L 600,205 L 582,192 L 568,178 L 558,162 L 550,145 L 545,128 L 542,110 Z M 720,95 L 735,90 L 748,93 L 755,102 L 752,112 L 742,118 L 728,115 L 720,105 Z" 
+                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      
+                      {/* Australia */}
+                      <path d="M 720,335 L 740,330 L 760,332 L 778,338 L 792,348 L 800,360 L 802,373 L 798,385 L 788,393 L 773,397 L 755,398 L 738,394 L 725,386 L 718,374 L 715,360 L 717,348 Z" 
+                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      
+                      {/* Grid lines */}
+                      <line x1="0" y1="250" x2="1000" y2="250" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.15" strokeDasharray="8,4"/>
+                      <line x1="500" y1="0" x2="500" y2="500" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.15" strokeDasharray="8,4"/>
+                      
+                      <text x="500" y="480" textAnchor="middle" fill="var(--text-muted)" fontSize="12" opacity="0.5" fontWeight="600">
+                        🌍 Global Network Monitoring
+                      </text>
+                    </svg>
+                  </div>
+                  
+                  <div className="threat-locations">
+                    <h3>Top Threat Sources</h3>
+                    {threatLocations.map((location, idx) => (
+                      <div key={idx} className="location-item">
+                        <div className="location-info">
+                          <span className="location-name">{location.country}</span>
+                          <span className="location-threats">{location.threats} threats</span>
+                        </div>
+                        <div className="location-bar">
+                          <div 
+                            className="location-fill" 
+                            style={{width: `${(location.threats / 45) * 100}%`}}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -555,120 +670,6 @@ Keep responses concise but helpful.`,
               </div>
             </>
           )}
-
-          {/* Universal Welcome Section - Shows for Everyone */}
-          <div className="universal-welcome">
-            <div className="welcome-content">
-              <h1>Welcome back, {userName.split(' ')[0]}! 👋</h1>
-              <p className="welcome-subtitle">Your security overview and global threat monitoring</p>
-            </div>
-          </div>
-
-          {/* Global Threat Map - Shows for EVERYONE */}
-          <div className="section-compact">
-            <div className="section-hdr">
-              <h2>Global Threat Map</h2>
-              <span className="live-indicator">🔴 Live</span>
-            </div>
-            <div className="world-map-container">
-              <div className="world-map">
-                <div className="map-overlay">
-                  <svg className="connection-lines" viewBox="0 0 1000 500">
-                    <line x1="200" y1="180" x2="500" y2="250" className="threat-line high" strokeDasharray="5,5">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
-                    </line>
-                    <line x1="700" y1="200" x2="500" y2="250" className="threat-line medium" strokeDasharray="5,5">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
-                    </line>
-                    <line x1="400" y1="350" x2="500" y2="250" className="threat-line low" strokeDasharray="5,5">
-                      <animate attributeName="stroke-dashoffset" from="0" to="10" dur="1s" repeatCount="indefinite"/>
-                    </line>
-                  </svg>
-                  
-                  <div className="threat-marker high" style={{left: '20%', top: '36%'}} title="US: 45 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker high" style={{left: '70%', top: '40%'}} title="China: 38 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker medium" style={{left: '65%', top: '25%'}} title="Russia: 32 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker medium" style={{left: '48%', top: '30%'}} title="Germany: 18 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker low" style={{left: '40%', top: '70%'}} title="Brazil: 15 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                  <div className="threat-marker low" style={{left: '72%', top: '50%'}} title="India: 12 threats">
-                    <div className="marker-pulse"></div>
-                  </div>
-                </div>
-                
-                <svg viewBox="0 0 1000 500" className="world-svg">
-                  {/* Improved World Map with Better Continent Shapes */}
-                  
-                  {/* North America - More detailed */}
-                  <path d="M 120,180 L 140,160 L 160,150 L 185,145 L 210,140 L 230,135 L 245,130 L 260,140 L 270,160 L 275,180 L 270,200 L 260,220 L 250,235 L 235,245 L 220,250 L 200,248 L 180,240 L 165,230 L 150,218 L 140,205 L 130,190 Z M 245,160 L 255,150 L 268,155 L 275,165 L 270,175 L 260,180 L 250,175 Z" 
-                        fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
-                  
-                  {/* South America - More detailed */}
-                  <path d="M 240,260 L 255,255 L 270,258 L 280,265 L 288,280 L 293,300 L 295,320 L 293,340 L 288,360 L 280,375 L 268,385 L 255,390 L 245,388 L 235,380 L 228,365 L 223,345 L 220,325 L 218,305 L 220,285 L 225,270 Z" 
-                        fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
-                  
-                  {/* Europe - More detailed */}
-                  <path d="M 465,130 L 475,125 L 490,123 L 505,125 L 520,130 L 530,138 L 535,148 L 533,158 L 528,165 L 518,170 L 505,172 L 492,170 L 480,165 L 470,155 L 465,145 Z M 510,115 L 520,112 L 528,115 L 530,122 L 525,128 L 515,130 L 508,125 Z" 
-                        fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
-                  
-                  {/* Africa - More detailed */}
-                  <path d="M 485,195 L 500,190 L 515,192 L 530,198 L 542,208 L 550,220 L 555,235 L 558,255 L 560,275 L 558,295 L 555,315 L 548,335 L 538,352 L 525,365 L 510,372 L 495,373 L 482,368 L 472,358 L 465,343 L 462,325 L 460,305 L 462,285 L 465,265 L 470,245 L 478,225 L 485,210 Z" 
-                        fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
-                  
-                  {/* Asia - More detailed and larger */}
-                  <path d="M 545,85 L 565,78 L 590,75 L 615,77 L 640,82 L 665,90 L 690,100 L 710,112 L 728,125 L 742,140 L 752,155 L 758,172 L 760,188 L 755,203 L 745,215 L 730,223 L 710,228 L 688,230 L 665,228 L 642,223 L 620,215 L 600,205 L 582,192 L 568,178 L 558,162 L 550,145 L 545,128 L 542,110 Z M 720,95 L 735,90 L 748,93 L 755,102 L 752,112 L 742,118 L 728,115 L 720,105 Z" 
-                        fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
-                  
-                  {/* Australia - More detailed */}
-                  <path d="M 720,335 L 740,330 L 760,332 L 778,338 L 792,348 L 800,360 L 802,373 L 798,385 L 788,393 L 773,397 L 755,398 L 738,394 L 725,386 L 718,374 L 715,360 L 717,348 Z" 
-                        fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
-                  
-                  {/* Greenland */}
-                  <path d="M 340,45 L 355,42 L 368,45 L 378,52 L 383,62 L 380,72 L 372,78 L 360,80 L 348,77 L 340,70 L 337,60 Z" 
-                        fill="var(--text-muted)" opacity="0.15" stroke="var(--accent-primary)" strokeWidth="1"/>
-                  
-                  {/* Grid lines - Latitude/Longitude */}
-                  <line x1="0" y1="250" x2="1000" y2="250" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.15" strokeDasharray="8,4"/>
-                  <line x1="0" y1="125" x2="1000" y2="125" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.1" strokeDasharray="8,4"/>
-                  <line x1="0" y1="375" x2="1000" y2="375" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.1" strokeDasharray="8,4"/>
-                  <line x1="250" y1="0" x2="250" y2="500" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.1" strokeDasharray="8,4"/>
-                  <line x1="500" y1="0" x2="500" y2="500" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.15" strokeDasharray="8,4"/>
-                  <line x1="750" y1="0" x2="750" y2="500" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.1" strokeDasharray="8,4"/>
-                  
-                  <text x="500" y="480" textAnchor="middle" fill="var(--text-muted)" fontSize="12" opacity="0.5" fontWeight="600">
-                    🌍 Global Network Monitoring
-                  </text>
-                </svg>
-              </div>
-              
-              <div className="threat-locations">
-                <h3>Top Threat Sources</h3>
-                {threatLocations.map((location, idx) => (
-                  <div key={idx} className="location-item">
-                    <div className="location-info">
-                      <span className="location-name">{location.country}</span>
-                      <span className="location-threats">{location.threats} threats</span>
-                    </div>
-                    <div className="location-bar">
-                      <div 
-                        className="location-fill" 
-                        style={{width: `${(location.threats / 45) * 100}%`}}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
 
           {/* Business Owner Content - Employee Risk Table */}
           {isBusinessOwner && (
