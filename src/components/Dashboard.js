@@ -470,9 +470,56 @@ Keep responses concise but helpful.`,
                     </div>
                     
                     <svg viewBox="0 0 1000 500" className="world-svg">
-                      <rect width="1000" height="500" fill="transparent"/>
-                      <text x="500" y="250" textAnchor="middle" fill="var(--text-muted)" fontSize="14" opacity="0.3">
-                        🌍 Global Network Monitoring
+                      {/* Realistic World Map - Continents */}
+                      
+                      {/* North America */}
+                      <path d="M 80,160 L 95,145 L 115,135 L 140,130 L 165,130 L 185,135 L 205,145 L 220,160 L 230,180 L 235,200 L 235,220 L 225,238 L 210,250 L 190,258 L 170,260 L 150,255 L 135,245 L 122,230 L 115,210 L 112,190 L 115,170 Z" 
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Central America */}
+                      <path d="M 190,258 L 198,268 L 203,280 L 205,292 L 203,302 L 198,310 L 190,315 L 182,310 L 178,300 L 178,288 L 182,275 L 186,265 Z"
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* South America */}
+                      <path d="M 195,320 L 210,318 L 225,325 L 235,340 L 240,360 L 242,385 L 238,405 L 228,420 L 212,430 L 195,432 L 180,428 L 168,418 L 160,402 L 158,383 L 160,365 L 165,345 L 175,328 Z"
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Europe */}
+                      <path d="M 460,120 L 475,115 L 492,112 L 508,112 L 522,116 L 535,123 L 543,135 L 545,148 L 542,160 L 532,170 L 518,175 L 502,176 L 486,173 L 473,165 L 464,152 L 460,138 Z"
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Scandinavia */}
+                      <path d="M 495,75 L 507,70 L 518,70 L 528,75 L 535,85 L 538,98 L 535,110 L 525,118 L 512,120 L 500,116 L 492,105 L 490,92 L 492,82 Z"
+                            fill="#1e293b" opacity="0.6" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Africa */}
+                      <path d="M 480,185 L 500,182 L 520,185 L 538,195 L 552,210 L 560,230 L 565,255 L 565,280 L 560,305 L 548,325 L 532,340 L 515,348 L 498,350 L 482,345 L 470,332 L 462,315 L 458,295 L 458,270 L 462,245 L 470,220 L 478,200 Z"
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Asia - Large continent */}
+                      <path d="M 550,90 L 580,85 L 615,82 L 650,85 L 685,95 L 715,110 L 738,130 L 755,155 L 765,180 L 768,205 L 763,228 L 748,245 L 725,255 L 695,260 L 665,258 L 635,248 L 608,233 L 585,215 L 568,193 L 558,170 L 552,145 L 550,120 Z"
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Southeast Asia / India */}
+                      <path d="M 720,260 L 735,258 L 748,263 L 758,273 L 763,288 L 763,303 L 755,315 L 742,320 L 728,318 L 718,308 L 715,293 L 718,278 Z"
+                            fill="#1e293b" opacity="0.6" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Australia */}
+                      <path d="M 720,330 L 745,327 L 770,330 L 792,340 L 808,355 L 815,375 L 815,395 L 805,410 L 785,420 L 760,422 L 738,418 L 722,408 L 713,393 L 710,375 L 713,358 L 718,343 Z"
+                            fill="#1e293b" opacity="0.7" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Greenland */}
+                      <path d="M 310,45 L 340,40 L 368,42 L 390,50 L 405,65 L 410,85 L 408,105 L 395,120 L 375,128 L 350,130 L 325,125 L 305,112 L 295,95 L 292,75 L 298,58 Z"
+                            fill="#1e293b" opacity="0.5" stroke="#334155" strokeWidth="1"/>
+                      
+                      {/* Grid lines for reference */}
+                      <line x1="0" y1="250" x2="1000" y2="250" stroke="#334155" strokeWidth="0.5" opacity="0.2" strokeDasharray="8,4"/>
+                      <line x1="500" y1="0" x2="500" y2="500" stroke="#334155" strokeWidth="0.5" opacity="0.2" strokeDasharray="8,4"/>
+                      <line x1="250" y1="0" x2="250" y2="500" stroke="#334155" strokeWidth="0.5" opacity="0.15" strokeDasharray="6,3"/>
+                      <line x1="750" y1="0" x2="750" y2="500" stroke="#334155" strokeWidth="0.5" opacity="0.15" strokeDasharray="6,3"/>
+                      
+                      <text x="500" y="485" textAnchor="middle" fill="var(--text-muted)" fontSize="13" opacity="0.4" fontWeight="600">
+                        🌍 Global Threat Monitoring
                       </text>
                     </svg>
                   </div>
