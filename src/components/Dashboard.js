@@ -4,7 +4,7 @@ import './Dashboard.css';
 
 /**
  * CYPROSECURE - Multi-Tenant Dashboard
- * MSP View (Cyproteck) vs Business Owner View (Clients)
+ * MSSP View (Cyproteck) vs Business Owner View (Clients)
  */
 function Dashboard() {
   const { instance, accounts } = useMsal();
@@ -30,7 +30,7 @@ function Dashboard() {
   const tenantId = user?.tenantId || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  // Cyproteck MSP tenant ID
+  // Cyproteck MSSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
   // Check user roles
@@ -41,10 +41,10 @@ function Dashboard() {
   );
   
   // Determine user type
-  // MSP Owner = Cyproteck tenant + Admin role
+  // MSSP Owner = Cyproteck tenant + Admin role
   // Business Owner = Other tenant + Admin role  
   // Employee = Any tenant + No admin role
-  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
+  const isMSSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasAdminRole;
   const isEmployee = !hasAdminRole;
   
@@ -76,7 +76,7 @@ function Dashboard() {
     threatCount: 5,
   };
 
-  // Organizations list (for MSP view)
+  // Organizations list (for MSSP view)
   const organizations = [
     { id: 'all', name: 'All Organizations' },
     { id: 'acme', name: 'Acme Healthcare' },
@@ -97,7 +97,7 @@ function Dashboard() {
   const highestRiskEmployee = [...employees].sort((a, b) => b.riskScore - a.riskScore)[0];
   const highestRiskDevice = highestRiskEmployee;
 
-  // Mock data for MSP view
+  // Mock data for MSSP view
   const securityData = {
     securityScore: 85,
     threatsBlocked: 127,
@@ -245,7 +245,7 @@ Keep responses concise but helpful.`,
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
-                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
+                <span className="nav-badge">{isMSSPOwner ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
               </>
             )}
           </a>
@@ -298,7 +298,7 @@ Keep responses concise but helpful.`,
               </svg>
             </button>
             <h1 className="page-title">
-              {isMSPOwner && 'MSP Security Dashboard'}
+              {isMSSPOwner && 'MSSP Security Dashboard'}
               {isBusinessOwner && `${companyName} Security Dashboard`}
               {isEmployee && 'My Security Dashboard'}
             </h1>
@@ -322,8 +322,8 @@ Keep responses concise but helpful.`,
 
         {/* Content */}
         <div className="content-area">
-          {/* MSP Owner View - Organization Selector */}
-          {isMSPOwner && (
+          {/* MSSP Owner View - Organization Selector */}
+          {isMSSPOwner && (
             <div className="org-selector-top">
               <select value={selectedOrg} onChange={handleOrgChange} className="org-dropdown">
                 {organizations.map(org => (
@@ -358,85 +358,8 @@ Keep responses concise but helpful.`,
             </div>
           )}
 
-          {/* Employee View - Welcome Section (Shows First) */}
-          {isEmployee && (
-            <>
-              {/* Personal Hero */}
-              <div className="employee-hero">
-                <div className="employee-hero-content">
-                  <h1>My Security Dashboard</h1>
-                  <p className="employee-subtitle">Welcome back, {userName.split(' ')[0]}!</p>
-                </div>
-                <div className="employee-score-card">
-                  <div className="score-ring-medium">
-                    <svg viewBox="0 0 120 120">
-                      <circle className="ring-bg" cx="60" cy="60" r="50"/>
-                      <circle 
-                        className="ring-progress" 
-                        cx="60" 
-                        cy="60" 
-                        r="50"
-                        style={{ strokeDasharray: `${currentUserData.riskScore * 3.14} 314` }}
-                      />
-                    </svg>
-                    <div className="score-num-large">{currentUserData.riskScore}</div>
-                  </div>
-                  <div className="score-status-text">
-                    <div className="score-label">Your Security Score</div>
-                    <div className={`score-status ${getRiskColor(currentUserData.riskScore)}`}>
-                      {currentUserData.riskScore >= 70 ? 'Needs Improvement' : currentUserData.riskScore >= 50 ? 'Good' : 'Excellent'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Personal Metrics */}
-              <div className="metrics-compact">
-                <div className="metric-box">
-                  <div className="metric-icon-sm">🎯</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.riskScore}</div>
-                    <div className="metric-lbl">My Risk Score</div>
-                  </div>
-                  <div className={`metric-trend ${getRiskColor(currentUserData.riskScore)}`}>
-                    {currentUserData.riskScore >= 70 ? 'High' : currentUserData.riskScore >= 50 ? 'Medium' : 'Low'}
-                  </div>
-                </div>
-
-                <div className="metric-box">
-                  <div className="metric-icon-sm">🎓</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.training.completed}/{currentUserData.training.total}</div>
-                    <div className="metric-lbl">Training Complete</div>
-                  </div>
-                  <div className="metric-trend neutral">
-                    {currentUserData.training.total - currentUserData.training.completed} remaining
-                  </div>
-                </div>
-
-                <div className="metric-box">
-                  <div className="metric-icon-sm">⚠️</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.threatCount}</div>
-                    <div className="metric-lbl">Threats Blocked</div>
-                  </div>
-                  <div className="metric-trend up">This week</div>
-                </div>
-
-                <div className="metric-box">
-                  <div className="metric-icon-sm">📱</div>
-                  <div className="metric-data">
-                    <div className="metric-val">{currentUserData.devices.length}</div>
-                    <div className="metric-lbl">My Devices</div>
-                  </div>
-                  <div className="metric-trend neutral">Monitored</div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* MSP Owner Content - Heat Map Dashboard */}
-          {isMSPOwner && (
+          {/* MSSP Owner Content - Heat Map Dashboard */}
+          {isMSSPOwner && (
             <>
               {/* Compact Hero */}
               <div className="hero-compact">
@@ -465,6 +388,15 @@ Keep responses concise but helpful.`,
               {/* Compact Metrics */}
               <div className="metrics-compact">
                 <div className="metric-box">
+                  <div className="metric-icon-sm">🏢</div>
+                  <div className="metric-data">
+                    <div className="metric-val">{selectedOrg === 'all' ? organizations.length - 1 : 1}</div>
+                    <div className="metric-lbl">{selectedOrg === 'all' ? 'Total Clients' : 'Client'}</div>
+                  </div>
+                  <div className="metric-trend neutral">{selectedOrg === 'all' ? 'Active' : organizations.find(o => o.id === selectedOrg)?.name}</div>
+                </div>
+
+                <div className="metric-box">
                   <div className="metric-icon-sm">🛡️</div>
                   <div className="metric-data">
                     <div className="metric-val">{securityData.threatsBlocked}</div>
@@ -487,21 +419,12 @@ Keep responses concise but helpful.`,
                 </div>
 
                 <div className="metric-box">
-                  <div className="metric-icon-sm">🎓</div>
+                  <div className="metric-icon-sm">👥</div>
                   <div className="metric-data">
-                    <div className="metric-val">{securityData.trainingProgress}%</div>
-                    <div className="metric-lbl">Training Progress</div>
+                    <div className="metric-val">{employees.length}</div>
+                    <div className="metric-lbl">{selectedOrg === 'all' ? 'Team Members' : 'Employees'}</div>
                   </div>
-                  <div className="metric-trend neutral">2 left</div>
-                </div>
-
-                <div className="metric-box success">
-                  <div className="metric-icon-sm">✅</div>
-                  <div className="metric-data">
-                    <div className="metric-val">Protected</div>
-                    <div className="metric-lbl">Current Status</div>
-                  </div>
-                  <div className="metric-trend success">Secure</div>
+                  <div className="metric-trend neutral">Protected</div>
                 </div>
               </div>
 
@@ -600,6 +523,71 @@ Keep responses concise but helpful.`,
                       </div>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              {/* Cyproteck Team / Client Employees - Employee Table */}
+              <div className="section-compact">
+                <div className="section-hdr">
+                  <h2>
+                    {selectedOrg === 'all' ? 'Cyproteck Team Security Status' : 
+                     `${organizations.find(o => o.id === selectedOrg)?.name} - Employee Security Status`}
+                  </h2>
+                  <button className="view-all-sm">Export Report →</button>
+                </div>
+                <div className="employee-table-container">
+                  <table className="employee-table">
+                    <thead>
+                      <tr>
+                        <th>Employee</th>
+                        <th>Status</th>
+                        <th>Risk Score</th>
+                        <th>Training</th>
+                        <th>Threats</th>
+                        <th>Device</th>
+                        <th>Last Login</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {employees.map(emp => (
+                        <tr key={emp.id} className={emp.riskScore >= 70 ? 'high-risk-row' : ''}>
+                          <td>
+                            <div className="employee-name">
+                              {emp.name}
+                              {emp.riskScore >= 70 && <span className="risk-flag">⚠️</span>}
+                            </div>
+                          </td>
+                          <td>
+                            <span className={`status-badge ${emp.status}`}>
+                              {emp.status === 'online' ? '🟢 Online' : '🔴 Offline'}
+                            </span>
+                          </td>
+                          <td>
+                            <span className={`risk-score ${getRiskColor(emp.riskScore)}`}>
+                              {emp.riskScore}
+                            </span>
+                          </td>
+                          <td>
+                            <span className={`training-status ${emp.training === 'Completed' ? 'complete' : emp.training === 'In Progress' ? 'progress' : 'incomplete'}`}>
+                              {emp.training}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="threat-count">{emp.threats}</span>
+                          </td>
+                          <td className="device-cell">{emp.device}</td>
+                          <td className="last-login-cell">{emp.lastLogin}</td>
+                          <td>
+                            <div className="table-actions">
+                              <button className="action-btn-tiny">View</button>
+                              <button className="action-btn-tiny primary">Notify</button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
