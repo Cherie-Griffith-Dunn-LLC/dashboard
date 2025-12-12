@@ -4,7 +4,7 @@ import './Dashboard.css';
 
 /**
  * CYPROSECURE - Multi-Tenant Dashboard
- * MSSP View (Cyproteck) vs Business Owner View (Clients)
+ * MSP View (Cyproteck) vs Business Owner View (Clients)
  */
 function Dashboard() {
   const { instance, accounts } = useMsal();
@@ -33,20 +33,30 @@ function Dashboard() {
   // Cyproteck MSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  // Check user roles
+  // Check user roles from multiple sources
   const userRoles = user?.idTokenClaims?.roles || [];
-  const hasAdminRole = userRoles.some(role => 
+  
+  // Check if user has admin role in token
+  const hasRoleInToken = userRoles.some(role => 
     role.toLowerCase().includes('admin') || 
     role.toLowerCase().includes('administrator')
   );
   
+  // Check if user's email domain is cyproteck.com (additional check)
+  const userEmail = user?.username || user?.idTokenClaims?.preferred_username || '';
+  const isCyproteckEmail = userEmail.toLowerCase().includes('@cyproteck.com');
+  
+  // For Cyproteck users: assume MSSP owner (they have tenant access)
+  // For other tenants: require explicit admin role
+  const hasAdminRole = (tenantId === CYPROTECK_TENANT_ID && isCyproteckEmail) || hasRoleInToken;
+  
   // Determine user type
-  // MSP Owner = Cyproteck tenant + Admin role
+  // MSSP Owner = Cyproteck tenant + (Cyproteck email OR admin role)
   // Business Owner = Other tenant + Admin role  
   // Employee = Any tenant + No admin role
-  const isMSSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
-  const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasAdminRole;
-  const isEmployee = !hasAdminRole;
+  const isMSSPOwner = tenantId === CYPROTECK_TENANT_ID && (isCyproteckEmail || hasRoleInToken);
+  const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasRoleInToken;
+  const isEmployee = !isMSSPOwner && !isBusinessOwner;
   
   // Current user data (for employee view)
   const currentUserData = {
@@ -364,6 +374,8 @@ Keep responses concise but helpful.`,
             <p><strong>Your Tenant ID:</strong> {tenantId}</p>
             <p><strong>Cyproteck Tenant ID:</strong> {CYPROTECK_TENANT_ID}</p>
             <p><strong>Tenant Match:</strong> {tenantId === CYPROTECK_TENANT_ID ? '✅ YES - You are Cyproteck' : '❌ NO - Different tenant'}</p>
+            <p><strong>Your Email:</strong> {userEmail}</p>
+            <p><strong>Cyproteck Email:</strong> {isCyproteckEmail ? '✅ YES' : '❌ NO'}</p>
             <p><strong>Your Roles:</strong> {userRoles.length > 0 ? userRoles.join(', ') : 'No roles assigned'}</p>
             <p><strong>Has Admin Role:</strong> {hasAdminRole ? '✅ YES' : '❌ NO'}</p>
             <p><strong>Detected As:</strong> {isMSSPOwner ? '🏢 MSSP Owner' : isBusinessOwner ? '👔 Business Owner' : '👤 Employee'}</p>
@@ -371,37 +383,40 @@ Keep responses concise but helpful.`,
 
           {/* Universal Welcome - Shows for Everyone */}
           <div className="universal-welcome">
-            <h1>Welcome back, {userName.split(' ')[0]}! 👋</h1>
-            <p className="welcome-subtitle">Your security overview and global threat monitoring</p>
-          </div>
-
-          {/* MSP Owner Content - Heat Map Dashboard */}
-          {isMSSPOwner && (
-            <>
-              {/* Compact Hero */}
-              <div className="hero-compact">
-                <div className="hero-text">
-                  <h1>Welcome, {userName.split(' ')[0]}</h1>
-                  <p>Security status: <span className="status-good">Excellent</span></p>
+            <div className="welcome-flex">
+              <div className="welcome-text-side">
+                <h1>Welcome back, {userName.split(' ')[0]}! 👋</h1>
+                <p className="welcome-subtitle">
+                  {isMSSPOwner ? 'MSSP Security Dashboard' : isBusinessOwner ? 'Business Security Dashboard' : 'My Security Dashboard'}
+                </p>
+              </div>
+              <div className="welcome-score-side">
+                <div className="score-ring-large">
+                  <svg viewBox="0 0 120 120">
+                    <circle className="ring-bg" cx="60" cy="60" r="50"/>
+                    <circle 
+                      className="ring-progress" 
+                      cx="60" 
+                      cy="60" 
+                      r="50"
+                      style={{ strokeDasharray: `${(isMSSPOwner ? securityData.securityScore : currentUserData.riskScore) * 3.14} 314` }}
+                    />
+                  </svg>
+                  <div className="score-num-large">{isMSSPOwner ? securityData.securityScore : currentUserData.riskScore}</div>
                 </div>
-                <div className="hero-score-compact">
-                  <div className="score-ring-small">
-                    <svg viewBox="0 0 80 80">
-                      <circle className="ring-bg" cx="40" cy="40" r="35"/>
-                      <circle 
-                        className="ring-progress" 
-                        cx="40" 
-                        cy="40" 
-                        r="35"
-                        style={{ strokeDasharray: `${securityData.securityScore * 2.2} 220` }}
-                      />
-                    </svg>
-                    <div className="score-num">{securityData.securityScore}</div>
+                <div className="score-label-side">
+                  <div className="score-title">Security Score</div>
+                  <div className={`score-status ${isMSSPOwner ? 'good' : getRiskColor(currentUserData.riskScore)}`}>
+                    {isMSSPOwner ? 'Excellent' : currentUserData.riskScore >= 70 ? 'Needs Improvement' : currentUserData.riskScore >= 50 ? 'Good' : 'Excellent'}
                   </div>
-                  <div className="score-label-small">Security Score</div>
                 </div>
               </div>
+            </div>
+          </div>
 
+          {/* MSSP Owner Content - Metrics and Heat Map */}
+          {isMSSPOwner && (
+            <>
               {/* Compact Metrics */}
               <div className="metrics-compact">
                 <div className="metric-box">
