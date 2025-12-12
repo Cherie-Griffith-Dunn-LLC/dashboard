@@ -502,38 +502,63 @@ Keep responses concise but helpful.`,
                     </div>
                     
                     <svg viewBox="0 0 1000 500" className="world-svg">
-                      {/* Detailed World Map Continents */}
+                      {/* Realistic Flat World Map - Better Continent Shapes */}
                       
-                      {/* North America */}
-                      <path d="M 120,180 L 140,160 L 160,150 L 185,145 L 210,140 L 230,135 L 245,130 L 260,140 L 270,160 L 275,180 L 270,200 L 260,220 L 250,235 L 235,245 L 220,250 L 200,248 L 180,240 L 165,230 L 150,218 L 140,205 L 130,190 Z M 245,160 L 255,150 L 268,155 L 275,165 L 270,175 L 260,180 L 250,175 Z" 
-                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      {/* North America - More realistic shape */}
+                      <path d="M 80,80 L 90,70 L 105,65 L 120,62 L 140,60 L 160,60 L 175,62 L 190,65 L 205,70 L 220,78 L 235,88 L 245,100 L 252,115 L 255,130 L 255,145 L 252,160 L 245,175 L 235,188 L 222,198 L 205,205 L 188,208 L 170,208 L 155,205 L 142,198 L 132,188 L 125,175 L 120,160 L 118,145 L 118,130 L 120,115 L 125,100 L 132,88 Z M 190,75 L 200,70 L 212,68 L 225,68 L 238,70 L 248,75 L 255,82 L 258,92 L 258,102 L 255,112 L 248,120 L 238,125 L 225,127 L 212,127 L 200,125 L 192,120 L 188,112 L 185,102 L 185,92 L 188,82 Z" 
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      {/* South America */}
-                      <path d="M 240,260 L 255,255 L 270,258 L 280,265 L 288,280 L 293,300 L 295,320 L 293,340 L 288,360 L 280,375 L 268,385 L 255,390 L 245,388 L 235,380 L 228,365 L 223,345 L 220,325 L 218,305 L 220,285 L 225,270 Z" 
-                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      {/* Central America connection */}
+                      <path d="M 205,205 L 212,215 L 218,225 L 222,235 L 224,245 L 224,255 L 222,260 L 218,265 L 212,268 L 205,270 L 198,268 L 192,265 L 188,260 L 185,255 L 185,245 L 188,235 L 192,225 L 198,215 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      {/* Europe */}
-                      <path d="M 465,130 L 475,125 L 490,123 L 505,125 L 520,130 L 530,138 L 535,148 L 533,158 L 528,165 L 518,170 L 505,172 L 492,170 L 480,165 L 470,155 L 465,145 Z M 510,115 L 520,112 L 528,115 L 530,122 L 525,128 L 515,130 L 508,125 Z" 
-                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      {/* South America - Better shape */}
+                      <path d="M 218,270 L 228,275 L 238,282 L 245,292 L 250,305 L 253,320 L 254,335 L 253,350 L 250,365 L 245,378 L 238,388 L 228,395 L 215,400 L 200,402 L 185,400 L 172,395 L 162,388 L 155,378 L 150,365 L 147,350 L 146,335 L 147,320 L 150,305 L 155,292 L 162,282 L 172,275 L 185,270 Z M 165,295 L 158,300 L 154,308 L 152,318 L 152,328 L 154,338 L 158,346 L 165,352 L 175,355 L 185,355 L 195,352 L 202,346 L 206,338 L 208,328 L 208,318 L 206,308 L 202,300 L 195,295 L 185,292 L 175,292 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      {/* Africa */}
-                      <path d="M 485,195 L 500,190 L 515,192 L 530,198 L 542,208 L 550,220 L 555,235 L 558,255 L 560,275 L 558,295 L 555,315 L 548,335 L 538,352 L 525,365 L 510,372 L 495,373 L 482,368 L 472,358 L 465,343 L 462,325 L 460,305 L 462,285 L 465,265 L 470,245 L 478,225 L 485,210 Z" 
-                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      {/* Europe - More detailed */}
+                      <path d="M 460,110 L 470,105 L 482,102 L 495,100 L 508,100 L 520,102 L 530,105 L 538,110 L 544,118 L 548,128 L 548,138 L 544,148 L 538,156 L 530,162 L 520,166 L 508,168 L 495,168 L 482,166 L 470,162 L 462,156 L 456,148 L 452,138 L 452,128 L 456,118 Z M 485,115 L 478,118 L 474,123 L 472,130 L 472,137 L 474,144 L 478,149 L 485,152 L 495,154 L 505,152 L 512,149 L 516,144 L 518,137 L 518,130 L 516,123 L 512,118 L 505,115 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      {/* Asia */}
-                      <path d="M 545,85 L 565,78 L 590,75 L 615,77 L 640,82 L 665,90 L 690,100 L 710,112 L 728,125 L 742,140 L 752,155 L 758,172 L 760,188 L 755,203 L 745,215 L 730,223 L 710,228 L 688,230 L 665,228 L 642,223 L 620,215 L 600,205 L 582,192 L 568,178 L 558,162 L 550,145 L 545,128 L 542,110 Z M 720,95 L 735,90 L 748,93 L 755,102 L 752,112 L 742,118 L 728,115 L 720,105 Z" 
-                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      {/* Scandinavia */}
+                      <path d="M 490,60 L 498,55 L 508,52 L 518,52 L 526,55 L 532,60 L 536,68 L 536,78 L 532,86 L 526,92 L 518,96 L 508,98 L 498,96 L 492,92 L 488,86 L 486,78 L 486,68 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      {/* Australia */}
-                      <path d="M 720,335 L 740,330 L 760,332 L 778,338 L 792,348 L 800,360 L 802,373 L 798,385 L 788,393 L 773,397 L 755,398 L 738,394 L 725,386 L 718,374 L 715,360 L 717,348 Z" 
-                            fill="var(--text-muted)" opacity="0.2" stroke="var(--accent-primary)" strokeWidth="1.5"/>
+                      {/* Africa - Recognizable shape */}
+                      <path d="M 475,172 L 488,170 L 502,170 L 515,172 L 527,176 L 538,182 L 547,190 L 554,200 L 559,212 L 562,226 L 564,242 L 564,258 L 562,274 L 559,288 L 554,300 L 547,310 L 538,318 L 527,324 L 515,328 L 502,330 L 488,330 L 475,328 L 463,324 L 453,318 L 445,310 L 439,300 L 434,288 L 431,274 L 429,258 L 429,242 L 431,226 L 434,212 L 439,200 L 445,190 L 453,182 L 463,176 Z M 470,200 L 465,205 L 462,212 L 460,222 L 460,234 L 460,246 L 462,256 L 465,264 L 470,272 L 477,278 L 486,282 L 496,284 L 507,282 L 516,278 L 523,272 L 528,264 L 531,256 L 533,246 L 533,234 L 533,222 L 531,212 L 528,205 L 523,200 L 516,196 L 507,194 L 496,194 L 486,196 L 477,200 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      {/* Grid lines */}
-                      <line x1="0" y1="250" x2="1000" y2="250" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.15" strokeDasharray="8,4"/>
-                      <line x1="500" y1="0" x2="500" y2="500" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.15" strokeDasharray="8,4"/>
+                      {/* Asia - Large detailed continent */}
+                      <path d="M 545,65 L 560,62 L 578,60 L 598,60 L 618,62 L 638,66 L 656,72 L 672,80 L 686,90 L 698,102 L 708,116 L 716,132 L 722,148 L 726,164 L 728,180 L 728,196 L 726,210 L 722,222 L 716,232 L 708,240 L 698,246 L 686,250 L 672,252 L 656,252 L 638,250 L 618,246 L 598,240 L 578,232 L 560,222 L 545,210 L 534,196 L 526,180 L 521,164 L 518,148 L 517,132 L 518,116 L 521,102 L 526,90 L 534,80 Z M 595,90 L 585,92 L 577,96 L 571,102 L 567,110 L 565,120 L 565,132 L 567,144 L 571,154 L 577,162 L 585,168 L 595,172 L 607,174 L 619,172 L 629,168 L 637,162 L 643,154 L 647,144 L 649,132 L 649,120 L 647,110 L 643,102 L 637,96 L 629,92 L 619,90 L 607,88 Z M 685,100 L 695,98 L 705,98 L 713,100 L 719,104 L 723,110 L 725,118 L 725,128 L 723,136 L 719,142 L 713,146 L 705,148 L 695,148 L 687,146 L 681,142 L 677,136 L 675,128 L 675,118 L 677,110 L 681,104 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
                       
-                      <text x="500" y="480" textAnchor="middle" fill="var(--text-muted)" fontSize="12" opacity="0.5" fontWeight="600">
-                        🌍 Global Network Monitoring
+                      {/* Southeast Asia */}
+                      <path d="M 720,240 L 728,242 L 736,246 L 742,252 L 746,260 L 748,270 L 748,280 L 746,288 L 742,294 L 736,298 L 728,300 L 720,300 L 712,298 L 706,294 L 702,288 L 700,280 L 700,270 L 702,260 L 706,252 L 712,246 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
+                      
+                      {/* Australia - Recognizable oval */}
+                      <path d="M 720,315 L 735,312 L 750,310 L 765,310 L 780,312 L 793,316 L 804,322 L 812,330 L 818,340 L 822,352 L 824,365 L 824,378 L 822,390 L 818,400 L 812,408 L 804,414 L 793,418 L 780,420 L 765,420 L 750,418 L 735,414 L 723,408 L 713,400 L 706,390 L 702,378 L 700,365 L 700,352 L 702,340 L 706,330 L 713,322 Z M 750,335 L 742,338 L 736,343 L 732,350 L 730,360 L 730,372 L 732,382 L 736,389 L 742,394 L 750,397 L 760,399 L 772,397 L 780,394 L 786,389 L 790,382 L 792,372 L 792,360 L 790,350 L 786,343 L 780,338 L 772,335 L 760,333 Z"
+                            fill="#2c3e50" opacity="0.8" stroke="#5de4c7" strokeWidth="1.5"/>
+                      
+                      {/* New Zealand */}
+                      <path d="M 850,385 L 858,383 L 865,385 L 870,390 L 873,398 L 873,408 L 870,416 L 865,421 L 858,423 L 850,423 L 843,421 L 838,416 L 835,408 L 835,398 L 838,390 L 843,385 Z"
+                            fill="#2c3e50" opacity="0.7" stroke="#5de4c7" strokeWidth="1"/>
+                      
+                      {/* Greenland */}
+                      <path d="M 310,35 L 325,32 L 342,30 L 358,30 L 373,32 L 385,36 L 394,42 L 400,50 L 404,60 L 405,72 L 404,84 L 400,94 L 394,102 L 385,108 L 373,112 L 358,114 L 342,114 L 325,112 L 312,108 L 302,102 L 295,94 L 290,84 L 288,72 L 290,60 L 295,50 L 302,42 Z"
+                            fill="#2c3e50" opacity="0.6" stroke="#5de4c7" strokeWidth="1.5"/>
+                      
+                      {/* Grid lines - latitude/longitude */}
+                      <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(93, 228, 199, 0.2)" strokeWidth="1" strokeDasharray="10,5"/>
+                      <line x1="0" y1="125" x2="1000" y2="125" stroke="rgba(93, 228, 199, 0.1)" strokeWidth="0.5" strokeDasharray="8,4"/>
+                      <line x1="0" y1="375" x2="1000" y2="375" stroke="rgba(93, 228, 199, 0.1)" strokeWidth="0.5" strokeDasharray="8,4"/>
+                      
+                      <line x1="250" y1="0" x2="250" y2="500" stroke="rgba(93, 228, 199, 0.1)" strokeWidth="0.5" strokeDasharray="8,4"/>
+                      <line x1="500" y1="0" x2="500" y2="500" stroke="rgba(93, 228, 199, 0.2)" strokeWidth="1" strokeDasharray="10,5"/>
+                      <line x1="750" y1="0" x2="750" y2="500" stroke="rgba(93, 228, 199, 0.1)" strokeWidth="0.5" strokeDasharray="8,4"/>
+                      
+                      <text x="500" y="485" textAnchor="middle" fill="var(--accent-primary)" fontSize="13" opacity="0.6" fontWeight="700">
+                        🌍 Global Threat Monitoring
                       </text>
                     </svg>
                   </div>
