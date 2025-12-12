@@ -1,2671 +1,873 @@
-/* ============================================
-   CYPROSECURE - Refined Professional Dashboard
-   Smaller, Compact, Polished Design
-   ============================================ */
-
-/* Theme Colors */
-.dark-theme {
-  --bg-primary: #0f1419;
-  --bg-secondary: #1c2541;
-  --bg-card: #1e2a3a;
-  --bg-hover: rgba(93, 228, 199, 0.08);
-  --text-primary: #e5e9f0;
-  --text-secondary: #8892b0;
-  --text-muted: #6b7280;
-  --accent-primary: #5de4c7;
-  --accent-secondary: #4ea8de;
-  --border-color: rgba(93, 228, 199, 0.12);
-  --shadow: rgba(0, 0, 0, 0.2);
-}
-
-.light-theme {
-  --bg-primary: #f5f7fa;
-  --bg-secondary: #ffffff;
-  --bg-card: #ffffff;
-  --bg-hover: rgba(78, 168, 222, 0.06);
-  --text-primary: #1a202c;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --accent-primary: #5de4c7;
-  --accent-secondary: #4ea8de;
-  --border-color: rgba(203, 213, 225, 0.5);
-  --shadow: rgba(0, 0, 0, 0.06);
-}
-
-:root {
-  --alert-high: #f56565;
-  --alert-medium: #ed8936;
-  --alert-low: #4ea8de;
-  --success: #48bb78;
-}
-
-/* Layout */
-.dashboard-layout {
-  display: flex;
-  min-height: 100vh;
-  background: var(--bg-primary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  transition: background 0.3s ease;
-}
-
-/* ===== Sidebar (Compact) ===== */
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 240px;
-  height: 100vh;
-  background: linear-gradient(180deg, #1a2332 0%, #0f1419 100%);
-  border-right: 1px solid rgba(93, 228, 199, 0.1);
-  display: flex;
-  flex-direction: column;
-  transition: width 0.3s ease;
-  z-index: 1000;
-}
-
-.sidebar.collapsed {
-  width: 70px;
-}
-
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 20px 18px;
-  border-bottom: 1px solid rgba(93, 228, 199, 0.1);
-}
-
-.logo-image {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(93, 228, 199, 0.4));
-}
-
-.logo-text {
-  flex: 1;
-  transition: opacity 0.3s ease;
-}
-
-.sidebar.collapsed .logo-text {
-  opacity: 0;
-  display: none;
-}
-
-.logo-text h2 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 800;
-  color: #e5e9f0;
-  letter-spacing: 0.3px;
-}
-
-.logo-text p {
-  margin: 2px 0 0 0;
-  font-size: 9px;
-  color: #8892b0;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-}
-
-.sidebar-nav {
-  flex: 1;
-  padding: 15px 0;
-  overflow-y: auto;
-}
-
-.sidebar-nav::-webkit-scrollbar {
-  width: 3px;
-}
-
-.sidebar-nav::-webkit-scrollbar-thumb {
-  background: rgba(93, 228, 199, 0.3);
-  border-radius: 2px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  color: #8892b0;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  border-left: 2px solid transparent;
-}
-
-.sidebar.collapsed .nav-item {
-  justify-content: center;
-  padding: 12px 0;
-}
-
-.nav-item:hover {
-  background: rgba(93, 228, 199, 0.08);
-  color: #5de4c7;
-  border-left-color: #5de4c7;
-}
-
-.nav-item.active {
-  background: rgba(93, 228, 199, 0.12);
-  color: #5de4c7;
-  border-left-color: #5de4c7;
-}
-
-.nav-icon {
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.nav-label {
-  flex: 1;
-}
-
-.sidebar.collapsed .nav-label {
-  display: none;
-}
-
-.nav-badge {
-  background: #5de4c7;
-  color: #0f1419;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 18px;
-  text-align: center;
-}
-
-.sidebar.collapsed .nav-badge {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 8px;
-  padding: 1px 4px;
-}
-
-.sidebar-collapse-btn {
-  position: absolute;
-  right: -10px;
-  top: 28px;
-  width: 20px;
-  height: 20px;
-  background: #5de4c7;
-  border: 2px solid #0f1419;
-  border-radius: 50%;
-  color: #0f1419;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(93, 228, 199, 0.4);
-}
-
-.sidebar-collapse-btn:hover {
-  transform: scale(1.1);
-}
-
-/* ===== Main Content ===== */
-.dashboard-main {
-  flex: 1;
-  margin-left: 240px;
-  display: flex;
-  flex-direction: column;
-  transition: margin-left 0.3s ease;
-}
-
-.dashboard-main.sidebar-collapsed {
-  margin-left: 70px;
-}
-
-/* ===== Top Bar (Compact) ===== */
-.top-bar {
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0 25px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  transition: all 0.3s ease;
-}
-
-.top-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.mobile-menu-btn {
-  display: none;
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.mobile-menu-btn:hover {
-  background: var(--bg-hover);
-}
-
-.page-title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.top-bar-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.theme-toggle {
-  width: 36px;
-  height: 36px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.theme-toggle:hover {
-  background: var(--accent-primary);
-  transform: scale(1.05);
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #5de4c7 0%, #4ea8de 100%);
-  color: #0f1419;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
-  box-shadow: 0 2px 8px rgba(93, 228, 199, 0.3);
-}
-
-.user-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: var(--bg-hover);
-  border: 1px solid var(--accent-primary);
-  border-radius: 6px;
-  color: var(--accent-primary);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.logout-btn:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-}
-
-/* ===== Content Area ===== */
-.content-area {
-  flex: 1;
-  padding: 25px;
-  background: var(--bg-primary);
-}
-
-/* Compact Hero */
-.hero-compact {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px var(--shadow);
-}
-
-.hero-text h1 {
-  margin: 0 0 5px 0;
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.hero-text p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.status-good {
-  color: var(--success);
-  font-weight: 700;
-}
-
-.hero-score-compact {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.score-ring-small {
-  position: relative;
-  width: 70px;
-  height: 70px;
-}
-
-.score-ring-small svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.ring-bg {
-  fill: none;
-  stroke: var(--border-color);
-  stroke-width: 6;
-}
-
-.ring-progress {
-  fill: none;
-  stroke: var(--accent-primary);
-  stroke-width: 6;
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 6px rgba(93, 228, 199, 0.5));
-}
-
-.score-num {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--accent-primary);
-}
-
-.score-label-small {
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Compact Metrics */
-.metrics-compact {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.metric-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.3s ease;
-}
-
-.metric-box:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent-primary);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.metric-box.success {
-  border-color: var(--success);
-}
-
-.metric-icon-sm {
-  font-size: 24px;
-  flex-shrink: 0;
-}
-
-.metric-data {
-  flex: 1;
-}
-
-.metric-val {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.metric-lbl {
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.metric-trend {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.metric-trend.up {
-  background: rgba(72, 187, 120, 0.15);
-  color: var(--success);
-}
-
-.metric-trend.neutral {
-  background: rgba(78, 168, 222, 0.15);
-  color: var(--alert-low);
-}
-
-.metric-trend.success {
-  background: rgba(72, 187, 120, 0.15);
-  color: var(--success);
-}
-
-.metric-breakdown {
-  display: flex;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.metric-breakdown .high {
-  color: var(--alert-high);
-}
-
-.metric-breakdown .medium {
-  color: var(--alert-medium);
-}
-
-.metric-breakdown .low {
-  color: var(--alert-low);
-}
-
-/* Section Compact */
-.section-compact {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px var(--shadow);
-}
-
-.section-hdr {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-.section-hdr h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.live-indicator {
-  font-size: 11px;
-  color: var(--alert-high);
-  font-weight: 600;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.view-all-sm {
-  background: none;
-  border: none;
-  color: var(--accent-primary);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.view-all-sm:hover {
-  color: var(--accent-secondary);
-  transform: translateX(2px);
-}
-
-/* World Map Visualization */
-.world-map-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-}
-
-.world-map {
-  position: relative;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px;
-  min-height: 300px;
-  overflow: hidden;
-}
-
-.world-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.map-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.connection-lines {
-  width: 100%;
-  height: 100%;
-}
-
-.threat-line {
-  stroke-width: 1.5;
-  opacity: 0.6;
-}
-
-.threat-line.high {
-  stroke: var(--alert-high);
-}
-
-.threat-line.medium {
-  stroke: var(--alert-medium);
-}
-
-.threat-line.low {
-  stroke: var(--alert-low);
-}
-
-.threat-marker {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  animation: markerPulse 2s infinite;
-}
-
-.threat-marker.high {
-  background: var(--alert-high);
-  box-shadow: 0 0 20px var(--alert-high);
-}
-
-.threat-marker.medium {
-  background: var(--alert-medium);
-  box-shadow: 0 0 15px var(--alert-medium);
-}
-
-.threat-marker.low {
-  background: var(--alert-low);
-  box-shadow: 0 0 12px var(--alert-low);
-}
-
-.marker-pulse {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  animation: pulse-ring 2s infinite;
-}
-
-@keyframes markerPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.2); }
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
-}
-
-/* Threat Locations List */
-.threat-locations {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 15px;
-}
-
-.threat-locations h3 {
-  margin: 0 0 12px 0;
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.location-item {
-  margin-bottom: 12px;
-}
-
-.location-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.location-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.location-threats {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.location-bar {
-  height: 6px;
-  background: var(--bg-card);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.location-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: 3px;
-  transition: width 0.5s ease;
-}
-
-/* Compact Alerts */
-.alerts-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.alert-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 15px;
-  background: var(--bg-hover);
-  border-radius: 8px;
-  border-left: 2px solid var(--alert-low);
-  transition: all 0.2s ease;
-}
-
-.alert-row:hover {
-  transform: translateX(3px);
-  box-shadow: 0 2px 8px var(--shadow);
-}
-
-.alert-row.high {
-  border-left-color: var(--alert-high);
-}
-
-.alert-row.medium {
-  border-left-color: var(--alert-medium);
-}
-
-.alert-row.low {
-  border-left-color: var(--alert-low);
-}
-
-.alert-sev {
-  font-size: 9px;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 5px;
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
-}
-
-.alert-row.high .alert-sev {
-  background: rgba(245, 101, 101, 0.2);
-  color: var(--alert-high);
-}
-
-.alert-row.medium .alert-sev {
-  background: rgba(237, 137, 54, 0.2);
-  color: var(--alert-medium);
-}
-
-.alert-row.low .alert-sev {
-  background: rgba(78, 168, 222, 0.2);
-  color: var(--alert-low);
-}
-
-.alert-info {
-  flex: 1;
-}
-
-.alert-ttl {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 2px;
-}
-
-.alert-dsc {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.alert-tm {
-  font-size: 10px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.alert-act {
-  padding: 6px 14px;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border: none;
-  border-radius: 5px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.alert-act:hover {
-  background: var(--accent-secondary);
-  transform: scale(1.05);
-}
-
-.alert-act.secondary {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-}
-
-/* Compact Actions */
-.actions-compact {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-}
-
-.action-btn-sm {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 15px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.action-btn-sm:hover {
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.action-icon-sm {
-  font-size: 20px;
-}
-
-/* ===== Organization Selector at Top ===== */
-.org-selector-top {
-  margin-bottom: 25px;
-}
-
-.org-dropdown {
-  min-width: 250px;
-  padding: 12px 40px 12px 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892b0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  box-shadow: 0 2px 6px var(--shadow);
-}
-
-.org-dropdown:hover {
-  border-color: var(--accent-primary);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.org-dropdown:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(93, 228, 199, 0.1);
-}
-
-/* ===== Business Owner View ===== */
-/* Risk Highlights */
-.risk-highlights {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.risk-highlight-card {
-  background: var(--bg-card);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.risk-highlight-card.high {
-  border-color: var(--alert-high);
-  background: linear-gradient(135deg, rgba(245, 101, 101, 0.05) 0%, var(--bg-card) 100%);
-}
-
-.risk-highlight-card.warning {
-  border-color: var(--alert-medium);
-  background: linear-gradient(135deg, rgba(237, 137, 54, 0.05) 0%, var(--bg-card) 100%);
-}
-
-.risk-icon {
-  font-size: 36px;
-  flex-shrink: 0;
-}
-
-.risk-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.risk-label {
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 5px;
-}
-
-.risk-name {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 3px;
-}
-
-.risk-detail {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.risk-action {
-  padding: 8px 16px;
-  background: var(--accent-primary);
-  border: none;
-  border-radius: 6px;
-  color: var(--bg-primary);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.risk-action:hover {
-  background: var(--accent-secondary);
-  transform: scale(1.05);
-}
-
-/* Employee Table */
-.employee-table-container {
-  overflow-x: auto;
-}
-
-.employee-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-.employee-table thead {
-  background: var(--bg-hover);
-}
-
-.employee-table th {
-  text-align: left;
-  padding: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.employee-table td {
-  padding: 14px 12px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
-}
-
-.employee-table tbody tr {
-  transition: all 0.2s ease;
-}
-
-.employee-table tbody tr:hover {
-  background: var(--bg-hover);
-}
-
-.employee-table tbody tr.high-risk-row {
-  background: rgba(245, 101, 101, 0.05);
-}
-
-.employee-table tbody tr.high-risk-row:hover {
-  background: rgba(245, 101, 101, 0.08);
-}
-
-.employee-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-}
-
-.risk-flag {
-  font-size: 14px;
-}
-
-.status-badge {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  display: inline-block;
-}
-
-.status-badge.online {
-  background: rgba(72, 187, 120, 0.15);
-  color: var(--success);
-}
-
-.status-badge.offline {
-  background: rgba(107, 114, 128, 0.15);
-  color: var(--text-muted);
-}
-
-.risk-score {
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 800;
-  display: inline-block;
-}
-
-.risk-score.high {
-  background: rgba(245, 101, 101, 0.15);
-  color: var(--alert-high);
-}
-
-.risk-score.medium {
-  background: rgba(237, 137, 54, 0.15);
-  color: var(--alert-medium);
-}
-
-.risk-score.low {
-  background: rgba(72, 187, 120, 0.15);
-  color: var(--success);
-}
-
-.training-status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  display: inline-block;
-}
-
-.training-status.complete {
-  background: rgba(72, 187, 120, 0.15);
-  color: var(--success);
-}
-
-.training-status.progress {
-  background: rgba(78, 168, 222, 0.15);
-  color: var(--accent-secondary);
-}
-
-.training-status.incomplete {
-  background: rgba(245, 101, 101, 0.15);
-  color: var(--alert-high);
-}
-
-.threat-count {
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.device-cell, .last-login-cell {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.table-actions {
-  display: flex;
-  gap: 6px;
-}
-
-.action-btn-tiny {
-  padding: 5px 10px;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  color: var(--text-primary);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.action-btn-tiny:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
-
-.action-btn-tiny.primary {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-color: var(--accent-primary);
-}
-
-.action-btn-tiny.primary:hover {
-  background: var(--accent-secondary);
-  border-color: var(--accent-secondary);
-}
-
-/* ===== Employee View ===== */
-/* Employee Hero */
-.employee-hero {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 30px;
-  margin-bottom: 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 8px var(--shadow);
-}
-
-.employee-hero-content h1 {
-  margin: 0 0 8px 0;
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.employee-subtitle {
-  margin: 0;
-  font-size: 15px;
-  color: var(--text-secondary);
-}
-
-.employee-score-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.score-ring-medium {
-  position: relative;
-  width: 120px;
-  height: 120px;
-}
-
-.score-ring-medium svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.score-num-large {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--accent-primary);
-}
-
-.score-status-text {
-  text-align: left;
-}
-
-.score-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 5px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.score-status {
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.score-status.high {
-  color: var(--alert-high);
-}
-
-.score-status.medium {
-  color: var(--alert-medium);
-}
-
-.score-status.low {
-  color: var(--success);
-}
-
-.training-progress-text {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent-primary);
-}
-
-/* Training Courses List */
-.training-courses-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.training-course-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 15px;
-  background: var(--bg-hover);
-  border-radius: 8px;
-  border-left: 3px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.training-course-item:hover {
-  background: var(--border-color);
-  transform: translateX(3px);
-}
-
-.training-course-item.completed {
-  border-left-color: var(--success);
-}
-
-.training-course-item.in_progress {
-  border-left-color: var(--accent-secondary);
-}
-
-.training-course-item.not_started {
-  border-left-color: var(--text-muted);
-}
-
-.course-status-icon {
-  font-size: 24px;
-  flex-shrink: 0;
-}
-
-.course-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.course-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.course-meta {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.course-progress-bar {
-  height: 6px;
-  background: var(--border-color);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 6px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: 3px;
-  transition: width 0.5s ease;
-}
-
-.course-action {
-  flex-shrink: 0;
-}
-
-.course-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.course-btn.primary {
-  background: var(--accent-primary);
-  border: none;
-  color: var(--bg-primary);
-}
-
-.course-btn.primary:hover {
-  background: var(--accent-secondary);
-  transform: scale(1.05);
-}
-
-.course-btn.secondary {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-}
-
-.course-btn.secondary:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
-
-/* Threats List */
-.threats-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.threat-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: var(--bg-hover);
-  border-radius: 8px;
-  border-left: 3px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.threat-item:hover {
-  background: var(--border-color);
-}
-
-.threat-item.high {
-  border-left-color: var(--alert-high);
-}
-
-.threat-item.medium {
-  border-left-color: var(--alert-medium);
-}
-
-.threat-item.low {
-  border-left-color: var(--success);
-}
-
-.threat-severity-badge {
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.threat-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.threat-type {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 2px;
-}
-
-.threat-time {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.threat-action-btn {
-  padding: 6px 12px;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  color: var(--text-primary);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.threat-action-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
-
-/* Devices Grid */
-.devices-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
-}
-
-.device-card {
-  background: var(--bg-hover);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: all 0.3s ease;
-}
-
-.device-card:hover {
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.device-card.needs_update {
-  border-color: var(--alert-medium);
-  background: linear-gradient(135deg, rgba(237, 137, 54, 0.05) 0%, var(--bg-hover) 100%);
-}
-
-.device-icon {
-  font-size: 32px;
-}
-
-.device-info {
-  flex: 1;
-}
-
-.device-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 5px;
-}
-
-.device-status {
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 3px;
-}
-
-.device-status.secure {
-  color: var(--success);
-}
-
-.device-status.needs_update {
-  color: var(--alert-medium);
-}
-
-.device-last-seen {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.device-action-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.device-action-btn.primary {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-}
-
-.device-action-btn.primary:hover {
-  background: var(--accent-secondary);
-  transform: scale(1.05);
-}
-
-/* ===== AI Support Chatbot ===== */
-.chat-fab {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border: none;
-  border-radius: 50%;
-  color: var(--bg-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(93, 228, 199, 0.4);
-  transition: all 0.3s ease;
-  z-index: 9999;
-}
-
-.chat-fab:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 30px rgba(93, 228, 199, 0.6);
-}
-
-.chat-window {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 400px;
-  height: 600px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  z-index: 9999;
-  overflow: hidden;
-}
-
-.chat-header {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  padding: 18px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.chat-header-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.chat-icon {
-  font-size: 24px;
-}
-
-.chat-title {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--bg-primary);
-  line-height: 1.2;
-}
-
-.chat-subtitle {
-  font-size: 11px;
-  color: rgba(15, 20, 25, 0.8);
-  font-weight: 600;
-}
-
-.chat-close {
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 50%;
-  color: var(--bg-primary);
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  line-height: 1;
-}
-
-.chat-close:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: rotate(90deg);
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: var(--bg-primary);
-}
-
-.chat-messages::-webkit-scrollbar {
-  width: 6px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
-.chat-message {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.chat-message.user {
-  flex-direction: row-reverse;
-}
-
-.message-avatar {
-  width: 32px;
-  height: 32px;
-  background: var(--bg-card);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-  border: 1px solid var(--border-color);
-}
-
-.chat-message.user .message-avatar {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-}
-
-.message-content {
-  max-width: 75%;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.chat-message.assistant .message-content {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  border-bottom-left-radius: 4px;
-}
-
-.chat-message.user .message-content {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: var(--bg-primary);
-  border-bottom-right-radius: 4px;
-}
-
-.typing {
-  display: flex;
-  gap: 6px;
-  padding: 16px 20px;
-}
-
-.typing span {
-  width: 8px;
-  height: 8px;
-  background: var(--text-muted);
-  border-radius: 50%;
-  animation: typing 1.4s infinite;
-}
-
-.typing span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes typing {
-  0%, 60%, 100% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-10px);
-  }
-}
-
-.chat-quick-actions {
-  padding: 12px 16px;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-color);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.quick-btn {
-  padding: 8px 12px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  color: var(--text-primary);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.quick-btn:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-color: var(--accent-primary);
-}
-
-.chat-input-area {
-  padding: 16px;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.chat-input {
-  flex: 1;
-  padding: 12px 16px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
-  color: var(--text-primary);
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.chat-input:focus {
-  border-color: var(--accent-primary);
-  background: var(--bg-primary);
-}
-
-.chat-input::placeholder {
-  color: var(--text-muted);
-}
-
-.chat-send {
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border: none;
-  border-radius: 50%;
-  color: var(--bg-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.chat-send:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(93, 228, 199, 0.4);
-}
-
-.chat-send:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .world-map-container {
-    grid-template-columns: 1fr;
-  }
-
-  .metrics-compact {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .risk-highlights {
-    grid-template-columns: 1fr;
-  }
-
-  .employee-hero {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-
-  .employee-score-card {
-    flex-direction: column;
-  }
-
-  .score-status-text {
-    text-align: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .dashboard-main {
-    margin-left: 0;
-  }
-
-  .mobile-menu-btn {
-    display: flex;
-  }
-
-  .content-area {
-    padding: 15px;
-  }
-
-  .metrics-compact {
-    grid-template-columns: 1fr;
-  }
-
-  .actions-compact {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .hero-compact {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .risk-highlights {
-    grid-template-columns: 1fr;
-  }
-
-  .risk-highlight-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .risk-action {
-    width: 100%;
-  }
-
-  .employee-table {
-    font-size: 11px;
-  }
-
-  .employee-table th,
-  .employee-table td {
-    padding: 8px 6px;
-  }
-
-  .device-cell {
-    display: none;
-  }
-
-  .training-course-item {
-    flex-wrap: wrap;
-  }
-
-  .course-action {
-    width: 100%;
-  }
-
-  .course-btn {
-    width: 100%;
-  }
-
-  .devices-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chat-window {
-    width: 100%;
-    height: 100%;
-    bottom: 0;
-    right: 0;
-    border-radius: 0;
-  }
-
-  .chat-fab {
-    bottom: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-  }
-
-  .chat-quick-actions {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .actions-compact {
-    grid-template-columns: 1fr;
-  }
-
-  .last-login-cell {
-    display: none;
-  }
-}
-
-/* Universal Welcome Section */
-.universal-welcome {
-  margin-bottom: 30px;
-  padding: 30px 40px;
-  background: linear-gradient(135deg, rgba(93, 228, 199, 0.1) 0%, rgba(93, 228, 199, 0.05) 100%);
-  border-left: 4px solid var(--accent-primary);
-  border-radius: 12px;
-}
-
-.welcome-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-}
-
-.welcome-text-side {
-  flex: 1;
-}
-
-.welcome-text-side h1 {
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 0 0 10px 0;
-  letter-spacing: -0.5px;
-}
-
-.welcome-subtitle {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin: 0;
-  font-weight: 600;
-}
-
-.welcome-score-side {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.score-ring-large {
-  position: relative;
-  width: 120px;
-  height: 120px;
-}
-
-.score-ring-large svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.score-ring-large .ring-bg {
-  fill: none;
-  stroke: var(--border-color);
-  stroke-width: 8;
-}
-
-.score-ring-large .ring-progress {
-  fill: none;
-  stroke: var(--accent-primary);
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dasharray 0.3s ease;
-}
-
-.score-num-large {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 42px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.score-label-side {
-  text-align: left;
-}
-
-.score-title {
-  font-size: 14px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 5px;
-}
-
-.score-status {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.score-status.good {
-  color: var(--success-color);
-}
-
-.score-status.high {
-  color: var(--danger-color);
-}
-
-.score-status.medium {
-  color: var(--warning-color);
-}
-
-@media (max-width: 768px) {
-  .universal-welcome {
-    padding: 20px 20px;
-  }
+import React, { useState } from 'react';
+import { useMsal } from '@azure/msal-react';
+import './Dashboard.css';
+
+/**
+ * CYPROSECURE - Complete Multi-Tenant Dashboard
+ * All pages built out with navigation
+ */
+function Dashboard() {
+  const { instance, accounts } = useMsal();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+  const [selectedOrg, setSelectedOrg] = useState('all');
+  const [currentPage, setCurrentPage] = useState('dashboard'); // Navigation state
   
-  .welcome-flex {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
+  // Chatbot state
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    {
+      role: 'assistant',
+      content: "Hi! I'm your CYPROSECURE support assistant. I can help with:\n\n• Microsoft 365 (Excel, Word, Teams, Outlook, etc.)\n• Device issues (Windows, Mac, Mobile)\n• Security questions\n• General IT support\n\nWhat can I help you with today?"
+    }
+  ]);
+  const [userInput, setUserInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const user = accounts[0];
+  const userName = user?.name || 'User';
   
-  .welcome-text-side h1 {
-    font-size: 28px;
-  }
+  // Get tenant info from Azure AD
+  const tenantId = user?.tenantId || '';
+  const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  .welcome-subtitle {
-    font-size: 16px;
-  }
+  // Cyproteck MSSP tenant ID
+  const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  .welcome-score-side {
-    width: 100%;
-    justify-content: center;
-  }
+  // Check user roles from Azure AD
+  const userRoles = user?.idTokenClaims?.roles || [];
+  const userEmail = user?.username || user?.idTokenClaims?.preferred_username || '';
+  const isCyproteckEmail = userEmail.toLowerCase().includes('@cyproteck.com');
   
-  .score-label-side {
-    text-align: center;
-  }
-}
-
-/* ========================================
-   NEW PAGE STYLES
-   ======================================== */
-
-/* Page Container */
-.page-container {
-  padding: 30px;
-  max-width: 1400px;
-}
-
-.page-header {
-  margin-bottom: 40px;
-}
-
-.page-header h1 {
-  font-size: 36px;
-  font-weight: 800;
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-}
-
-.page-subtitle {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-/* ========================================
-   COMPANY ALERTS (MSSP View)
-   ======================================== */
-
-.company-alerts-table {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.company-alert-card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 25px;
-  border: 2px solid var(--border-color);
-  transition: all 0.3s ease;
-}
-
-.company-alert-card.critical {
-  border-color: var(--danger-color);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
-}
-
-.company-alert-card.medium {
-  border-color: var(--warning-color);
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, transparent 100%);
-}
-
-.company-alert-card.low {
-  border-color: var(--success-color);
-}
-
-.company-alert-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-}
-
-.company-info h3 {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-}
-
-.status-badge-lg {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-badge-lg.danger {
-  background: var(--danger-color);
-  color: white;
-}
-
-.status-badge-lg.warning {
-  background: var(--warning-color);
-  color: var(--bg-primary);
-}
-
-.status-badge-lg.success {
-  background: var(--success-color);
-  color: white;
-}
-
-.company-metrics-mini {
-  display: flex;
-  gap: 25px;
-}
-
-.metric-mini {
-  text-align: center;
-}
-
-.metric-mini-val {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.metric-mini-lbl {
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 5px;
-}
-
-.company-alert-body {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.threat-breakdown {
-  display: flex;
-  gap: 15px;
-}
-
-.threat-stat {
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.threat-stat.high {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger-color);
-}
-
-.threat-stat.medium {
-  background: rgba(251, 191, 36, 0.1);
-  color: var(--warning-color);
-}
-
-.threat-stat.low {
-  background: rgba(34, 197, 94, 0.1);
-  color: var(--success-color);
-}
-
-.last-incident {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.company-alert-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.action-btn-sm {
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.action-btn-sm:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-}
-
-.action-btn-sm.primary {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-color: var(--accent-primary);
-}
-
-/* ========================================
-   MOBILE SECURITY PAGE
-   ======================================== */
-
-.mobile-security-hero {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, #00a896 100%);
-  border-radius: 16px;
-  padding: 50px;
-  margin-bottom: 40px;
-  color: white;
-}
-
-.mobile-hero-content h2 {
-  font-size: 32px;
-  font-weight: 800;
-  margin: 0 0 15px 0;
-}
-
-.mobile-hero-content p {
-  font-size: 18px;
-  line-height: 1.6;
-  opacity: 0.95;
-}
-
-.download-section-large {
-  margin: 50px 0;
-}
-
-.download-section-large h2 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 30px;
-  text-align: center;
-  color: var(--text-primary);
-}
-
-.download-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-bottom: 50px;
-}
-
-.download-card {
-  background: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 16px;
-  padding: 40px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.download-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.download-card.ios {
-  border-color: #007AFF;
-}
-
-.download-card.android {
-  border-color: #3DDC84;
-}
-
-.download-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-}
-
-.download-card h3 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-}
-
-.download-card p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  margin-bottom: 25px;
-}
-
-.download-btn-large {
-  display: inline-block;
-  padding: 16px 32px;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.download-btn-large:hover {
-  background: #00a896;
-  transform: scale(1.05);
-}
-
-.requirements {
-  margin-top: 15px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-style: italic;
-}
-
-.setup-instructions {
-  margin: 50px 0;
-}
-
-.setup-instructions h2 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 30px;
-  color: var(--text-primary);
-}
-
-.steps-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-}
-
-.step {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.step-number {
-  width: 40px;
-  height: 40px;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.step-content h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-  color: var(--text-primary);
-}
-
-.step-content p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0;
-}
-
-.features-section {
-  margin: 50px 0;
-}
-
-.features-section h2 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 30px;
-  color: var(--text-primary);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 25px;
-}
-
-.feature-item {
-  background: var(--card-bg);
-  padding: 25px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  text-align: center;
-}
-
-.feature-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 15px;
-}
-
-.feature-item h4 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-}
-
-.feature-item p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* ========================================
-   REPORTS PAGE
-   ======================================== */
-
-.reports-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
-  margin: 30px 0;
-}
-
-.report-card {
-  background: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 16px;
-  padding: 30px;
-  transition: all 0.3s ease;
-}
-
-.report-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: var(--accent-primary);
-}
-
-.report-icon {
-  font-size: 50px;
-  margin-bottom: 20px;
-}
-
-.report-card h3 {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 12px 0;
-  color: var(--text-primary);
-}
-
-.report-card p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.report-stats {
-  display: flex;
-  gap: 30px;
-  padding: 15px 0;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 20px;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat-value {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--accent-primary);
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 5px;
-}
-
-.download-report-btn {
-  width: 100%;
-  padding: 14px 24px;
-  background: var(--card-bg);
-  border: 2px solid var(--accent-primary);
-  color: var(--accent-primary);
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.download-report-btn:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  transform: scale(1.02);
-}
-
-.download-report-btn.primary {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-color: var(--accent-primary);
-}
-
-.download-report-btn-lg {
-  padding: 18px 36px;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.download-report-btn-lg:hover {
-  background: #00a896;
-  transform: scale(1.05);
-}
-
-/* ========================================
-   THREATS PAGE
-   ======================================== */
-
-.info-section {
-  background: var(--card-bg);
-  border-radius: 16px;
-  padding: 35px;
-  margin-bottom: 40px;
-  border: 1px solid var(--border-color);
-}
-
-.info-section h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 15px 0;
-  color: var(--text-primary);
-}
-
-.info-section p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.threat-types-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.threat-type-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 25px;
-  transition: all 0.3s ease;
-}
-
-.threat-type-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent-primary);
-}
-
-.threat-icon {
-  font-size: 40px;
-  margin-bottom: 15px;
-}
-
-.threat-type-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-  color: var(--text-primary);
-}
-
-.threat-type-card p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-
-@media (max-width: 1024px) {
-  .company-alert-header {
-    flex-direction: column;
-  }
+  // Map Azure AD roles - SUPPORTS BOTH APP REGISTRATIONS
+  // App 1 ("CYPROTECK"): Tenant, BusinessOwner, Cyproemployee, Businessemployee
+  // App 2 ("Portals-CYPROTECK CYPROSECURE"): TenantOwner, Businessowner, CyproteckEmployee, CustomerEmployee
   
-  .company-metrics-mini {
-    margin-top: 20px;
-  }
+  const hasTenantRole = userRoles.some(role => 
+    role === 'Tenant' || 
+    role === 'Cyprotenant' ||
+    role === 'TenantOwner' ||
+    role.toLowerCase() === 'tenant' ||
+    role.toLowerCase() === 'tenantowner'
+  );
   
-  .download-cards {
-    grid-template-columns: 1fr;
-  }
+  const hasBusinessOwnerRole = userRoles.some(role => 
+    role === 'BusinessOwner' ||
+    role === 'Businessowner' ||
+    role.toLowerCase() === 'businessowner'
+  );
   
-  .reports-grid {
-    grid-template-columns: 1fr;
-  }
+  // Determine user type
+  const isMSSPOwner = (tenantId === CYPROTECK_TENANT_ID && (hasTenantRole || isCyproteckEmail));
+  const isBusinessOwner = (tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole);
+  const isEmployee = !isMSSPOwner && !isBusinessOwner;
+
+  // Mock data - Company threat rollup for MSSP view
+  const companyThreats = [
+    { 
+      id: 1, 
+      name: 'Acme Healthcare', 
+      status: 'critical',
+      activeThreats: 24,
+      highAlerts: 8,
+      mediumAlerts: 12,
+      lowAlerts: 4,
+      employees: 245,
+      riskScore: 82,
+      lastIncident: '2 hours ago',
+      contact: 'john.doe@acme-health.com'
+    },
+    { 
+      id: 2, 
+      name: 'Tech Solutions Inc', 
+      status: 'medium',
+      activeThreats: 12,
+      highAlerts: 2,
+      mediumAlerts: 8,
+      lowAlerts: 2,
+      employees: 156,
+      riskScore: 65,
+      lastIncident: '1 day ago',
+      contact: 'sarah.smith@techsolutions.com'
+    },
+    { 
+      id: 3, 
+      name: 'Finance Group LLC', 
+      status: 'low',
+      activeThreats: 5,
+      highAlerts: 0,
+      mediumAlerts: 3,
+      lowAlerts: 2,
+      employees: 89,
+      riskScore: 42,
+      lastIncident: '5 days ago',
+      contact: 'mike.jones@financegroup.com'
+    },
+  ];
+
+  // Calculate rolled-up metrics
+  const totalCompanyThreats = companyThreats.reduce((sum, c) => sum + c.activeThreats, 0);
+  const totalHighAlerts = companyThreats.reduce((sum, c) => sum + c.highAlerts, 0);
+  const totalMediumAlerts = companyThreats.reduce((sum, c) => sum + c.mediumAlerts, 0);
+  const totalLowAlerts = companyThreats.reduce((sum, c) => sum + c.lowAlerts, 0);
+  const criticalCompanies = companyThreats.filter(c => c.status === 'critical').length;
+  const mediumCompanies = companyThreats.filter(c => c.status === 'medium').length;
+
+  // Navigation handlers
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Helper functions
+  const getRiskColor = (score) => {
+    if (score >= 70) return 'high';
+    if (score >= 50) return 'medium';
+    return 'low';
+  };
+
+  const getStatusColor = (status) => {
+    if (status === 'critical') return 'danger';
+    if (status === 'medium') return 'warning';
+    return 'success';
+  };
+
+  // Render different pages based on currentPage state
+  const renderPage = () => {
+    switch(currentPage) {
+      case 'dashboard':
+        return renderDashboard();
+      case 'security':
+        return renderSecurityPage();
+      case 'threats':
+        return renderThreatsPage();
+      case 'training':
+        return renderTrainingPage();
+      case 'alerts':
+        return renderAlertsPage();
+      case 'mobile':
+        return renderMobileSecurityPage();
+      case 'reports':
+        return renderReportsPage();
+      case 'settings':
+        return renderSettingsPage();
+      default:
+        return renderDashboard();
+    }
+  };
+
+  // DASHBOARD PAGE
+  const renderDashboard = () => (
+    <>
+      {/* Universal Welcome */}
+      <div className="universal-welcome">
+        <div className="welcome-flex">
+          <div className="welcome-text-side">
+            <h1>Welcome back, {userName.split(' ')[0]}! 👋</h1>
+            <p className="welcome-subtitle">
+              {isMSSPOwner ? 'MSSP Security Dashboard' : isBusinessOwner ? 'Business Security Dashboard' : 'My Security Dashboard'}
+            </p>
+          </div>
+          <div className="welcome-score-side">
+            <div className="score-ring-large">
+              <svg viewBox="0 0 120 120">
+                <circle className="ring-bg" cx="60" cy="60" r="50"/>
+                <circle 
+                  className="ring-progress" 
+                  cx="60" 
+                  cy="60" 
+                  r="50"
+                  style={{ strokeDasharray: `${(isMSSPOwner ? 85 : 71) * 3.14} 314` }}
+                />
+              </svg>
+              <div className="score-num-large">{isMSSPOwner ? 85 : 71}</div>
+            </div>
+            <div className="score-label-side">
+              <div className="score-title">Security Score</div>
+              <div className={`score-status ${isMSSPOwner ? 'good' : 'medium'}`}>
+                {isMSSPOwner ? 'Excellent' : 'Needs Improvement'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* MSSP Owner: Company Alert Dashboard */}
+      {isMSSPOwner && (
+        <>
+          {/* Rolled-up Metrics */}
+          <div className="metrics-compact">
+            <div className="metric-box">
+              <div className="metric-icon-sm">🏢</div>
+              <div className="metric-data">
+                <div className="metric-val">{companyThreats.length}</div>
+                <div className="metric-lbl">Active Clients</div>
+              </div>
+              <div className="metric-trend neutral">Monitored</div>
+            </div>
+
+            <div className="metric-box">
+              <div className="metric-icon-sm">⚠️</div>
+              <div className="metric-data">
+                <div className="metric-val">{totalCompanyThreats}</div>
+                <div className="metric-lbl">Total Threats</div>
+              </div>
+              <div className="metric-breakdown">
+                <span className="high">{totalHighAlerts}H</span>
+                <span className="medium">{totalMediumAlerts}M</span>
+                <span className="low">{totalLowAlerts}L</span>
+              </div>
+            </div>
+
+            <div className="metric-box danger">
+              <div className="metric-icon-sm">🚨</div>
+              <div className="metric-data">
+                <div className="metric-val">{criticalCompanies}</div>
+                <div className="metric-lbl">Critical Alert</div>
+              </div>
+              <div className="metric-trend danger">Immediate Action</div>
+            </div>
+
+            <div className="metric-box warning">
+              <div className="metric-icon-sm">⚡</div>
+              <div className="metric-data">
+                <div className="metric-val">{mediumCompanies}</div>
+                <div className="metric-lbl">Medium Alert</div>
+              </div>
+              <div className="metric-trend warning">Review Soon</div>
+            </div>
+          </div>
+
+          {/* Company Alert Table */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>Client Security Status - Action Required</h2>
+              <button className="view-all-sm" onClick={() => navigateTo('threats')}>View All Threats →</button>
+            </div>
+            <div className="company-alerts-table">
+              {companyThreats.map(company => (
+                <div key={company.id} className={`company-alert-card ${company.status}`}>
+                  <div className="company-alert-header">
+                    <div className="company-info">
+                      <h3>{company.name}</h3>
+                      <span className={`status-badge-lg ${getStatusColor(company.status)}`}>
+                        {company.status === 'critical' ? '🚨 CRITICAL' : 
+                         company.status === 'medium' ? '⚠️ MEDIUM RISK' : 
+                         '✅ LOW RISK'}
+                      </span>
+                    </div>
+                    <div className="company-metrics-mini">
+                      <div className="metric-mini">
+                        <div className="metric-mini-val">{company.activeThreats}</div>
+                        <div className="metric-mini-lbl">Active Threats</div>
+                      </div>
+                      <div className="metric-mini">
+                        <div className="metric-mini-val">{company.riskScore}</div>
+                        <div className="metric-mini-lbl">Risk Score</div>
+                      </div>
+                      <div className="metric-mini">
+                        <div className="metric-mini-val">{company.employees}</div>
+                        <div className="metric-mini-lbl">Employees</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="company-alert-body">
+                    <div className="threat-breakdown">
+                      <span className="threat-stat high">{company.highAlerts} High</span>
+                      <span className="threat-stat medium">{company.mediumAlerts} Medium</span>
+                      <span className="threat-stat low">{company.lowAlerts} Low</span>
+                    </div>
+                    <div className="last-incident">
+                      Last incident: {company.lastIncident}
+                    </div>
+                  </div>
+                  <div className="company-alert-actions">
+                    <button className="action-btn-sm primary">📞 Contact: {company.contact}</button>
+                    <button className="action-btn-sm">📊 View Details</button>
+                    <button className="action-btn-sm">🔒 Enforce Policies</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+
+  // THREATS PAGE
+  const renderThreatsPage = () => (
+    <div className="page-container">
+      <div className="page-header">
+        <h1>🚨 Threat Management</h1>
+        <p className="page-subtitle">Monitor, analyze, and respond to security threats across your organization</p>
+      </div>
+
+      <div className="info-section">
+        <h2>What are Security Threats?</h2>
+        <p>Security threats are potential risks or attacks targeting your organization's digital assets, data, or systems. They can come from various sources including malware, phishing attempts, unauthorized access attempts, and more.</p>
+        
+        <div className="threat-types-grid">
+          <div className="threat-type-card">
+            <div className="threat-icon">🦠</div>
+            <h3>Malware</h3>
+            <p>Malicious software designed to harm or exploit devices, including viruses, ransomware, and spyware.</p>
+          </div>
+          <div className="threat-type-card">
+            <div className="threat-icon">🎣</div>
+            <h3>Phishing</h3>
+            <p>Fraudulent attempts to obtain sensitive information by disguising as trustworthy entities in emails or messages.</p>
+          </div>
+          <div className="threat-type-card">
+            <div className="threat-icon">🔓</div>
+            <h3>Unauthorized Access</h3>
+            <p>Attempts to gain access to systems, accounts, or data without proper authentication or authorization.</p>
+          </div>
+          <div className="threat-type-card">
+            <div className="threat-icon">📡</div>
+            <h3>Network Attacks</h3>
+            <p>Attempts to disrupt, intercept, or manipulate network traffic and communications.</p>
+          </div>
+        </div>
+      </div>
+
+      {isMSSPOwner && (
+        <div className="section-compact">
+          <h2>Active Threats Across All Clients</h2>
+          <div className="threat-list">
+            {companyThreats.map(company => (
+              <div key={company.id} className="threat-company-section">
+                <h3>{company.name} - {company.activeThreats} Active Threats</h3>
+                {/* Threat details would go here */}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // MOBILE SECURITY PAGE
+  const renderMobileSecurityPage = () => (
+    <div className="page-container">
+      <div className="page-header">
+        <h1>📱 Mobile Security</h1>
+        <p className="page-subtitle">Protect your mobile devices with Microsoft Defender</p>
+      </div>
+
+      <div className="mobile-security-hero">
+        <div className="mobile-hero-content">
+          <h2>Secure Your Mobile Devices</h2>
+          <p>Microsoft Defender for mobile provides comprehensive protection for your iOS and Android devices, defending against phishing, malware, and unsafe network connections.</p>
+        </div>
+      </div>
+
+      <div className="download-section-large">
+        <h2>Download Microsoft Defender</h2>
+        <div className="download-cards">
+          <div className="download-card ios">
+            <div className="download-icon">🍎</div>
+            <h3>iOS & iPadOS</h3>
+            <p>Protect your iPhone and iPad</p>
+            <a 
+              href="https://apps.apple.com/us/app/microsoft-defender/id1526737990" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="download-btn-large"
+            >
+              Download for iOS
+            </a>
+            <div className="requirements">
+              Requires iOS 15.0 or later
+            </div>
+          </div>
+
+          <div className="download-card android">
+            <div className="download-icon">🤖</div>
+            <h3>Android</h3>
+            <p>Protect your Android phone or tablet</p>
+            <a 
+              href="https://play.google.com/store/apps/details?id=com.microsoft.scmx" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="download-btn-large"
+            >
+              Download for Android
+            </a>
+            <div className="requirements">
+              Requires Android 8.0 or later
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="setup-instructions">
+        <h2>Setup Instructions</h2>
+        <div className="steps-container">
+          <div className="step">
+            <div className="step-number">1</div>
+            <div className="step-content">
+              <h3>Download the App</h3>
+              <p>Download Microsoft Defender from the App Store (iOS) or Google Play Store (Android)</p>
+            </div>
+          </div>
+          <div className="step">
+            <div className="step-number">2</div>
+            <div className="step-content">
+              <h3>Sign In</h3>
+              <p>Open the app and sign in with your company email address</p>
+            </div>
+          </div>
+          <div className="step">
+            <div className="step-number">3</div>
+            <div className="step-content">
+              <h3>Enable Permissions</h3>
+              <p>Grant necessary permissions for web protection, VPN, and notifications</p>
+            </div>
+          </div>
+          <div className="step">
+            <div className="step-number">4</div>
+            <div className="step-content">
+              <h3>You're Protected!</h3>
+              <p>Your device is now protected. The app runs in the background to keep you safe</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="features-section">
+        <h2>Protection Features</h2>
+        <div className="features-grid">
+          <div className="feature-item">
+            <span className="feature-icon">🔗</span>
+            <h4>Web Protection</h4>
+            <p>Blocks malicious websites and phishing attempts</p>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">🦠</span>
+            <h4>Malware Scanning</h4>
+            <p>Detects and removes malicious apps</p>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">📧</span>
+            <h4>Phishing Protection</h4>
+            <p>Identifies fraudulent emails and messages</p>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">🛡️</span>
+            <h4>Real-time Protection</h4>
+            <p>Continuous monitoring and threat prevention</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // REPORTS PAGE
+  const renderReportsPage = () => (
+    <div className="page-container">
+      <div className="page-header">
+        <h1>📊 Reports & Analytics</h1>
+        <p className="page-subtitle">Generate and download comprehensive security and training reports</p>
+      </div>
+
+      <div className="reports-grid">
+        {/* Training Reports */}
+        <div className="report-card">
+          <div className="report-icon">🎓</div>
+          <h3>Training Completion Report</h3>
+          <p>View who has completed required security training and who still needs to complete courses</p>
+          <div className="report-stats">
+            <div className="stat">
+              <span className="stat-value">67%</span>
+              <span className="stat-label">Completed</span>
+            </div>
+            <div className="stat">
+              <span className="stat-value">15</span>
+              <span className="stat-label">Pending</span>
+            </div>
+          </div>
+          <button className="download-report-btn">
+            📥 Download Training Report
+          </button>
+        </div>
+
+        {/* Incomplete Training */}
+        <div className="report-card">
+          <div className="report-icon">⏳</div>
+          <h3>Incomplete Training Report</h3>
+          <p>List of employees who haven't completed required training with their progress status</p>
+          <div className="report-stats">
+            <div className="stat">
+              <span className="stat-value">15</span>
+              <span className="stat-label">Employees</span>
+            </div>
+            <div className="stat">
+              <span className="stat-value">3</span>
+              <span className="stat-label">Overdue</span>
+            </div>
+          </div>
+          <button className="download-report-btn">
+            📥 Download Incomplete Training
+          </button>
+        </div>
+
+        {/* Threat Summary */}
+        <div className="report-card">
+          <div className="report-icon">⚠️</div>
+          <h3>Threat Summary Report</h3>
+          <p>Most common security threats and incidents detected across your organization</p>
+          <div className="report-stats">
+            <div className="stat">
+              <span className="stat-value">127</span>
+              <span className="stat-label">Total Threats</span>
+            </div>
+            <div className="stat">
+              <span className="stat-value">14</span>
+              <span className="stat-label">Critical</span>
+            </div>
+          </div>
+          <button className="download-report-btn">
+            📥 Download Threat Report
+          </button>
+        </div>
+
+        {/* Outliers Report */}
+        <div className="report-card">
+          <div className="report-icon">📈</div>
+          <h3>Security Outliers Report</h3>
+          <p>Identify employees or departments with unusual security patterns or elevated risk</p>
+          <div className="report-stats">
+            <div className="stat">
+              <span className="stat-value">8</span>
+              <span className="stat-label">Outliers</span>
+            </div>
+            <div className="stat">
+              <span className="stat-value">3</span>
+              <span className="stat-label">High Risk</span>
+            </div>
+          </div>
+          <button className="download-report-btn">
+            📥 Download Outliers Report
+          </button>
+        </div>
+
+        {/* Compliance Report */}
+        <div className="report-card">
+          <div className="report-icon">✅</div>
+          <h3>Compliance Report</h3>
+          <p>Overall security compliance status including policies, training, and device security</p>
+          <div className="report-stats">
+            <div className="stat">
+              <span className="stat-value">92%</span>
+              <span className="stat-label">Compliant</span>
+            </div>
+            <div className="stat">
+              <span className="stat-value">5</span>
+              <span className="stat-label">Issues</span>
+            </div>
+          </div>
+          <button className="download-report-btn">
+            📥 Download Compliance Report
+          </button>
+        </div>
+
+        {/* Executive Summary */}
+        <div className="report-card">
+          <div className="report-icon">📋</div>
+          <h3>Executive Summary</h3>
+          <p>High-level overview of security posture, incidents, and key metrics for leadership</p>
+          <div className="report-stats">
+            <div className="stat">
+              <span className="stat-value">Monthly</span>
+              <span className="stat-label">Updated</span>
+            </div>
+          </div>
+          <button className="download-report-btn primary">
+            📥 Download Executive Summary
+          </button>
+        </div>
+      </div>
+
+      {isMSSPOwner && (
+        <div className="section-compact">
+          <h2>Multi-Client Reports</h2>
+          <p>Generate consolidated reports across all client organizations</p>
+          <button className="download-report-btn-lg primary">
+            📥 Download Multi-Client Report Package
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  // Placeholder pages
+  const renderSecurityPage = () => (
+    <div className="page-container">
+      <h1>🛡️ Security Overview</h1>
+      <p>Security overview and posture management</p>
+    </div>
+  );
+
+  const renderTrainingPage = () => (
+    <div className="page-container">
+      <h1>🎓 Security Training</h1>
+      <p>Employee training management and progress tracking</p>
+    </div>
+  );
+
+  const renderAlertsPage = () => (
+    <div className="page-container">
+      <h1>🚨 Security Alerts</h1>
+      <p>Real-time security alerts and notifications</p>
+    </div>
+  );
+
+  const renderSettingsPage = () => (
+    <div className="page-container">
+      <h1>⚙️ Settings</h1>
+      <p>Dashboard settings and preferences</p>
+    </div>
+  );
+
+  // Main render
+  return (
+    <div className={`dashboard ${darkMode ? 'dark' : 'light'}`}>
+      {/* Sidebar */}
+      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+        <div className="sidebar-header">
+          <div className="logo">
+            <span className="logo-icon">🛡️</span>
+            {!sidebarCollapsed && <span className="logo-text">CYPROSECURE</span>}
+          </div>
+        </div>
+
+        <nav className="sidebar-nav">
+          <a 
+            href="#dashboard" 
+            className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('dashboard'); }}
+          >
+            <span className="nav-icon">📊</span>
+            {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
+          </a>
+          <a 
+            href="#security" 
+            className={`nav-item ${currentPage === 'security' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('security'); }}
+          >
+            <span className="nav-icon">🛡️</span>
+            {!sidebarCollapsed && <span className="nav-label">Security</span>}
+          </a>
+          <a 
+            href="#threats" 
+            className={`nav-item ${currentPage === 'threats' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('threats'); }}
+          >
+            <span className="nav-icon">⚠️</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Threats</span>
+                <span className="nav-badge">{isMSSPOwner ? totalCompanyThreats : 23}</span>
+              </>
+            )}
+          </a>
+          <a 
+            href="#training" 
+            className={`nav-item ${currentPage === 'training' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('training'); }}
+          >
+            <span className="nav-icon">🎓</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Training</span>
+                <span className="nav-badge">2</span>
+              </>
+            )}
+          </a>
+          <a 
+            href="#alerts" 
+            className={`nav-item ${currentPage === 'alerts' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('alerts'); }}
+          >
+            <span className="nav-icon">🚨</span>
+            {!sidebarCollapsed && (
+              <>
+                <span className="nav-label">Alerts</span>
+                <span className="nav-badge">3</span>
+              </>
+            )}
+          </a>
+          <a 
+            href="#mobile" 
+            className={`nav-item ${currentPage === 'mobile' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('mobile'); }}
+          >
+            <span className="nav-icon">📱</span>
+            {!sidebarCollapsed && <span className="nav-label">Mobile Security</span>}
+          </a>
+          <a 
+            href="#reports" 
+            className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('reports'); }}
+          >
+            <span className="nav-icon">📈</span>
+            {!sidebarCollapsed && <span className="nav-label">Reports</span>}
+          </a>
+          <a 
+            href="#settings" 
+            className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
+            onClick={(e) => { e.preventDefault(); navigateTo('settings'); }}
+          >
+            <span className="nav-icon">⚙️</span>
+            {!sidebarCollapsed && <span className="nav-label">Settings</span>}
+          </a>
+        </nav>
+
+        <button className="sidebar-collapse-btn" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            {sidebarCollapsed ? (
+              <path d="M7 10l5 5V5l-5 5z"/>
+            ) : (
+              <path d="M13 10l-5 5V5l5 5z"/>
+            )}
+          </svg>
+        </button>
+      </aside>
+
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Header */}
+        <header className="top-header">
+          <div className="header-left">
+            <h2 className="page-title">
+              {currentPage === 'dashboard' && isMSSPOwner && 'MSSP Security Dashboard'}
+              {currentPage === 'dashboard' && isBusinessOwner && 'Business Security Dashboard'}
+              {currentPage === 'dashboard' && isEmployee && 'My Security Dashboard'}
+              {currentPage === 'security' && 'Security Overview'}
+              {currentPage === 'threats' && 'Threat Management'}
+              {currentPage === 'training' && 'Security Training'}
+              {currentPage === 'alerts' && 'Security Alerts'}
+              {currentPage === 'mobile' && 'Mobile Security'}
+              {currentPage === 'reports' && 'Reports & Analytics'}
+              {currentPage === 'settings' && 'Settings'}
+            </h2>
+          </div>
+          <div className="header-right">
+            <button className="header-btn">☀️</button>
+            <button className="header-btn">🔔</button>
+            <div className="user-menu">
+              <div className="user-avatar">C</div>
+              <span className="user-name">{companyName}</span>
+              <button className="logout-btn" onClick={() => instance.logoutRedirect()}>
+                ↪️ Logout
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Content Area */}
+        <div className="content-area">
+          {/* COMPREHENSIVE DEBUG INFO - REMOVE AFTER FIXING */}
+          <div style={{
+            padding: '30px',
+            background: '#ff0000',
+            color: '#fff',
+            marginBottom: '30px',
+            borderRadius: '12px',
+            fontFamily: 'monospace',
+            fontSize: '14px'
+          }}>
+            <h2 style={{margin: '0 0 20px 0', fontSize: '24px'}}>🔍 AZURE AD DEBUG INFO</h2>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>YOUR TENANT ID:</strong><br/>
+              {tenantId || 'NOT FOUND'}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>CYPROTECK TENANT ID:</strong><br/>
+              {CYPROTECK_TENANT_ID}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>TENANT MATCH:</strong><br/>
+              {tenantId === CYPROTECK_TENANT_ID ? '✅ YES - MATCH!' : '❌ NO - DIFFERENT TENANT'}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>YOUR EMAIL:</strong><br/>
+              {userEmail || 'NOT FOUND'}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>CYPROTECK EMAIL CHECK:</strong><br/>
+              {isCyproteckEmail ? '✅ YES - Has @cyproteck.com' : '❌ NO - Different email domain'}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>YOUR ROLES FROM AZURE AD:</strong><br/>
+              {userRoles.length > 0 ? (
+                <ul style={{margin: '10px 0', paddingLeft: '20px'}}>
+                  {userRoles.map((role, idx) => (
+                    <li key={idx}>{role}</li>
+                  ))}
+                </ul>
+              ) : (
+                <span style={{color: '#ffff00'}}>⚠️ NO ROLES ASSIGNED IN AZURE AD</span>
+              )}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>ROLE CHECKS:</strong><br/>
+              • hasTenantRole (Tenant/TenantOwner): {hasTenantRole ? '✅ YES' : '❌ NO'}<br/>
+              • hasBusinessOwnerRole: {hasBusinessOwnerRole ? '✅ YES' : '❌ NO'}
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>FINAL DETECTION:</strong><br/>
+              <span style={{fontSize: '20px', fontWeight: 'bold'}}>
+                {isMSSPOwner ? '🏢 MSSP OWNER' : isBusinessOwner ? '👔 BUSINESS OWNER' : '👤 EMPLOYEE'}
+              </span>
+            </div>
+            
+            <div style={{marginBottom: '15px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px'}}>
+              <strong>ALL AZURE AD CLAIMS (Raw Data):</strong><br/>
+              <pre style={{
+                background: '#000', 
+                padding: '15px', 
+                borderRadius: '6px', 
+                overflow: 'auto', 
+                maxHeight: '300px',
+                fontSize: '12px'
+              }}>
+                {JSON.stringify(user?.idTokenClaims, null, 2)}
+              </pre>
+            </div>
+            
+            <div style={{padding: '15px', background: 'rgba(255,255,0,0.3)', borderRadius: '8px', border: '2px solid yellow'}}>
+              <strong>⚠️ WHAT TO DO:</strong><br/>
+              1. Take a screenshot of this entire red box<br/>
+              2. Send it to me<br/>
+              3. I'll tell you exactly what's wrong and how to fix it
+            </div>
+          </div>
+
+          {isMSSPOwner && currentPage === 'dashboard' && (
+            <div className="org-selector-top">
+              <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
+                <option value="all">All Organizations</option>
+                <option value="acme">Acme Healthcare</option>
+                <option value="tech">Tech Solutions Inc</option>
+                <option value="finance">Finance Group LLC</option>
+              </select>
+            </div>
+          )}
+
+          {renderPage()}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-@media (max-width: 768px) {
-  .page-container {
-    padding: 20px 15px;
-  }
-  
-  .mobile-security-hero {
-    padding: 30px 20px;
-  }
-  
-  .mobile-hero-content h2 {
-    font-size: 24px;
-  }
-  
-  .steps-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .company-alert-actions {
-    flex-direction: column;
-  }
-  
-  .action-btn-sm {
-    width: 100%;
-  }
-}
+export default Dashboard;
