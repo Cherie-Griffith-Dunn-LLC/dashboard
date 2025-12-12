@@ -1909,3 +1909,14 @@
     display: none;
   }
 }
+
+/* Professional World Map Styling */
+.world-map-container {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.world-svg {
+  filter: drop-shadow(0 4px 12px rgba(30, 58, 95, 0.15));
+}
