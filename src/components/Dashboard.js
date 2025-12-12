@@ -33,20 +33,34 @@ function Dashboard() {
   // Cyproteck MSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  // Check user roles
+  // Check user roles - FIXED for actual Azure AD roles
   const userRoles = user?.idTokenClaims?.roles || [];
-  const hasAdminRole = userRoles.some(role => 
-    role.toLowerCase().includes('admin') || 
-    role.toLowerCase().includes('administrator')
+  const userEmail = user?.username || user?.idTokenClaims?.preferred_username || '';
+  const isCyproteckEmail = userEmail.toLowerCase().includes('@cyproteck.com');
+  
+  // Check for MSSP Owner roles (supports both Azure AD apps)
+  const hasTenantRole = userRoles.some(role => 
+    role === 'Tenant' || 
+    role === 'Cyprotenant' ||
+    role === 'TenantOwner' ||
+    role.toLowerCase() === 'tenant' ||
+    role.toLowerCase() === 'tenantowner'
+  );
+  
+  // Check for Business Owner role
+  const hasBusinessOwnerRole = userRoles.some(role => 
+    role === 'BusinessOwner' ||
+    role === 'Businessowner' ||
+    role.toLowerCase() === 'businessowner'
   );
   
   // Determine user type
-  // MSP Owner = Cyproteck tenant + Admin role
-  // Business Owner = Other tenant + Admin role  
-  // Employee = Any tenant + No admin role
-  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasAdminRole;
-  const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasAdminRole;
-  const isEmployee = !hasAdminRole;
+  // MSP Owner = Cyproteck tenant + (Tenant role OR @cyproteck.com email)
+  // Business Owner = Other tenant + BusinessOwner role  
+  // Employee = Everyone else
+  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && (hasTenantRole || isCyproteckEmail);
+  const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole;
+  const isEmployee = !isMSPOwner && !isBusinessOwner;
   
   // Current user data (for employee view)
   const currentUserData = {
@@ -322,6 +336,38 @@ Keep responses concise but helpful.`,
 
         {/* Content */}
         <div className="content-area">
+          {/* DEBUG INFO - Shows role detection status */}
+          <div style={{
+            padding: '20px',
+            background: '#1e293b',
+            border: '2px solid #5de4c7',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            fontFamily: 'monospace',
+            fontSize: '14px'
+          }}>
+            <h3 style={{margin: '0 0 15px 0', color: '#5de4c7'}}>🔍 Login Status</h3>
+            <div style={{display: 'grid', gap: '10px'}}>
+              <div><strong>Tenant ID:</strong> {tenantId}</div>
+              <div><strong>Cyproteck Tenant:</strong> {CYPROTECK_TENANT_ID}</div>
+              <div><strong>Match:</strong> {tenantId === CYPROTECK_TENANT_ID ? '✅ YES' : '❌ NO'}</div>
+              <div><strong>Email:</strong> {userEmail}</div>
+              <div><strong>Has @cyproteck.com:</strong> {isCyproteckEmail ? '✅ YES' : '❌ NO'}</div>
+              <div><strong>Roles:</strong> {userRoles.length > 0 ? userRoles.join(', ') : '❌ No roles'}</div>
+              <div><strong>Has Tenant Role:</strong> {hasTenantRole ? '✅ YES' : '❌ NO'}</div>
+              <div style={{
+                marginTop: '10px',
+                padding: '10px',
+                background: isMSPOwner ? '#22c55e' : '#ef4444',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                fontSize: '16px'
+              }}>
+                Detected As: {isMSPOwner ? '🏢 MSSP OWNER' : isBusinessOwner ? '👔 BUSINESS OWNER' : '👤 EMPLOYEE'}
+              </div>
+            </div>
+          </div>
+
           {/* MSP Owner View - Organization Selector */}
           {isMSPOwner && (
             <div className="org-selector-top">
