@@ -11,7 +11,17 @@ function Dashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
-  const [currentPage, setCurrentPage] = useState('dashboard');
+  
+  // Chatbot state
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    {
+      role: 'assistant',
+      content: "Hi! I'm your CYPROSECURE support assistant. I can help with:\n\n• Microsoft 365 (Excel, Word, Teams, Outlook, etc.)\n• Device issues (Windows, Mac, Mobile)\n• Security questions\n• General IT support\n\nWhat can I help you with today?"
+    }
+  ]);
+  const [userInput, setUserInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const user = accounts[0];
   const userName = user?.name || 'User';
@@ -131,8 +141,73 @@ function Dashboard() {
     return 'low';
   };
 
-  const navigateTo = (page) => {
-    setCurrentPage(page);
+  // Chatbot functions
+  const toggleChat = () => {
+    setChatOpen(!chatOpen);
+  };
+
+  const handleSendMessage = async () => {
+    if (!userInput.trim() || isLoading) return;
+
+    const newMessage = {
+      role: 'user',
+      content: userInput
+    };
+
+    setChatMessages(prev => [...prev, newMessage]);
+    setUserInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: `You are a helpful IT support assistant for CYPROSECURE. You help users with:
+
+1. Microsoft 365 questions (Excel formulas, Word, PowerPoint, Teams, Outlook, OneDrive)
+2. Device troubleshooting (Windows, Mac, iPhone, Android, printers, network issues)
+3. Security questions (passwords, MFA, phishing, best practices)
+4. General IT support
+
+Provide clear, step-by-step instructions. Be friendly and professional. If something requires hands-on support, recommend contacting Cyproteck support at support@cyproteck.com.
+
+Keep responses concise but helpful.`,
+          messages: [...chatMessages.filter(m => m.role !== 'system'), newMessage]
+        })
+      });
+
+      const data = await response.json();
+      const assistantMessage = {
+        role: 'assistant',
+        content: data.content[0].text
+      };
+
+      setChatMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setChatMessages(prev => [...prev, {
+        role: 'assistant',
+        content: "I'm having trouble connecting. Please contact Cyproteck support at support@cyproteck.com"
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const contactSupport = () => {
+    window.location.href = 'mailto:support@cyproteck.com?subject=Support Request from ' + userName;
   };
 
   return (
@@ -154,40 +229,24 @@ function Dashboard() {
         </div>
 
         <nav className="sidebar-nav">
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('dashboard'); }}
-          >
+          <a href="#dashboard" className="nav-item active">
             <span className="nav-icon">📊</span>
             {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
           </a>
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'security' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('security'); }}
-          >
+          <a href="#security" className="nav-item">
             <span className="nav-icon">🛡️</span>
             {!sidebarCollapsed && <span className="nav-label">Security</span>}
           </a>
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'threats' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('threats'); }}
-          >
+          <a href="#threats" className="nav-item">
             <span className="nav-icon">⚠️</span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
-                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : isBusinessOwner ? employees.reduce((sum, e) => sum + e.threats, 0) : currentUserData.threatCount}</span>
+                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
               </>
             )}
           </a>
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'training' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('training'); }}
-          >
+          <a href="#training" className="nav-item">
             <span className="nav-icon">🎓</span>
             {!sidebarCollapsed && (
               <>
@@ -196,11 +255,7 @@ function Dashboard() {
               </>
             )}
           </a>
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'alerts' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('alerts'); }}
-          >
+          <a href="#alerts" className="nav-item">
             <span className="nav-icon">🚨</span>
             {!sidebarCollapsed && (
               <>
@@ -209,19 +264,11 @@ function Dashboard() {
               </>
             )}
           </a>
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('reports'); }}
-          >
+          <a href="#reports" className="nav-item">
             <span className="nav-icon">📈</span>
             {!sidebarCollapsed && <span className="nav-label">Reports</span>}
           </a>
-          <a 
-            href="#" 
-            className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
-            onClick={(e) => { e.preventDefault(); navigateTo('settings'); }}
-          >
+          <a href="#settings" className="nav-item">
             <span className="nav-icon">⚙️</span>
             {!sidebarCollapsed && <span className="nav-label">Settings</span>}
           </a>
@@ -847,6 +894,86 @@ function Dashboard() {
           )}
         </div>
       </div>
+
+      {/* AI Support Chatbot */}
+      {!chatOpen && (
+        <button className="chat-fab" onClick={toggleChat} title="Get Help">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+          </svg>
+        </button>
+      )}
+
+      {chatOpen && (
+        <div className="chat-window">
+          <div className="chat-header">
+            <div className="chat-header-content">
+              <div className="chat-icon">💬</div>
+              <div>
+                <div className="chat-title">CYPROSECURE Support</div>
+                <div className="chat-subtitle">AI Assistant</div>
+              </div>
+            </div>
+            <button className="chat-close" onClick={toggleChat}>×</button>
+          </div>
+
+          <div className="chat-messages">
+            {chatMessages.map((msg, idx) => (
+              <div key={idx} className={`chat-message ${msg.role}`}>
+                {msg.role === 'assistant' && <div className="message-avatar">🤖</div>}
+                <div className="message-content">
+                  {msg.content}
+                </div>
+                {msg.role === 'user' && <div className="message-avatar">👤</div>}
+              </div>
+            ))}
+            {isLoading && (
+              <div className="chat-message assistant">
+                <div className="message-avatar">🤖</div>
+                <div className="message-content typing">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="chat-quick-actions">
+            <button className="quick-btn" onClick={() => setUserInput('How do I create an Excel formula?')}>
+              📊 Excel Help
+            </button>
+            <button className="quick-btn" onClick={() => setUserInput('My device is having issues')}>
+              💻 Device Issues
+            </button>
+            <button className="quick-btn" onClick={() => setUserInput('How do I improve my security score?')}>
+              🛡️ Security
+            </button>
+            <button className="quick-btn" onClick={contactSupport}>
+              📧 Contact Team
+            </button>
+          </div>
+
+          <div className="chat-input-area">
+            <input
+              type="text"
+              className="chat-input"
+              placeholder="Type your question..."
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={isLoading}
+            />
+            <button 
+              className="chat-send" 
+              onClick={handleSendMessage}
+              disabled={isLoading || !userInput.trim()}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
