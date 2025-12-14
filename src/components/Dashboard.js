@@ -5,7 +5,7 @@ import './Dashboard.css';
 function Dashboard() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(true); // DARK BY DEFAULT
   const [selectedOrg, setSelectedOrg] = useState('all');
   const [currentPage, setCurrentPage] = useState('dashboard');
 
@@ -118,6 +118,7 @@ function Dashboard() {
     <>
       {isMSPOwner && (
         <>
+          {/* Organization Dropdown - RESTORED */}
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
@@ -127,6 +128,7 @@ function Dashboard() {
             </select>
           </div>
 
+          {/* Hero Section */}
           <div className="hero-compact">
             <div className="hero-text">
               <h1>Welcome, {userName.split(' ')[0]}</h1>
@@ -150,6 +152,7 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Metrics */}
           <div className="metrics-compact">
             <div className="metric-box">
               <div className="metric-icon-sm">🛡️</div>
@@ -192,7 +195,7 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Clean Threat Ticker - No More Blob Map */}
+          {/* Global Threat Ticker */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>🌍 Global Threat Activity</h2>
@@ -385,6 +388,7 @@ function Dashboard() {
 
   return (
     <div className={`dashboard ${darkMode ? 'dark' : 'light'}`}>
+      {/* Sidebar with Collapse Button */}
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
           <div className="logo">
@@ -469,6 +473,7 @@ function Dashboard() {
           </a>
         </nav>
 
+        {/* SIDEBAR COLLAPSE BUTTON - RESTORED */}
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
             {sidebarCollapsed ? (
@@ -480,6 +485,7 @@ function Dashboard() {
         </button>
       </aside>
 
+      {/* Main Content */}
       <div className="main-content">
         <header className="top-bar">
           <div className="top-bar-left">
@@ -494,6 +500,7 @@ function Dashboard() {
             </h2>
           </div>
           <div className="top-bar-right">
+            {/* THEME TOGGLE - RESTORED */}
             <button className="theme-toggle" onClick={toggleTheme} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
               {darkMode ? '☀️' : '🌙'}
             </button>
