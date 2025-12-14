@@ -2356,3 +2356,217 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==============================================
+   THREAT TICKER - Clean Cards Instead of Blob Map
+   ============================================== */
+
+.threat-ticker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.threat-location-card {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 16px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.threat-location-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.threat-location-card.high {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+}
+
+.threat-location-card.medium {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
+}
+
+.threat-location-card.low {
+  border-color: #10b981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+}
+
+.threat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.country-flag {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.country-info {
+  flex: 1;
+}
+
+.country-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.country-city {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.severity-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.severity-dot.high {
+  background: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  animation: pulse-dot 2s infinite;
+}
+
+.severity-dot.medium {
+  background: #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+  animation: pulse-dot 2s infinite;
+}
+
+.severity-dot.low {
+  background: #10b981;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+}
+
+.threat-count-large {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.threat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+}
+
+.threat-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.threat-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.threat-bar-fill.high {
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+.threat-bar-fill.medium {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.threat-bar-fill.low {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+/* ==============================================
+   IMPROVED LIGHT/DARK THEME CONTRAST
+   ============================================== */
+
+/* Theme Toggle Button */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: rotate(180deg);
+  color: var(--bg-primary);
+}
+
+/* Light Mode Enhancements */
+.dashboard.light .metric-val,
+.dashboard.light .score-num,
+.dashboard.light h1,
+.dashboard.light h2,
+.dashboard.light h3 {
+  color: #0f172a !important;
+}
+
+.dashboard.light .metric-lbl,
+.dashboard.light .page-subtitle,
+.dashboard.light .country-city {
+  color: #64748b !important;
+}
+
+.dashboard.light .nav-item {
+  color: #475569;
+}
+
+.dashboard.light .nav-item:hover,
+.dashboard.light .nav-item.active {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.dashboard.light .sidebar {
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+}
+
+.dashboard.light .top-bar {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard.light .card-bg,
+.dashboard.light .metric-box,
+.dashboard.light .section-compact {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
