@@ -2,39 +2,19 @@ import React, { useState } from 'react';
 import { useMsal } from '@azure/msal-react';
 import './Dashboard.css';
 
-/**
- * CYPROSECURE 360 - Complete Multi-Tenant Dashboard
- * All pages functional, navigation working, employee list, mobile security
- */
 function Dashboard() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
-  const [currentPage, setCurrentPage] = useState('dashboard'); // Navigation state
-  
-  // Chatbot state
-  const [chatOpen, setChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([
-    {
-      role: 'assistant',
-      content: "Hi! I'm your CYPROSECURE 360 support assistant. How can I help you today?"
-    }
-  ]);
-  const [userInput, setUserInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState('dashboard');
 
   const user = accounts[0];
   const userName = user?.name || 'User';
-  
-  // Get tenant info from Azure AD
   const tenantId = user?.tenantId || '';
-  const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  // Cyproteck MSSP tenant ID
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  // CORRECT Azure AD role detection
   const userRoles = user?.idTokenClaims?.roles || [];
   const userEmail = user?.username || user?.idTokenClaims?.preferred_username || '';
   const isCyproteckEmail = userEmail.toLowerCase().includes('@cyproteck.com');
@@ -48,26 +28,18 @@ function Dashboard() {
     role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
   );
   
-  const hasAdminRole = hasTenantRole || hasBusinessOwnerRole || isCyproteckEmail;
-  
-  // Determine user type
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && (hasTenantRole || isCyproteckEmail);
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole;
-  const isEmployee = !hasAdminRole;
 
-  // Mock data - Security metrics
   const securityData = {
     securityScore: 85,
     threatsBlocked: 1247,
     highAlerts: 8,
     mediumAlerts: 23,
     lowAlerts: 45,
-    trainingProgress: 67,
-    devicesProtected: 342,
-    lastScan: 'Just now'
+    trainingProgress: 67
   };
 
-  // Mock data - Employee list with issues
   const employees = [
     { 
       id: 1, 
@@ -115,17 +87,15 @@ function Dashboard() {
     }
   ];
 
-  // Global threat locations (for heat map)
   const globalThreats = [
-    { country: 'United States', lat: 37.0902, lon: -95.7129, x: 20, y: 36, count: 847, severity: 'high', city: 'Multiple Locations' },
-    { country: 'China', lat: 35.8617, lon: 104.1954, x: 70, y: 40, count: 612, severity: 'high', city: 'Beijing/Shanghai' },
-    { country: 'Russia', lat: 61.5240, lon: 105.3188, x: 65, y: 25, count: 423, severity: 'medium', city: 'Moscow' },
-    { country: 'Germany', lat: 51.1657, lon: 10.4515, x: 48, y: 30, count: 289, severity: 'medium', city: 'Berlin' },
-    { country: 'Brazil', lat: -14.2350, lon: -51.9253, x: 40, y: 70, count: 156, severity: 'low', city: 'São Paulo' },
-    { country: 'India', lat: 20.5937, lon: 78.9629, x: 72, y: 50, count: 134, severity: 'low', city: 'Mumbai' },
+    { country: 'United States', x: 20, y: 36, count: 847, severity: 'high', city: 'Multiple Locations' },
+    { country: 'China', x: 70, y: 40, count: 612, severity: 'high', city: 'Beijing/Shanghai' },
+    { country: 'Russia', x: 65, y: 25, count: 423, severity: 'medium', city: 'Moscow' },
+    { country: 'Germany', x: 48, y: 30, count: 289, severity: 'medium', city: 'Berlin' },
+    { country: 'Brazil', x: 40, y: 70, count: 156, severity: 'low', city: 'São Paulo' },
+    { country: 'India', x: 72, y: 50, count: 134, severity: 'low', city: 'Mumbai' }
   ];
 
-  // Navigation handler
   const navigateTo = (page) => {
     setCurrentPage(page);
   };
@@ -144,13 +114,10 @@ function Dashboard() {
     setDarkMode(!darkMode);
   };
 
-  // RENDER PAGES
   const renderDashboard = () => (
     <>
-      {/* MSP Owner Content */}
       {isMSPOwner && (
         <>
-          {/* Organization Selector */}
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
@@ -160,7 +127,6 @@ function Dashboard() {
             </select>
           </div>
 
-          {/* Compact Hero */}
           <div className="hero-compact">
             <div className="hero-text">
               <h1>Welcome, {userName.split(' ')[0]}</h1>
@@ -184,7 +150,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Compact Metrics */}
           <div className="metrics-compact">
             <div className="metric-box">
               <div className="metric-icon-sm">🛡️</div>
@@ -227,7 +192,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Global Threat Heat Map */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>🌍 Global Threat Heat Map</h2>
@@ -245,11 +209,10 @@ function Dashboard() {
                     </line>
                   </svg>
                   
-                  {/* Threat markers with heat visualization */}
                   {globalThreats.map((threat, idx) => (
                     <div 
                       key={idx}
-                      className={`threat-marker ${threat.severity}`} 
+                      className={`threat-marker ${threat.severity}`}
                       style={{left: `${threat.x}%`, top: `${threat.y}%`}} 
                       title={`${threat.country}: ${threat.count} threats`}
                     >
@@ -260,50 +223,38 @@ function Dashboard() {
                 </div>
                 
                 <svg viewBox="0 0 1000 500" className="world-svg">
-                  {/* Professional World Map */}
                   <rect width="1000" height="500" fill="#f8fafc"/>
                   
-                  {/* North America */}
                   <path d="M 80,120 L 90,100 L 110,85 L 135,75 L 160,70 L 185,70 L 205,75 L 220,85 L 235,100 L 245,120 L 255,145 L 260,170 L 260,195 L 255,215 L 245,235 L 230,250 L 210,260 L 185,265 L 160,263 L 140,255 L 125,242 L 112,225 L 105,205 L 100,180 L 95,155 L 90,135 Z M 175,90 L 195,85 L 215,87 L 235,95 L 250,107 L 258,122 L 260,140 L 255,155 L 245,167 L 230,175 L 210,178 L 190,175 L 175,167 L 165,155 L 160,140 L 160,125 L 165,110 L 170,100 Z" 
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* Central America */}
                   <path d="M 185,265 L 195,275 L 202,287 L 205,300 L 203,312 L 198,322 L 190,328 L 180,323 L 175,313 L 173,300 L 175,287 L 178,277 Z"
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* South America */}
                   <path d="M 190,330 L 205,328 L 222,333 L 235,343 L 245,358 L 252,378 L 255,400 L 253,422 L 245,440 L 232,453 L 215,460 L 195,462 L 178,458 L 165,448 L 155,433 L 150,415 L 148,395 L 150,375 L 155,355 L 163,340 L 175,332 Z"
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* Greenland */}
                   <path d="M 305,30 L 330,25 L 355,27 L 375,35 L 390,48 L 398,65 L 400,85 L 395,103 L 383,117 L 365,125 L 345,128 L 325,125 L 310,115 L 300,100 L 295,83 L 295,65 L 300,48 Z"
                         fill="#1e3a5f" opacity="0.85"/>
                   
-                  {/* Europe */}
                   <path d="M 455,95 L 470,90 L 488,88 L 505,90 L 520,95 L 533,103 L 543,115 L 548,130 L 548,145 L 543,158 L 533,168 L 518,175 L 500,178 L 482,176 L 467,168 L 457,155 L 452,140 L 452,123 L 455,108 Z M 480,100 L 490,98 L 502,98 L 512,102 L 520,110 L 523,122 L 522,135 L 515,145 L 503,150 L 490,150 L 478,145 L 470,135 L 467,122 L 468,110 L 473,103 Z"
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* Scandinavia */}
                   <path d="M 490,50 L 505,45 L 520,45 L 532,50 L 540,60 L 545,73 L 545,88 L 538,100 L 525,107 L 510,110 L 495,107 L 485,98 L 480,85 L 480,70 L 483,58 Z"
                         fill="#1e3a5f" opacity="0.9"/>
                   
-                  {/* Africa */}
                   <path d="M 475,180 L 495,177 L 515,180 L 535,188 L 552,200 L 565,218 L 573,240 L 578,265 L 578,290 L 573,315 L 562,338 L 545,358 L 525,372 L 505,380 L 485,382 L 468,378 L 455,368 L 445,353 L 440,335 L 438,315 L 438,290 L 440,265 L 445,240 L 453,218 L 463,200 Z"
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* Asia */}
                   <path d="M 555,75 L 585,70 L 620,68 L 655,70 L 690,77 L 720,88 L 745,103 L 765,122 L 780,145 L 788,170 L 790,195 L 785,218 L 772,238 L 750,252 L 720,260 L 685,263 L 650,258 L 618,247 L 590,230 L 568,210 L 553,188 L 545,165 L 542,140 L 543,115 L 548,95 Z"
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* India/Southeast Asia */}
                   <path d="M 720,265 L 738,263 L 755,268 L 768,278 L 775,293 L 778,310 L 775,327 L 765,340 L 750,347 L 733,348 L 718,343 L 708,333 L 703,318 L 703,300 L 708,283 L 713,273 Z"
                         fill="#1e3a5f" opacity="0.9"/>
                   
-                  {/* Australia */}
                   <path d="M 720,355 L 750,352 L 780,355 L 805,365 L 825,380 L 838,398 L 843,418 L 840,438 L 828,453 L 808,463 L 780,467 L 750,465 L 725,458 L 708,445 L 698,428 L 693,408 L 695,388 L 703,372 L 710,363 Z"
                         fill="#1e3a5f" opacity="0.95"/>
                   
-                  {/* New Zealand */}
                   <path d="M 870,420 L 885,418 L 898,423 L 905,433 L 908,448 L 905,463 L 895,473 L 880,476 L 865,473 L 855,463 L 850,448 L 850,433 L 855,423 Z"
                         fill="#1e3a5f" opacity="0.85"/>
                 </svg>
@@ -327,7 +278,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Employee List with Issues */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>👥 Employees Requiring Attention</h2>
@@ -448,7 +398,7 @@ function Dashboard() {
           <div className="step">
             <div className="step-number">1</div>
             <h3>Download the App</h3>
-            <p>Download Microsoft Defender from your device's app store</p>
+            <p>Download Microsoft Defender from your device app store</p>
           </div>
           <div className="step">
             <div className="step-number">2</div>
@@ -462,7 +412,7 @@ function Dashboard() {
           </div>
           <div className="step">
             <div className="step-number">4</div>
-            <h3>You're Protected!</h3>
+            <h3>You are Protected!</h3>
             <p>Your device is now protected automatically</p>
           </div>
         </div>
@@ -492,7 +442,6 @@ function Dashboard() {
 
   return (
     <div className={`dashboard ${darkMode ? 'dark' : 'light'}`}>
-      {/* Sidebar */}
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
           <div className="logo">
@@ -588,9 +537,7 @@ function Dashboard() {
         </button>
       </aside>
 
-      {/* Main Content */}
       <div className="main-content">
-        {/* Top Bar */}
         <header className="top-bar">
           <div className="top-bar-left">
             <h2 className="page-title">
@@ -617,7 +564,6 @@ function Dashboard() {
           </div>
         </header>
 
-        {/* Content */}
         <div className="content-area">
           {currentPage === 'dashboard' && renderDashboard()}
           {currentPage === 'threats' && renderThreatsPage()}
