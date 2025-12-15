@@ -8,6 +8,17 @@ function Dashboard() {
   const [darkMode, setDarkMode] = useState(true); // DARK BY DEFAULT
   const [selectedOrg, setSelectedOrg] = useState('all');
   const [currentPage, setCurrentPage] = useState('dashboard');
+  
+  // Chatbot state
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    {
+      role: 'assistant',
+      content: "Hi! I'm your CYPROSECURE 360 support assistant. How can I help you today?"
+    }
+  ]);
+  const [userInput, setUserInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const user = accounts[0];
   const userName = user?.name || 'User';
@@ -112,6 +123,46 @@ function Dashboard() {
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
+  };
+
+  const handleChatSubmit = async (e) => {
+    e.preventDefault();
+    if (!userInput.trim() || isLoading) return;
+
+    const newMessage = { role: 'user', content: userInput };
+    setChatMessages(prev => [...prev, newMessage]);
+    setUserInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          messages: [...chatMessages, newMessage]
+        })
+      });
+
+      const data = await response.json();
+      const assistantMessage = {
+        role: 'assistant',
+        content: data.content[0].text
+      };
+      setChatMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setChatMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.'
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderDashboard = () => (
@@ -259,6 +310,76 @@ function Dashboard() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Recent Threat Alerts */}
+          <div className="section-compact">
+            <div className="section-hdr">
+              <h2>🚨 Recent Threat Alerts</h2>
+              <button className="view-all-sm">View All →</button>
+            </div>
+            <div className="threat-alerts-list">
+              <div className="threat-alert high">
+                <div className="alert-icon">🔴</div>
+                <div className="alert-content">
+                  <div className="alert-title">Ransomware Attack Blocked</div>
+                  <div className="alert-detail">Blocked ransomware attempt on Finance Department - 3 devices protected</div>
+                  <div className="alert-time">2 hours ago</div>
+                </div>
+                <button className="alert-action">Details →</button>
+              </div>
+
+              <div className="threat-alert medium">
+                <div className="alert-icon">🟠</div>
+                <div className="alert-content">
+                  <div className="alert-title">Phishing Email Detected</div>
+                  <div className="alert-detail">15 employees received suspicious emails - All quarantined</div>
+                  <div className="alert-time">5 hours ago</div>
+                </div>
+                <button className="alert-action">Details →</button>
+              </div>
+
+              <div className="threat-alert low">
+                <div className="alert-icon">🟡</div>
+                <div className="alert-content">
+                  <div className="alert-title">Suspicious Login Attempt</div>
+                  <div className="alert-detail">Login from unusual location blocked - User notified</div>
+                  <div className="alert-time">1 day ago</div>
+                </div>
+                <button className="alert-action">Details →</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="quick-actions-section">
+            <h2>⚡ Quick Actions</h2>
+            <div className="quick-actions-grid">
+              <button className="quick-action-btn">
+                <span className="qa-icon">🔍</span>
+                <span className="qa-label">Run Security Scan</span>
+              </button>
+              <button className="quick-action-btn">
+                <span className="qa-icon">📧</span>
+                <span className="qa-label">Send Security Alert</span>
+              </button>
+              <button className="quick-action-btn">
+                <span className="qa-icon">👥</span>
+                <span className="qa-label">Manage Users</span>
+              </button>
+              <button className="quick-action-btn">
+                <span className="qa-icon">📊</span>
+                <span className="qa-label">Generate Report</span>
+              </button>
+              <button className="quick-action-btn">
+                <span className="qa-icon">🔒</span>
+                <span className="qa-label">Enforce Policies</span>
+              </button>
+              <button className="quick-action-btn">
+                <span className="qa-icon">⚙️</span>
+                <span className="qa-label">System Settings</span>
+              </button>
             </div>
           </div>
         </>
@@ -523,6 +644,54 @@ function Dashboard() {
           {currentPage === 'reports' && renderReportsPage()}
           {currentPage === 'settings' && renderSettingsPage()}
         </div>
+      </div>
+
+      {/* AI Chatbot Widget */}
+      <div className={`chatbot-widget ${chatOpen ? 'open' : ''}`}>
+        {chatOpen ? (
+          <div className="chatbot-container">
+            <div className="chatbot-header">
+              <div className="chatbot-title">
+                <span className="bot-icon">🤖</span>
+                <span>CYPROSECURE Assistant</span>
+              </div>
+              <button className="chatbot-close" onClick={() => setChatOpen(false)}>✕</button>
+            </div>
+
+            <div className="chatbot-messages">
+              {chatMessages.map((msg, idx) => (
+                <div key={idx} className={`chat-message ${msg.role}`}>
+                  <div className="message-content">{msg.content}</div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="chat-message assistant">
+                  <div className="message-content typing">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <form className="chatbot-input" onSubmit={handleChatSubmit}>
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                placeholder="Ask me anything..."
+                disabled={isLoading}
+              />
+              <button type="submit" disabled={isLoading || !userInput.trim()}>
+                ➤
+              </button>
+            </form>
+          </div>
+        ) : (
+          <button className="chatbot-toggle" onClick={() => setChatOpen(true)}>
+            <span className="bot-icon-large">🤖</span>
+            <span className="chat-label">Need Help?</span>
+          </button>
+        )}
       </div>
     </div>
   );
