@@ -25,23 +25,16 @@ function Dashboard() {
   const userEmail = user?.username?.toLowerCase() || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  // ============================================
-  // CLIENT MANAGEMENT - SIMPLE TENANT-BASED
-  // ============================================
-  
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   const CGD_LLC_TENANT_ID = '0d9acab6-2b9d-4883-8617-f3fdea4b02d6';
   
-  // CLIENT TENANTS - Real clients and demo companies
   const CLIENT_TENANTS = {
-    // REAL CLIENT - CGD LLC
     [CGD_LLC_TENANT_ID]: {
       name: 'CGD LLC',
       domain: 'cgdgovsolutions.com',
       employees: 20,
       isActive: true
     },
-    // DEMO/EXAMPLE TENANTS (for showcase - not real logins)
     'demo-acme-healthcare': {
       name: 'Acme Healthcare',
       domain: 'acmehealthcare.com',
@@ -63,30 +56,17 @@ function Dashboard() {
       isActive: false,
       isDemo: true
     },
-    // ADD MORE REAL CLIENTS LIKE THIS:
-    // 'another-real-tenant-id': {
-    //   name: 'Another Real Company',
-    //   domain: 'realcompany.com',
-    //   employees: 150,
-    //   isActive: true
-    // },
   };
   
-  // BUSINESS OWNER EMAILS - Company executives who see company dashboard
   const BUSINESS_OWNER_EMAILS = [
     'user@cgdgovsolutions.com',
     'cherie@cgdgovsolutions.com',
     'admin@cgdgovsolutions.com',
-    // Add more real business owners:
-    // 'ceo@realcompany.com',
-    // 'cfo@realcompany.com',
   ];
   
-  // Get client info
   const clientTenant = CLIENT_TENANTS[tenantId];
   const displayCompanyName = clientTenant?.name || companyName || 'Your Company';
   
-  // Get Azure AD roles (if assigned)
   const userRoles = user?.idTokenClaims?.roles || [];
   
   const hasTenantRole = userRoles.some(role => 
@@ -98,10 +78,8 @@ function Dashboard() {
     role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
   );
   
-  // Determine user view type
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
   
-  // Business Owner: Real active client + (Azure role OR email list)
   const isBusinessOwner = clientTenant?.isActive && 
                           (hasBusinessOwnerRole || BUSINESS_OWNER_EMAILS.includes(userEmail));
   
@@ -296,10 +274,9 @@ Respond to this query: ${userInput}`;
 
   const renderDashboard = () => (
     <>
-      {/* MSSP OWNER VIEW - HAS DROPDOWN */}
+      {/* MSSP OWNER VIEW */}
       {isMSPOwner && (
         <>
-          {/* Organization Dropdown - ONLY MSSP SEES THIS */}
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
@@ -311,7 +288,6 @@ Respond to this query: ${userInput}`;
             </select>
           </div>
 
-          {/* Hero Section */}
           <div className="hero-compact">
             <div className="hero-text">
               <h1>Welcome, {userName.split(' ')[0]}</h1>
@@ -335,7 +311,6 @@ Respond to this query: ${userInput}`;
             </div>
           </div>
 
-          {/* Metrics */}
           <div className="metrics-compact">
             <div className="metric-box">
               <div className="metric-icon-sm">🛡️</div>
@@ -378,7 +353,6 @@ Respond to this query: ${userInput}`;
             </div>
           </div>
 
-          {/* Global Threat Ticker */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>🌍 Global Threat Activity</h2>
@@ -406,7 +380,6 @@ Respond to this query: ${userInput}`;
             </div>
           </div>
 
-          {/* Employee List - ALL COMPANIES */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>👥 Employees Requiring Attention</h2>
@@ -445,7 +418,6 @@ Respond to this query: ${userInput}`;
             </div>
           </div>
 
-          {/* Recent Threat Alerts */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>🚨 Recent Threat Alerts</h2>
@@ -484,7 +456,6 @@ Respond to this query: ${userInput}`;
             </div>
           </div>
 
-          {/* Quick Actions */}
           <div className="quick-actions-section">
             <h2>⚡ Quick Actions</h2>
             <div className="quick-actions-grid">
@@ -517,7 +488,7 @@ Respond to this query: ${userInput}`;
         </>
       )}
 
-      {/* BUSINESS OWNER VIEW - NO DROPDOWN, ONLY THEIR COMPANY */}
+      {/* BUSINESS OWNER VIEW */}
       {isBusinessOwner && (
         <>
           <div className="company-header">
@@ -554,6 +525,34 @@ Respond to this query: ${userInput}`;
               <div className="metric-value-business">88%</div>
               <div className="metric-label-business">Security Score</div>
               <div className="metric-change positive">+3% this week</div>
+            </div>
+          </div>
+
+          {/* ADDED: Global Threat Activity for Business Owner */}
+          <div className="section-business">
+            <div className="section-header-business">
+              <h2>🌍 Global Threat Activity</h2>
+              <span className="live-indicator">🔴 Live</span>
+            </div>
+            
+            <div className="threat-ticker">
+              {globalThreats.map((threat, idx) => (
+                <div key={idx} className={`threat-location-card ${threat.severity}`}>
+                  <div className="threat-card-header">
+                    <span className="country-flag">{threat.flag}</span>
+                    <div className="country-info">
+                      <div className="country-name">{threat.country}</div>
+                      <div className="country-city">{threat.city}</div>
+                    </div>
+                    <span className={`severity-dot ${threat.severity}`}></span>
+                  </div>
+                  <div className="threat-count-large">{threat.count}</div>
+                  <div className="threat-label">Active Threats</div>
+                  <div className="threat-bar">
+                    <div className={`threat-bar-fill ${threat.severity}`} style={{width: `${(threat.count / 847) * 100}%`}}></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -652,7 +651,7 @@ Respond to this query: ${userInput}`;
         </>
       )}
 
-      {/* EMPLOYEE VIEW - NO DROPDOWN, PERSONAL ONLY */}
+      {/* EMPLOYEE VIEW */}
       {!isMSPOwner && !isBusinessOwner && (
         <>
           <div className="personal-hero">
@@ -705,6 +704,34 @@ Respond to this query: ${userInput}`;
                 <div className="stat-name">Threats Blocked</div>
               </div>
               <div className="stat-badge info">This month</div>
+            </div>
+          </div>
+
+          {/* ADDED: Global Threat Activity for Employee */}
+          <div className="personal-section">
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+              <h2>🌍 Global Threat Activity</h2>
+              <span className="live-indicator">🔴 Live</span>
+            </div>
+            
+            <div className="threat-ticker">
+              {globalThreats.map((threat, idx) => (
+                <div key={idx} className={`threat-location-card ${threat.severity}`}>
+                  <div className="threat-card-header">
+                    <span className="country-flag">{threat.flag}</span>
+                    <div className="country-info">
+                      <div className="country-name">{threat.country}</div>
+                      <div className="country-city">{threat.city}</div>
+                    </div>
+                    <span className={`severity-dot ${threat.severity}`}></span>
+                  </div>
+                  <div className="threat-count-large">{threat.count}</div>
+                  <div className="threat-label">Active Threats</div>
+                  <div className="threat-bar">
+                    <div className={`threat-bar-fill ${threat.severity}`} style={{width: `${(threat.count / 847) * 100}%`}}></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -1054,7 +1081,6 @@ Respond to this query: ${userInput}`;
         </div>
       </div>
 
-      {/* ENHANCED CHATBOT WITH SUGGESTED QUESTIONS */}
       <div className={`chatbot-widget ${chatOpen ? 'open' : ''}`}>
         {chatOpen ? (
           <div className="chatbot-container">
@@ -1081,7 +1107,6 @@ Respond to this query: ${userInput}`;
               )}
             </div>
 
-            {/* Suggested Questions - Show only at start */}
             {chatMessages.length <= 2 && (
               <div className="suggested-questions">
                 <div className="suggestions-label">Quick Help:</div>
