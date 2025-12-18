@@ -24,7 +24,17 @@ function Dashboard() {
   const tenantId = user?.tenantId || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
+  // Tenant IDs
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
+  const CGD_LLC_TENANT_ID = '0d9acab6-2b9d-4883-8617-f3fdea4b02d6';
+  
+  // Tenant to Company Name Mapping
+  const TENANT_COMPANY_NAMES = {
+    [CYPROTECK_TENANT_ID]: 'Cyproteck Technologies Inc',
+    [CGD_LLC_TENANT_ID]: 'CGD LLC',
+  };
+  
+  const displayCompanyName = TENANT_COMPANY_NAMES[tenantId] || companyName || 'Your Company';
   
   const userRoles = user?.idTokenClaims?.roles || [];
   
@@ -42,10 +52,12 @@ function Dashboard() {
   
   console.log('🔍 User Role Check:', {
     userName,
-    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : 'OTHER',
+    userEmail: user?.username,
+    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : tenantId === CGD_LLC_TENANT_ID ? 'CGD LLC' : 'OTHER',
     roles: userRoles,
     hasTenantRole,
     hasBusinessOwnerRole,
+    displayCompanyName,
     viewType: isMSPOwner ? '👑 MSSP Owner' : isBusinessOwner ? '🏢 Business Owner' : '👤 Employee'
   });
 
@@ -142,7 +154,6 @@ function Dashboard() {
     setIsLoading(true);
 
     try {
-      // Enhanced system prompt with security knowledge
       const systemPrompt = `You are the CYPROSECURE 360 AI Assistant, an expert cybersecurity and IT support chatbot.
 
 # YOUR EXPERTISE:
@@ -234,6 +245,7 @@ Respond to this query: ${userInput}`;
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
+              <option value="cgd">CGD LLC</option>
               <option value="acme">Acme Healthcare</option>
               <option value="tech">Tech Solutions Inc</option>
               <option value="finance">Finance Group LLC</option>
@@ -451,7 +463,7 @@ Respond to this query: ${userInput}`;
         <>
           <div className="company-header">
             <div className="company-info-header">
-              <h1>{userName}, welcome to {companyName}</h1>
+              <h1>{userName}, welcome to {displayCompanyName}</h1>
               <p className="company-subtitle">Your company security overview</p>
             </div>
           </div>
