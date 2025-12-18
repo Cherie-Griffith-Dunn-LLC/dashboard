@@ -1,0 +1,85 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "mspOfferName": {
+      "type": "string",
+      "defaultValue": "CYPROSECURE 360 Security Management",
+      "metadata": {
+        "description": "Specify the name of the offer from the Managed Service Provider"
+      }
+    },
+    "mspOfferDescription": {
+      "type": "string",
+      "defaultValue": "Comprehensive security monitoring and threat management via CYPROSECURE 360 platform",
+      "metadata": {
+        "description": "Name of the Managed Service Provider offering"
+      }
+    },
+    "managedByTenantId": {
+      "type": "string",
+      "defaultValue": "ff4945f1-e101-4ac8-a78f-798156ea9cdf",
+      "metadata": {
+        "description": "Specify the tenant ID of Cyproteck (the MSP)"
+      }
+    }
+  },
+  "variables": {
+    "mspRegistrationName": "[guid(parameters('managedByTenantId'))]",
+    "mspAssignmentName": "[guid(parameters('managedByTenantId'))]",
+    "authorizations": [
+      {
+        "principalId": "REPLACE_WITH_YOUR_OBJECT_ID",
+        "roleDefinitionId": "fb1c8493-542b-48eb-b624-b4c8fea62acd",
+        "principalIdDisplayName": "Cyproteck Security Admin",
+        "delegatedRoleDefinitionIds": []
+      },
+      {
+        "principalId": "REPLACE_WITH_YOUR_OBJECT_ID",
+        "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade",
+        "principalIdDisplayName": "Cyproteck Sentinel Contributor",
+        "delegatedRoleDefinitionIds": []
+      },
+      {
+        "principalId": "REPLACE_WITH_YOUR_OBJECT_ID",
+        "roleDefinitionId": "39bc4728-0917-49c7-9d2c-d95423bc2eb4",
+        "principalIdDisplayName": "Cyproteck Security Reader",
+        "delegatedRoleDefinitionIds": []
+      }
+    ]
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedServices/registrationDefinitions",
+      "apiVersion": "2020-02-01-preview",
+      "name": "[variables('mspRegistrationName')]",
+      "properties": {
+        "registrationDefinitionName": "[parameters('mspOfferName')]",
+        "description": "[parameters('mspOfferDescription')]",
+        "managedByTenantId": "[parameters('managedByTenantId')]",
+        "authorizations": "[variables('authorizations')]"
+      }
+    },
+    {
+      "type": "Microsoft.ManagedServices/registrationAssignments",
+      "apiVersion": "2020-02-01-preview",
+      "name": "[variables('mspAssignmentName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+      ],
+      "properties": {
+        "registrationDefinitionId": "[resourceId('Microsoft.ManagedServices/registrationDefinitions/', variables('mspRegistrationName'))]"
+      }
+    }
+  ],
+  "outputs": {
+    "mspOfferName": {
+      "type": "string",
+      "value": "[parameters('mspOfferName')]"
+    },
+    "authorizations": {
+      "type": "array",
+      "value": "[variables('authorizations')]"
+    }
+  }
+}
