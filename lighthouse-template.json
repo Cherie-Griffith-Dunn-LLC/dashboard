@@ -29,19 +29,19 @@
     "mspAssignmentName": "[guid(parameters('managedByTenantId'))]",
     "authorizations": [
       {
-        "principalId": "REPLACE_WITH_YOUR_OBJECT_ID",
+        "principalId": "3ef3b701-824c-4ea9-b459-86e577116c3f",
         "roleDefinitionId": "fb1c8493-542b-48eb-b624-b4c8fea62acd",
         "principalIdDisplayName": "Cyproteck Security Admin",
         "delegatedRoleDefinitionIds": []
       },
       {
-        "principalId": "REPLACE_WITH_YOUR_OBJECT_ID",
+        "principalId": "3ef3b701-824c-4ea9-b459-86e577116c3f",
         "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade",
         "principalIdDisplayName": "Cyproteck Sentinel Contributor",
         "delegatedRoleDefinitionIds": []
       },
       {
-        "principalId": "REPLACE_WITH_YOUR_OBJECT_ID",
+        "principalId": "3ef3b701-824c-4ea9-b459-86e577116c3f",
         "roleDefinitionId": "39bc4728-0917-49c7-9d2c-d95423bc2eb4",
         "principalIdDisplayName": "Cyproteck Security Reader",
         "delegatedRoleDefinitionIds": []
