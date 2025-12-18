@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "mspOfferName": {
+      "value": "CYPROSECURE 360 Security Management"
+    },
+    "mspOfferDescription": {
+      "value": "Comprehensive security monitoring via CYPROSECURE 360"
+    },
+    "managedByTenantId": {
+      "value": "ff4945f1-e101-4ac8-a78f-798156ea9cdf"
+    }
+  }
+}
+```
+
+---
+
+## 🚀 **STEP 7: DEPLOY TO CGD LLC**
+
+### **Option A: Portal Deployment (EASIEST)**
+
+1. **Send CGD LLC admin this link:**
+```
+   https://portal.azure.com/#create/Microsoft.Template
+```
+
+2. **They follow these steps:**
+   - Click **"Build your own template in the editor"**
+   - Click **"Load file"**
+   - Upload your `lighthouse-template.json` file
+   - Click **"Save"**
+   - Select their **Subscription**
+   - Click **"Review + create"**
+   - Click **"Create"**
+
+### **Option B: Direct GitHub Link (BETTER)**
+
+**Get the raw GitHub URL of your template:**
+
+Example:
+```
+https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-REPO/main/lighthouse/lighthouse-template.json
+```
+
+**Create deployment link:**
+```
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYOUR-USERNAME%2FYOUR-REPO%2Fmain%2Flighthouse%2Flighthouse-template.json
