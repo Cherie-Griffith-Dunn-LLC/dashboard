@@ -13,7 +13,7 @@ function Dashboard() {
   const [chatMessages, setChatMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm your CYPROSECURE 360 support assistant. How can I help you today?"
+      content: "Hi! I'm your CYPROSECURE 360 AI assistant. I can help you with:\n\n🔒 Security Questions\n💼 Microsoft 365 Issues\n🛠️ Tier 1 Help Desk Support\n🛡️ Defender & Sentinel Insights\n\nHow can I assist you today?"
     }
   ]);
   const [userInput, setUserInput] = useState('');
@@ -224,15 +224,6 @@ Respond to this query: ${userInput}`;
       setIsLoading(false);
     }
   };
-```
-
----
-
-## 📋 **STEP 5: Now Find the Chatbot Widget**
-
-Scroll down and search for (press **Ctrl+F**):
-```
-chatbot-widget
 
   const renderDashboard = () => (
     <>
@@ -992,13 +983,14 @@ chatbot-widget
         </div>
       </div>
 
+      {/* ENHANCED CHATBOT WITH SUGGESTED QUESTIONS */}
       <div className={`chatbot-widget ${chatOpen ? 'open' : ''}`}>
         {chatOpen ? (
           <div className="chatbot-container">
             <div className="chatbot-header">
               <div className="chatbot-title">
                 <span className="bot-icon">🤖</span>
-                <span>CYPROSECURE Assistant</span>
+                <span>CYPROSECURE AI Assistant</span>
               </div>
               <button className="chatbot-close" onClick={() => setChatOpen(false)}>✕</button>
             </div>
@@ -1017,6 +1009,33 @@ chatbot-widget
                 </div>
               )}
             </div>
+
+            {/* Suggested Questions - Show only at start */}
+            {chatMessages.length <= 2 && (
+              <div className="suggested-questions">
+                <div className="suggestions-label">Quick Help:</div>
+                <div className="suggestions-grid">
+                  <button className="suggestion-btn" onClick={() => setUserInput("How do I reset my password?")}>
+                    🔐 Reset Password
+                  </button>
+                  <button className="suggestion-btn" onClick={() => setUserInput("I received a suspicious email, what should I do?")}>
+                    📧 Phishing Email
+                  </button>
+                  <button className="suggestion-btn" onClick={() => setUserInput("My Outlook isn't syncing, how do I fix it?")}>
+                    💻 Outlook Issues
+                  </button>
+                  <button className="suggestion-btn" onClick={() => setUserInput("How do I enable MFA?")}>
+                    🔒 Enable MFA
+                  </button>
+                  <button className="suggestion-btn" onClick={() => setUserInput("My computer is running slow")}>
+                    🐌 Slow Computer
+                  </button>
+                  <button className="suggestion-btn" onClick={() => setUserInput("I think my account was compromised")}>
+                    ⚠️ Account Compromised
+                  </button>
+                </div>
+              </div>
+            )}
 
             <form className="chatbot-input" onSubmit={handleChatSubmit}>
               <input
