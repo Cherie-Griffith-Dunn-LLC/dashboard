@@ -25,35 +25,38 @@ function Dashboard() {
   const userEmail = user?.username?.toLowerCase() || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-
-const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
+  // ============================================
+  // CLIENT MANAGEMENT - SIMPLE TENANT-BASED
+  // ============================================
+  
+  const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   const CGD_LLC_TENANT_ID = '0d9acab6-2b9d-4883-8617-f3fdea4b02d6';
   
   // CLIENT TENANTS - Real clients and demo companies
   const CLIENT_TENANTS = {
-    // REAL CLIENT
+    // REAL CLIENT - CGD LLC
     [CGD_LLC_TENANT_ID]: {
       name: 'CGD LLC',
       domain: 'cgdgovsolutions.com',
       employees: 20,
       isActive: true
     },
-    // DEMO/EXAMPLE TENANTS (for showcase)
-    'demo-acme-tenant-id': {
+    // DEMO/EXAMPLE TENANTS (for showcase - not real logins)
+    'demo-acme-healthcare': {
       name: 'Acme Healthcare',
       domain: 'acmehealthcare.com',
       employees: 250,
-      isActive: false, // Demo only
+      isActive: false,
       isDemo: true
     },
-    'demo-tech-tenant-id': {
+    'demo-tech-solutions': {
       name: 'Tech Solutions Inc',
       domain: 'techsolutions.com',
       employees: 180,
       isActive: false,
       isDemo: true
     },
-    'demo-finance-tenant-id': {
+    'demo-finance-group': {
       name: 'Finance Group LLC',
       domain: 'financegroup.com',
       employees: 95,
@@ -73,15 +76,17 @@ const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   const BUSINESS_OWNER_EMAILS = [
     'user@cgdgovsolutions.com',
     'cherie@cgdgovsolutions.com',
+    'admin@cgdgovsolutions.com',
     // Add more real business owners:
     // 'ceo@realcompany.com',
     // 'cfo@realcompany.com',
   ];
   
+  // Get client info
   const clientTenant = CLIENT_TENANTS[tenantId];
   const displayCompanyName = clientTenant?.name || companyName || 'Your Company';
-  const userEmail = user?.username?.toLowerCase() || '';
   
+  // Get Azure AD roles (if assigned)
   const userRoles = user?.idTokenClaims?.roles || [];
   
   const hasTenantRole = userRoles.some(role => 
@@ -93,10 +98,10 @@ const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
     role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
   );
   
-  // MSSP Owner: Cyproteck tenant + Tenant role
+  // Determine user view type
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
   
-  // Business Owner: Real client tenant + (has role OR is in email list)
+  // Business Owner: Real active client + (Azure role OR email list)
   const isBusinessOwner = clientTenant?.isActive && 
                           (hasBusinessOwnerRole || BUSINESS_OWNER_EMAILS.includes(userEmail));
   
@@ -111,34 +116,6 @@ const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
     hasBusinessOwnerRole,
     isInBusinessOwnerList: BUSINESS_OWNER_EMAILS.includes(userEmail),
     displayCompanyName,
-    viewType: isMSPOwner ? '👑 MSSP Owner' : isBusinessOwner ? '🏢 Business Owner' : '👤 Employee'
-  });
-  
-  // MSSP ADMINS - Cyproteck team who see all organizations
-  const MSSP_ADMIN_EMAILS = [
-    'admin@cyproteck.com',
-    'ops@cyproteck.com',
-    // Add more Cyproteck admins
-  ];
-  
-  // AUTO-DETECT USER TYPE (No Azure AD roles needed!)
-  const clientTenant = CLIENT_TENANTS[tenantId];
-  const displayCompanyName = clientTenant?.name || companyName || 'Your Company';
-  
-  // Determine view based on tenant and email
-  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && MSSP_ADMIN_EMAILS.includes(userEmail);
-  const isBusinessOwner = clientTenant && BUSINESS_OWNER_EMAILS.includes(userEmail);
-  const isClientEmployee = clientTenant && !isBusinessOwner;
-  
-  console.log('🔍 User Role Check:', {
-    userName,
-    userEmail,
-    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : clientTenant?.name || 'UNKNOWN',
-    displayCompanyName,
-    isRegisteredClient: !!clientTenant,
-    isMSPOwner,
-    isBusinessOwner,
-    isClientEmployee,
     viewType: isMSPOwner ? '👑 MSSP Owner' : isBusinessOwner ? '🏢 Business Owner' : '👤 Employee'
   });
 
@@ -326,8 +303,10 @@ Respond to this query: ${userInput}`;
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
-              {Object.entries(CLIENT_TENANTS).map(([tenantId, client]) => (
-                <option key={tenantId} value={tenantId}>{client.name}</option>
+              {Object.entries(CLIENT_TENANTS).map(([tid, client]) => (
+                <option key={tid} value={tid}>
+                  {client.name} {client.isDemo ? '(Demo)' : ''}
+                </option>
               ))}
             </select>
           </div>
