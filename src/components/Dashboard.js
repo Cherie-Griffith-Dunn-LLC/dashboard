@@ -22,42 +22,65 @@ function Dashboard() {
   const user = accounts[0];
   const userName = user?.name || 'User';
   const tenantId = user?.tenantId || '';
+  const userEmail = user?.username?.toLowerCase() || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  // Tenant IDs
-  const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
-  const CGD_LLC_TENANT_ID = '0d9acab6-2b9d-4883-8617-f3fdea4b02d6';
+  // ============================================
+  // SIMPLE CLIENT MANAGEMENT - JUST ADD NEW CLIENTS HERE!
+  // ============================================
   
-  // Tenant to Company Name Mapping
-  const TENANT_COMPANY_NAMES = {
-    [CYPROTECK_TENANT_ID]: 'Cyproteck Technologies Inc',
-    [CGD_LLC_TENANT_ID]: 'CGD LLC',
+  const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
+  
+  // CLIENT TENANTS - Add new clients by Tenant ID
+  const CLIENT_TENANTS = {
+    '0d9acab6-2b9d-4883-8617-f3fdea4b02d6': {
+      name: 'CGD LLC',
+      domain: 'cgdgovsolutions.com',
+      employees: 20
+    },
+    // Add more clients like this:
+    // 'tenant-id-here': {
+    //   name: 'Acme Healthcare',
+    //   domain: 'acmehealthcare.com',
+    //   employees: 150
+    // },
   };
   
-  const displayCompanyName = TENANT_COMPANY_NAMES[tenantId] || companyName || 'Your Company';
+  // BUSINESS OWNERS - Add executive emails who should see company dashboard
+  const BUSINESS_OWNER_EMAILS = [
+    'user@cgdgovsolutions.com',
+    'cherie@cgdgovsolutions.com',
+    'admin@cgdgovsolutions.com',
+    // Add more executives:
+    // 'ceo@acmehealthcare.com',
+    // 'cfo@acmehealthcare.com',
+  ];
   
-  const userRoles = user?.idTokenClaims?.roles || [];
+  // MSSP ADMINS - Cyproteck team who see all organizations
+  const MSSP_ADMIN_EMAILS = [
+    'admin@cyproteck.com',
+    'ops@cyproteck.com',
+    // Add more Cyproteck admins
+  ];
   
-  const hasTenantRole = userRoles.some(role => 
-    role === 'Tenant' || role === 'Cyprotenant' || role === 'TenantOwner' ||
-    role.toLowerCase() === 'tenant' || role.toLowerCase() === 'tenantowner'
-  );
+  // AUTO-DETECT USER TYPE (No Azure AD roles needed!)
+  const clientTenant = CLIENT_TENANTS[tenantId];
+  const displayCompanyName = clientTenant?.name || companyName || 'Your Company';
   
-  const hasBusinessOwnerRole = userRoles.some(role => 
-    role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
-  );
-  
-  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
-  const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole;
+  // Determine view based on tenant and email
+  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && MSSP_ADMIN_EMAILS.includes(userEmail);
+  const isBusinessOwner = clientTenant && BUSINESS_OWNER_EMAILS.includes(userEmail);
+  const isClientEmployee = clientTenant && !isBusinessOwner;
   
   console.log('🔍 User Role Check:', {
     userName,
-    userEmail: user?.username,
-    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : tenantId === CGD_LLC_TENANT_ID ? 'CGD LLC' : 'OTHER',
-    roles: userRoles,
-    hasTenantRole,
-    hasBusinessOwnerRole,
+    userEmail,
+    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : clientTenant?.name || 'UNKNOWN',
     displayCompanyName,
+    isRegisteredClient: !!clientTenant,
+    isMSPOwner,
+    isBusinessOwner,
+    isClientEmployee,
     viewType: isMSPOwner ? '👑 MSSP Owner' : isBusinessOwner ? '🏢 Business Owner' : '👤 Employee'
   });
 
@@ -245,10 +268,9 @@ Respond to this query: ${userInput}`;
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
-              <option value="cgd">CGD LLC</option>
-              <option value="acme">Acme Healthcare</option>
-              <option value="tech">Tech Solutions Inc</option>
-              <option value="finance">Finance Group LLC</option>
+              {Object.entries(CLIENT_TENANTS).map(([tenantId, client]) => (
+                <option key={tenantId} value={tenantId}>{client.name}</option>
+              ))}
             </select>
           </div>
 
@@ -478,7 +500,7 @@ Respond to this query: ${userInput}`;
 
             <div className="metric-card-business">
               <div className="metric-icon-business">👥</div>
-              <div className="metric-value-business">156</div>
+              <div className="metric-value-business">{clientTenant?.employees || 156}</div>
               <div className="metric-label-business">Total Employees</div>
               <div className="metric-change neutral">85% trained</div>
             </div>
