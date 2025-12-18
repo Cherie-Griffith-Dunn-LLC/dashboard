@@ -25,36 +25,94 @@ function Dashboard() {
   const userEmail = user?.username?.toLowerCase() || '';
   const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
-  // ============================================
-  // SIMPLE CLIENT MANAGEMENT - JUST ADD NEW CLIENTS HERE!
-  // ============================================
+
+const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
+  const CGD_LLC_TENANT_ID = '0d9acab6-2b9d-4883-8617-f3fdea4b02d6';
   
-  const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
-  
-  // CLIENT TENANTS - Add new clients by Tenant ID
+  // CLIENT TENANTS - Real clients and demo companies
   const CLIENT_TENANTS = {
-    '0d9acab6-2b9d-4883-8617-f3fdea4b02d6': {
+    // REAL CLIENT
+    [CGD_LLC_TENANT_ID]: {
       name: 'CGD LLC',
       domain: 'cgdgovsolutions.com',
-      employees: 20
+      employees: 20,
+      isActive: true
     },
-    // Add more clients like this:
-    // 'tenant-id-here': {
-    //   name: 'Acme Healthcare',
-    //   domain: 'acmehealthcare.com',
-    //   employees: 150
+    // DEMO/EXAMPLE TENANTS (for showcase)
+    'demo-acme-tenant-id': {
+      name: 'Acme Healthcare',
+      domain: 'acmehealthcare.com',
+      employees: 250,
+      isActive: false, // Demo only
+      isDemo: true
+    },
+    'demo-tech-tenant-id': {
+      name: 'Tech Solutions Inc',
+      domain: 'techsolutions.com',
+      employees: 180,
+      isActive: false,
+      isDemo: true
+    },
+    'demo-finance-tenant-id': {
+      name: 'Finance Group LLC',
+      domain: 'financegroup.com',
+      employees: 95,
+      isActive: false,
+      isDemo: true
+    },
+    // ADD MORE REAL CLIENTS LIKE THIS:
+    // 'another-real-tenant-id': {
+    //   name: 'Another Real Company',
+    //   domain: 'realcompany.com',
+    //   employees: 150,
+    //   isActive: true
     // },
   };
   
-  // BUSINESS OWNERS - Add executive emails who should see company dashboard
+  // BUSINESS OWNER EMAILS - Company executives who see company dashboard
   const BUSINESS_OWNER_EMAILS = [
     'user@cgdgovsolutions.com',
     'cherie@cgdgovsolutions.com',
-    'admin@cgdgovsolutions.com',
-    // Add more executives:
-    // 'ceo@acmehealthcare.com',
-    // 'cfo@acmehealthcare.com',
+    // Add more real business owners:
+    // 'ceo@realcompany.com',
+    // 'cfo@realcompany.com',
   ];
+  
+  const clientTenant = CLIENT_TENANTS[tenantId];
+  const displayCompanyName = clientTenant?.name || companyName || 'Your Company';
+  const userEmail = user?.username?.toLowerCase() || '';
+  
+  const userRoles = user?.idTokenClaims?.roles || [];
+  
+  const hasTenantRole = userRoles.some(role => 
+    role === 'Tenant' || role === 'Cyprotenant' || role === 'TenantOwner' ||
+    role.toLowerCase() === 'tenant' || role.toLowerCase() === 'tenantowner'
+  );
+  
+  const hasBusinessOwnerRole = userRoles.some(role => 
+    role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
+  );
+  
+  // MSSP Owner: Cyproteck tenant + Tenant role
+  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
+  
+  // Business Owner: Real client tenant + (has role OR is in email list)
+  const isBusinessOwner = clientTenant?.isActive && 
+                          (hasBusinessOwnerRole || BUSINESS_OWNER_EMAILS.includes(userEmail));
+  
+  console.log('🔍 User Role Check:', {
+    userName,
+    userEmail,
+    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : clientTenant?.name || 'UNKNOWN',
+    isRealClient: clientTenant?.isActive || false,
+    isDemoClient: clientTenant?.isDemo || false,
+    roles: userRoles,
+    hasTenantRole,
+    hasBusinessOwnerRole,
+    isInBusinessOwnerList: BUSINESS_OWNER_EMAILS.includes(userEmail),
+    displayCompanyName,
+    viewType: isMSPOwner ? '👑 MSSP Owner' : isBusinessOwner ? '🏢 Business Owner' : '👤 Employee'
+  });
   
   // MSSP ADMINS - Cyproteck team who see all organizations
   const MSSP_ADMIN_EMAILS = [
