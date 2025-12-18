@@ -5,11 +5,10 @@ import './Dashboard.css';
 function Dashboard() {
   const { instance, accounts } = useMsal();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(true); // DARK BY DEFAULT
+  const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
   const [currentPage, setCurrentPage] = useState('dashboard');
   
-  // Chatbot state
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     {
@@ -181,7 +180,7 @@ function Dashboard() {
       {/* MSSP OWNER VIEW */}
       {isMSPOwner && (
         <>
-          {/* Organization Dropdown - RESTORED */}
+          {/* Organization Dropdown */}
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
@@ -400,7 +399,6 @@ function Dashboard() {
       {/* BUSINESS OWNER VIEW */}
       {isBusinessOwner && (
         <>
-          {/* Company Header */}
           <div className="company-header">
             <div className="company-info-header">
               <h1>{userName}, welcome to {companyName}</h1>
@@ -408,7 +406,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Company Metrics */}
           <div className="metrics-grid-business">
             <div className="metric-card-business">
               <div className="metric-icon-business">🛡️</div>
@@ -439,7 +436,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Company Security Status */}
           <div className="section-business">
             <h2>🔐 Company Security Status</h2>
             <div className="security-status-cards">
@@ -477,7 +473,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Team Overview */}
           <div className="section-business">
             <div className="section-header-business">
               <h2>👥 Team Security Overview</h2>
@@ -502,7 +497,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Recent Company Activity */}
           <div className="section-business">
             <h2>📋 Recent Activity</h2>
             <div className="activity-list">
@@ -540,7 +534,6 @@ function Dashboard() {
       {/* EMPLOYEE VIEW */}
       {!isMSPOwner && !isBusinessOwner && (
         <>
-          {/* Personal Hero */}
           <div className="personal-hero">
             <div className="personal-welcome">
               <h1>Hi {userName.split(' ')[0]}! 👋</h1>
@@ -565,7 +558,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Personal Stats */}
           <div className="personal-stats">
             <div className="personal-stat-card">
               <div className="stat-icon">💻</div>
@@ -595,7 +587,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* My Devices */}
           <div className="personal-section">
             <h2>💻 My Devices</h2>
             <div className="device-cards">
@@ -621,7 +612,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* My Training */}
           <div className="personal-section">
             <h2>🎓 My Security Training</h2>
             <div className="training-progress">
@@ -663,7 +653,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Personal Tips */}
           <div className="personal-section">
             <h2>💡 Security Tips for You</h2>
             <div className="tips-grid">
@@ -811,7 +800,6 @@ function Dashboard() {
 
   return (
     <div className={`dashboard ${darkMode ? 'dark' : 'light'}`}>
-      {/* Sidebar with Collapse Button */}
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
           <div className="logo">
@@ -896,7 +884,6 @@ function Dashboard() {
           </a>
         </nav>
 
-        {/* SIDEBAR COLLAPSE BUTTON - RESTORED */}
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
             {sidebarCollapsed ? (
@@ -908,7 +895,6 @@ function Dashboard() {
         </button>
       </aside>
 
-      {/* Main Content */}
       <div className="main-content">
         <header className="top-bar">
           <div className="top-bar-left">
@@ -923,7 +909,6 @@ function Dashboard() {
             </h2>
           </div>
           <div className="top-bar-right">
-            {/* THEME TOGGLE - RESTORED */}
             <button className="theme-toggle" onClick={toggleTheme} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
               {darkMode ? '☀️' : '🌙'}
             </button>
@@ -948,7 +933,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* AI Chatbot Widget */}
       <div className={`chatbot-widget ${chatOpen ? 'open' : ''}`}>
         {chatOpen ? (
           <div className="chatbot-container">
