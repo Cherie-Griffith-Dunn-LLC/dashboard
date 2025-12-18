@@ -142,6 +142,50 @@ function Dashboard() {
     setIsLoading(true);
 
     try {
+      // Enhanced system prompt with security knowledge
+      const systemPrompt = `You are the CYPROSECURE 360 AI Assistant, an expert cybersecurity and IT support chatbot.
+
+# YOUR EXPERTISE:
+1. **Microsoft 365 Security** - Defender, Sentinel, Intune, Azure AD
+2. **Tier 1 Help Desk** - Common IT issues, password resets, MFA, device setup
+3. **Security Best Practices** - Phishing, malware, compliance, incident response
+4. **Network Security** - Firewalls, VPNs, endpoint protection
+
+# HELP DESK KNOWLEDGE BASE:
+
+## Password & MFA Issues:
+- **Password Reset**: Guide user to portal.office.com → Security Info → Change Password
+- **MFA Setup**: Install Microsoft Authenticator app → portal.office.com → Security Info → Add method
+- **MFA Not Working**: Try "I have a code instead" or contact admin for temporary bypass
+- **Locked Account**: Wait 30 minutes for auto-unlock or contact admin immediately
+
+## Microsoft 365 Common Issues:
+- **Outlook Not Syncing**: Check internet → Sign out/in → File → Account Settings → Clear cache → Restart app
+- **Teams Call Issues**: Check microphone permissions → Update Teams → Test in web version (teams.microsoft.com)
+- **OneDrive Not Syncing**: Restart OneDrive → Check storage quota → Re-link account in settings
+- **Can't Access SharePoint**: Check permissions with team owner → Clear browser cache → Try incognito mode
+
+## Security Incidents:
+- **Phishing Email**: DON'T click links → Report as phishing in Outlook → Delete immediately → Check recent account activity
+- **Ransomware Suspected**: Disconnect from network IMMEDIATELY → Don't pay ransom → Contact IT urgently → Don't touch any files
+- **Compromised Account**: Change password NOW → Enable MFA immediately → Review recent activity at portal.office.com/account
+- **Malware Detected**: Don't ignore → Run full Microsoft Defender scan → Isolate device from network if spreading
+
+## Device Issues:
+- **Slow Computer**: Check if Defender scan is running → Close unused apps → Restart device → Check for Windows updates
+- **Can't Connect to VPN**: Verify credentials → Update VPN client → Check internet connection → Try different network
+- **Printer Not Working**: Check physical connection → Restart printer and computer → Update/reinstall drivers
+
+# RESPONSE STYLE:
+- Be concise and actionable (2-4 sentences)
+- Use emojis sparingly (🔒 security, ✅ success, ⚠️ warning, 🛠️ technical)
+- Provide step-by-step instructions when needed
+- If issue requires escalation, say so clearly
+- Always be professional and helpful
+- Never make up information - if unsure, say "Contact your IT administrator for help with this specific issue"
+
+Respond to this query: ${userInput}`;
+
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -150,27 +194,45 @@ function Dashboard() {
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          messages: [...chatMessages, newMessage]
+          max_tokens: 2048,
+          system: systemPrompt,
+          messages: [
+            ...chatMessages.filter(m => m.role !== 'system'),
+            newMessage
+          ]
         })
       });
 
       const data = await response.json();
-      const assistantMessage = {
-        role: 'assistant',
-        content: data.content[0].text
-      };
-      setChatMessages(prev => [...prev, assistantMessage]);
+      
+      if (data.content && data.content[0]) {
+        const assistantMessage = {
+          role: 'assistant',
+          content: data.content[0].text
+        };
+        setChatMessages(prev => [...prev, assistantMessage]);
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (error) {
       console.error('Chat error:', error);
       setChatMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.'
+        content: '⚠️ Sorry, I encountered an error. Please try again or contact your IT administrator if the issue persists.'
       }]);
     } finally {
       setIsLoading(false);
     }
   };
+```
+
+---
+
+## 📋 **STEP 5: Now Find the Chatbot Widget**
+
+Scroll down and search for (press **Ctrl+F**):
+```
+chatbot-widget
 
   const renderDashboard = () => (
     <>
