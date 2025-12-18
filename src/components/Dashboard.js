@@ -23,12 +23,12 @@ function Dashboard() {
   const user = accounts[0];
   const userName = user?.name || 'User';
   const tenantId = user?.tenantId || '';
+  const companyName = user?.idTokenClaims?.company || user?.idTokenClaims?.organization || 'Your Company';
   
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
+  // ROLE-BASED DETECTION ONLY (no email fallback)
   const userRoles = user?.idTokenClaims?.roles || [];
-  const userEmail = user?.username || user?.idTokenClaims?.preferred_username || '';
-  const isCyproteckEmail = userEmail.toLowerCase().includes('@cyproteck.com');
   
   const hasTenantRole = userRoles.some(role => 
     role === 'Tenant' || role === 'Cyprotenant' || role === 'TenantOwner' ||
@@ -39,8 +39,19 @@ function Dashboard() {
     role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
   );
   
-  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && (hasTenantRole || isCyproteckEmail);
+  // ONLY check roles, not email domain
+  const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole;
+  
+  // Debug logging (check browser console)
+  console.log('🔍 User Role Check:', {
+    userName,
+    tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : 'OTHER',
+    roles: userRoles,
+    hasTenantRole,
+    hasBusinessOwnerRole,
+    viewType: isMSPOwner ? '👑 MSSP Owner' : isBusinessOwner ? '🏢 Business Owner' : '👤 Employee'
+  });
 
   const securityData = {
     securityScore: 85,
@@ -167,6 +178,7 @@ function Dashboard() {
 
   const renderDashboard = () => (
     <>
+      {/* MSSP OWNER VIEW */}
       {isMSPOwner && (
         <>
           {/* Organization Dropdown - RESTORED */}
@@ -384,13 +396,308 @@ function Dashboard() {
           </div>
         </>
       )}
+
+      {/* BUSINESS OWNER VIEW */}
+      {isBusinessOwner && (
+        <>
+          {/* Company Header */}
+          <div className="company-header">
+            <div className="company-info-header">
+              <h1>{userName}, welcome to {companyName}</h1>
+              <p className="company-subtitle">Your company security overview</p>
+            </div>
+          </div>
+
+          {/* Company Metrics */}
+          <div className="metrics-grid-business">
+            <div className="metric-card-business">
+              <div className="metric-icon-business">🛡️</div>
+              <div className="metric-value-business">342</div>
+              <div className="metric-label-business">Protected Devices</div>
+              <div className="metric-change positive">+12 this month</div>
+            </div>
+
+            <div className="metric-card-business">
+              <div className="metric-icon-business">👥</div>
+              <div className="metric-value-business">156</div>
+              <div className="metric-label-business">Total Employees</div>
+              <div className="metric-change neutral">85% trained</div>
+            </div>
+
+            <div className="metric-card-business">
+              <div className="metric-icon-business">⚠️</div>
+              <div className="metric-value-business">23</div>
+              <div className="metric-label-business">Active Threats</div>
+              <div className="metric-change negative">5 high priority</div>
+            </div>
+
+            <div className="metric-card-business">
+              <div className="metric-icon-business">📊</div>
+              <div className="metric-value-business">88%</div>
+              <div className="metric-label-business">Security Score</div>
+              <div className="metric-change positive">+3% this week</div>
+            </div>
+          </div>
+
+          {/* Company Security Status */}
+          <div className="section-business">
+            <h2>🔐 Company Security Status</h2>
+            <div className="security-status-cards">
+              <div className="status-card success">
+                <div className="status-icon">✅</div>
+                <div className="status-content">
+                  <div className="status-title">Firewall Protected</div>
+                  <div className="status-detail">All endpoints secured</div>
+                </div>
+              </div>
+
+              <div className="status-card success">
+                <div className="status-icon">🔒</div>
+                <div className="status-content">
+                  <div className="status-title">Data Encrypted</div>
+                  <div className="status-detail">256-bit encryption active</div>
+                </div>
+              </div>
+
+              <div className="status-card warning">
+                <div className="status-icon">⚠️</div>
+                <div className="status-content">
+                  <div className="status-title">Updates Pending</div>
+                  <div className="status-detail">12 devices need updates</div>
+                </div>
+              </div>
+
+              <div className="status-card success">
+                <div className="status-icon">🛡️</div>
+                <div className="status-content">
+                  <div className="status-title">Threat Detection</div>
+                  <div className="status-detail">Real-time monitoring active</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Team Overview */}
+          <div className="section-business">
+            <div className="section-header-business">
+              <h2>👥 Team Security Overview</h2>
+              <button className="btn-view-all">View All Employees →</button>
+            </div>
+            <div className="team-stats-grid">
+              <div className="team-stat">
+                <div className="stat-number">142</div>
+                <div className="stat-label">Compliant</div>
+                <div className="stat-percentage">91%</div>
+              </div>
+              <div className="team-stat warning">
+                <div className="stat-number">14</div>
+                <div className="stat-label">Needs Training</div>
+                <div className="stat-percentage">9%</div>
+              </div>
+              <div className="team-stat">
+                <div className="stat-number">132</div>
+                <div className="stat-label">MFA Enabled</div>
+                <div className="stat-percentage">85%</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Company Activity */}
+          <div className="section-business">
+            <h2>📋 Recent Activity</h2>
+            <div className="activity-list">
+              <div className="activity-item">
+                <div className="activity-icon success">✅</div>
+                <div className="activity-content">
+                  <div className="activity-title">Security Update Completed</div>
+                  <div className="activity-detail">All critical patches installed company-wide</div>
+                  <div className="activity-time">1 hour ago</div>
+                </div>
+              </div>
+
+              <div className="activity-item">
+                <div className="activity-icon info">📧</div>
+                <div className="activity-content">
+                  <div className="activity-title">Training Reminder Sent</div>
+                  <div className="activity-detail">Security awareness training due for 14 employees</div>
+                  <div className="activity-time">3 hours ago</div>
+                </div>
+              </div>
+
+              <div className="activity-item">
+                <div className="activity-icon warning">⚠️</div>
+                <div className="activity-content">
+                  <div className="activity-title">Threat Detected & Blocked</div>
+                  <div className="activity-detail">Phishing attempt blocked from external source</div>
+                  <div className="activity-time">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* EMPLOYEE VIEW */}
+      {!isMSPOwner && !isBusinessOwner && (
+        <>
+          {/* Personal Hero */}
+          <div className="personal-hero">
+            <div className="personal-welcome">
+              <h1>Hi {userName.split(' ')[0]}! 👋</h1>
+              <p>Your personal security dashboard</p>
+            </div>
+            <div className="personal-score-card">
+              <div className="personal-score-ring">
+                <svg viewBox="0 0 100 100">
+                  <circle className="score-ring-bg" cx="50" cy="50" r="45"/>
+                  <circle 
+                    className="score-ring-fill" 
+                    cx="50" 
+                    cy="50" 
+                    r="45"
+                    style={{ strokeDasharray: `${92 * 2.83} 283` }}
+                  />
+                </svg>
+                <div className="personal-score-value">92</div>
+              </div>
+              <div className="personal-score-label">Your Security Score</div>
+              <div className="personal-score-status good">Great Job!</div>
+            </div>
+          </div>
+
+          {/* Personal Stats */}
+          <div className="personal-stats">
+            <div className="personal-stat-card">
+              <div className="stat-icon">💻</div>
+              <div className="stat-info">
+                <div className="stat-value">2</div>
+                <div className="stat-name">My Devices</div>
+              </div>
+              <div className="stat-badge success">Protected</div>
+            </div>
+
+            <div className="personal-stat-card">
+              <div className="stat-icon">🎓</div>
+              <div className="stat-info">
+                <div className="stat-value">3/4</div>
+                <div className="stat-name">Training Complete</div>
+              </div>
+              <div className="stat-badge warning">1 pending</div>
+            </div>
+
+            <div className="personal-stat-card">
+              <div className="stat-icon">🛡️</div>
+              <div className="stat-info">
+                <div className="stat-value">47</div>
+                <div className="stat-name">Threats Blocked</div>
+              </div>
+              <div className="stat-badge info">This month</div>
+            </div>
+          </div>
+
+          {/* My Devices */}
+          <div className="personal-section">
+            <h2>💻 My Devices</h2>
+            <div className="device-cards">
+              <div className="device-card">
+                <div className="device-icon">💻</div>
+                <div className="device-info">
+                  <div className="device-name">Work Laptop</div>
+                  <div className="device-model">MacBook Pro 16"</div>
+                  <div className="device-status protected">Protected & Up to Date</div>
+                </div>
+                <div className="device-badge success">✅</div>
+              </div>
+
+              <div className="device-card">
+                <div className="device-icon">📱</div>
+                <div className="device-info">
+                  <div className="device-name">Work Phone</div>
+                  <div className="device-model">iPhone 14 Pro</div>
+                  <div className="device-status protected">Microsoft Defender Active</div>
+                </div>
+                <div className="device-badge success">✅</div>
+              </div>
+            </div>
+          </div>
+
+          {/* My Training */}
+          <div className="personal-section">
+            <h2>🎓 My Security Training</h2>
+            <div className="training-progress">
+              <div className="training-item completed">
+                <div className="training-icon">✅</div>
+                <div className="training-info">
+                  <div className="training-name">Password Security</div>
+                  <div className="training-date">Completed Nov 15, 2024</div>
+                </div>
+                <button className="training-btn review">Review</button>
+              </div>
+
+              <div className="training-item completed">
+                <div className="training-icon">✅</div>
+                <div className="training-info">
+                  <div className="training-name">Phishing Awareness</div>
+                  <div className="training-date">Completed Nov 28, 2024</div>
+                </div>
+                <button className="training-btn review">Review</button>
+              </div>
+
+              <div className="training-item completed">
+                <div className="training-icon">✅</div>
+                <div className="training-info">
+                  <div className="training-name">Data Protection</div>
+                  <div className="training-date">Completed Dec 5, 2024</div>
+                </div>
+                <button className="training-btn review">Review</button>
+              </div>
+
+              <div className="training-item pending">
+                <div className="training-icon">📚</div>
+                <div className="training-info">
+                  <div className="training-name">Secure Remote Work</div>
+                  <div className="training-date">Due Dec 20, 2024</div>
+                </div>
+                <button className="training-btn start">Start Now</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Personal Tips */}
+          <div className="personal-section">
+            <h2>💡 Security Tips for You</h2>
+            <div className="tips-grid">
+              <div className="tip-card">
+                <div className="tip-icon">🔐</div>
+                <div className="tip-title">Enable MFA</div>
+                <div className="tip-description">Add an extra layer of security to your accounts</div>
+                <button className="tip-btn">Set Up Now</button>
+              </div>
+
+              <div className="tip-card">
+                <div className="tip-icon">📱</div>
+                <div className="tip-title">Secure Your Phone</div>
+                <div className="tip-description">Install Microsoft Defender on your mobile device</div>
+                <button className="tip-btn">Download App</button>
+              </div>
+
+              <div className="tip-card">
+                <div className="tip-icon">🔑</div>
+                <div className="tip-title">Update Password</div>
+                <div className="tip-description">Last changed 45 days ago - Consider updating</div>
+                <button className="tip-btn">Change Password</button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 
   const renderThreatsPage = () => (
     <div className="page-content">
-      <h1>⚠️ Threat Management</h1>
-      <p className="page-subtitle">Monitor and respond to security threats</p>
+      <h1>⚠️ Active Threats</h1>
+      <p className="page-subtitle">Real-time threat monitoring and analysis</p>
       <div className="content-placeholder">
         <p>Threat management dashboard coming soon...</p>
       </div>
@@ -400,7 +707,7 @@ function Dashboard() {
   const renderTrainingPage = () => (
     <div className="page-content">
       <h1>🎓 Security Training</h1>
-      <p className="page-subtitle">Employee training management</p>
+      <p className="page-subtitle">Complete required security awareness training</p>
       <div className="content-placeholder">
         <p>Training dashboard coming soon...</p>
       </div>
@@ -410,7 +717,7 @@ function Dashboard() {
   const renderAlertsPage = () => (
     <div className="page-content">
       <h1>🚨 Security Alerts</h1>
-      <p className="page-subtitle">Real-time security alerts and notifications</p>
+      <p className="page-subtitle">Recent security notifications and warnings</p>
       <div className="content-placeholder">
         <p>Alerts dashboard coming soon...</p>
       </div>
@@ -418,59 +725,54 @@ function Dashboard() {
   );
 
   const renderMobilePage = () => (
-    <div className="page-content">
-      <h1>📱 Mobile Security</h1>
-      <p className="page-subtitle">Protect your mobile devices with Microsoft Defender</p>
-      
+    <div className="mobile-security-page">
       <div className="mobile-hero">
-        <h2>Secure Your Mobile Devices</h2>
-        <p>Download Microsoft Defender to protect your iOS and Android devices from threats.</p>
+        <h1>📱 Mobile Security</h1>
+        <p>Protect your mobile devices with Microsoft Defender</p>
       </div>
 
-      <div className="download-section">
+      <div className="mobile-downloads">
         <div className="download-card ios">
-          <div className="download-icon">🍎</div>
-          <h3>iOS & iPadOS</h3>
-          <p>Protect your iPhone and iPad</p>
-          <a 
-            href="https://apps.apple.com/us/app/microsoft-defender/id1526737990" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="download-btn"
-          >
-            Download for iOS
+          <div className="download-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+          </div>
+          <h3>iOS App</h3>
+          <p>Available for iPhone and iPad</p>
+          <p className="requirements">Requires iOS 15.0 or later</p>
+          <a href="https://apps.apple.com/app/microsoft-defender/id1526737990" className="download-btn">
+            Download on App Store
           </a>
-          <div className="requirements">Requires iOS 15.0 or later</div>
         </div>
 
         <div className="download-card android">
-          <div className="download-icon">🤖</div>
-          <h3>Android</h3>
-          <p>Protect your Android phone or tablet</p>
-          <a 
-            href="https://play.google.com/store/apps/details?id=com.microsoft.scmx" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="download-btn"
-          >
-            Download for Android
+          <div className="download-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.28-.55-.37-.84-.22-.3.16-.42.54-.26.85L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52M7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25m10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25"/>
+            </svg>
+          </div>
+          <h3>Android App</h3>
+          <p>Available for Android devices</p>
+          <p className="requirements">Requires Android 8.0 or later</p>
+          <a href="https://play.google.com/store/apps/details?id=com.microsoft.scmx" className="download-btn">
+            Get it on Google Play
           </a>
-          <div className="requirements">Requires Android 8.0 or later</div>
         </div>
       </div>
 
-      <div className="setup-steps">
-        <h2>Setup Instructions</h2>
-        <div className="steps-grid">
+      <div className="mobile-setup-guide">
+        <h2>📲 Setup Instructions</h2>
+        <div className="setup-steps">
           <div className="step">
             <div className="step-number">1</div>
             <h3>Download the App</h3>
-            <p>Download Microsoft Defender from your device app store</p>
+            <p>Get Microsoft Defender from the App Store or Google Play</p>
           </div>
           <div className="step">
             <div className="step-number">2</div>
             <h3>Sign In</h3>
-            <p>Open the app and sign in with your company email</p>
+            <p>Use your company Microsoft account to sign in</p>
           </div>
           <div className="step">
             <div className="step-number">3</div>
