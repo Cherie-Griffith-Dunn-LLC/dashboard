@@ -26,7 +26,6 @@ function Dashboard() {
   
   const CYPROTECK_TENANT_ID = 'ff4945f1-e101-4ac8-a78f-798156ea9cdf';
   
-  // ROLE-BASED DETECTION ONLY (no email fallback)
   const userRoles = user?.idTokenClaims?.roles || [];
   
   const hasTenantRole = userRoles.some(role => 
@@ -38,11 +37,9 @@ function Dashboard() {
     role === 'BusinessOwner' || role === 'Businessowner' || role.toLowerCase() === 'businessowner'
   );
   
-  // ONLY check roles, not email domain
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
   const isBusinessOwner = tenantId !== CYPROTECK_TENANT_ID && hasBusinessOwnerRole;
   
-  // Debug logging (check browser console)
   console.log('🔍 User Role Check:', {
     userName,
     tenantId: tenantId === CYPROTECK_TENANT_ID ? 'CYPROTECK' : 'OTHER',
@@ -177,10 +174,10 @@ function Dashboard() {
 
   const renderDashboard = () => (
     <>
-      {/* MSSP OWNER VIEW */}
+      {/* MSSP OWNER VIEW - HAS DROPDOWN */}
       {isMSPOwner && (
         <>
-          {/* Organization Dropdown */}
+          {/* Organization Dropdown - ONLY MSSP SEES THIS */}
           <div className="org-selector-top">
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
@@ -285,7 +282,7 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Employee List */}
+          {/* Employee List - ALL COMPANIES */}
           <div className="section-compact">
             <div className="section-hdr">
               <h2>👥 Employees Requiring Attention</h2>
@@ -396,7 +393,7 @@ function Dashboard() {
         </>
       )}
 
-      {/* BUSINESS OWNER VIEW */}
+      {/* BUSINESS OWNER VIEW - NO DROPDOWN, ONLY THEIR COMPANY */}
       {isBusinessOwner && (
         <>
           <div className="company-header">
@@ -531,7 +528,7 @@ function Dashboard() {
         </>
       )}
 
-      {/* EMPLOYEE VIEW */}
+      {/* EMPLOYEE VIEW - NO DROPDOWN, PERSONAL ONLY */}
       {!isMSPOwner && !isBusinessOwner && (
         <>
           <div className="personal-hero">
