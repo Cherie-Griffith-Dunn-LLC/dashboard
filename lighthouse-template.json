@@ -29,21 +29,21 @@
     "mspAssignmentName": "[guid(parameters('managedByTenantId'))]",
     "authorizations": [
       {
-        "principalId": "3ef3b701-824c-4ea9-b459-86e577116c3f",
+        "principalId": "02f7f735-fd6e-4302-bc90-17821b0661b3",
         "roleDefinitionId": "fb1c8493-542b-48eb-b624-b4c8fea62acd",
-        "principalIdDisplayName": "Cyproteck Security Admin",
+        "principalIdDisplayName": "Cyproteck Security Operations",
         "delegatedRoleDefinitionIds": []
       },
       {
-        "principalId": "3ef3b701-824c-4ea9-b459-86e577116c3f",
+        "principalId": "02f7f735-fd6e-4302-bc90-17821b0661b3",
         "roleDefinitionId": "ab8e14d6-4a74-4a29-9ba8-549422addade",
-        "principalIdDisplayName": "Cyproteck Sentinel Contributor",
+        "principalIdDisplayName": "Cyproteck Sentinel Operations",
         "delegatedRoleDefinitionIds": []
       },
       {
-        "principalId": "3ef3b701-824c-4ea9-b459-86e577116c3f",
+        "principalId": "02f7f735-fd6e-4302-bc90-17821b0661b3",
         "roleDefinitionId": "39bc4728-0917-49c7-9d2c-d95423bc2eb4",
-        "principalIdDisplayName": "Cyproteck Security Reader",
+        "principalIdDisplayName": "Cyproteck Security Monitoring",
         "delegatedRoleDefinitionIds": []
       }
     ]
