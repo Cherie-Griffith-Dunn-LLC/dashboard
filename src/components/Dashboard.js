@@ -493,7 +493,7 @@ Respond to this query: ${userInput}`;
         <>
           <div className="company-header">
             <div className="company-info-header">
-              <h1>{userName}, welcome to {displayCompanyName}</h1>
+              <h1>{userName}, welcome {displayCompanyName}</h1>
               <p className="company-subtitle">Your company security overview</p>
             </div>
           </div>
