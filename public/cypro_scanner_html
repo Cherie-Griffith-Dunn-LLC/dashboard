@@ -1,1 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CyproSecure 360° | Cyproteck Technologies</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#04080f;--bg2:#070d18;--bg3:#0a1220;--bg4:#0d1628;
+  --border:#0e1f35;--border2:#142840;--border3:#1a3555;
+  --teal:#0d9488;--teal2:#14b8a6;--teal3:#0a7066;
+  --red:#dc2626;--red2:#ef4444;
+  --amber:#d97706;--amber2:#f59e0b;
+  --green:#059669;--green2:#10b981;
+  --text:#f0f6ff;--text2:#8faabf;--text3:#4a6a80;
+  --gold:#b8922a;--gold2:#d4aa4a;
+}
+body{background:var(--bg);font-family:"DM Sans",sans-serif;color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
+input,textarea,select{outline:none;font-family:inherit}
+button{font-family:inherit;cursor:pointer}
+@keyframes ping{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(2);opacity:0}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,0)}50%{box-shadow:0 0 25px 5px rgba(13,148,136,0.25)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes scanLine{0%{top:0}100%{top:100%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes ripple{0%{transform:scale(0.8);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.scan-anim{position:relative;overflow:hidden}
+.scan-anim::after{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal2),transparent);animation:scanLine 1.8s linear infinite;opacity:0.7}
+.shake{animation:shake 0.4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef,useCallback}=React;
+const API="https://api.anthropic.com/v1/messages";
+const MODEL="claude-sonnet-4-20250514";
+const OPS_EMAIL="ops@cyproteck.com";
 
+/* ───────── MOCK DATA ───────── */
+const THIRD_PARTY_APPS=[
+  {id:1,name:"Salesforce CRM",category:"CRM",icon:"☁️",status:"vulnerable",risk:"high",issues:["OAuth token scope too broad","No IP restrictions on API","Inactive admin accounts (4)"],lastScan:"Just now"},
+  {id:2,name:"Slack Enterprise",category:"Collaboration",icon:"💬",status:"secured",risk:"low",issues:["MFA enforced","DLP active","Workspace retention policies set"],lastScan:"Just now"},
+  {id:3,name:"Zoom Video",category:"Conferencing",icon:"📹",status:"vulnerable",risk:"medium",issues:["End-to-end encryption disabled","Recordings stored in plain cloud","Guest join without waiting room"],lastScan:"Just now"},
+  {id:4,name:"ServiceNow",category:"ITSM",icon:"🔧",status:"secured",risk:"low",issues:["Role-based access enforced","Full audit logging active"],lastScan:"Just now"},
+  {id:5,name:"DocuSign",category:"eSignature",icon:"✍️",status:"warning",risk:"medium",issues:["Legacy API v1 still active","No webhook signature validation"],lastScan:"Just now"},
+  {id:6,name:"Workday HCM",category:"HR System",icon:"👥",status:"vulnerable",risk:"critical",issues:["SSO bypass path discovered","PII fields accessible via API","Password policy non-compliant"],lastScan:"Just now"},
+  {id:7,name:"GitHub Enterprise",category:"DevOps",icon:"⚙️",status:"warning",risk:"medium",issues:["Public repos with secrets detected","Branch protection missing on 3 repos"],lastScan:"Just now"},
+  {id:8,name:"Microsoft 365",category:"Productivity",icon:"📧",status:"secured",risk:"low",issues:["Conditional access active","DLP policies enforced"],lastScan:"Just now"},
+  {id:9,name:"AWS Console",category:"Cloud Infra",icon:"🌐",status:"vulnerable",risk:"critical",issues:["Root account MFA missing","S3 buckets publicly accessible (2)","IAM wildcard permissions detected"],lastScan:"Just now"},
+  {id:10,name:"QuickBooks Online",category:"Finance",icon:"💰",status:"warning",risk:"high",issues:["No IP allowlisting","Session timeout too long (8h)"],lastScan:"Just now"},
+  {id:11,name:"Zendesk",category:"Support",icon:"🎫",status:"secured",risk:"low",issues:["Agent SSO enforced","Ticket data encrypted at rest"],lastScan:"Just now"},
+  {id:12,name:"Okta SSO",category:"Identity",icon:"🔑",status:"secured",risk:"low",issues:["Zero trust policies active","Phishing-resistant MFA enforced"],lastScan:"Just now"},
+];
+const WEB_VULNS=[
+  {id:1,severity:"critical",type:"SQL Injection",url:"/api/v1/patients/search",detail:"Unsanitized input in search parameter allows UNION-based SQL injection. PHI data at risk.",cvss:"9.8"},
+  {id:2,severity:"critical",type:"Exposed Admin Panel",url:"/admin/dashboard",detail:"Administrative interface accessible without VPN restriction. No rate limiting on login attempts.",cvss:"9.1"},
+  {id:3,severity:"high",type:"Cross-Site Scripting (XSS)",url:"/portal/messages",detail:"Reflected XSS in message body field. Could enable session hijacking of patient portal users.",cvss:"7.4"},
+  {id:4,severity:"high",type:"Outdated TLS",url:"api.internal:443",detail:"TLS 1.0/1.1 still accepted. Vulnerable to POODLE and BEAST attacks.",cvss:"7.1"},
+  {id:5,severity:"medium",type:"CORS Misconfiguration",url:"/api/reports",detail:"Wildcard CORS policy on sensitive endpoint allows cross-origin credential theft.",cvss:"6.5"},
+  {id:6,severity:"medium",type:"Missing Security Headers",url:"app.domain.com",detail:"CSP, HSTS, X-Frame-Options headers absent. Enables clickjacking and injection attacks.",cvss:"5.8"},
+  {id:7,severity:"low",type:"Information Disclosure",url:"/api/health",detail:"Server version and framework details exposed in response headers.",cvss:"3.1"},
+];
+const INTERNAL_VULNS=[
+  {id:1,severity:"critical",type:"Unpatched CVE-2024-21413",host:"WINSERVER-DC01",detail:"Microsoft Outlook critical RCE vulnerability. CVSS 9.8. Patch available since Feb 2024.",cvss:"9.8"},
+  {id:2,severity:"critical",type:"Pass-the-Hash Vulnerability",host:"192.168.1.0/24",detail:"NTLM relay attack path identified across 14 workstations. SMB signing not enforced.",cvss:"9.0"},
+  {id:3,severity:"high",type:"Weak Domain Policy",host:"corp.domain.local",detail:"Password minimum length set to 8 chars. No complexity requirements. No lockout policy.",cvss:"7.8"},
+  {id:4,severity:"high",type:"Open RDP to Internet",host:"192.168.10.44",detail:"Port 3389 exposed directly to internet. No NLA requirement. Brute force risk high.",cvss:"7.5"},
+  {id:5,severity:"medium",type:"Legacy Protocol Active",host:"FILESERVER-02",detail:"SMBv1 protocol enabled. EternalBlue exploit vector still present.",cvss:"6.8"},
+  {id:6,severity:"medium",type:"Stale Admin Accounts",host:"Active Directory",detail:"12 accounts with admin privileges have not logged in for 90+ days.",cvss:"5.9"},
+  {id:7,severity:"low",type:"NTP Misconfiguration",host:"Network-wide",detail:"Inconsistent NTP sources could allow log timestamp manipulation.",cvss:"3.2"},
+];
+const PLANS=[
+  {id:"dashboard-1yr",name:"Dashboard — 1 Year",price:"$47.20",period:"/mo",color:"#0d9488",term:"Billed annually — $566.40/yr",features:["Full threat & vulnerability visibility","Connected device inventory","MFA status indicators","Behavior-based security training modules","CyproAI executive analysis","Monthly security reports","Email support"]},
+  {id:"dashboard-2yr",name:"Dashboard — 2 Year",price:"$37.10",period:"/mo",color:"#14b8a6",badge:"Best Value",term:"Billed every 2 years — $890.40/2yr",features:["Everything in 1-Year plan","Save $120.80 vs annual pricing","Priority email support","Quarterly security review","CyproAI advanced analysis","Branded executive reports"]},
+  {id:"dashboard-3yr",name:"Dashboard — 3 Year",price:"$29.30",period:"/mo",color:"#b8922a",badge:"Lowest Price",term:"Billed every 3 years — $1,054.80/3yr",features:["Everything in 2-Year plan","Maximum cost savings","Dedicated CSM","White-glove onboarding","Custom compliance reporting (HIPAA/SOC 2)","Real-time threat alerts","SLA guarantee"]},
+  {id:"endpoint",name:"Endpoint Protection",price:"$3.50",period:"/user/mo",color:"#7c3aed",badge:"Add-On",term:"Per user — add to any dashboard plan",features:["Steel firewall endpoint security","Advanced threat protection","Behavior-based threat detection","Works with all dashboard tiers","Order via Microsoft Marketplace","Scales with your team"]},
+];
+
+/* ───────── AI CALL ───────── */
+async function callAI(system,prompt,maxTokens=1200){
+  const res=await fetch(API,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:MODEL,max_tokens:maxTokens,system,messages:[{role:"user",content:prompt}]})
+  });
+  const d=await res.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.content?.[0]?.text||"";
+}
+
+/* ───────── EMAIL SENDER ───────── */
+function sendReportEmail(recipientEmail,reportContent,companyName,userName,scanDate){
+  const subject=encodeURIComponent(`Security Risk Briefing | ${companyName} | CyproSecure 360° by Cyproteck Technologies`);
+
+  const reportBody=reportContent.length>2000
+    ? reportContent.slice(0,2000)+"\n\n[ ... continued — contact Cherie@cyproteck.com for the complete PDF briefing ... ]"
+    : reportContent;
+
+  const body=encodeURIComponent(
+`Dear ${userName},
+
+Thank you for using CyproSecure 360°, Cyproteck Technologies' enterprise security intelligence platform. Please find your confidential security briefing for ${companyName} below.
+
+This report was generated on ${scanDate} following a comprehensive automated scan of your environment, covering third-party SaaS applications, web application vulnerabilities, internal network posture, and compliance gaps against HIPAA and SOC 2 frameworks.
+
+─────────────────────────────────────────
+IMPORTANT: WHAT THIS REPORT MEANS FOR YOU
+─────────────────────────────────────────
+
+The findings in this briefing represent real, identified security risks that require attention. A score of 58/100 places your organization in the "At Risk" category — meaning vulnerabilities exist today that, if left unaddressed, could lead to a data breach, ransomware attack, regulatory fine, or loss of patient trust.
+
+We want to be clear: discovering these vulnerabilities is the first step to fixing them. You are not alone in this. Cyproteck's managed security team specializes in exactly these types of issues, particularly in healthcare environments where the stakes — patient privacy, HIPAA compliance, and operational continuity — are at their highest.
+
+─────────────────────────────────────────
+YOUR SECURITY BRIEFING — ${companyName.toUpperCase()}
+Scan Date: ${scanDate} | Confidential
+─────────────────────────────────────────
+
+${reportBody}
+
+─────────────────────────────────────────
+WHAT HAPPENS NEXT — WE'RE HERE TO HELP
+─────────────────────────────────────────
+
+We strongly encourage you to schedule a no-obligation consultation with our team to walk through these findings, prioritize your remediation roadmap, and discuss how CyproSecure 360° managed services can protect your organization going forward.
+
+Our team is available to:
+
+  • Walk you through every finding in plain language — no jargon
+  • Build a custom 30/60/90-day remediation plan tailored to your budget
+  • Handle remediation directly as your managed security partner
+  • Provide ongoing monitoring so threats are caught before they cause damage
+  • Prepare your organization for HIPAA audits and SOC 2 certification
+
+Do not wait on the critical findings. Unpatched systems and exposed cloud resources are actively targeted. Our team can begin emergency remediation support within 24–48 hours of engagement.
+
+─────────────────────────────────────────
+CONTACT CYPROTECK TECHNOLOGIES
+─────────────────────────────────────────
+
+Cherie Griffith-Dunn
+Chief Executive Officer & Founder
+Cyproteck Technologies Inc. | Healthcare's Digital Bodyguard™
+
+Phone:   (959) 888-0569
+Email:   Cherie@cyproteck.com
+Website: www.cyproteck.com
+Operations: ops@cyproteck.com
+
+Certifications: CISSP | CMMC | Security+ | AI Analyst
+Credentials:    Microsoft Security Partner | MWBE | EDWOSB
+Gov't IDs:      UEI: RP27TCWJR5T6 | CAGE Code: 9SA90
+Award:          2023 Microsoft Catalyst Winner
+
+─────────────────────────────────────────
+CONFIDENTIALITY NOTICE
+─────────────────────────────────────────
+
+This report and its contents are confidential and intended solely for ${userName} at ${companyName}. The security findings contained herein are sensitive in nature. Please do not forward or share this report externally without consulting your legal and security teams.
+
+Cyproteck Technologies Inc. | Hartford, CT & Florida
+"When others miss it, we find it. When others fail, we fix it."
+
+─────────────────────────────────────────
+`);
+
+  const cc=encodeURIComponent(OPS_EMAIL);
+  const mailtoLink=`mailto:${encodeURIComponent(recipientEmail)}?cc=${cc}&subject=${subject}&body=${body}`;
+  window.open(mailtoLink,"_blank");
+  return true;
+}
+
+/* ───────── SMALL COMPONENTS ───────── */
+function Badge({severity}){
+  const m={
+    critical:{bg:"rgba(220,38,38,0.15)",c:"#ef4444"},
+    high:{bg:"rgba(217,119,6,0.15)",c:"#f59e0b"},
+    medium:{bg:"rgba(13,148,136,0.15)",c:"#14b8a6"},
+    low:{bg:"rgba(75,85,99,0.15)",c:"#9ca3af"},
+    secured:{bg:"rgba(5,150,105,0.15)",c:"#10b981"},
+    vulnerable:{bg:"rgba(220,38,38,0.15)",c:"#ef4444"},
+    warning:{bg:"rgba(217,119,6,0.15)",c:"#f59e0b"},
+  };
+  const s=m[severity]||m.low;
+  return(
+    <span style={{background:s.bg,color:s.c,fontSize:10,fontWeight:700,letterSpacing:"0.02em",padding:"2px 8px",borderRadius:3,fontFamily:"DM Sans,sans-serif",border:`1px solid ${s.c}33`,textTransform:"uppercase"}}>{severity}</span>
+  );
+}
+function Pulse({color="#14b8a6",size=8,active=true}){
+  return(
+    <span style={{position:"relative",display:"inline-flex",alignItems:"center",justifyContent:"center",width:size,height:size,flexShrink:0}}>
+      {active&&<span style={{position:"absolute",inset:-4,borderRadius:"50%",border:`1px solid ${color}`,animation:"ripple 2s infinite",opacity:0.5}}/>}
+      <span style={{width:size,height:size,borderRadius:"50%",background:color,display:"block"}}/>
+    </span>
+  );
+}
+function Ring({score,size=80}){
+  const r=34,circ=2*Math.PI*r,off=circ-(score/100)*circ;
+  const c=score>=80?"#10b981":score>=60?"#f59e0b":"#ef4444";
+  return(
+    <div style={{position:"relative",width:size,height:size}}>
+      <svg width={size} height={size} viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6"/>
+        <circle cx="40" cy="40" r={r} fill="none" stroke={c} strokeWidth="6" strokeDasharray={circ} strokeDashoffset={off} strokeLinecap="round" transform="rotate(-90 40 40)" style={{transition:"all 1.5s ease",filter:`drop-shadow(0 0 6px ${c}88)`}}/>
+      </svg>
+      <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+        <span style={{color:c,fontSize:18,fontWeight:800,fontFamily:"DM Sans,sans-serif",lineHeight:1}}>{score}</span>
+        <span style={{color:"var(--text3)",fontSize:7,letterSpacing:"0.02em",marginTop:2}}>SCORE</span>
+      </div>
+    </div>
+  );
+}
+
+/* ───────── FIELD ───────── */
+// Field component now accepts a 'nameAttr' prop to set the HTML name attribute on the input.
+// Setting proper name attributes makes it possible for third‑party scripts (like GlassHive's
+// forms integration script) to capture field data based on the email or contact name fields.
+// Field component now accepts an optional 'className' to set a CSS class on the underlying input.
+function Field({value,onChange,placeholder,type="text",onKeyDown,error,nameAttr,className}){
+  return(
+    <div style={{position:"relative"}}>
+      <input
+        name={nameAttr}
+        className={className}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        type={type}
+        onKeyDown={onKeyDown}
+        style={{
+          width:"100%",
+          padding:"11px 14px",
+          background:"var(--bg3)",
+          border:`1px solid ${error?"var(--red2)":"var(--border2)"}`,
+          borderRadius:8,
+          color:"var(--text)",
+          fontSize:12,
+          transition:"border-color 0.2s",
+        }}
+      />
+      {error&&<span style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",color:"var(--red2)",fontSize:10}}>⚠</span>}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   LOGIN / SIGNUP PAGE
+═══════════════════════════════════════════ */
+function LoginPage({onLogin}){
+  const [mode,setMode]=useState("login");
+  const [form,setForm]=useState({name:"",email:"",company:"",password:"",confirm:""});
+  const [errors,setErrors]=useState({});
+  const [loading,setLoading]=useState(false);
+  const [ssoLoading,setSsoLoading]=useState("");
+  const [loginShake,setLoginShake]=useState(false);
+
+  const validate=()=>{
+    const e={};
+    if(mode==="signup"&&!form.name.trim())e.name="Name required";
+    if(mode==="signup"&&!form.company.trim())e.company="Company required";
+    if(!form.email.includes("@"))e.email="Valid email required";
+    if(form.password.length<6)e.password="Min 6 characters";
+    if(mode==="signup"&&form.password!==form.confirm)e.confirm="Passwords don't match";
+    return e;
+  };
+
+  const handleSSO=async(provider)=>{
+    setSsoLoading(provider);
+    await new Promise(r=>setTimeout(r,1800));
+    const u={
+      name:"Cherie Griffith-Dunn",
+      email:"Cherie@cyproteck.com",
+      company:"Cyproteck Technologies Inc.",
+      avatar:"CG",
+      provider,
+      isNew:false,
+    };
+    onLogin(u);
+  };
+
+  const handleSubmit=async()=>{
+    const e=validate();
+    if(Object.keys(e).length){
+      setErrors(e);
+      setLoginShake(true);
+      setTimeout(()=>setLoginShake(false),500);
+      return;
+    }
+    setErrors({});
+    setLoading(true);
+    await new Promise(r=>setTimeout(r,1100));
+    const initials=(form.name||form.email).slice(0,2).toUpperCase();
+    const u={
+      name:form.name||form.email.split("@")[0],
+      email:form.email,
+      company:form.company||"Enterprise",
+      avatar:initials,
+      provider:"email",
+      isNew:mode==="signup",
+    };
+    setLoading(false);
+    onLogin(u);
+  };
+
+  const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
+
+  return(
+    <div style={{minHeight:"100vh",background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
+      {/* grid bg */}
+      <div style={{position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(13,148,136,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(13,148,136,0.04) 1px,transparent 1px)",backgroundSize:"60px 60px",maskImage:"radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)"}}/>
+      <div style={{position:"absolute",top:"20%",left:"15%",width:400,height:400,borderRadius:"50%",background:"radial-gradient(circle,rgba(13,148,136,0.07),transparent 70%)",pointerEvents:"none"}}/>
+      <div style={{position:"absolute",bottom:"10%",right:"10%",width:300,height:300,borderRadius:"50%",background:"radial-gradient(circle,rgba(14,148,100,0.05),transparent 70%)",pointerEvents:"none"}}/>
+
+      <div style={{width:460,zIndex:10,animation:"fadeUp 0.6s ease both"}}>
+        {/* Header */}
+        <div style={{textAlign:"center",marginBottom:32}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,marginBottom:6}}>
+            <img src="data:image/png;base64,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" alt="Cyproteck Technologies" style={{width:200,height:"auto",display:"block",filter:"brightness(1.1)"}}/>
+            <div style={{fontFamily:"Syne,sans-serif",fontSize:18,fontWeight:800,letterSpacing:"-0.01em"}}>CyproSecure <span style={{color:"var(--teal2)"}}>360°</span></div>
+          </div>
+          <div style={{fontFamily:"DM Sans,sans-serif",fontSize:10,color:"var(--text3)",letterSpacing:"0.04em",textTransform:"uppercase"}}>Cyproteck Technologies — Enterprise Security Platform</div>
+        </div>
+
+        {/* Card */}
+        <div className={loginShake?"shake":""} style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:16,padding:"30px 34px",boxShadow:"0 24px 80px rgba(0,0,0,0.4)"}}>
+          {/* Tab toggle */}
+          <div style={{display:"flex",background:"var(--bg3)",borderRadius:8,padding:3,marginBottom:24,gap:3}}>
+            {["login","signup"].map(m=>(
+              <button key={m} onClick={()=>{setMode(m);setErrors({});}} style={{flex:1,padding:"8px",background:mode===m?"var(--bg2)":"transparent",border:mode===m?"1px solid var(--border2)":"1px solid transparent",borderRadius:6,color:mode===m?"var(--text)":"var(--text3)",fontSize:12,fontWeight:mode===m?600:400,transition:"all 0.2s"}}>
+                {m==="login"?"Sign In":"Create Account"}
+              </button>
+            ))}
+          </div>
+
+          {/* SSO Buttons */}
+          <div style={{display:"flex",flexDirection:"column",gap:9,marginBottom:18}}>
+            {[
+              {id:"microsoft",label:"Continue with Microsoft",icon:<svg width="16" height="16" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>},
+              {id:"google",label:"Continue with Google",icon:<svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>},
+            ].map(p=>(
+              <button key={p.id} onClick={()=>handleSSO(p.id)} disabled={!!ssoLoading}
+                style={{display:"flex",alignItems:"center",justifyContent:"center",gap:9,padding:"11px 18px",background:"var(--bg3)",border:"1px solid var(--border2)",borderRadius:8,color:"var(--text)",fontSize:12,fontWeight:500,transition:"all 0.2s",opacity:ssoLoading&&ssoLoading!==p.id?0.5:1}}>
+                {ssoLoading===p.id
+                  ?<span style={{width:14,height:14,border:"2px solid var(--border3)",borderTopColor:"var(--teal2)",borderRadius:"50%",animation:"spin 0.8s linear infinite",display:"inline-block"}}/>
+                  :p.icon}
+                {ssoLoading===p.id?"Authenticating...":p.label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:18}}>
+            <div style={{flex:1,height:1,background:"var(--border)"}}/>
+            <span style={{color:"var(--text3)",fontSize:10,letterSpacing:"0.02em",fontFamily:"DM Sans,sans-serif"}}>OR</span>
+            <div style={{flex:1,height:1,background:"var(--border)"}}/>
+          </div>
+
+          {/* Form fields */}
+          <form className="form1" onSubmit={(e)=>{e.preventDefault(); handleSubmit();}} style={{display:"flex",flexDirection:"column",gap:9}}>
+            {mode==="signup"&&( 
+              <>
+                {/* Map full name to the 'firstName' class so the integration script can capture it */}
+                <Field value={form.name} onChange={set("name")} placeholder="Full name" error={errors.name} nameAttr="name" className="firstName"/>
+                {/* Map company/organization to the 'comment' class; adjust if you prefer a different mapping */}
+                <Field value={form.company} onChange={set("company")} placeholder="Company / Organization" error={errors.company} nameAttr="company" className="comment"/>
+              </>
+            )}
+            {/* Always include an email field with the 'email' class for GlassHive mapping */}
+            <Field value={form.email} onChange={set("email")} placeholder="Work email address" type="email" error={errors.email} nameAttr="email" className="email"/>
+            <Field value={form.password} onChange={set("password")} placeholder="Password (min 6 characters)" type="password" error={errors.password} nameAttr="password"/>
+            {mode==="signup"&&<Field value={form.confirm} onChange={set("confirm")} placeholder="Confirm password" type="password" error={errors.confirm} nameAttr="confirm"/>}
+
+            {/* Error summary */}
+            {Object.keys(errors).length>0&&(
+              <div style={{background:"rgba(220,38,38,0.08)",border:"1px solid rgba(220,38,38,0.2)",borderRadius:6,padding:"8px 12px"}}>
+                {Object.values(errors).map((e,i)=>(
+                  <div key={i} style={{color:"var(--red2)",fontSize:10,fontFamily:"DM Sans,sans-serif"}}>• {e}</div>
+                ))}
+              </div>
+            )}
+
+            <button onClick={handleSubmit} disabled={loading}
+              style={{padding:"12px",background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",borderRadius:8,color:"#fff",fontSize:12,fontWeight:700,boxShadow:"0 0 18px rgba(13,148,136,0.3)",animation:"glow-pulse 3s infinite",opacity:loading?0.7:1,marginTop:2}}>
+              {loading
+                ?<span style={{display:"flex",alignItems:"center",justifyContent:"center",gap:7}}>
+                    <span style={{width:13,height:13,border:"2px solid rgba(255,255,255,0.3)",borderTopColor:"#fff",borderRadius:"50%",animation:"spin 0.8s linear infinite",display:"inline-block"}}/>
+                    {mode==="signup"?"Creating your account...":"Signing in..."}
+                  </span>
+                :mode==="login"?"Sign In to CyproSecure 360°":"Create Account & Start Scanning"}
+            </button>
+          </form>
+
+          <p style={{textAlign:"center",marginTop:16,fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif"}}>
+            SOC 2 TYPE II CERTIFIED — HIPAA COMPLIANT — 256-BIT ENCRYPTION
+          </p>
+        </div>
+
+        <p style={{textAlign:"center",marginTop:14,fontSize:10,color:"var(--text3)"}}>
+          New accounts receive a complimentary full security scan — <span style={{color:"var(--teal2)"}}>No credit card required</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   WELCOME / SCAN KICKOFF (shown to new users)
+═══════════════════════════════════════════ */
+function WelcomeScan({user,onStartScan,onSkip}){
+  return(
+    <div style={{minHeight:"100vh",background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(13,148,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(13,148,136,0.03) 1px,transparent 1px)",backgroundSize:"60px 60px"}}/>
+      <div style={{width:540,zIndex:10,animation:"fadeUp 0.6s ease both",textAlign:"center"}}>
+        <div style={{marginBottom:18,animation:"float 3s ease-in-out infinite",display:"flex",justifyContent:"center"}}>
+          <img src="data:image/png;base64,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" alt="Cyproteck Technologies" style={{width:180,height:"auto",filter:"brightness(1.1)"}}/>
+        </div>
+        <div style={{fontFamily:"Syne,sans-serif",fontSize:24,fontWeight:800,marginBottom:10}}>
+          Welcome, <span style={{color:"var(--teal2)"}}>{user.name.split(" ")[0]}</span>.
+        </div>
+        <p style={{color:"var(--text2)",fontSize:14,lineHeight:1.8,marginBottom:8}}>
+          Your CyproSecure 360° account is ready. <br/>
+          Let's run your first enterprise security scan — it takes about 30 seconds.
+        </p>
+        <p style={{color:"var(--text3)",fontSize:12,marginBottom:30,fontFamily:"DM Sans,sans-serif"}}>
+          {user.company}
+        </p>
+
+        <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:14,padding:"24px",marginBottom:20,textAlign:"left"}}>
+          <div style={{fontFamily:"Syne,sans-serif",fontSize:13,fontWeight:700,marginBottom:14,color:"var(--teal2)"}}>Your scan will cover:</div>
+          {[
+            {icon:"🔗",label:"Third-Party App Intelligence","desc":"12 connected SaaS platforms"},
+            {icon:"🌐",label:"Web Application Vulnerabilities","desc":"OWASP Top 10 + CVE database"},
+            {icon:"🖥️",label:"Internal Network & Identity","desc":"Active Directory, endpoints, CVEs"},
+            {icon:"🤖",label:"CyproAI Executive Analysis","desc":"AI-generated risk briefing"},
+          ].map((item,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:12,marginBottom:i<3?12:0}}>
+              <span style={{fontSize:18,flexShrink:0}}>{item.icon}</span>
+              <div>
+                <div style={{fontSize:12,fontWeight:600}}>{item.label}</div>
+                <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif"}}>{item.desc}</div>
+              </div>
+              <span style={{marginLeft:"auto",color:"var(--teal2)",fontSize:10}}>✓</span>
+            </div>
+          ))}
+        </div>
+
+        <button onClick={onStartScan}
+          style={{width:"100%",padding:"14px",background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",borderRadius:10,color:"#fff",fontSize:14,fontWeight:700,boxShadow:"0 0 24px rgba(13,148,136,0.4)",animation:"glow-pulse 3s infinite",marginBottom:12}}>
+          ⚡ Launch Full Security Scan
+        </button>
+        <button onClick={onSkip}
+          style={{width:"100%",padding:"10px",background:"transparent",border:"1px solid var(--border2)",borderRadius:10,color:"var(--text3)",fontSize:12}}>
+          Skip to Dashboard
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   MAIN DASHBOARD
+═══════════════════════════════════════════ */
+function Dashboard({user,onLogout,autoScan}){
+  const [tab,setTab]=useState("overview");
+  const [scanning,setScanning]=useState(false);
+  const [scanDone,setScanDone]=useState(false);
+  const [scanProgress,setScanProgress]=useState(0);
+  const [scanType,setScanType]=useState("");
+  const [currentStep,setCurrentStep]=useState("");
+  const [aiSummary,setAiSummary]=useState("");
+  const [aiLoading,setAiLoading]=useState(false);
+  const [thirdPartyScanned,setThirdPartyScanned]=useState(false);
+  const [webScanned,setWebScanned]=useState(false);
+  const [internalScanned,setInternalScanned]=useState(false);
+  const [chatOpen,setChatOpen]=useState(false);
+  const [chatInput,setChatInput]=useState("");
+  const [chatHistory,setChatHistory]=useState([
+    {role:"assistant",content:`Welcome back, ${user.name.split(" ")[0]} — I'm CyproAI, your enterprise security analyst. ${scanDone?"Your scan results are ready. Ask me anything about your findings.":"Run a scan to get started, or ask me about cybersecurity best practices."}`}
+  ]);
+  const [chatLoading,setChatLoading]=useState(false);
+  const [reportModal,setReportModal]=useState(false);
+  const [reportContent,setReportContent]=useState("");
+  const [reportLoading,setReportLoading]=useState(false);
+  const [emailInput,setEmailInput]=useState(user.email||"");
+  const [emailStatus,setEmailStatus]=useState("idle"); // idle | sending | sent | error
+  const [emailInputError,setEmailInputError]=useState(false);
+  const chatEnd=useRef(null);
+  const scanStartedRef=useRef(false);
+
+  const score=scanDone?58:82;
+  const critCount=[...WEB_VULNS,...INTERNAL_VULNS].filter(v=>v.severity==="critical").length;
+  const vulnApps=THIRD_PARTY_APPS.filter(a=>a.status==="vulnerable").length;
+  const scanDate=new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+
+  useEffect(()=>{chatEnd.current?.scrollIntoView({behavior:"smooth"});},[chatHistory]);
+
+  // Auto-launch scan if coming from welcome screen
+  useEffect(()=>{
+    if(autoScan&&!scanStartedRef.current){
+      scanStartedRef.current=true;
+      setTimeout(()=>runScan("full"),800);
+    }
+  },[autoScan]);
+
+  const SCAN_STEPS={
+    full:[
+      "Enumerating network topology and asset inventory...",
+      "Connecting to 12 third-party SaaS applications...",
+      "Analyzing OAuth scopes and API permissions...",
+      "Running OWASP Top 10 web vulnerability assessment...",
+      "Testing TLS/SSL configurations and cipher suites...",
+      "Mapping internal network and Active Directory...",
+      "Cross-referencing 2024–2025 CVE database...",
+      "Analyzing identity and access management posture...",
+      "Checking HIPAA and SOC 2 compliance gaps...",
+      "CyproAI compiling executive risk findings...",
+    ],
+    thirdparty:[
+      "Authenticating to third-party app APIs...",
+      "Scanning OAuth token scopes and permissions...",
+      "Checking for exposed credentials and secrets...",
+      "Analyzing API security configurations...",
+      "Detecting shadow IT and unauthorized integrations...",
+      "Compiling application risk matrix...",
+    ],
+    web:[
+      "Crawling web application endpoints and sitemaps...",
+      "Testing for SQL injection and input validation...",
+      "Checking TLS/SSL configuration and certificates...",
+      "Scanning for exposed admin interfaces...",
+      "Evaluating CORS policies and security headers...",
+      "Checking for XSS and CSRF vulnerabilities...",
+    ],
+    internal:[
+      "Mapping internal network topology...",
+      "Checking for unpatched CVEs on Windows hosts...",
+      "Testing Active Directory security posture...",
+      "Scanning for open ports and risky services...",
+      "Analyzing privilege escalation paths...",
+      "Reviewing stale accounts and access anomalies...",
+    ],
+  };
+
+  const runScan=async(type)=>{
+    setScanType(type);
+    setScanning(true);
+    setScanProgress(0);
+    setAiSummary("");
+    const steps=SCAN_STEPS[type]||SCAN_STEPS.full;
+
+    // Animate through steps
+    for(let i=0;i<steps.length;i++){
+      setCurrentStep(steps[i]);
+      const targetPct=((i+1)/steps.length)*100;
+      // Smooth progress to target
+      await new Promise(res=>{
+        const start=((i)/steps.length)*100;
+        const dur=700+Math.random()*500;
+        const startTime=Date.now();
+        const tick=()=>{
+          const elapsed=Date.now()-startTime;
+          const pct=start+(targetPct-start)*Math.min(elapsed/dur,1);
+          setScanProgress(pct);
+          if(elapsed<dur)requestAnimationFrame(tick);
+          else res();
+        };
+        requestAnimationFrame(tick);
+      });
+      await new Promise(r=>setTimeout(r,200+Math.random()*300));
+    }
+
+    setScanProgress(100);
+    setScanning(false);
+    setScanDone(true);
+    setCurrentStep("");
+
+    if(type==="full"||type==="thirdparty")setThirdPartyScanned(true);
+    if(type==="full"||type==="web")setWebScanned(true);
+    if(type==="full"||type==="internal")setInternalScanned(true);
+
+    if(type==="full")setTab("overview");
+    else if(type==="thirdparty")setTab("thirdparty");
+    else if(type==="web")setTab("webvuln");
+    else if(type==="internal")setTab("internal");
+
+    // Generate AI executive summary
+    setAiLoading(true);
+    try{
+      const txt=await callAI(
+        "You are CyproAI, the AI security analyst for CyproSecure 360° by Cyproteck Technologies — Healthcare's Digital Bodyguard™. Be executive-level, precise, urgent, and tie every finding to HIPAA compliance and business risk. Never use bullet points in the first paragraph.",
+        `Generate a 3-paragraph executive summary for ${user.company}. Coverage: (1) Overall security posture — score 58/100, at-risk rating, business impact to operations and patient data. (2) Most critical findings: ${critCount} critical vulnerabilities across web and internal systems, ${vulnApps} vulnerable third-party apps including AWS (root MFA missing, public S3 buckets), Workday (SSO bypass, PII exposed), Salesforce (over-permissioned OAuth), plus CVE-2024-21413 on domain controller and pass-the-hash attack path across 14 workstations. (3) Immediate recommended remediation priorities and why Cyproteck's managed security team should lead the response. Keep under 220 words. Do not use bullet points.`
+      );
+      setAiSummary(txt);
+    }catch(e){
+      setAiSummary(`Scan complete for ${user.company}. CyproAI identified ${critCount} critical vulnerabilities requiring immediate attention. AWS root MFA and Workday SSO bypass represent the highest business risk. Contact Cyproteck for emergency remediation support.`);
+    }
+    setAiLoading(false);
+  };
+
+  const genReport=async()=>{
+    setReportModal(true);
+    setReportLoading(true);
+    setReportContent("");
+    setEmailStatus("idle");
+    try{
+      const txt=await callAI(
+        "You are CyproAI generating a formal, branded executive security briefing for Cyproteck Technologies — Healthcare's Digital Bodyguard™. Use professional report formatting with clear section headers in ALL CAPS followed by a colon. Be authoritative, precise, and tie everything to HIPAA and SOC 2.",
+        `Generate a complete executive security briefing for ${user.company} (contact: ${user.name}, ${user.email}). Include these exact sections:
+
+EXECUTIVE SUMMARY:
+SECURITY POSTURE SCORE: 58/100 — At Risk
+SCAN DATE: ${scanDate}
+
+CRITICAL FINDINGS OVERVIEW:
+List all ${critCount} critical vulnerabilities with host/system, CVE where applicable, and business impact.
+
+THIRD-PARTY APPLICATION RISK:
+Cover all 12 apps scanned. Highlight critical: AWS (root MFA missing, 2 public S3 buckets, IAM wildcards), Workday HCM (SSO bypass, PII via API, password policy failure). High risk: Salesforce, QuickBooks. Warning: DocuSign, GitHub, Zoom.
+
+WEB APPLICATION VULNERABILITIES:
+SQL Injection (CVSS 9.8), Exposed Admin Panel (CVSS 9.1), XSS, outdated TLS, CORS misconfiguration.
+
+INTERNAL NETWORK FINDINGS:
+CVE-2024-21413 on WINSERVER-DC01 (unpatched since Feb 2024), Pass-the-Hash across 14 workstations, Open RDP on 192.168.10.44, SMBv1 active on FILESERVER-02.
+
+HIPAA / SOC 2 COMPLIANCE IMPACT:
+Explain specific risks to PHI and audit exposure.
+
+REMEDIATION ROADMAP:
+30-DAY PRIORITIES (critical): Patch DC01, enforce MFA on AWS root, close SSO bypass
+60-DAY ACTIONS (high): IP restrictions, TLS upgrade, RDP lockdown
+90-DAY HARDENING (medium/long-term): Full IAM review, legacy protocol removal
+
+NEXT STEPS — HOW CYPROTECK CAN HELP:
+Write 3–4 sentences explaining what the client should do immediately, why delay is dangerous, and a direct, warm call to action to contact Cherie Griffith-Dunn personally to schedule a remediation consultation. Mention CyproSecure 360° Professional or Enterprise as the recommended managed security solution. End with: "Contact us today — we are ready to begin." Then on new lines: Phone: (959) 888-0569 | Email: Cherie@cyproteck.com | Website: www.cyproteck.com | Operations: ops@cyproteck.com
+
+Keep under 750 words. Use clear section headers in ALL CAPS. Be professional, precise, and empathetic — the goal is to help this organization, not alarm them.`,
+        1800
+      );
+      setReportContent(txt);
+    }catch(e){
+      setReportContent(`CYPROSECURE 360° EXECUTIVE BRIEFING\n${user.company} | ${scanDate}\n\nSecurity Score: 58/100 — At Risk\n\nCritical findings have been identified across your environment. Our team is ready to walk you through every finding and build your remediation roadmap.\n\nContact us today — we are here to help.\n\nCherie Griffith-Dunn, CEO\n(959) 888-0569\nCherie@cyproteck.com\nwww.cyproteck.com`);
+    }
+    setReportLoading(false);
+  };
+
+  const handleSendEmail=()=>{
+    if(!emailInput.includes("@")){
+      setEmailInputError(true);
+      return;
+    }
+    setEmailInputError(false);
+    setEmailStatus("sending");
+    setTimeout(()=>{
+      const ok=sendReportEmail(emailInput,reportContent,user.company,user.name,scanDate);
+      setEmailStatus(ok?"sent":"error");
+    },900);
+  };
+
+  const sendChat=async()=>{
+    if(!chatInput.trim()||chatLoading)return;
+    const msg={role:"user",content:chatInput};
+    const hist=[...chatHistory,msg];
+    setChatHistory(hist);
+    setChatInput("");
+    setChatLoading(true);
+    try{
+      const res=await fetch(API,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          model:MODEL,
+          max_tokens:800,
+          system:`You are CyproAI, the AI security analyst for CyproSecure 360° by Cyproteck Technologies — Healthcare's Digital Bodyguard™. You serve ${user.name} at ${user.company}. Current security score is ${score}/100. ${scanDone?"A full scan has been completed revealing "+critCount+" critical vulnerabilities.":"No scan has been run yet."} Be concise, authoritative, and always relate findings to HIPAA risk and business impact. When relevant, recommend Cyproteck's managed security services.`,
+          messages:hist.map(m=>({role:m.role,content:m.content}))
+        })
+      });
+      const d=await res.json();
+      setChatHistory(h=>[...h,{role:"assistant",content:d.content?.[0]?.text||"Connection issue — please retry."}]);
+    }catch{
+      setChatHistory(h=>[...h,{role:"assistant",content:"Connection issue — please retry."}]);
+    }
+    setChatLoading(false);
+  };
+
+  const NAV=[
+    {id:"overview",icon:"⬡",label:"Overview"},
+    {id:"thirdparty",icon:"🔗",label:"3rd Party Apps"},
+    {id:"webvuln",icon:"🌐",label:"Web Scanner"},
+    {id:"internal",icon:"🖥️",label:"Internal Scan"},
+    {id:"reports",icon:"📊",label:"Reports"},
+    {id:"upgrade",icon:"🚀",label:"Upgrade"},
+  ];
+
+  return(
+    <div style={{display:"flex",minHeight:"100vh",background:"var(--bg)"}}>
+
+      {/* ── Sidebar ── */}
+      <div style={{width:210,background:"var(--bg2)",borderRight:"1px solid var(--border)",display:"flex",flexDirection:"column",position:"fixed",top:0,left:0,bottom:0,zIndex:40}}>
+        <div style={{padding:"14px 16px",borderBottom:"1px solid var(--border)"}}>
+          <img src="data:image/png;base64,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" alt="Cyproteck Technologies" style={{width:"100%",maxWidth:150,height:"auto",display:"block",marginBottom:6,filter:"brightness(1.1)"}}/>
+          <div style={{fontFamily:"DM Sans,sans-serif",fontSize:10,color:"var(--teal2)",letterSpacing:"0.02em",textTransform:"uppercase"}}>CyproSecure 360° Platform</div>
+        </div>
+
+        <nav style={{flex:1,padding:"10px 8px",display:"flex",flexDirection:"column",gap:2}}>
+          {NAV.map(n=>(
+            <button key={n.id} onClick={()=>setTab(n.id)}
+              style={{display:"flex",alignItems:"center",gap:9,padding:"8px 10px",background:tab===n.id?"rgba(13,148,136,0.1)":"transparent",border:"1px solid "+(tab===n.id?"rgba(13,148,136,0.22)":"transparent"),borderRadius:6,color:tab===n.id?"var(--teal2)":"var(--text2)",fontSize:11,fontWeight:tab===n.id?600:400,textAlign:"left",transition:"all 0.15s"}}>
+              <span style={{fontSize:13,opacity:tab===n.id?1:0.65}}>{n.icon}</span>
+              {n.label}
+              {n.id==="thirdparty"&&thirdPartyScanned&&<span style={{marginLeft:"auto",width:5,height:5,borderRadius:"50%",background:"var(--red2)",flexShrink:0}}/>}
+            </button>
+          ))}
+        </nav>
+
+        {scanDone&&(
+          <div style={{margin:"0 8px 8px",background:"rgba(220,38,38,0.08)",border:"1px solid rgba(220,38,38,0.2)",borderRadius:8,padding:"10px 12px"}}>
+            <div style={{color:"var(--red2)",fontSize:10,fontFamily:"DM Sans,sans-serif",fontWeight:700,letterSpacing:"0.02em",marginBottom:4}}>ACTIVE ALERTS</div>
+            <div style={{color:"var(--text)",fontSize:11,fontWeight:700}}>{critCount} Critical</div>
+            <div style={{color:"var(--text3)",fontSize:9}}>{vulnApps} vulnerable apps</div>
+          </div>
+        )}
+
+        <div style={{padding:"10px 10px 12px",borderTop:"1px solid var(--border)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+            <div style={{width:28,height:28,background:"linear-gradient(135deg,#0a7066,#0d9488)",borderRadius:4,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:700,flexShrink:0}}>{user.avatar}</div>
+            <div style={{overflow:"hidden"}}>
+              <div style={{fontSize:11,fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name.split(" ")[0]}</div>
+              <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.company.slice(0,18)}</div>
+            </div>
+          </div>
+          <button onClick={onLogout} style={{width:"100%",padding:"6px",background:"transparent",border:"1px solid var(--border2)",borderRadius:5,color:"var(--text3)",fontSize:10,transition:"all 0.15s"}}>Sign Out</button>
+        </div>
+      </div>
+
+      {/* ── Main content ── */}
+      <div style={{flex:1,marginLeft:210,display:"flex",flexDirection:"column",minHeight:"100vh"}}>
+
+        {/* Top bar */}
+        <div style={{background:"var(--bg2)",borderBottom:"1px solid var(--border)",padding:"0 24px",height:50,display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:30}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <Pulse color={scanning?"#f59e0b":"#10b981"} size={6}/>
+            <span style={{color:scanning?"#f59e0b":"#10b981",fontSize:10,fontFamily:"DM Sans,sans-serif",letterSpacing:"0.02em"}}>
+              {scanning?`SCANNING — ${Math.round(scanProgress)}%`:"LIVE — "+new Date().toLocaleTimeString()}
+            </span>
+            {scanning&&(
+              <span style={{color:"var(--text3)",fontSize:10,fontFamily:"DM Sans,sans-serif",maxWidth:280,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
+                {currentStep}
+              </span>
+            )}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            {scanDone&&(
+              <div style={{display:"flex",alignItems:"center",gap:5,background:"rgba(220,38,38,0.1)",border:"1px solid rgba(220,38,38,0.3)",borderRadius:20,padding:"4px 10px"}}>
+                <span style={{width:5,height:5,borderRadius:"50%",background:"var(--red2)",display:"inline-block",animation:"ping 1.5s infinite"}}/>
+                <span style={{color:"var(--red2)",fontSize:10,fontWeight:600}}>{critCount} Critical</span>
+              </div>
+            )}
+            <button onClick={()=>setChatOpen(o=>!o)}
+              style={{background:chatOpen?"var(--teal)":"transparent",border:"1px solid "+(chatOpen?"var(--teal)":"var(--border3)"),color:chatOpen?"#fff":"var(--teal2)",borderRadius:20,padding:"5px 12px",fontSize:10,fontWeight:600,transition:"all 0.2s"}}>
+              🤖 CyproAI
+            </button>
+            <button onClick={genReport}
+              style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:20,padding:"5px 14px",fontSize:10,fontWeight:700}}>
+              📧 Report
+            </button>
+          </div>
+        </div>
+
+        {/* Page content */}
+        <div style={{flex:1,padding:"20px 24px",overflowY:"auto"}}>
+
+          {/* ── OVERVIEW ── */}
+          {tab==="overview"&&(
+            <div style={{animation:"fadeUp 0.4s ease both"}}>
+              <h1 style={{fontFamily:"Syne,sans-serif",fontSize:20,fontWeight:800,marginBottom:4}}>Security Command Center</h1>
+              <p style={{color:"var(--text2)",fontSize:12,marginBottom:20}}>{user.company} — Enterprise Dashboard</p>
+
+              {/* Score row */}
+              <div style={{display:"grid",gridTemplateColumns:"auto 1fr 1fr 1fr 1fr",gap:14,marginBottom:20}}>
+                <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"18px",display:"flex",alignItems:"center",gap:14}}>
+                  <Ring score={score}/>
+                  <div>
+                    <div style={{color:"var(--text3)",fontSize:10,letterSpacing:"0.03em",fontFamily:"DM Sans,sans-serif",marginBottom:3}}>SECURITY SCORE</div>
+                    <div style={{color:score>=80?"#10b981":score>=60?"#f59e0b":"#ef4444",fontSize:12,fontWeight:700}}>{score>=80?"Healthy":score>=60?"Moderate":"At Risk"}</div>
+                    <div style={{color:"var(--text3)",fontSize:10,marginTop:2}}>{scanDone?"Post-scan":"Pre-scan estimate"}</div>
+                  </div>
+                </div>
+                {[
+                  {l:"CRITICAL",v:scanDone?critCount:"—",c:"var(--red2)",i:"🚨",sub:"vulnerabilities"},
+                  {l:"VULN APPS",v:scanDone?vulnApps:"—",c:"var(--amber2)",i:"⚠️",sub:"of 12 apps"},
+                  {l:"WEB FINDINGS",v:scanDone?WEB_VULNS.length:"—",c:"var(--teal2)",i:"🌐",sub:"issues found"},
+                  {l:"INTERNAL",v:scanDone?INTERNAL_VULNS.length:"—",c:"var(--teal2)",i:"🖥️",sub:"issues found"},
+                ].map(c=>(
+                  <div key={c.l} style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"16px 18px"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:8}}>
+                      <span style={{fontSize:12}}>{c.i}</span>
+                      <span style={{color:"var(--text3)",fontSize:10,letterSpacing:"0.02em",fontFamily:"DM Sans,sans-serif"}}>{c.l}</span>
+                    </div>
+                    <div style={{color:c.c,fontSize:28,fontWeight:800,fontFamily:"DM Sans,sans-serif",lineHeight:1}}>{c.v}</div>
+                    <div style={{color:"var(--text3)",fontSize:10,marginTop:4}}>{c.sub}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Scanner launch panel */}
+              <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:14,padding:"20px",marginBottom:20}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+                  <h2 style={{fontFamily:"Syne,sans-serif",fontSize:15,fontWeight:800}}>Enterprise Security Scanner</h2>
+                  {scanDone&&<span style={{color:"var(--green2)",fontSize:10,fontFamily:"DM Sans,sans-serif"}}>✓ Last scan: {scanDate}</span>}
+                </div>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
+                  {[
+                    {type:"full",label:"Full Scan",desc:"All modules",icon:"⚡",color:"#0d9488"},
+                    {type:"thirdparty",label:"3rd Party",desc:"SaaS apps",icon:"🔗",color:"#14b8a6"},
+                    {type:"web",label:"Web Scan",desc:"OWASP Top 10",icon:"🌐",color:"#b8922a"},
+                    {type:"internal",label:"Internal",desc:"Network & AD",icon:"🖥️",color:"#0a7066"},
+                  ].map(s=>(
+                    <button key={s.type} onClick={()=>runScan(s.type)} disabled={scanning}
+                      style={{background:"rgba(13,148,136,0.05)",border:"1px solid "+s.color+"44",borderRadius:10,padding:"14px 12px",color:"var(--text)",textAlign:"left",opacity:scanning?0.5:1,cursor:scanning?"not-allowed":"pointer",transition:"all 0.2s"}}>
+                      <div style={{fontSize:22,marginBottom:7}}>{s.icon}</div>
+                      <div style={{fontSize:12,fontWeight:700,color:s.color,marginBottom:2}}>{s.label}</div>
+                      <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif"}}>{s.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Live scan progress */}
+              {scanning&&(
+                <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"20px",marginBottom:18}} className="scan-anim">
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
+                    <span style={{width:10,height:10,border:"2px solid var(--teal2)",borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.8s linear infinite",display:"inline-block"}}/>
+                    <span style={{fontSize:13,fontWeight:700,color:"var(--teal2)",fontFamily:"Syne,sans-serif"}}>CyproAI Scanner Running — {Math.round(scanProgress)}% Complete</span>
+                  </div>
+                  <div style={{height:3,background:"var(--border)",borderRadius:2,marginBottom:14,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:scanProgress+"%",background:"linear-gradient(90deg,#0a7066,#14b8a6)",borderRadius:2,transition:"width 0.4s ease",boxShadow:"0 0 8px rgba(13,148,136,0.5)"}}/>
+                  </div>
+                  {(SCAN_STEPS[scanType]||SCAN_STEPS.full).map((step,i)=>{
+                    const totalSteps=(SCAN_STEPS[scanType]||SCAN_STEPS.full).length;
+                    const stepPct=(i/totalSteps)*100;
+                    const done=scanProgress>=(i+1)/totalSteps*100;
+                    const active=scanProgress>=stepPct&&!done;
+                    return(
+                      <div key={i} style={{display:"flex",alignItems:"center",gap:9,marginBottom:5,opacity:done||active?1:0.35}}>
+                        <span style={{fontSize:10,fontFamily:"DM Sans,sans-serif",color:done?"var(--green2)":active?"var(--teal2)":"var(--text3)",minWidth:14,flexShrink:0}}>{done?"✓":active?"▶":"○"}</span>
+                        <span style={{fontSize:11,color:done?"var(--text2)":active?"var(--text)":"var(--text3)"}}>{step}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* AI Executive Analysis */}
+              {(aiLoading||aiSummary)&&(
+                <div style={{background:"var(--bg2)",border:"1px solid rgba(13,148,136,0.22)",borderRadius:12,padding:"20px",borderLeft:"3px solid var(--teal2)"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+                    <span style={{fontSize:18}}>🤖</span>
+                    <span style={{fontFamily:"Syne,sans-serif",fontWeight:800,fontSize:14,color:"var(--teal2)"}}>CyproAI Executive Analysis</span>
+                    {!aiLoading&&<span style={{marginLeft:"auto",color:"var(--text3)",fontSize:10,fontFamily:"DM Sans,sans-serif"}}>Generated {new Date().toLocaleTimeString()}</span>}
+                  </div>
+                  {aiLoading
+                    ?<div style={{display:"flex",align:"center",gap:8}}>
+                        <span style={{width:12,height:12,border:"2px solid var(--border)",borderTopColor:"var(--teal2)",borderRadius:"50%",animation:"spin 1s linear infinite",display:"inline-block",flexShrink:0,marginTop:2}}/>
+                        <p style={{color:"var(--text3)",fontSize:11,animation:"blink 1.2s infinite"}}>CyproAI is analyzing your security posture...</p>
+                      </div>
+                    :<p style={{color:"var(--text2)",fontSize:12,lineHeight:1.85,whiteSpace:"pre-wrap"}}>{aiSummary}</p>
+                  }
+                  {!aiLoading&&aiSummary&&(
+                    <div style={{marginTop:14,display:"flex",gap:8}}>
+                      <button onClick={genReport}
+                        style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:6,padding:"7px 16px",fontSize:11,fontWeight:700}}>
+                        📧 Generate Full Report
+                      </button>
+                      <button onClick={()=>setTab("thirdparty")}
+                        style={{background:"transparent",border:"1px solid var(--border3)",color:"var(--text2)",borderRadius:6,padding:"7px 14px",fontSize:11}}>
+                        View Findings →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── THIRD PARTY APPS ── */}
+          {tab==="thirdparty"&&(
+            <div style={{animation:"fadeUp 0.4s ease both"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}}>
+                <div>
+                  <h1 style={{fontFamily:"Syne,sans-serif",fontSize:18,fontWeight:800,marginBottom:3}}>Third-Party App Intelligence</h1>
+                  <p style={{color:"var(--text2)",fontSize:12}}>{THIRD_PARTY_APPS.length} applications scanned — OAuth, API & permission analysis</p>
+                </div>
+                <button onClick={()=>runScan("thirdparty")} disabled={scanning}
+                  style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"9px 18px",fontSize:11,fontWeight:700,cursor:scanning?"not-allowed":"pointer"}}>
+                  🔍 Re-scan
+                </button>
+              </div>
+              {!thirdPartyScanned?(
+                <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"60px",textAlign:"center"}}>
+                  <div style={{fontSize:40,marginBottom:12,animation:"float 3s ease-in-out infinite"}}>🔗</div>
+                  <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>No Scan Data Yet</div>
+                  <p style={{color:"var(--text2)",fontSize:12,marginBottom:18}}>Run a scan to analyze your third-party application security posture.</p>
+                  <button onClick={()=>runScan("thirdparty")} style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"10px 24px",fontSize:12,fontWeight:700}}>Scan Third-Party Apps</button>
+                </div>
+              ):(
+                <>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+                    {[
+                      {l:"Vulnerable",v:THIRD_PARTY_APPS.filter(a=>a.status==="vulnerable").length,c:"var(--red2)"},
+                      {l:"Warning",v:THIRD_PARTY_APPS.filter(a=>a.status==="warning").length,c:"var(--amber2)"},
+                      {l:"Secured",v:THIRD_PARTY_APPS.filter(a=>a.status==="secured").length,c:"var(--green2)"},
+                    ].map(s=>(
+                      <div key={s.l} style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:8,padding:"12px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <span style={{color:s.c,fontSize:12,fontWeight:600}}>{s.l}</span>
+                        <span style={{color:s.c,fontSize:28,fontWeight:800,fontFamily:"DM Sans,sans-serif"}}>{s.v}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
+                    {THIRD_PARTY_APPS.map((app)=>(
+                      <div key={app.id} style={{background:"var(--bg2)",border:"1px solid "+(app.status==="vulnerable"?"rgba(220,38,38,0.22)":"var(--border2)"),borderLeft:"3px solid "+(app.status==="vulnerable"?"var(--red2)":app.status==="warning"?"var(--amber2)":"var(--green2)"),borderRadius:10,padding:"14px"}}>
+                        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:9}}>
+                          <div style={{display:"flex",alignItems:"center",gap:9}}>
+                            <span style={{fontSize:18}}>{app.icon}</span>
+                            <div>
+                              <div style={{fontSize:12,fontWeight:700}}>{app.name}</div>
+                              <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif"}}>{app.category}</div>
+                            </div>
+                          </div>
+                          <Badge severity={app.status}/>
+                        </div>
+                        <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                          {app.issues.map((issue,j)=>(
+                            <div key={j} style={{display:"flex",alignItems:"flex-start",gap:6,fontSize:10,color:"var(--text2)"}}>
+                              <span style={{color:app.status==="secured"?"var(--green2)":"var(--red2)",marginTop:1,flexShrink:0}}>{app.status==="secured"?"✓":"✗"}</span>
+                              {issue}
+                            </div>
+                          ))}
+                        </div>
+                        <div style={{marginTop:9,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <span style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif"}}>{app.lastScan}</span>
+                          <Badge severity={app.risk}/>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* ── WEB SCANNER ── */}
+          {tab==="webvuln"&&(
+            <div style={{animation:"fadeUp 0.4s ease both"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+                <div>
+                  <h1 style={{fontFamily:"Syne,sans-serif",fontSize:18,fontWeight:800,marginBottom:3}}>Web Application Scanner</h1>
+                  <p style={{color:"var(--text2)",fontSize:12}}>OWASP Top 10 coverage — CVE cross-reference</p>
+                </div>
+                <button onClick={()=>runScan("web")} disabled={scanning} style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"9px 18px",fontSize:11,fontWeight:700}}>🌐 Re-scan</button>
+              </div>
+              {!webScanned?(
+                <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"60px",textAlign:"center"}}>
+                  <div style={{fontSize:40,marginBottom:12,animation:"float 3s ease-in-out infinite"}}>🌐</div>
+                  <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>Web Scanner Ready</div>
+                  <button onClick={()=>runScan("web")} style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"10px 24px",fontSize:12,fontWeight:700}}>Start Web Scan</button>
+                </div>
+              ):(
+                <>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+                    {["critical","high","medium","low"].map(sev=>{
+                      const count=WEB_VULNS.filter(v=>v.severity===sev).length;
+                      const colors={critical:"var(--red2)",high:"var(--amber2)",medium:"var(--teal2)",low:"#9ca3af"};
+                      return(
+                        <div key={sev} style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:8,padding:"12px",textAlign:"center"}}>
+                          <div style={{color:colors[sev],fontSize:24,fontWeight:800,fontFamily:"DM Sans,sans-serif"}}>{count}</div>
+                          <div style={{color:"var(--text3)",fontSize:10,letterSpacing:"0.02em",marginTop:3,textTransform:"uppercase",fontFamily:"DM Sans,sans-serif"}}>{sev}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",gap:9}}>
+                    {WEB_VULNS.map(v=>(
+                      <div key={v.id} style={{background:"var(--bg2)",border:"1px solid "+(v.severity==="critical"?"rgba(220,38,38,0.22)":"var(--border2)"),borderLeft:"3px solid "+(v.severity==="critical"?"var(--red2)":v.severity==="high"?"var(--amber2)":"var(--teal)"),borderRadius:9,padding:"14px 16px"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:6,flexWrap:"wrap"}}>
+                          <Badge severity={v.severity}/>
+                          <span style={{fontSize:12,fontWeight:700}}>{v.type}</span>
+                          <span style={{marginLeft:"auto",color:"var(--text3)",fontSize:10,fontFamily:"DM Sans,sans-serif",background:"var(--bg3)",padding:"2px 7px",borderRadius:3}}>CVSS {v.cvss}</span>
+                        </div>
+                        <div style={{color:"var(--teal2)",fontSize:10,fontFamily:"DM Sans,sans-serif",marginBottom:5}}>{v.url}</div>
+                        <div style={{color:"var(--text2)",fontSize:11,lineHeight:1.7}}>{v.detail}</div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* ── INTERNAL SCAN ── */}
+          {tab==="internal"&&(
+            <div style={{animation:"fadeUp 0.4s ease both"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+                <div>
+                  <h1 style={{fontFamily:"Syne,sans-serif",fontSize:18,fontWeight:800,marginBottom:3}}>Internal Network Scanner</h1>
+                  <p style={{color:"var(--text2)",fontSize:12}}>CVE detection — Active Directory — Endpoint analysis</p>
+                </div>
+                <button onClick={()=>runScan("internal")} disabled={scanning} style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"9px 18px",fontSize:11,fontWeight:700}}>🖥️ Re-scan</button>
+              </div>
+              {!internalScanned?(
+                <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"60px",textAlign:"center"}}>
+                  <div style={{fontSize:40,marginBottom:12,animation:"float 3s ease-in-out infinite"}}>🖥️</div>
+                  <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>Internal Scanner Ready</div>
+                  <button onClick={()=>runScan("internal")} style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"10px 24px",fontSize:12,fontWeight:700}}>Start Internal Scan</button>
+                </div>
+              ):(
+                <>
+                  <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+                    {["critical","high","medium","low"].map(sev=>{
+                      const count=INTERNAL_VULNS.filter(v=>v.severity===sev).length;
+                      const colors={critical:"var(--red2)",high:"var(--amber2)",medium:"var(--teal2)",low:"#9ca3af"};
+                      return(
+                        <div key={sev} style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:8,padding:"12px",textAlign:"center"}}>
+                          <div style={{color:colors[sev],fontSize:24,fontWeight:800,fontFamily:"DM Sans,sans-serif"}}>{count}</div>
+                          <div style={{color:"var(--text3)",fontSize:10,letterSpacing:"0.02em",marginTop:3,textTransform:"uppercase",fontFamily:"DM Sans,sans-serif"}}>{sev}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",gap:9}}>
+                    {INTERNAL_VULNS.map(v=>(
+                      <div key={v.id} style={{background:"var(--bg2)",border:"1px solid "+(v.severity==="critical"?"rgba(220,38,38,0.22)":"var(--border2)"),borderLeft:"3px solid "+(v.severity==="critical"?"var(--red2)":v.severity==="high"?"var(--amber2)":"var(--teal)"),borderRadius:9,padding:"14px 16px"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:6,flexWrap:"wrap"}}>
+                          <Badge severity={v.severity}/>
+                          <span style={{fontSize:12,fontWeight:700}}>{v.type}</span>
+                          <span style={{marginLeft:"auto",color:"var(--amber2)",fontSize:10,fontFamily:"DM Sans,sans-serif",background:"rgba(217,119,6,0.1)",padding:"2px 7px",borderRadius:3}}>📍 {v.host}</span>
+                          <span style={{color:"var(--text3)",fontSize:10,fontFamily:"DM Sans,sans-serif",background:"var(--bg3)",padding:"2px 7px",borderRadius:3}}>CVSS {v.cvss}</span>
+                        </div>
+                        <div style={{color:"var(--text2)",fontSize:11,lineHeight:1.7}}>{v.detail}</div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* ── REPORTS ── */}
+          {tab==="reports"&&(
+            <div style={{animation:"fadeUp 0.4s ease both"}}>
+              <h1 style={{fontFamily:"Syne,sans-serif",fontSize:18,fontWeight:800,marginBottom:4}}>Executive Reports</h1>
+              <p style={{color:"var(--text2)",fontSize:12,marginBottom:20}}>Cyproteck-branded security briefings — Delivered to your inbox</p>
+              {!scanDone&&(
+                <div style={{background:"rgba(217,119,6,0.06)",border:"1px solid rgba(217,119,6,0.2)",borderRadius:10,padding:"14px 18px",marginBottom:20,display:"flex",alignItems:"center",gap:10}}>
+                  <span style={{fontSize:16}}>⚠️</span>
+                  <div>
+                    <div style={{fontSize:12,fontWeight:600,color:"var(--amber2)"}}>No scan data yet</div>
+                    <div style={{fontSize:11,color:"var(--text2)"}}>Run a scan first to generate an accurate report. Reports use live scan findings.</div>
+                  </div>
+                  <button onClick={()=>{setTab("overview");}} style={{marginLeft:"auto",background:"var(--amber)",border:"none",color:"#fff",borderRadius:6,padding:"6px 14px",fontSize:11,fontWeight:600,flexShrink:0}}>Run Scan →</button>
+                </div>
+              )}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+                {[
+                  {title:"Executive Security Briefing",desc:"Full enterprise security posture for C-suite and board presentation",icon:"📊",c:"var(--teal2)"},
+                  {title:"Vulnerability Assessment Report",desc:"Detailed technical findings for your security and IT teams",icon:"🔍",c:"var(--teal2)"},
+                  {title:"Third-Party Risk Report",desc:"Comprehensive SaaS app risk analysis and remediation roadmap",icon:"🔗",c:"var(--gold2)"},
+                  {title:"HIPAA Compliance Gap Report",desc:"HIPAA, SOC 2, and regulatory compliance findings and exposure",icon:"📋",c:"var(--gold2)"},
+                ].map((r,i)=>(
+                  <div key={i} style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"20px"}}>
+                    <div style={{fontSize:28,marginBottom:10}}>{r.icon}</div>
+                    <div style={{fontFamily:"Syne,sans-serif",fontSize:13,fontWeight:800,marginBottom:6,color:r.c}}>{r.title}</div>
+                    <p style={{color:"var(--text2)",fontSize:11,marginBottom:16,lineHeight:1.6}}>{r.desc}</p>
+                    <button onClick={genReport}
+                      style={{display:"flex",alignItems:"center",gap:6,background:"transparent",border:"1px solid "+r.c+"55",color:r.c,borderRadius:6,padding:"8px 14px",fontSize:11,fontWeight:600,width:"100%",justifyContent:"center",transition:"all 0.2s"}}>
+                      📧 Generate & Email Report
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── UPGRADE ── */}
+          {tab==="upgrade"&&(
+            <div style={{animation:"fadeUp 0.4s ease both"}}>
+              <div style={{textAlign:"center",marginBottom:30}}>
+                <h1 style={{fontFamily:"Syne,sans-serif",fontSize:22,fontWeight:800,marginBottom:8}}>CyproSecure <span style={{color:"var(--teal2)"}}>360°</span> Pricing</h1>
+                <p style={{color:"var(--text2)",fontSize:13,maxWidth:560,margin:"0 auto",lineHeight:1.7}}>Comprehensive security visibility with flexible endpoint protection. All plans include the full CyproSecure 360° dashboard — choose the subscription term that fits your organization.</p>
+              </div>
+
+              {/* Dashboard subscription plans */}
+              <div style={{fontFamily:"DM Sans,sans-serif",fontSize:10,color:"var(--text3)",letterSpacing:"0.02em",textTransform:"uppercase",marginBottom:12}}>Base Dashboard Subscription</div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14,marginBottom:20}}>
+                {PLANS.filter(p=>p.id!=="endpoint").map(plan=>(
+                  <div key={plan.id} style={{background:"var(--bg2)",border:"1px solid "+(plan.badge?"rgba(13,148,136,0.4)":"var(--border2)"),borderRadius:14,padding:"22px 18px",position:"relative"}}>
+                    {plan.badge&&(
+                      <div style={{position:"absolute",top:-11,left:"50%",transform:"translateX(-50%)",background:plan.badge==="Lowest Price"?"linear-gradient(135deg,#7c5a0a,#b8922a)":"linear-gradient(135deg,#0a7066,#0d9488)",color:"#fff",fontSize:10,fontWeight:700,letterSpacing:"0.02em",padding:"3px 16px",borderRadius:20,whiteSpace:"nowrap",fontFamily:"DM Sans,sans-serif"}}>{plan.badge}</div>
+                    )}
+                    <div style={{marginBottom:16}}>
+                      <div style={{fontSize:10,color:"var(--text3)",letterSpacing:"0.02em",fontFamily:"DM Sans,sans-serif",marginBottom:5,textTransform:"uppercase"}}>{plan.name}</div>
+                      <div style={{display:"flex",alignItems:"baseline",gap:3,marginBottom:5}}>
+                        <span style={{fontFamily:"Syne,sans-serif",fontSize:28,fontWeight:800,color:plan.color}}>{plan.price}</span>
+                        <span style={{color:"var(--text3)",fontSize:11}}>{plan.period}</span>
+                      </div>
+                      <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif",background:"var(--bg3)",padding:"3px 8px",borderRadius:4,display:"inline-block"}}>{plan.term}</div>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",gap:7,marginBottom:18}}>
+                      {plan.features.map((f,j)=>(
+                        <div key={j} style={{display:"flex",alignItems:"flex-start",gap:7,fontSize:11,color:"var(--text2)"}}>
+                          <span style={{color:plan.color,flexShrink:0,marginTop:1}}>✓</span>{f}
+                        </div>
+                      ))}
+                    </div>
+                    <a href="https://marketplace.microsoft.com/en-us/product/cyproteckinc1680036824980.newdashboard1?tab=Overview" target="_blank" rel="noopener noreferrer"
+                      style={{display:"block",width:"100%",background:plan.badge==="Best Value"?"linear-gradient(135deg,#0a7066,#0d9488)":plan.badge==="Lowest Price"?"linear-gradient(135deg,#7c5a0a,#b8922a)":"transparent",border:!plan.badge?"1px solid "+plan.color+"66":"none",color:"#fff",borderRadius:8,padding:"10px",fontSize:11,fontWeight:700,textAlign:"center",textDecoration:"none",cursor:"pointer",boxSizing:"border-box"}}>
+                      Order on Microsoft Marketplace →
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              {/* Endpoint protection add-on */}
+              {(() => {
+                const ep=PLANS.find(p=>p.id==="endpoint");
+                return ep&&(
+                  <div style={{background:"linear-gradient(135deg,rgba(124,58,237,0.06),rgba(124,58,237,0.02))",border:"1px solid rgba(124,58,237,0.3)",borderRadius:14,padding:"22px 24px"}}>
+                    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",flexWrap:"wrap",gap:16}}>
+                      <div style={{flex:1,minWidth:260}}>
+                        <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:10}}>
+                          <span style={{fontSize:22}}>🛡️</span>
+                          <div>
+                            <div style={{fontFamily:"Syne,sans-serif",fontSize:15,fontWeight:800,color:"#a78bfa"}}>Endpoint Protection</div>
+                            <div style={{fontFamily:"DM Sans,sans-serif",fontSize:10,color:"var(--text3)",letterSpacing:"0.02em"}}>ADD-ON — AVAILABLE WITH ANY DASHBOARD PLAN</div>
+                          </div>
+                        </div>
+                        <p style={{color:"var(--text2)",fontSize:12,lineHeight:1.75,marginBottom:12}}>Steel firewall endpoint security with advanced threat protection and behavior-based detection. Scales per user — add as many seats as you need, cancel anytime.</p>
+                        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+                          {ep.features.map((f,i)=>(
+                            <div key={i} style={{display:"flex",alignItems:"center",gap:5,fontSize:10,color:"var(--text2)"}}>
+                              <span style={{color:"#a78bfa",fontSize:10}}>✓</span>{f}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:10,flexShrink:0}}>
+                        <div style={{textAlign:"right"}}>
+                          <div style={{fontFamily:"Syne,sans-serif",fontSize:32,fontWeight:800,color:"#a78bfa",lineHeight:1}}>{ep.price}</div>
+                          <div style={{color:"var(--text3)",fontSize:11}}>{ep.period}</div>
+                          <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif",marginTop:3}}>per user — billed monthly</div>
+                        </div>
+                        <a href="https://marketplace.microsoft.com/en-us/product/cyproteckinc1680036824980.newdashboard1?tab=Overview" target="_blank" rel="noopener noreferrer"
+                          style={{background:"linear-gradient(135deg,#5b21b6,#7c3aed)",border:"none",color:"#fff",borderRadius:8,padding:"10px 22px",fontSize:12,fontWeight:700,textDecoration:"none",whiteSpace:"nowrap"}}>
+                          Add Endpoint Protection →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Contact block */}
+              <div style={{marginTop:24,background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:12,padding:"18px 22px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:14}}>
+                <div>
+                  <div style={{fontFamily:"Syne,sans-serif",fontSize:13,fontWeight:700,marginBottom:4}}>Need help choosing the right plan?</div>
+                  <p style={{color:"var(--text2)",fontSize:11,lineHeight:1.6}}>Our team will assess your environment and recommend the best fit. No pressure, no jargon — just honest security guidance.</p>
+                </div>
+                <div style={{display:"flex",gap:10,flexShrink:0,flexWrap:"wrap"}}>
+                  <a href="tel:9598880569" style={{background:"transparent",border:"1px solid var(--teal2)",color:"var(--teal2)",borderRadius:8,padding:"9px 16px",fontSize:11,fontWeight:600,textDecoration:"none",display:"flex",alignItems:"center",gap:5}}>📞 (959) 888-0569</a>
+                  <a href="mailto:Cherie@cyproteck.com" style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"9px 16px",fontSize:11,fontWeight:700,textDecoration:"none",display:"flex",alignItems:"center",gap:5}}>📧 Cherie@cyproteck.com</a>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>{/* end page content */}
+      </div>{/* end main */}
+
+      {/* ── CyproAI Chat ── */}
+      {chatOpen&&(
+        <div style={{position:"fixed",bottom:16,right:16,width:370,height:520,background:"var(--bg2)",border:"1px solid var(--border3)",borderRadius:16,display:"flex",flexDirection:"column",boxShadow:"0 16px 60px rgba(0,0,0,0.65)",zIndex:200,overflow:"hidden",animation:"fadeUp 0.3s ease both"}}>
+          <div style={{background:"var(--bg3)",borderBottom:"1px solid var(--border)",padding:"12px 16px",display:"flex",alignItems:"center",gap:9}}>
+            <div style={{width:32,height:32,background:"linear-gradient(135deg,#0a7066,#0d9488)",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0}}>🤖</div>
+            <div>
+              <div style={{fontFamily:"Syne,sans-serif",fontWeight:800,fontSize:12}}>CyproAI Security Analyst</div>
+              <div style={{color:"var(--green2)",fontSize:10,fontFamily:"DM Sans,sans-serif",display:"flex",alignItems:"center",gap:4}}>
+                <Pulse color="#10b981" size={5}/> Online
+              </div>
+            </div>
+            <button onClick={()=>setChatOpen(false)} style={{marginLeft:"auto",background:"none",border:"none",color:"var(--text3)",fontSize:20,cursor:"pointer",lineHeight:1}}>×</button>
+          </div>
+          <div style={{flex:1,overflowY:"auto",padding:"14px",display:"flex",flexDirection:"column",gap:10}}>
+            {chatHistory.map((m,i)=>(
+              <div key={i} style={{display:"flex",flexDirection:m.role==="user"?"row-reverse":"row",gap:7}}>
+                <div style={{maxWidth:"84%",background:m.role==="user"?"linear-gradient(135deg,#0a7066,#0d9488)":"var(--bg3)",border:m.role==="assistant"?"1px solid var(--border2)":"none",borderRadius:m.role==="user"?"12px 12px 3px 12px":"12px 12px 12px 3px",padding:"9px 13px",fontSize:11,lineHeight:1.8,color:"var(--text)"}}>
+                  {m.content}
+                </div>
+              </div>
+            ))}
+            {chatLoading&&(
+              <div style={{display:"flex",gap:5,padding:"8px 12px",background:"var(--bg3)",borderRadius:10,width:"fit-content",border:"1px solid var(--border)"}}>
+                {[0,1,2].map(i=><div key={i} style={{width:5,height:5,borderRadius:"50%",background:"var(--teal2)",animation:`blink 1.2s ease ${i*0.25}s infinite`}}/>)}
+              </div>
+            )}
+            <div ref={chatEnd}/>
+          </div>
+          <div style={{padding:"10px 12px",borderTop:"1px solid var(--border)",display:"flex",gap:7}}>
+            <input
+              value={chatInput}
+              onChange={e=>setChatInput(e.target.value)}
+              onKeyDown={e=>e.key==="Enter"&&sendChat()}
+              placeholder="Ask about vulnerabilities, HIPAA risk..."
+              style={{flex:1,background:"var(--bg3)",border:"1px solid var(--border2)",borderRadius:8,padding:"8px 12px",color:"var(--text)",fontSize:11}}
+            />
+            <button onClick={sendChat} disabled={chatLoading}
+              style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:8,padding:"8px 14px",fontSize:13,opacity:chatLoading?0.6:1}}>➤</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Report Modal ── */}
+      {reportModal&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.78)",zIndex:300,display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(6px)"}}>
+          <div style={{background:"var(--bg2)",border:"1px solid var(--border2)",borderRadius:16,width:"100%",maxWidth:660,maxHeight:"92vh",display:"flex",flexDirection:"column",boxShadow:"0 24px 80px rgba(0,0,0,0.65)",overflow:"hidden",animation:"fadeUp 0.3s ease both"}}>
+
+            {/* Modal header */}
+            <div style={{background:"var(--bg3)",borderBottom:"1px solid var(--border)",padding:"16px 24px"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                <div>
+                  <div style={{fontFamily:"Syne,sans-serif",fontSize:14,fontWeight:800}}>CyproSecure <span style={{color:"var(--teal2)"}}>360°</span> Executive Briefing</div>
+                  <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif",marginTop:2}}>
+                    CYPROTECK TECHNOLOGIES — {user.company.toUpperCase()} — CONFIDENTIAL — {scanDate}
+                  </div>
+                </div>
+                <button onClick={()=>setReportModal(false)} style={{background:"none",border:"none",color:"var(--text3)",fontSize:22,cursor:"pointer",lineHeight:1}}>×</button>
+              </div>
+            </div>
+
+            {/* Report content */}
+            <div style={{flex:1,overflowY:"auto",padding:"20px 24px"}}>
+              {reportLoading?(
+                <div style={{textAlign:"center",padding:"40px 0"}}>
+                  <div style={{width:40,height:40,border:"2px solid var(--border)",borderTopColor:"var(--teal2)",borderRadius:"50%",animation:"spin 1s linear infinite",margin:"0 auto 16px"}}/>
+                  <p style={{color:"var(--teal2)",fontSize:12,fontWeight:600,marginBottom:4}}>CyproAI Generating Executive Briefing...</p>
+                  <p style={{color:"var(--text3)",fontSize:10,fontFamily:"DM Sans,sans-serif"}}>Analyzing {THIRD_PARTY_APPS.length} apps — {WEB_VULNS.length+INTERNAL_VULNS.length} vulnerabilities — HIPAA gaps</p>
+                </div>
+              ):(
+                <pre style={{fontFamily:"DM Sans,sans-serif",fontSize:12,lineHeight:1.9,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{reportContent}</pre>
+              )}
+            </div>
+
+            {/* Email delivery */}
+            {!reportLoading&&reportContent&&(
+              <div style={{borderTop:"1px solid var(--border)",padding:"16px 24px",background:"var(--bg3)"}}>
+                <div style={{fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif",marginBottom:10,letterSpacing:"0.02em"}}>
+                  📧 SEND REPORT — Professional email with full findings — CC: ops@cyproteck.com (automatic)
+                </div>
+
+                {emailStatus==="sent"?(
+                  <div style={{display:"flex",alignItems:"flex-start",gap:10,background:"rgba(5,150,105,0.1)",border:"1px solid rgba(5,150,105,0.25)",borderRadius:8,padding:"12px 14px"}}>
+                    <span style={{fontSize:18,flexShrink:0,marginTop:1}}>✅</span>
+                    <div>
+                      <div style={{fontWeight:700,fontSize:12,color:"var(--green2)",marginBottom:3}}>Email client opened — your report is ready to send</div>
+                      <div style={{fontSize:10,color:"var(--text2)",lineHeight:1.6,marginBottom:4}}>
+                        To: <strong>{emailInput}</strong> — CC: {OPS_EMAIL}
+                      </div>
+                      <div style={{fontSize:10,color:"var(--text3)",lineHeight:1.6}}>
+                        The Cyproteck operations team has been copied and will follow up within 24 hours to discuss your findings and next steps.
+                        If your email client did not open, please contact us directly at Cherie@cyproteck.com or (959) 888-0569.
+                      </div>
+                    </div>
+                  </div>
+                ):emailStatus==="error"?(
+                  <div style={{color:"var(--red2)",fontSize:11,padding:"10px",background:"rgba(220,38,38,0.08)",border:"1px solid rgba(220,38,38,0.2)",borderRadius:8}}>
+                    Email client could not be opened. Please copy the report content manually.
+                  </div>
+                ):(
+                  <div style={{display:"flex",gap:8}}>
+                    <div style={{flex:1,position:"relative"}}>
+                      <input
+                        value={emailInput}
+                        onChange={e=>{setEmailInput(e.target.value);setEmailInputError(false);}}
+                        placeholder="recipient@company.com"
+                        style={{width:"100%",padding:"10px 12px",background:"var(--bg2)",border:`1px solid ${emailInputError?"var(--red2)":"var(--border2)"}`,borderRadius:7,color:"var(--text)",fontSize:11}}
+                      />
+                      {emailInputError&&<span style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",color:"var(--red2)",fontSize:10}}>⚠</span>}
+                    </div>
+                    <button
+                      onClick={handleSendEmail}
+                      disabled={emailStatus==="sending"}
+                      style={{background:"linear-gradient(135deg,#0a7066,#0d9488)",border:"none",color:"#fff",borderRadius:7,padding:"10px 18px",fontSize:11,fontWeight:700,display:"flex",alignItems:"center",gap:6,flexShrink:0,opacity:emailStatus==="sending"?0.7:1}}>
+                      {emailStatus==="sending"
+                        ?<><span style={{width:12,height:12,border:"2px solid rgba(255,255,255,0.3)",borderTopColor:"#fff",borderRadius:"50%",animation:"spin 0.8s linear infinite",display:"inline-block"}}/>Sending...</>
+                        :<>📧 Send Report</>}
+                    </button>
+                  </div>
+                )}
+
+                {emailStatus==="idle"&&(
+                  <p style={{marginTop:8,fontSize:10,color:"var(--text3)",fontFamily:"DM Sans,sans-serif",lineHeight:1.6}}>
+                    Opens your default email client with a fully composed professional message — Includes full report, explanation of findings, and a clear call to action — CC to ops@cyproteck.com is included automatically so our team can follow up
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   ROOT APP — manages auth + welcome flow
+═══════════════════════════════════════════ */
+function App(){
+  const [user,setUser]=useState(null);
+  const [appState,setAppState]=useState("auth"); // auth | welcome | dashboard
+  const [autoScan,setAutoScan]=useState(false);
+
+  const handleLogin=(u)=>{
+    setUser(u);
+    // New accounts (signup) go to welcome/scan screen
+    // Returning accounts (login/SSO) go straight to dashboard
+    if(u.isNew){
+      setAppState("welcome");
+    }else{
+      setAppState("dashboard");
+    }
+  };
+
+  const handleStartScan=()=>{
+    setAutoScan(true);
+    setAppState("dashboard");
+  };
+
+  const handleSkip=()=>{
+    setAutoScan(false);
+    setAppState("dashboard");
+  };
+
+  const handleLogout=()=>{
+    setUser(null);
+    setAppState("auth");
+    setAutoScan(false);
+  };
+
+  if(appState==="auth") return <LoginPage onLogin={handleLogin}/>;
+  if(appState==="welcome") return <WelcomeScan user={user} onStartScan={handleStartScan} onSkip={handleSkip}/>;
+  return <Dashboard user={user} onLogout={handleLogout} autoScan={autoScan}/>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+  <!-- GlassHive Forms Integration -->
+  <script>
+    (function(w, d, undefined){
+        // Settings for HoneyCRM/GlassHive forms integration.  Replace the
+        // clientId, websiteUrl and listId values with your own values from
+        // your GlassHive account if they differ.  The form selector matches
+        // the <form class="form1"> element in LoginPage.  Since our sign‑up
+        // collects a single full name, we map both firstName and lastName to
+        // the same ".firstName" class so that the integration captures the
+        // full name for both fields.
+        w._honeySettings = {
+            clientId: 16320,
+            websiteUrl: 'example.com/landing-page',
+            forms: [{
+                selector: '.form1',
+                listId: 1915,
+                formType: 'Consultation',
+                mappings: {
+                    firstName: '.firstName',
+                    lastName: '.firstName',
+                    email: '.email',
+                    phone: '.phone',
+                    title: '.title',
+                    city: '.city',
+                    region: '.region',
+                    countryName: '.country',
+                    comment: '.comment'
+                }
+            }]
+        };
+        var head = d.getElementsByTagName('head')[0];
+        var tag = d.createElement('script');
+        tag.async = 1;
+        tag.src = 'https://cdn.honeycrm.com/app/glasshive-forms.js';
+        head.appendChild(tag);
+    })(window, document);
+  </script>
+
+</body>
+</html>
