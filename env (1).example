@@ -28,3 +28,55 @@ REACT_APP_SENTINEL_WORKSPACE_ID=your-workspace-id-here
 
 # Defender Tenant Details (optional, for direct API access)
 REACT_APP_DEFENDER_TENANT_ID=your-defender-tenant-id-here
+
+# =============================================================================
+# Connector Services API (/api) — Amazon Connect + PSA ticketing + Copilot
+# These are Azure Functions App Settings (server-side), NOT React build vars.
+# None are required to run in simulation mode. See api/README.md for details.
+# =============================================================================
+
+# Active authoritative PSA: helpdesk (default) | connectwise | halo | ninjaone
+PSA_CONNECTOR=helpdesk
+
+# Amazon Connect webhook auth (shared secret or HMAC key) — set in production
+AMAZON_CONNECT_WEBHOOK_SECRET=
+
+# Service API key for machine-to-machine callers (sent as x-api-key)
+CONNECTOR_API_KEY=
+
+# Local development only: disable auth on management endpoints
+# ALLOW_ANONYMOUS_API=true
+
+# Azure AI Foundry / Azure OpenAI for live Copilot (else heuristic fallback)
+FOUNDRY_ENDPOINT=
+FOUNDRY_API_KEY=
+FOUNDRY_DEPLOYMENT=
+
+# Duplicate-ticket detection tuning (defaults: 1440 minutes / 0.55 similarity)
+# DEDUPE_WINDOW_MINS=1440
+# DEDUPE_THRESHOLD=0.55
+
+# --- ConnectWise Manage (when PSA_CONNECTOR=connectwise) ---
+# CONNECTWISE_SITE=https://na.myconnectwise.net
+# CONNECTWISE_COMPANY_ID=
+# CONNECTWISE_PUBLIC_KEY=
+# CONNECTWISE_PRIVATE_KEY=
+# CONNECTWISE_CLIENT_ID=
+# CONNECTWISE_BOARD=
+
+# --- HaloPSA (when PSA_CONNECTOR=halo) ---
+# HALO_BASE_URL=https://cyproteck.halopsa.com
+# HALO_CLIENT_ID=
+# HALO_CLIENT_SECRET=
+
+# --- NinjaOne (when PSA_CONNECTOR=ninjaone) ---
+# NINJAONE_BASE_URL=https://app.ninjarmm.com
+# NINJAONE_CLIENT_ID=
+# NINJAONE_CLIENT_SECRET=
+
+# --- Amazon Connect standalone Cases/Tasks (optional) ---
+# AWS_REGION=us-east-1
+# AMAZON_CONNECT_INSTANCE_ID=
+# AMAZON_CONNECT_DOMAIN_ID=
+# AMAZON_CONNECT_CASE_TEMPLATE_ID=
+# AMAZON_CONNECT_TASK_FLOW_ID=
