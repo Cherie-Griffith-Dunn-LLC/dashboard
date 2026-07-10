@@ -80,3 +80,51 @@ FOUNDRY_DEPLOYMENT=
 # AMAZON_CONNECT_DOMAIN_ID=
 # AMAZON_CONNECT_CASE_TEMPLATE_ID=
 # AMAZON_CONNECT_TASK_FLOW_ID=
+
+# =============================================================================
+# Healthcare Visibility + Foundry: environment, connectors, risk, compliance
+# =============================================================================
+
+# Environment: dev | test | prod (stamped on audit records, drives guard rails)
+APP_ENV=dev
+
+# Enable optional CMMC readiness alongside HIPAA
+# ENABLE_CMMC=true
+
+# Override risk category weights (JSON)
+# RISK_WEIGHTS_JSON={"ehr":0.25,"identity":0.2}
+
+# Suppress audit stdout sink (used by tests); leave unset in real environments
+# AUDIT_SILENT=true
+
+# Durable audit sink (Azure SQL); when unset, audit is retained in-memory (DEV/TEST)
+# AUDIT_SQL_CONNECTION=
+
+# --- Microsoft 365 / Entra ID connector ---
+# MICROSOFT_TENANT_ID=
+# MICROSOFT_CLIENT_ID=
+# MICROSOFT_CLIENT_SECRET=
+
+# --- SentinelOne (EDR) connector ---
+# SENTINELONE_BASE_URL=https://usea1.sentinelone.net
+# SENTINELONE_API_TOKEN=
+
+# --- Epic (EHR) connector — see EPIC_APPROVAL_GUIDE.md (indicators only, no PHI) ---
+# EPIC_BASE_URL=
+# EPIC_CLIENT_ID=
+# EPIC_PRIVATE_KEY=
+
+# --- Network connector (scanner/firewall) ---
+# NETWORK_SCANNER_URL=
+# NETWORK_API_KEY=
+
+# --- Azure / Defender for Cloud connector (server-side; distinct from REACT_APP_*) ---
+# AZURE_SUBSCRIPTION_ID=
+# AZURE_TENANT_ID=
+# AZURE_CLIENT_ID=
+# AZURE_CLIENT_SECRET=
+
+# --- AWS connector (Security Hub / GuardDuty) ---
+# AWS_ACCESS_KEY_ID=
+# AWS_SECRET_ACCESS_KEY=
+# AWS_ROLE_ARN=

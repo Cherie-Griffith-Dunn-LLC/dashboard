@@ -25,6 +25,8 @@ class MemoryStore {
     this.ticketToContacts = new Map(); // ticketId -> Set<contactId>
     this.activities = new Map(); // ticketId -> [activity]
     this.idempotencyKeys = new Map(); // key -> { ticketId, at }
+    this.snapshots = new Map(); // `${tenantId}:${connector}` -> snapshot
+    this.auditLog = []; // in-memory audit retention (DEV/TEST sink)
   }
 
   async saveTicket(ticket) {
@@ -90,12 +92,52 @@ class MemoryStore {
     if (key) this.idempotencyKeys.delete(key);
   }
 
+  // --- connector snapshots (per tenant) -----------------------------------
+
+  async saveConnectorSnapshot(tenantId, connector, snapshot) {
+    this.snapshots.set(`${tenantId}:${connector}`, snapshot);
+    return snapshot;
+  }
+
+  async getConnectorSnapshot(tenantId, connector) {
+    return this.snapshots.get(`${tenantId}:${connector}`) || null;
+  }
+
+  async getTenantSnapshots(tenantId) {
+    const out = [];
+    const prefix = `${tenantId}:`;
+    for (const [key, snap] of this.snapshots.entries()) {
+      if (key.startsWith(prefix)) out.push(snap);
+    }
+    return out;
+  }
+
+  // --- audit retention (in-memory sink) -----------------------------------
+
+  async appendAudit(record) {
+    this.auditLog.push(record);
+    // Bound memory in long-lived hosts.
+    if (this.auditLog.length > 5000) this.auditLog.splice(0, this.auditLog.length - 5000);
+    return record;
+  }
+
+  async queryAudit(tenantId, filter = {}) {
+    let items = this.auditLog.filter((r) => !tenantId || r.tenantId === tenantId);
+    if (filter.action) items = items.filter((r) => r.action === filter.action);
+    if (filter.actor) items = items.filter((r) => r.actor === filter.actor);
+    items.sort((a, b) => String(b.at).localeCompare(String(a.at)));
+    if (filter.limit) items = items.slice(0, filter.limit);
+    return items;
+  }
+
   async reset() {
     this.tickets.clear();
     this.contactToTicket.clear();
     this.ticketToContacts.clear();
     this.activities.clear();
     this.idempotencyKeys.clear();
+    this.snapshots.clear();
+    this.auditLog = [];
   }
 }
 

@@ -38,8 +38,24 @@ Phone / chat / email / portal
 | `GET`  | `/api/tickets/{ticketId}` | Fetch a ticket with activity trail, SLA, and linked contacts. |
 | `PATCH`| `/api/tickets/{ticketId}` | Update `status` / `priority` / `assignee` / `note` / `firstResponse`. |
 | `POST` | `/api/copilot/{tool}` | Copilot tools: `summarize`, `categorize`, `priority`, `root-cause`, `draft-update`. |
-| `GET`  | `/api/connectors` | Readiness/health report for the connector suite. |
+| `GET`  | `/api/connectors` | Readiness/health report (PSA + nine data connectors). |
+| `POST` | `/api/connectors/{connector\|all}/sync` | Run the connect→fetch→transform→sync lifecycle (RBAC: connectors.sync). |
+| `GET`  | `/api/dashboard/{view}` | Aggregated view: executive, microsoft, vulnerabilities, epic, compliance, helpdesk (RBAC per view). |
+| `POST` | `/api/ai/copilot` | Server-side Security Copilot: four-part response (RBAC: ai.invoke). |
+| `GET`  | `/api/reports/{type}` | executive, compliance, connector-health, security-posture (RBAC: reports.read). |
 | `POST` | `/api/GetRoles` | Existing role resolver (unchanged). |
+
+### Healthcare Visibility + Foundry layer
+
+The `/api` surface also implements the Healthcare Visibility + Microsoft Foundry
+brief: a nine-connector data framework (`connectors/<name>/`), executive risk
+scoring (`shared/risk.js`), six dashboard views (`shared/dashboards.js`),
+HIPAA/CMMC compliance (`shared/compliance.js`), reporting (`shared/reports.js`),
+a four-part Security Copilot (`shared/copilot.js#securityCopilot`), RBAC
+(`shared/rbac.js`), and tenant-scoped audit logging (`shared/audit.js`). See the
+root docs: `CURRENT_STATE.md`, `CONNECTOR_FRAMEWORK.md`, `RISK_SCORING.md`,
+`ENVIRONMENT_STRATEGY.md`, `DEPLOYMENT_GUIDE.md`, `CLIENT_ONBOARDING_GUIDE.md`,
+`EPIC_APPROVAL_GUIDE.md`, and `BUILD_BRIEF_TRACEABILITY.md`.
 
 ### Core capabilities (mapped to the enhancement list)
 

@@ -12,6 +12,7 @@
 
 const http = require('../shared/http');
 const { listConnectors } = require('../shared/psa');
+const { describeAll } = require('../shared/framework/registry');
 const { AmazonConnectClient } = require('../shared/connectors/amazonConnect');
 
 module.exports = async function (context) {
@@ -24,9 +25,18 @@ module.exports = async function (context) {
   if (!webhookSecured) warnings.push('AMAZON_CONNECT_WEBHOOK_SECRET is not set — the webhook accepts unsigned events.');
   if (process.env.ALLOW_ANONYMOUS_API === 'true') warnings.push('ALLOW_ANONYMOUS_API=true — management endpoints are unauthenticated.');
 
+  const dataConnectors = describeAll();
+
   context.res = http.ok({
+    environment: process.env.APP_ENV || 'dev',
     activePsa: process.env.PSA_CONNECTOR || 'helpdesk',
     psaConnectors: listConnectors(),
+    dataConnectors,
+    dataConnectorSummary: {
+      total: dataConnectors.length,
+      live: dataConnectors.filter((c) => c.mode === 'live').length,
+      simulation: dataConnectors.filter((c) => c.mode === 'simulation').length,
+    },
     amazonConnect: {
       intake: 'webhook',
       standaloneCasesTasks: ac.isConfigured() ? 'live' : 'simulation',

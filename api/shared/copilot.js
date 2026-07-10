@@ -276,15 +276,117 @@ function safeJson(text) {
   }
 }
 
+/**
+ * Security Copilot — the four-part executive response required by the build
+ * brief: { summary, topRisks, nextActions, responsibleOwner }.
+ *
+ * Given a risk/dashboard context it produces an executive-ready briefing. Uses
+ * the live model when configured, else a deterministic composition from the
+ * computed risk model. Consequential recommendations remain advisory
+ * (requiresApproval) — the Copilot never takes action on its own.
+ *
+ * @param {object} context { question?, risk, tenantId }
+ *   risk: output of shared/risk.computeRisk (score, topRisks, issueCounts, ...)
+ */
+async function securityCopilot(context = {}) {
+  const risk = context.risk || {};
+  const model = await callModel([
+    {
+      role: 'system',
+      content:
+        'You are the Cyproteck Security Copilot for a healthcare MSP. Reply as strict JSON with EXACTLY these keys: ' +
+        'summary (string), topRisks (string[]), nextActions (string[]), responsibleOwner (string). ' +
+        'Be concise and executive-ready.',
+    },
+    {
+      role: 'user',
+      content: truncate(
+        `Question: ${context.question || 'Give me an executive security briefing.'}\n` +
+          `Risk context: ${JSON.stringify(risk).slice(0, 3000)}`,
+        4000
+      ),
+    },
+  ]);
+  if (model) {
+    const parsed = safeJson(model);
+    if (parsed && parsed.summary && parsed.topRisks && parsed.nextActions) {
+      return withMeta(normalizeFourPart(parsed), 'model');
+    }
+  }
+  return withMeta(heuristicFourPart(context), 'heuristic');
+}
+
+function normalizeFourPart(p) {
+  return {
+    summary: String(p.summary || ''),
+    topRisks: toArray(p.topRisks),
+    nextActions: toArray(p.nextActions),
+    responsibleOwner: String(p.responsibleOwner || 'MSP Service Delivery Lead'),
+    requiresApproval: true,
+  };
+}
+
+function heuristicFourPart(context) {
+  const risk = context.risk || {};
+  const score = risk.score != null ? risk.score : 0;
+  const rating = risk.rating || 'unknown';
+  const counts = risk.issueCounts || {};
+  const top = (risk.topRisks || []).slice(0, 5);
+  const OWNER_BY_SEVERITY = { critical: 'MSP Security Lead (immediate escalation)', high: 'MSP Service Delivery Lead', medium: 'Assigned Technician', low: 'Help Desk' };
+
+  const summary =
+    `Overall risk is ${score}/100 (${rating}). ` +
+    `There ${counts.critical === 1 ? 'is' : 'are'} ${counts.critical || 0} open critical, ` +
+    `${counts.high || 0} high, and ${counts.medium || 0} medium issues across identity, endpoint, cloud, network, and EHR domains.`;
+
+  const topRisks = top.length
+    ? top.map((r) => `[${r.severity}] ${r.title} (${r.source})`)
+    : ['No material risks detected in the latest connector sync.'];
+
+  const nextActions = deriveNextActions(top);
+  const worstSeverity = top[0] ? top[0].severity : 'low';
+
+  return {
+    summary,
+    topRisks,
+    nextActions,
+    responsibleOwner: OWNER_BY_SEVERITY[worstSeverity] || 'MSP Service Delivery Lead',
+    requiresApproval: true,
+  };
+}
+
+function deriveNextActions(topRisks) {
+  if (!topRisks.length) return ['Maintain current controls; continue scheduled connector syncs and reviews.'];
+  const actions = [];
+  for (const r of topRisks.slice(0, 4)) {
+    const t = String(r.title).toLowerCase();
+    if (t.includes('mfa')) actions.push('Enforce MFA on all remaining users via conditional access.');
+    else if (t.includes('patch')) actions.push('Deploy missing critical patches within the SLA window.');
+    else if (t.includes('access review')) actions.push('Complete overdue EHR access reviews and revoke stale access.');
+    else if (t.includes('threat') || t.includes('infected')) actions.push('Isolate affected endpoints and run the incident-response runbook.');
+    else if (t.includes('storage') || t.includes('encrypt')) actions.push('Remediate exposed/unencrypted cloud resources and enable KMS encryption.');
+    else actions.push(`Remediate: ${r.title}.`);
+  }
+  return Array.from(new Set(actions));
+}
+
+function toArray(v) {
+  if (Array.isArray(v)) return v.map(String);
+  if (v == null) return [];
+  return [String(v)];
+}
+
 module.exports = {
   summarizeTranscript,
   categorize,
   recommendPriority,
   rootCause,
   draftCustomerUpdate,
+  securityCopilot,
   callModel,
   // exported for tests
   heuristicCategorize,
   heuristicPriority,
   heuristicSummary,
+  heuristicFourPart,
 };

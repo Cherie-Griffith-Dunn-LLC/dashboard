@@ -10,6 +10,7 @@
 
 // Deterministic, credential-free environment.
 process.env.PSA_CONNECTOR = 'helpdesk';
+process.env.AUDIT_SILENT = 'true';
 delete process.env.FOUNDRY_ENDPOINT;
 delete process.env.AMAZON_CONNECT_WEBHOOK_SECRET;
 
@@ -187,6 +188,10 @@ test('psa: registry lists all connectors with helpdesk active by default', () =>
   assert.deepStrictEqual(names, ['connectwise', 'halo', 'helpdesk', 'ninjaone']);
   assert.ok(list.find((c) => c.name === 'helpdesk').active);
 });
+
+// Enhancement suite (connector framework, dashboards, risk, RBAC, copilot,
+// reports, audit) is defined separately and appended here.
+for (const t of require('./enhancement.test')) tests.push(t);
 
 // --- runner ----------------------------------------------------------------
 

@@ -68,6 +68,34 @@ function getClientPrincipal(req) {
   }
 }
 
+/**
+ * Resolve the tenant id for a request. Priority:
+ *   1. explicit `tenant` query param or `x-tenant-id` header (service callers),
+ *   2. the principal's Entra tenant-id claim,
+ *   3. 'default'.
+ * Tenant isolation is enforced by scoping every store read/write to this id.
+ */
+function getTenantId(req) {
+  const q = (req && req.query) || {};
+  if (q.tenant) return String(q.tenant);
+  const header = req && req.headers && req.headers['x-tenant-id'];
+  if (header) return String(header);
+  const principal = getClientPrincipal(req);
+  if (principal && Array.isArray(principal.roles)) {
+    const raw = req.headers['x-ms-client-principal'];
+    try {
+      const decoded = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'));
+      const claim = (decoded.claims || []).find(
+        (c) => c.typ === 'http://schemas.microsoft.com/identity/claims/tenantid' || c.typ === 'tid'
+      );
+      if (claim) return claim.val;
+    } catch (err) {
+      /* fall through */
+    }
+  }
+  return 'default';
+}
+
 /** True when the principal holds any of the supplied roles. */
 function hasAnyRole(principal, roles) {
   if (!principal || !Array.isArray(principal.roles)) return false;
@@ -144,6 +172,7 @@ module.exports = {
   serverError,
   parseBody,
   getClientPrincipal,
+  getTenantId,
   hasAnyRole,
   verifyWebhook,
   rawBodyOf,
