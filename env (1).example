@@ -11,9 +11,9 @@ REACT_APP_AZURE_TENANT_ID=your-tenant-id-here
 
 # Your Application Redirect URI
 # This should match what you configured in Azure AD App Registration
-# For production: https://app.cyproteck.com
+# For production: https://app.cyprosecure.com
 # For local dev: http://localhost:3000
-REACT_APP_REDIRECT_URI=https://app.cyproteck.com
+REACT_APP_REDIRECT_URI=https://app.cyprosecure.com
 
 # Optional: Enable GitHub Integration
 # Set to 'true' if you've configured GitHub as an identity provider in Azure AD

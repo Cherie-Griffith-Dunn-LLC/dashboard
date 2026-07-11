@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "CYPROTECK Network Security Dashboard with Azure AD Authentication",
   "private": true,
-  "homepage": "https://app.cyproteck.com",
+  "homepage": "https://app.cyprosecure.com",
   "dependencies": {
     "@azure/msal-browser": "^3.7.1",
     "@azure/msal-react": "^2.0.10",
