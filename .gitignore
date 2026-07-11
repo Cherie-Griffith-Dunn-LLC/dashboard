@@ -19,4 +19,7 @@ build/
 # macOS
 .DS_Store
 
+# Local scratch / preview artifacts
+scratchpad-artifact/
+
 
