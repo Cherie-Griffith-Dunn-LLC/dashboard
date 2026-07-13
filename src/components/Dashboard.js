@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useMsal } from '@azure/msal-react';
+import PortfolioConsole from './PortfolioConsole';
+import HelpdeskChat from './HelpdeskChat';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -8,6 +10,7 @@ function Dashboard() {
   const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
   const [currentPage, setCurrentPage] = useState('dashboard');
+  const [helpdeskOpen, setHelpdeskOpen] = useState(false);
   // MSSP owners can preview the Company Admin and Employee experiences: 'mssp' | 'admin' | 'employee'
   const [viewAs, setViewAs] = useState('mssp');
 
@@ -263,10 +266,15 @@ function Dashboard() {
 
   const renderDashboard = () => (
     <>
-      {/* MSSP OWNER VIEW */}
+      {/* MSSP OWNER VIEW — Portfolio Command Center (all companies, drill-down, reporting) */}
       {effectiveMSP && (
+        <PortfolioConsole onOpenHelpdesk={() => setHelpdeskOpen(true)} />
+      )}
+      {/* Legacy single-org MSSP layout — retained for reference, superseded by PortfolioConsole */}
+      {false && (
         <>
           <div className="org-selector-top">
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
               {Object.entries(CLIENT_TENANTS).map(([tid, client]) => (
@@ -1231,6 +1239,19 @@ function Dashboard() {
           {currentPage === 'settings' && renderSettingsPage()}
         </div>
       </div>
+
+      {/* Helpdesk — Tier 1 → Tier 2 support chat + live ticket queue */}
+      {!helpdeskOpen && (
+        <button className="hd-fab" onClick={() => setHelpdeskOpen(true)}>
+          <span className="hd-fab-icon">🎧</span> Helpdesk
+        </button>
+      )}
+      <HelpdeskChat
+        open={helpdeskOpen}
+        onClose={() => setHelpdeskOpen(false)}
+        userName={userName}
+        company={displayCompanyName}
+      />
     </div>
   );
 }
