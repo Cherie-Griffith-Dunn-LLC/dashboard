@@ -73,6 +73,7 @@
 .hd-ticket-status.escalated { background: rgba(248, 113, 113, .14); color: #fca5a5; }
 .hd-ticket-summary { font-size: 13px; color: #cbd5e1; margin: 7px 0 5px; }
 .hd-ticket-meta { font-size: 11px; color: #94a3b8; text-transform: capitalize; }
+.hd-synced { color: #5de4c7; font-weight: 700; text-transform: none; }
 
 /* Floating launcher */
 .hd-fab {

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createTicket as apiCreateTicket } from '../services/dashboardService';
 import './HelpdeskChat.css';
 
 /**
@@ -60,11 +61,34 @@ export default function HelpdeskChat({ open, onClose, userName = 'there', compan
       summary,
       status: tier === 2 ? 'escalated' : 'open',
       company,
+      synced: false,
       createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
     setTickets((prev) => [ticket, ...prev]);
+
+    // Route to the server-side ticket service → active PSA connector
+    // (N-able MSP Manager once configured). Fire-and-forget: the local ticket
+    // is shown immediately and reconciled with the PSA's id on success. If the
+    // API isn't reachable (e.g. local demo), the chat stays fully functional.
+    apiCreateTicket({
+      subject: summary,
+      description: summary,
+      priority,
+      tier: String(tier),
+      escalated: tier === 2,
+      customerName: company,
+      channel: 'chat',
+      category,
+    })
+      .then((res) => {
+        const ext = res && (res.externalId || res.ticketId || (res.ticket && (res.ticket.externalId || res.ticket.ticketId)));
+        setTickets((prev) => prev.map((t) => (t.ticketId === ticket.ticketId ? { ...t, synced: true, externalId: ext || undefined } : t)));
+      })
+      .catch(() => {
+        /* Offline/demo mode — keep the local ticket; nothing to reconcile. */
+      });
+
     return ticket;
-    // Wire live: await dashboardService.createTicket(ticket)  ->  POST /api/tickets
   }
 
   function respond(text, presetCat) {
@@ -150,7 +174,10 @@ export default function HelpdeskChat({ open, onClose, userName = 'there', compan
                   <span className={`hd-ticket-status ${t.status}`}>{t.status === 'escalated' ? 'TIER 2 · ESCALATED' : 'TIER 1 · OPEN'}</span>
                 </div>
                 <div className="hd-ticket-summary">{t.summary}</div>
-                <div className="hd-ticket-meta">{t.priority} priority · {t.company} · {t.createdAt}</div>
+                <div className="hd-ticket-meta">
+                  {t.priority} priority · {t.company} · {t.createdAt}
+                  {t.synced && <span className="hd-synced"> · ✓ MSP Manager{t.externalId ? ` #${t.externalId}` : ''}</span>}
+                </div>
               </div>
             ))}
           </div>

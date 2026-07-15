@@ -14,18 +14,24 @@ const { HelpDeskConnector } = require('./helpdesk');
 const { ConnectWiseConnector } = require('./connectwise');
 const { HaloConnector } = require('./halo');
 const { NinjaOneConnector } = require('./ninjaone');
+const { MspManagerConnector } = require('./mspmanager');
 
 const FACTORIES = {
   helpdesk: () => new HelpDeskConnector(),
   connectwise: () => new ConnectWiseConnector(),
   halo: () => new HaloConnector(),
   ninjaone: () => new NinjaOneConnector(),
+  mspmanager: () => new MspManagerConnector(),
 };
+
+// Friendly aliases resolved to a canonical connector key.
+const ALIASES = { nable: 'mspmanager', 'n-able': 'mspmanager' };
 
 const cache = new Map();
 
 function getConnector(name) {
-  const key = String(name || process.env.PSA_CONNECTOR || 'helpdesk').toLowerCase();
+  const raw = String(name || process.env.PSA_CONNECTOR || 'helpdesk').toLowerCase();
+  const key = ALIASES[raw] || raw;
   const factory = FACTORIES[key];
   if (!factory) {
     const err = new Error(`Unknown PSA connector: ${key}`);
@@ -43,10 +49,12 @@ function getActiveConnector() {
 
 /** Readiness descriptors for every known PSA connector. */
 function listConnectors() {
+  const raw = String(process.env.PSA_CONNECTOR || 'helpdesk').toLowerCase();
+  const activeKey = ALIASES[raw] || raw;
   return Object.keys(FACTORIES).map((name) => {
     const c = FACTORIES[name]();
     const d = c.describe();
-    d.active = name === String(process.env.PSA_CONNECTOR || 'helpdesk').toLowerCase();
+    d.active = name === activeKey;
     return d;
   });
 }

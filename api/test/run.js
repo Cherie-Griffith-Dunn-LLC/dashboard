@@ -185,8 +185,44 @@ test('service: transcript is summarized on creation', async () => {
 test('psa: registry lists all connectors with helpdesk active by default', () => {
   const list = listConnectors();
   const names = list.map((c) => c.name).sort();
-  assert.deepStrictEqual(names, ['connectwise', 'halo', 'helpdesk', 'ninjaone']);
+  assert.deepStrictEqual(names, ['connectwise', 'halo', 'helpdesk', 'mspmanager', 'ninjaone']);
   assert.ok(list.find((c) => c.name === 'helpdesk').active);
+});
+
+// --- N-able MSP Manager connector -----------------------------------------
+
+test('mspmanager: simulates when unconfigured and marks tickets simulated', async () => {
+  const { MspManagerConnector } = require('../shared/psa/mspmanager');
+  const c = new MspManagerConnector({}); // no env → simulation
+  assert.strictEqual(c.isConfigured(), false);
+  const res = await c.createTicket({ subject: 'Locked out', priority: 'medium' });
+  assert.strictEqual(res.simulated, true);
+  assert.ok(res.externalId, 'still returns an id in simulation');
+  const probe = await c.testConnection();
+  assert.strictEqual(probe.ok, false);
+  assert.strictEqual(probe.configured, false);
+});
+
+test('mspmanager: reports configured + builds auth headers per scheme', () => {
+  const { MspManagerConnector } = require('../shared/psa/mspmanager');
+  const bearer = new MspManagerConnector({ MSPMANAGER_BASE_URL: 'https://api.mspmanager.com', MSPMANAGER_API_KEY: 'k' });
+  assert.strictEqual(bearer.isConfigured(), true);
+  assert.strictEqual(bearer._headers().Authorization, 'Bearer k');
+
+  const apikey = new MspManagerConnector({ MSPMANAGER_BASE_URL: 'https://x', MSPMANAGER_AUTH: 'apikey', MSPMANAGER_API_KEY: 'k', MSPMANAGER_API_KEY_HEADER: 'X-Api-Key' });
+  assert.strictEqual(apikey._headers()['X-Api-Key'], 'k');
+
+  const basic = new MspManagerConnector({ MSPMANAGER_BASE_URL: 'https://x', MSPMANAGER_AUTH: 'basic', MSPMANAGER_USER: 'u', MSPMANAGER_PASSWORD: 'p' });
+  assert.strictEqual(basic.isConfigured(), true);
+  assert.strictEqual(basic._headers().Authorization, 'Basic ' + Buffer.from('u:p').toString('base64'));
+});
+
+test('mspmanager: routes Tier 2 to the escalation queue', () => {
+  const { MspManagerConnector } = require('../shared/psa/mspmanager');
+  const c = new MspManagerConnector({ MSPMANAGER_BASE_URL: 'https://x', MSPMANAGER_API_KEY: 'k', MSPMANAGER_DEFAULT_QUEUE: 'Service Desk', MSPMANAGER_TIER2_QUEUE: 'Security' });
+  assert.strictEqual(c._queueFor({ tier: '1' }), 'Service Desk');
+  assert.strictEqual(c._queueFor({ tier: '2' }), 'Security');
+  assert.strictEqual(c._queueFor({ escalated: true }), 'Security');
 });
 
 // Enhancement suite (connector framework, dashboards, risk, RBAC, copilot,

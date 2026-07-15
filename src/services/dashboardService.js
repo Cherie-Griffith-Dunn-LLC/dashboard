@@ -70,6 +70,16 @@ export function askCopilot(question) {
   return apiFetch('/ai/copilot', { method: 'POST', body: { question } });
 }
 
+/**
+ * Create a helpdesk ticket. Routes through the server-side ticket service,
+ * which hands off to the active PSA connector (N-able MSP Manager once
+ * PSA_CONNECTOR=mspmanager and its credentials are set in Azure). The browser
+ * never holds PSA credentials — they live only in server app settings.
+ */
+export function createTicket(ticket) {
+  return apiFetch('/tickets', { method: 'POST', body: ticket });
+}
+
 /** Generate a structured report. */
 export function getReport(type) {
   if (!REPORT_TYPES.includes(type)) {
