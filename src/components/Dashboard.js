@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMsal } from '@azure/msal-react';
 import PortfolioConsole from './PortfolioConsole';
 import HelpdeskChat from './HelpdeskChat';
+import Icon from './Icon';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -1243,7 +1244,7 @@ function Dashboard() {
       {/* Helpdesk — Tier 1 → Tier 2 support chat + live ticket queue */}
       {!helpdeskOpen && (
         <button className="hd-fab" onClick={() => setHelpdeskOpen(true)}>
-          <span className="hd-fab-icon">🎧</span> Helpdesk
+          <span className="hd-fab-icon"><Icon name="headset" size={17} /></span> Helpdesk
         </button>
       )}
       <HelpdeskChat

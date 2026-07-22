@@ -1,6 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { getPortfolio, computeRollup, statusColor } from '../CommonData/portfolio';
+import Icon from './Icon';
 import './PortfolioConsole.css';
+
+// Monogram initials from a company name (e.g. "Summit Manufacturing" -> "SM").
+function initials(name) {
+  const words = String(name || '').replace(/[^a-zA-Z0-9 ]/g, '').trim().split(/\s+/);
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
 
 // Small inline sparkline for score trend.
 function Sparkline({ data, color = '#5de4c7', w = 96, h = 30 }) {
@@ -24,7 +32,7 @@ function Sparkline({ data, color = '#5de4c7', w = 96, h = 30 }) {
 function ScoreRing({ score, size = 64, stroke = 6 }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-  const color = score >= 85 ? '#5de4c7' : score >= 72 ? '#38bdf8' : score >= 65 ? '#fbbf24' : '#f87171';
+  const color = score >= 85 ? '#3fc98a' : score >= 72 ? '#4f8ff7' : score >= 65 ? '#e0a72e' : '#f0616a';
   return (
     <div className="score-ring-wrap" style={{ width: size, height: size }}>
       <svg width={size} height={size}>
@@ -43,7 +51,7 @@ function ScoreRing({ score, size = 64, stroke = 6 }) {
 function KpiTile({ icon, value, label, tone, sub }) {
   return (
     <div className={`pf-kpi ${tone || ''}`}>
-      <div className="pf-kpi-icon">{icon}</div>
+      <div className="pf-kpi-icon"><Icon name={icon} size={18} /></div>
       <div className="pf-kpi-body">
         <div className="pf-kpi-value">{value}</div>
         <div className="pf-kpi-label">{label}</div>
@@ -79,19 +87,19 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
     const c = selected;
     return (
       <div className="pf-console">
-        <button className="pf-back" onClick={() => { setSelectedId(null); setShowReport(false); }}>← All Companies</button>
+        <button className="pf-back" onClick={() => { setSelectedId(null); setShowReport(false); }}><Icon name="arrowLeft" size={15} /> All Companies</button>
 
         <div className="pf-drill-hero">
           <div className="pf-drill-id">
-            <div className="pf-drill-logo" style={{ borderColor: statusColor(c.status) }}>{c.logo}</div>
+            <div className="pf-drill-logo" data-status={c.status}>{initials(c.name)}</div>
             <div>
-              <div className="pf-drill-name">{c.name} {c.live ? <span className="pf-live">● LIVE</span> : <span className="pf-sim">SIMULATED</span>}</div>
+              <div className="pf-drill-name">{c.name} {c.live ? <span className="pf-live">LIVE</span> : <span className="pf-sim">SIMULATED</span>}</div>
               <div className="pf-drill-meta">{c.industry} · {c.domain} · {fmt(c.headcount)} employees</div>
             </div>
           </div>
           <div className="pf-drill-actions">
-            <button className="pf-btn ghost" onClick={onOpenHelpdesk}>🎧 Open Helpdesk</button>
-            <button className="pf-btn" onClick={() => setShowReport((s) => !s)}>📊 {showReport ? 'Hide' : 'Generate'} Report</button>
+            <button className="pf-btn ghost" onClick={onOpenHelpdesk}><Icon name="headset" size={16} /> Open Helpdesk</button>
+            <button className="pf-btn" onClick={() => setShowReport((s) => !s)}><Icon name="clipboard" size={16} /> {showReport ? 'Hide' : 'Generate'} Report</button>
           </div>
         </div>
 
@@ -105,19 +113,19 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
             </div>
           </div>
           <div className="pf-drill-stats">
-            <KpiTile icon="🛡️" value={fmt(c.threatsBlocked)} label="Threats Blocked" />
-            <KpiTile icon="🚨" value={c.alerts.critical} label="Critical Alerts" tone={c.alerts.critical ? 'danger' : 'ok'} />
-            <KpiTile icon="🎫" value={c.openTickets} label="Open Tickets" />
-            <KpiTile icon="🔐" value={`${c.mfaCoverage}%`} label="MFA Coverage" />
-            <KpiTile icon="🎓" value={`${c.trainingCompletion}%`} label="Training Done" />
-            <KpiTile icon="📋" value={`${c.compliance.score}%`} label={`${c.compliance.framework} Ready`} />
+            <KpiTile icon="shield" value={fmt(c.threatsBlocked)} label="Threats Blocked" />
+            <KpiTile icon="alert" value={c.alerts.critical} label="Critical Alerts" tone={c.alerts.critical ? 'danger' : 'ok'} />
+            <KpiTile icon="ticket" value={c.openTickets} label="Open Tickets" />
+            <KpiTile icon="lock" value={`${c.mfaCoverage}%`} label="MFA Coverage" />
+            <KpiTile icon="book" value={`${c.trainingCompletion}%`} label="Training Done" />
+            <KpiTile icon="clipboard" value={`${c.compliance.score}%`} label={`${c.compliance.framework} Ready`} />
           </div>
         </div>
 
         {showReport && (
           <div className="pf-report">
             <div className="pf-report-hdr">
-              <h3>📄 Security Posture Report — {c.name}</h3>
+              <h3>Security Posture Report — {c.name}</h3>
               <div className="pf-report-sub">Generated {new Date().toLocaleDateString()} · CyproSecure 360 · {c.compliance.framework}</div>
             </div>
             <div className="pf-report-grid">
@@ -131,14 +139,14 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
               <div className="pf-report-row"><span>Open Helpdesk Tickets</span><strong>{c.openTickets}</strong></div>
             </div>
             <div className="pf-report-actions">
-              <button className="pf-btn" onClick={() => window.print()}>🖨️ Print / Save PDF</button>
+              <button className="pf-btn" onClick={() => window.print()}><Icon name="print" size={16} /> Print / Save PDF</button>
             </div>
           </div>
         )}
 
         <div className="pf-drill-cols">
           <div className="pf-panel">
-            <div className="pf-panel-hdr"><h3>👥 Employees Requiring Attention</h3><span className="pf-count">{c.employees.filter((e) => e.status !== 'low').length} flagged</span></div>
+            <div className="pf-panel-hdr"><h3><Icon name="users" size={15} className="h3-ic" />Employees Requiring Attention</h3><span className="pf-count">{c.employees.filter((e) => e.status !== 'low').length} flagged</span></div>
             <div className="pf-emp-list">
               {c.employees.map((e) => (
                 <div key={e.id} className={`pf-emp ${e.status}`}>
@@ -148,7 +156,7 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
                     <div className="pf-emp-issues">
                       {e.issues.length ? e.issues.map((i, idx) => <span key={idx} className="pf-chip">{i}</span>) : <span className="pf-chip ok">No open issues</span>}
                     </div>
-                    <div className="pf-emp-foot">💻 {e.device} · {e.mfa ? '🔐 MFA on' : '⚠️ No MFA'} · {e.lastActive}</div>
+                    <div className="pf-emp-foot">{e.device} · <span className={e.mfa ? 'pf-mfa-on' : 'pf-mfa-off'}>{e.mfa ? 'MFA on' : 'No MFA'}</span> · {e.lastActive}</div>
                   </div>
                   <div className={`pf-emp-risk ${e.status}`}>{e.riskScore}</div>
                 </div>
@@ -157,11 +165,11 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
           </div>
 
           <div className="pf-panel">
-            <div className="pf-panel-hdr"><h3>🚨 Recent Alerts</h3><span className="pf-live-dot">● Live</span></div>
+            <div className="pf-panel-hdr"><h3><Icon name="alert" size={15} className="h3-ic" />Recent Alerts</h3><span className="pf-live-dot"><i className="pf-dot" />Live</span></div>
             <div className="pf-alert-list">
               {c.recentAlerts.map((a, idx) => (
                 <div key={idx} className={`pf-alert ${a.sev}`}>
-                  <span className="pf-alert-icon">{a.icon}</span>
+                  <span className={`pf-alert-dot ${a.sev}`} />
                   <div><div className="pf-alert-title">{a.title}</div><div className="pf-alert-detail">{a.detail}</div><div className="pf-alert-time">{a.time}</div></div>
                 </div>
               ))}
@@ -180,23 +188,23 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
           <h1>Portfolio Command Center</h1>
           <p>All {rollup.companies} managed organizations · {fmt(rollup.employeesProtected)} employees protected</p>
         </div>
-        <div className="pf-hero-badge"><span className="pf-live-dot">● Live</span> CyproSecure 360</div>
+        <div className="pf-hero-badge"><span className="pf-live-dot"><i className="pf-dot" />Live</span> CyproSecure 360</div>
       </div>
 
       <div className="pf-rollup">
-        <KpiTile icon="🏢" value={rollup.companies} label="Companies" sub={`${rollup.liveCompanies} live`} />
-        <KpiTile icon="👥" value={fmt(rollup.employeesProtected)} label="Employees Protected" />
-        <KpiTile icon="📈" value={rollup.avgSecurityScore} label="Avg Security Score" tone={rollup.avgSecurityScore >= 80 ? 'ok' : 'warn'} />
-        <KpiTile icon="🛡️" value={fmt(rollup.threatsBlocked)} label="Threats Blocked" />
-        <KpiTile icon="🚨" value={rollup.criticalAlerts} label="Critical Alerts" tone={rollup.criticalAlerts ? 'danger' : 'ok'} />
-        <KpiTile icon="🎫" value={rollup.openTickets} label="Open Tickets" />
-        <KpiTile icon="⚠️" value={rollup.atRisk} label="Need Attention" tone={rollup.atRisk ? 'warn' : 'ok'} />
-        <KpiTile icon="📋" value={`${rollup.avgCompliance}%`} label="Avg Compliance" />
+        <KpiTile icon="building" value={rollup.companies} label="Companies" sub={`${rollup.liveCompanies} live`} />
+        <KpiTile icon="users" value={fmt(rollup.employeesProtected)} label="Employees Protected" />
+        <KpiTile icon="gauge" value={rollup.avgSecurityScore} label="Avg Security Score" tone={rollup.avgSecurityScore >= 80 ? 'ok' : 'warn'} />
+        <KpiTile icon="shield" value={fmt(rollup.threatsBlocked)} label="Threats Blocked" />
+        <KpiTile icon="alert" value={rollup.criticalAlerts} label="Critical Alerts" tone={rollup.criticalAlerts ? 'danger' : 'ok'} />
+        <KpiTile icon="ticket" value={rollup.openTickets} label="Open Tickets" />
+        <KpiTile icon="incident" value={rollup.atRisk} label="Need Attention" tone={rollup.atRisk ? 'warn' : 'ok'} />
+        <KpiTile icon="clipboard" value={`${rollup.avgCompliance}%`} label="Avg Compliance" />
       </div>
 
       <div className="pf-toolbar">
         <div className="pf-search">
-          <span>🔍</span>
+          <Icon name="search" size={16} />
           <input placeholder="Search companies…" value={query} onChange={(e) => setQuery(e.target.value)} />
         </div>
         <div className="pf-sort">
@@ -214,7 +222,7 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
         {visible.map((c) => (
           <button key={c.tenantId} className={`pf-card ${c.status}`} onClick={() => setSelectedId(c.tenantId)}>
             <div className="pf-card-top">
-              <div className="pf-card-logo">{c.logo}</div>
+              <div className="pf-card-logo" data-status={c.status}>{initials(c.name)}</div>
               <div className="pf-card-id">
                 <div className="pf-card-name">{c.name}</div>
                 <div className="pf-card-industry">{c.industry}</div>
@@ -231,7 +239,7 @@ export default function PortfolioConsole({ onOpenHelpdesk, initialCompanyId = nu
               <div><span className="pf-cs-v">{c.openTickets}</span><span className="pf-cs-l">Tickets</span></div>
               <div><span className="pf-cs-v">{c.compliance.score}%</span><span className="pf-cs-l">{c.compliance.framework}</span></div>
             </div>
-            <div className="pf-card-foot">{c.live ? <span className="pf-live">● LIVE DATA</span> : <span className="pf-sim">SIMULATED</span>} <span className="pf-open">Open →</span></div>
+            <div className="pf-card-foot">{c.live ? <span className="pf-live"><i className="pf-dot" />LIVE DATA</span> : <span className="pf-sim">SIMULATED</span>} <span className="pf-open">Open <Icon name="arrowRight" size={13} /></span></div>
           </button>
         ))}
       </div>

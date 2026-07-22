@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createTicket as apiCreateTicket } from '../services/dashboardService';
+import Icon from './Icon';
 import './HelpdeskChat.css';
 
 /**
@@ -13,12 +14,12 @@ import './HelpdeskChat.css';
  */
 
 const CATEGORIES = [
-  { key: 'account', label: '🔑 Account / Login', tier: 1 },
-  { key: 'email', label: '📧 Email / M365', tier: 1 },
-  { key: 'device', label: '💻 Device / Endpoint', tier: 1 },
-  { key: 'security', label: '🛡️ Security Incident', tier: 2 },
-  { key: 'access', label: '🔐 Access Request', tier: 1 },
-  { key: 'other', label: '❓ Something else', tier: 1 },
+  { key: 'account', label: 'Account / Login', icon: 'key', tier: 1 },
+  { key: 'email', label: 'Email / M365', icon: 'mail', tier: 1 },
+  { key: 'device', label: 'Device / Endpoint', icon: 'monitor', tier: 1 },
+  { key: 'security', label: 'Security Incident', icon: 'incident', tier: 2 },
+  { key: 'access', label: 'Access Request', icon: 'lock', tier: 1 },
+  { key: 'other', label: 'Something else', icon: 'help', tier: 1 },
 ];
 
 // Deterministic-enough ticket number without Math.random.
@@ -40,7 +41,7 @@ function triage(text) {
 
 export default function HelpdeskChat({ open, onClose, userName = 'there', company = 'your organization' }) {
   const [messages, setMessages] = useState([
-    { role: 'agent', tier: 1, text: `Hi ${userName.split(' ')[0]}! 👋 You've reached the CyproSecure Helpdesk (Tier 1). Tell me what's going on, or pick a category below and I'll get you sorted or route you to Tier 2.` },
+    { role: 'agent', tier: 1, text: `Hi ${userName.split(' ')[0]} — you've reached the CyproSecure Helpdesk (Tier 1). Describe the issue, or pick a category below, and I'll resolve it or route you to Tier 2.` },
   ]);
   const [tickets, setTickets] = useState([]);
   const [input, setInput] = useState('');
@@ -122,18 +123,18 @@ export default function HelpdeskChat({ open, onClose, userName = 'there', compan
       <div className="hd-panel" onClick={(e) => e.stopPropagation()}>
         <div className="hd-head">
           <div className="hd-head-id">
-            <div className="hd-avatar">🎧</div>
+            <div className="hd-avatar"><Icon name="headset" size={19} /></div>
             <div>
               <div className="hd-title">CyproSecure Helpdesk</div>
               <div className="hd-sub"><span className="hd-dot" /> Tier 1 &amp; Tier 2 · connected to your team</div>
             </div>
           </div>
-          <button className="hd-close" onClick={onClose}>✕</button>
+          <button className="hd-close" onClick={onClose} aria-label="Close">✕</button>
         </div>
 
         <div className="hd-tabs">
-          <button className={tab === 'chat' ? 'active' : ''} onClick={() => setTab('chat')}>💬 Chat</button>
-          <button className={tab === 'queue' ? 'active' : ''} onClick={() => setTab('queue')}>🎫 Ticket Queue {tickets.length > 0 && <span className="hd-badge">{tickets.length}</span>}</button>
+          <button className={tab === 'chat' ? 'active' : ''} onClick={() => setTab('chat')}>Chat</button>
+          <button className={tab === 'queue' ? 'active' : ''} onClick={() => setTab('queue')}>Ticket Queue {tickets.length > 0 && <span className="hd-badge">{tickets.length}</span>}</button>
         </div>
 
         {tab === 'chat' ? (
@@ -150,7 +151,7 @@ export default function HelpdeskChat({ open, onClose, userName = 'there', compan
             </div>
             <div className="hd-quick">
               {CATEGORIES.map((c) => (
-                <button key={c.key} onClick={() => { push({ role: 'user', text: c.label }); respond(c.label, c.key); }}>{c.label}</button>
+                <button key={c.key} onClick={() => { push({ role: 'user', text: c.label }); respond(c.label, c.key); }}><Icon name={c.icon} size={14} /> {c.label}</button>
               ))}
             </div>
             <div className="hd-input">

@@ -167,5 +167,6 @@ export function computeRollup(companies = getPortfolio()) {
 }
 
 export function statusColor(status) {
-  return { excellent: '#5de4c7', good: '#38bdf8', fair: '#fbbf24', 'at-risk': '#f87171' }[status] || '#94a3b8';
+  // Muted, enterprise-SOC semantic palette (SentinelOne-like).
+  return { excellent: '#3fc98a', good: '#4f8ff7', fair: '#e0a72e', 'at-risk': '#f0616a' }[status] || '#8b93a4';
 }
