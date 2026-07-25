@@ -92,4 +92,22 @@
 .hd-fab:hover { background: #171a24; border-color: #7c6cff; }
 .hd-fab .hd-fab-icon { display: inline-flex; color: #7c6cff; }
 
+/* ---- Light theme ---- */
+.dashboard.light .hd-panel {
+  --hd-accent: #6b57ff;
+  --hd-panel: #ffffff; --hd-elev: #f4f5f8; --hd-border: rgba(20, 22, 28, .10);
+  --hd-text: #14161c; --hd-muted: #5b6472; --hd-faint: #8a92a0;
+  --hd-ok: #1a9d5f; --hd-crit: #d83a44; --hd-warn: #b7791f;
+  box-shadow: 0 24px 60px rgba(20, 22, 28, .22);
+}
+.dashboard.light .hd-msg-tag.tier1 { background: rgba(20, 22, 28, .05); }
+.dashboard.light .hd-ticket-status { background: rgba(20, 22, 28, .05); }
+.dashboard.light .hd-msg.agent .hd-bubble { color: #2a2e38; }
+.dashboard.light .hd-ticket-summary { color: #2a2e38; }
+.dashboard.light .hd-fab {
+  background: #ffffff; color: #14161c; border-color: rgba(107, 87, 255, .4);
+  box-shadow: 0 8px 24px rgba(20, 22, 28, .14);
+}
+.dashboard.light .hd-fab:hover { background: #f4f5f8; border-color: #6b57ff; }
+
 @media (max-width: 520px) { .hd-overlay { padding: 0; } .hd-panel { width: 100%; height: 100%; border-radius: 0; } }

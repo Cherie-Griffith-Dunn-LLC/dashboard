@@ -36,7 +36,7 @@ function ScoreRing({ score, size = 64, stroke = 6 }) {
   return (
     <div className="score-ring-wrap" style={{ width: size, height: size }}>
       <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(255,255,255,.08)" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(128,128,128,.22)" strokeWidth={stroke} />
         <circle
           cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c - (score / 100) * c}

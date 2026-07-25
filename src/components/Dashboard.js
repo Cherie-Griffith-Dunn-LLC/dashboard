@@ -1217,8 +1217,8 @@ function Dashboard() {
                 </button>
               </div>
             )}
-            <button className="theme-toggle" onClick={toggleTheme} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
-              {darkMode ? '☀️' : '🌙'}
+            <button className="theme-toggle" onClick={toggleTheme} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+              <Icon name={darkMode ? 'sun' : 'moon'} size={18} />
             </button>
             <div className="user-profile">
               <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
