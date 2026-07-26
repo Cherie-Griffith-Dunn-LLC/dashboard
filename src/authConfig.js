@@ -8,10 +8,10 @@ export const msalConfig = {
     authority: "https://login.microsoftonline.com/common",
     
     // Redirect URI after login (must match Azure AD exactly)
-    redirectUri: "https://app.cyproteck.com",
-    
+    redirectUri: "https://app.cyprosecure.com",
+
     // Post-logout redirect
-    postLogoutRedirectUri: "https://app.cyproteck.com",
+    postLogoutRedirectUri: "https://app.cyprosecure.com",
   },
   cache: {
     cacheLocation: "sessionStorage",

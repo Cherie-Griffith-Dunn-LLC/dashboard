@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useMsal } from '@azure/msal-react';
+import PortfolioConsole from './PortfolioConsole';
+import HelpdeskChat from './HelpdeskChat';
+import Icon from './Icon';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -8,16 +11,9 @@ function Dashboard() {
   const [darkMode, setDarkMode] = useState(true);
   const [selectedOrg, setSelectedOrg] = useState('all');
   const [currentPage, setCurrentPage] = useState('dashboard');
-  
-  const [chatOpen, setChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([
-    {
-      role: 'assistant',
-      content: "Hi! I'm your CYPROSECURE 360 AI assistant. I can help you with:\n\n🔒 Security Questions\n💼 Microsoft 365 Issues\n🛠️ Tier 1 Help Desk Support\n🛡️ Defender & Sentinel Insights\n\nHow can I assist you today?"
-    }
-  ]);
-  const [userInput, setUserInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [helpdeskOpen, setHelpdeskOpen] = useState(false);
+  // MSSP owners can preview the Company Admin and Employee experiences: 'mssp' | 'admin' | 'employee'
+  const [viewAs, setViewAs] = useState('mssp');
 
   const user = accounts[0];
   const userName = user?.name || 'User';
@@ -80,8 +76,15 @@ function Dashboard() {
   
   const isMSPOwner = tenantId === CYPROTECK_TENANT_ID && hasTenantRole;
   
-  const isBusinessOwner = clientTenant?.isActive && 
+  const isBusinessOwner = clientTenant?.isActive &&
                           (hasBusinessOwnerRole || BUSINESS_OWNER_EMAILS.includes(userEmail));
+
+  // Effective view. MSSP owners (Cyproteck) can preview the Company Admin and
+  // Employee experiences via the "View as" switcher; everyone else is locked to
+  // the view their identity grants them.
+  const effectiveMSP = isMSPOwner && viewAs === 'mssp';
+  const effectiveBusiness = isBusinessOwner || (isMSPOwner && viewAs === 'admin');
+  const effectiveEmployee = (!isMSPOwner && !isBusinessOwner) || (isMSPOwner && viewAs === 'employee');
   
   console.log('🔍 User Role Check:', {
     userName,
@@ -153,6 +156,88 @@ function Dashboard() {
     }
   ];
 
+  // Security awareness training catalog (shared across roles)
+  const trainingCourses = [
+    {
+      id: 'phishing-101',
+      title: 'Phishing Awareness',
+      icon: '🎣',
+      category: 'Email Security',
+      duration: '25 min',
+      lessons: 6,
+      level: 'Required',
+      description: 'Spot malicious emails, credential harvesting, and business email compromise before you click.',
+      enrolled: 156,
+      completion: 91,
+      status: 'completed'
+    },
+    {
+      id: 'passwords-mfa',
+      title: 'Passwords & MFA',
+      icon: '🔐',
+      category: 'Access Security',
+      duration: '20 min',
+      lessons: 5,
+      level: 'Required',
+      description: 'Build strong passphrases, use a password manager, and set up multi-factor authentication.',
+      enrolled: 156,
+      completion: 85,
+      status: 'completed'
+    },
+    {
+      id: 'data-protection',
+      title: 'Data Protection & Privacy',
+      icon: '🗄️',
+      category: 'Compliance',
+      duration: '30 min',
+      lessons: 7,
+      level: 'Required',
+      description: 'Handle sensitive data, understand HIPAA/PII obligations, and prevent accidental exposure.',
+      enrolled: 156,
+      completion: 78,
+      status: 'completed'
+    },
+    {
+      id: 'remote-work',
+      title: 'Secure Remote Work',
+      icon: '🏠',
+      category: 'Endpoint Security',
+      duration: '22 min',
+      lessons: 5,
+      level: 'Required',
+      description: 'Protect company data on home networks, personal devices, and public Wi-Fi.',
+      enrolled: 156,
+      completion: 64,
+      status: 'in-progress'
+    },
+    {
+      id: 'social-engineering',
+      title: 'Social Engineering Defense',
+      icon: '🎭',
+      category: 'Awareness',
+      duration: '28 min',
+      lessons: 6,
+      level: 'Recommended',
+      description: 'Recognize pretexting, vishing, and impersonation tactics used to bypass technical controls.',
+      enrolled: 132,
+      completion: 42,
+      status: 'not-started'
+    },
+    {
+      id: 'incident-response',
+      title: 'Incident Reporting',
+      icon: '🚨',
+      category: 'Response',
+      duration: '18 min',
+      lessons: 4,
+      level: 'Recommended',
+      description: 'Know exactly what to do and who to contact the moment you suspect a security incident.',
+      enrolled: 118,
+      completion: 55,
+      status: 'not-started'
+    }
+  ];
+
   const globalThreats = [
     { country: 'United States', count: 847, severity: 'high', city: 'Multiple Locations', flag: '🇺🇸' },
     { country: 'China', count: 612, severity: 'high', city: 'Beijing/Shanghai', flag: '🇨🇳' },
@@ -180,104 +265,17 @@ function Dashboard() {
     setDarkMode(!darkMode);
   };
 
-  const handleChatSubmit = async (e) => {
-    e.preventDefault();
-    if (!userInput.trim() || isLoading) return;
-
-    const newMessage = { role: 'user', content: userInput };
-    setChatMessages(prev => [...prev, newMessage]);
-    setUserInput('');
-    setIsLoading(true);
-
-    try {
-      const systemPrompt = `You are the CYPROSECURE 360 AI Assistant, an expert cybersecurity and IT support chatbot.
-
-# YOUR EXPERTISE:
-1. **Microsoft 365 Security** - Defender, Sentinel, Intune, Azure AD
-2. **Tier 1 Help Desk** - Common IT issues, password resets, MFA, device setup
-3. **Security Best Practices** - Phishing, malware, compliance, incident response
-4. **Network Security** - Firewalls, VPNs, endpoint protection
-
-# HELP DESK KNOWLEDGE BASE:
-
-## Password & MFA Issues:
-- **Password Reset**: Guide user to portal.office.com → Security Info → Change Password
-- **MFA Setup**: Install Microsoft Authenticator app → portal.office.com → Security Info → Add method
-- **MFA Not Working**: Try "I have a code instead" or contact admin for temporary bypass
-- **Locked Account**: Wait 30 minutes for auto-unlock or contact admin immediately
-
-## Microsoft 365 Common Issues:
-- **Outlook Not Syncing**: Check internet → Sign out/in → File → Account Settings → Clear cache → Restart app
-- **Teams Call Issues**: Check microphone permissions → Update Teams → Test in web version (teams.microsoft.com)
-- **OneDrive Not Syncing**: Restart OneDrive → Check storage quota → Re-link account in settings
-- **Can't Access SharePoint**: Check permissions with team owner → Clear browser cache → Try incognito mode
-
-## Security Incidents:
-- **Phishing Email**: DON'T click links → Report as phishing in Outlook → Delete immediately → Check recent account activity
-- **Ransomware Suspected**: Disconnect from network IMMEDIATELY → Don't pay ransom → Contact IT urgently → Don't touch any files
-- **Compromised Account**: Change password NOW → Enable MFA immediately → Review recent activity at portal.office.com/account
-- **Malware Detected**: Don't ignore → Run full Microsoft Defender scan → Isolate device from network if spreading
-
-## Device Issues:
-- **Slow Computer**: Check if Defender scan is running → Close unused apps → Restart device → Check for Windows updates
-- **Can't Connect to VPN**: Verify credentials → Update VPN client → Check internet connection → Try different network
-- **Printer Not Working**: Check physical connection → Restart printer and computer → Update/reinstall drivers
-
-# RESPONSE STYLE:
-- Be concise and actionable (2-4 sentences)
-- Use emojis sparingly (🔒 security, ✅ success, ⚠️ warning, 🛠️ technical)
-- Provide step-by-step instructions when needed
-- If issue requires escalation, say so clearly
-- Always be professional and helpful
-- Never make up information - if unsure, say "Contact your IT administrator for help with this specific issue"
-
-Respond to this query: ${userInput}`;
-
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 2048,
-          system: systemPrompt,
-          messages: [
-            ...chatMessages.filter(m => m.role !== 'system'),
-            newMessage
-          ]
-        })
-      });
-
-      const data = await response.json();
-      
-      if (data.content && data.content[0]) {
-        const assistantMessage = {
-          role: 'assistant',
-          content: data.content[0].text
-        };
-        setChatMessages(prev => [...prev, assistantMessage]);
-      } else {
-        throw new Error('Invalid response format');
-      }
-    } catch (error) {
-      console.error('Chat error:', error);
-      setChatMessages(prev => [...prev, {
-        role: 'assistant',
-        content: '⚠️ Sorry, I encountered an error. Please try again or contact your IT administrator if the issue persists.'
-      }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const renderDashboard = () => (
     <>
-      {/* MSSP OWNER VIEW */}
-      {isMSPOwner && (
+      {/* MSSP OWNER VIEW — Portfolio Command Center (all companies, drill-down, reporting) */}
+      {effectiveMSP && (
+        <PortfolioConsole onOpenHelpdesk={() => setHelpdeskOpen(true)} />
+      )}
+      {/* Legacy single-org MSSP layout — retained for reference, superseded by PortfolioConsole */}
+      {false && (
         <>
           <div className="org-selector-top">
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select value={selectedOrg} onChange={(e) => setSelectedOrg(e.target.value)} className="org-dropdown">
               <option value="all">All Organizations</option>
               {Object.entries(CLIENT_TENANTS).map(([tid, client]) => (
@@ -488,8 +486,8 @@ Respond to this query: ${userInput}`;
         </>
       )}
 
-      {/* BUSINESS OWNER VIEW */}
-      {isBusinessOwner && (
+      {/* BUSINESS OWNER / COMPANY ADMIN VIEW */}
+      {effectiveBusiness && (
         <>
           <div className="company-header">
             <div className="company-info-header">
@@ -652,7 +650,7 @@ Respond to this query: ${userInput}`;
       )}
 
       {/* EMPLOYEE VIEW */}
-      {!isMSPOwner && !isBusinessOwner && (
+      {effectiveEmployee && (
         <>
           <div className="personal-hero">
             <div className="personal-welcome">
@@ -841,15 +839,130 @@ Respond to this query: ${userInput}`;
     </div>
   );
 
-  const renderTrainingPage = () => (
-    <div className="page-content">
-      <h1>🎓 Security Training</h1>
-      <p className="page-subtitle">Complete required security awareness training</p>
-      <div className="content-placeholder">
-        <p>Training dashboard coming soon...</p>
+  const renderTrainingPage = () => {
+    const statusLabel = {
+      'completed': 'Completed',
+      'in-progress': 'In Progress',
+      'not-started': effectiveEmployee ? 'Start Course' : 'Assign'
+    };
+
+    return (
+      <div className="training-page">
+        <div className="training-hero">
+          <div>
+            <h1>🎓 Security Awareness Training</h1>
+            <p className="page-subtitle">
+              {effectiveMSP && 'Training compliance across all managed organizations'}
+              {effectiveBusiness && `Assign and track security training for ${displayCompanyName}`}
+              {effectiveEmployee && 'Complete your assigned courses to stay secure and compliant'}
+            </p>
+          </div>
+        </div>
+
+        {/* Training stats — role aware */}
+        <div className="training-stats">
+          {effectiveEmployee ? (
+            <>
+              <div className="training-stat-card">
+                <div className="tstat-value">3<span className="tstat-total">/6</span></div>
+                <div className="tstat-label">Courses Completed</div>
+              </div>
+              <div className="training-stat-card">
+                <div className="tstat-value">1</div>
+                <div className="tstat-label">In Progress</div>
+              </div>
+              <div className="training-stat-card warning">
+                <div className="tstat-value">Dec 20</div>
+                <div className="tstat-label">Next Due Date</div>
+              </div>
+              <div className="training-stat-card success">
+                <div className="tstat-value">92%</div>
+                <div className="tstat-label">Avg. Quiz Score</div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="training-stat-card">
+                <div className="tstat-value">{effectiveMSP ? '4' : '1'}</div>
+                <div className="tstat-label">{effectiveMSP ? 'Organizations' : 'Company'}</div>
+              </div>
+              <div className="training-stat-card success">
+                <div className="tstat-value">{effectiveMSP ? '82%' : '85%'}</div>
+                <div className="tstat-label">Overall Completion</div>
+              </div>
+              <div className="training-stat-card warning">
+                <div className="tstat-value">{effectiveMSP ? '58' : '14'}</div>
+                <div className="tstat-label">Overdue Learners</div>
+              </div>
+              <div className="training-stat-card">
+                <div className="tstat-value">{trainingCourses.length}</div>
+                <div className="tstat-label">Active Courses</div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Course catalog */}
+        <div className="section-compact">
+          <div className="section-hdr">
+            <h2>📚 Course Catalog</h2>
+            {!effectiveEmployee && <button className="view-all-sm">+ Assign Courses</button>}
+          </div>
+          <div className="courses-grid">
+            {trainingCourses.map(course => (
+              <div key={course.id} className={`course-card ${course.status}`}>
+                <div className="course-top">
+                  <span className="course-icon">{course.icon}</span>
+                  <span className={`course-level ${course.level === 'Required' ? 'required' : 'recommended'}`}>
+                    {course.level}
+                  </span>
+                </div>
+                <h3 className="course-title">{course.title}</h3>
+                <div className="course-category">{course.category}</div>
+                <p className="course-desc">{course.description}</p>
+                <div className="course-meta">
+                  <span>⏱️ {course.duration}</span>
+                  <span>📖 {course.lessons} lessons</span>
+                </div>
+
+                {effectiveEmployee ? (
+                  <>
+                    {course.status === 'in-progress' && (
+                      <div className="course-progress-bar">
+                        <div className="course-progress-fill" style={{ width: '60%' }}></div>
+                      </div>
+                    )}
+                    <button className={`course-btn ${course.status}`}>
+                      {course.status === 'completed' && '✅ Review'}
+                      {course.status === 'in-progress' && '▶ Continue'}
+                      {course.status === 'not-started' && 'Start Course'}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="course-completion">
+                      <div className="course-completion-head">
+                        <span>Team completion</span>
+                        <span>{course.completion}%</span>
+                      </div>
+                      <div className="course-progress-bar">
+                        <div
+                          className="course-progress-fill"
+                          style={{ width: `${course.completion}%` }}
+                        ></div>
+                      </div>
+                      <div className="course-enrolled">{course.enrolled} learners enrolled</div>
+                    </div>
+                    <button className="course-btn manage">{statusLabel[course.status]}</button>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderAlertsPage = () => (
     <div className="page-content">
@@ -951,8 +1064,31 @@ Respond to this query: ${userInput}`;
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
           <div className="logo">
-            <span className="logo-icon">🛡️</span>
-            {!sidebarCollapsed && <span className="logo-text">CYPROSECURE 360</span>}
+            <span className="logo-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 56" width="34" height="40" role="img" aria-label="CyproSecure 360 shield">
+                <path
+                  d="M24 2 L44 10 V26 C44 40 35 50 24 54 C13 50 4 40 4 26 V10 Z"
+                  fill="var(--accent-primary)"
+                />
+                <path
+                  d="M24 6.5 L39.5 12.7 V26 C39.5 37.5 32 46 24 49.4 C16 46 8.5 37.5 8.5 26 V12.7 Z"
+                  fill="var(--bg-secondary)"
+                />
+                <path
+                  d="M16 27 l6 6 l11 -13"
+                  fill="none"
+                  stroke="var(--accent-primary)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            {!sidebarCollapsed && (
+              <span className="logo-text">
+                CYPRO<span className="logo-accent">SECURE</span> 360
+              </span>
+            )}
           </div>
           {!sidebarCollapsed && <div className="logo-tagline">Visibility Network Security</div>}
         </div>
@@ -976,7 +1112,7 @@ Respond to this query: ${userInput}`;
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
-                <span className="nav-badge">{isMSPOwner ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
+                <span className="nav-badge">{effectiveMSP ? securityData.highAlerts : employees.reduce((sum, e) => sum + e.threats, 0)}</span>
               </>
             )}
           </a>
@@ -1047,7 +1183,7 @@ Respond to this query: ${userInput}`;
         <header className="top-bar">
           <div className="top-bar-left">
             <h2 className="page-title">
-              {currentPage === 'dashboard' && (isMSPOwner ? 'MSP Security Dashboard' : isBusinessOwner ? 'Business Security Dashboard' : 'My Security Dashboard')}
+              {currentPage === 'dashboard' && (effectiveMSP ? 'MSSP Security Dashboard' : effectiveBusiness ? 'Company Security Dashboard' : 'My Security Dashboard')}
               {currentPage === 'threats' && 'Threat Management'}
               {currentPage === 'training' && 'Security Training'}
               {currentPage === 'alerts' && 'Security Alerts'}
@@ -1057,8 +1193,32 @@ Respond to this query: ${userInput}`;
             </h2>
           </div>
           <div className="top-bar-right">
-            <button className="theme-toggle" onClick={toggleTheme} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
-              {darkMode ? '☀️' : '🌙'}
+            {/* MSSP owners can preview the Company Admin and Employee experiences */}
+            {isMSPOwner && (
+              <div className="view-as-switcher" role="group" aria-label="Preview dashboard as role">
+                <span className="view-as-label">View as</span>
+                <button
+                  className={`view-as-btn ${viewAs === 'mssp' ? 'active' : ''}`}
+                  onClick={() => setViewAs('mssp')}
+                >
+                  MSSP
+                </button>
+                <button
+                  className={`view-as-btn ${viewAs === 'admin' ? 'active' : ''}`}
+                  onClick={() => setViewAs('admin')}
+                >
+                  Company Admin
+                </button>
+                <button
+                  className={`view-as-btn ${viewAs === 'employee' ? 'active' : ''}`}
+                  onClick={() => setViewAs('employee')}
+                >
+                  Employee
+                </button>
+              </div>
+            )}
+            <button className="theme-toggle" onClick={toggleTheme} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'} title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+              <Icon name={darkMode ? 'sun' : 'moon'} size={18} />
             </button>
             <div className="user-profile">
               <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
@@ -1081,78 +1241,18 @@ Respond to this query: ${userInput}`;
         </div>
       </div>
 
-      <div className={`chatbot-widget ${chatOpen ? 'open' : ''}`}>
-        {chatOpen ? (
-          <div className="chatbot-container">
-            <div className="chatbot-header">
-              <div className="chatbot-title">
-                <span className="bot-icon">🤖</span>
-                <span>CYPROSECURE AI Assistant</span>
-              </div>
-              <button className="chatbot-close" onClick={() => setChatOpen(false)}>✕</button>
-            </div>
-
-            <div className="chatbot-messages">
-              {chatMessages.map((msg, idx) => (
-                <div key={idx} className={`chat-message ${msg.role}`}>
-                  <div className="message-content">{msg.content}</div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="chat-message assistant">
-                  <div className="message-content typing">
-                    <span></span><span></span><span></span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {chatMessages.length <= 2 && (
-              <div className="suggested-questions">
-                <div className="suggestions-label">Quick Help:</div>
-                <div className="suggestions-grid">
-                  <button className="suggestion-btn" onClick={() => setUserInput("How do I reset my password?")}>
-                    🔐 Reset Password
-                  </button>
-                  <button className="suggestion-btn" onClick={() => setUserInput("I received a suspicious email, what should I do?")}>
-                    📧 Phishing Email
-                  </button>
-                  <button className="suggestion-btn" onClick={() => setUserInput("My Outlook isn't syncing, how do I fix it?")}>
-                    💻 Outlook Issues
-                  </button>
-                  <button className="suggestion-btn" onClick={() => setUserInput("How do I enable MFA?")}>
-                    🔒 Enable MFA
-                  </button>
-                  <button className="suggestion-btn" onClick={() => setUserInput("My computer is running slow")}>
-                    🐌 Slow Computer
-                  </button>
-                  <button className="suggestion-btn" onClick={() => setUserInput("I think my account was compromised")}>
-                    ⚠️ Account Compromised
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <form className="chatbot-input" onSubmit={handleChatSubmit}>
-              <input
-                type="text"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                placeholder="Ask me anything..."
-                disabled={isLoading}
-              />
-              <button type="submit" disabled={isLoading || !userInput.trim()}>
-                ➤
-              </button>
-            </form>
-          </div>
-        ) : (
-          <button className="chatbot-toggle" onClick={() => setChatOpen(true)}>
-            <span className="bot-icon-large">🤖</span>
-            <span className="chat-label">Need Help?</span>
-          </button>
-        )}
-      </div>
+      {/* Helpdesk — Tier 1 → Tier 2 support chat + live ticket queue */}
+      {!helpdeskOpen && (
+        <button className="hd-fab" onClick={() => setHelpdeskOpen(true)}>
+          <span className="hd-fab-icon"><Icon name="headset" size={17} /></span> Helpdesk
+        </button>
+      )}
+      <HelpdeskChat
+        open={helpdeskOpen}
+        onClose={() => setHelpdeskOpen(false)}
+        userName={userName}
+        company={displayCompanyName}
+      />
     </div>
   );
 }
