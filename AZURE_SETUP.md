@@ -2,8 +2,11 @@
 
 End-to-end setup to host the dashboard on **Azure Static Web Apps** with a
 custom domain, Entra ID sign-in, the connector API, and the N-able MSP Manager
-helpdesk integration. Deploy is done from PowerShell (`deploy.ps1`) — no GitHub
-Actions required.
+helpdesk integration.
+
+**No GitHub anywhere.** You do not need a GitHub account and never connect one.
+The code lives in a folder on your PC, and you deploy straight to Azure from
+PowerShell (`deploy.ps1`). GitHub is not used to store the code or to deploy it.
 
 Legend: ✅ = you've already done this · ⬜ = to do.
 
@@ -12,7 +15,13 @@ Legend: ✅ = you've already done this · ⬜ = to do.
 ## Part 0 — Prerequisites (one-time)
 ⬜ An Azure subscription (portal.azure.com, sign in as `cherie@cyproteck.com`).
 ⬜ **Node.js LTS** installed on your PC — https://nodejs.org (verify: `node -v`).
-⬜ The project code on your PC (clone of the repo / this branch).
+⬜ The project folder on your PC: **unzip `cyprosecure-dashboard.zip`** to a
+   location like `C:\cyprosecure-dashboard`. That's your whole project — no
+   cloning, no GitHub.
+
+> There's a leftover `azure-static-web-apps-*.yml` file in the folder — it's an
+> old GitHub Actions workflow and is **not used** by this PowerShell flow. Ignore
+> or delete it.
 
 ---
 
@@ -23,7 +32,9 @@ Legend: ✅ = you've already done this · ⬜ = to do.
    - **Name:** `cyprosecure-dashboard`.
    - **Plan type:** **Standard** (needed for custom auth + more app settings).
    - **Region:** closest to you (e.g. East US 2).
-   - **Deployment source:** choose **Other** (we deploy from PowerShell, not GitHub).
+   - **Deployment source:** choose **Other**. This is the key step — do **not**
+     pick GitHub or Azure DevOps. "Other" gives you a deployment token and skips
+     any GitHub connection entirely.
 3. **Review + create → Create.** When it finishes, **Go to resource**.
 
 > If a Static Web App already exists (the `thankful-desert-05ea0e50f` one), you
