@@ -3,6 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import PortfolioConsole from './PortfolioConsole';
 import HelpdeskChat from './HelpdeskChat';
 import Icon from './Icon';
+import { ThreatsView, AlertsView, TrainingView, ReportsView } from './pages/SecurityTabs';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -829,17 +830,11 @@ function Dashboard() {
     </>
   );
 
-  const renderThreatsPage = () => (
-    <div className="page-content">
-      <h1>⚠️ Active Threats</h1>
-      <p className="page-subtitle">Real-time threat monitoring and analysis</p>
-      <div className="content-placeholder">
-        <p>Threat management dashboard coming soon...</p>
-      </div>
-    </div>
-  );
+  const renderThreatsPage = () => <ThreatsView />;
 
-  const renderTrainingPage = () => {
+  const renderTrainingPage = () => <TrainingView />;
+  // eslint-disable-next-line no-unused-vars
+  const _legacyTrainingPage = () => {
     const statusLabel = {
       'completed': 'Completed',
       'in-progress': 'In Progress',
@@ -964,15 +959,7 @@ function Dashboard() {
     );
   };
 
-  const renderAlertsPage = () => (
-    <div className="page-content">
-      <h1>🚨 Security Alerts</h1>
-      <p className="page-subtitle">Recent security notifications and warnings</p>
-      <div className="content-placeholder">
-        <p>Alerts dashboard coming soon...</p>
-      </div>
-    </div>
-  );
+  const renderAlertsPage = () => <AlertsView />;
 
   const renderMobilePage = () => (
     <div className="mobile-security-page">
@@ -1039,15 +1026,7 @@ function Dashboard() {
     </div>
   );
 
-  const renderReportsPage = () => (
-    <div className="page-content">
-      <h1>📊 Reports & Analytics</h1>
-      <p className="page-subtitle">Download comprehensive security reports</p>
-      <div className="content-placeholder">
-        <p>Reports dashboard coming soon...</p>
-      </div>
-    </div>
-  );
+  const renderReportsPage = () => <ReportsView />;
 
   const renderSettingsPage = () => (
     <div className="page-content">
