@@ -1,27 +1,10 @@
 {
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif,ico}", "/css/*", "/js/*", "/api/*"]
-  },
-  "routes": [
-    {
-      "route": "/login",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/dashboard",
-      "rewrite": "/index.html"
-    },
-    {
-      "route": "/*",
-      "rewrite": "/index.html"
-    }
-  ],
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
-    }
+    "exclude": [
+      "/static/*",
+      "/*.{js,css,ico,png,jpg,jpeg,gif,svg,json,txt,map,webp,woff,woff2}"
+    ]
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
