@@ -3,7 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import PortfolioConsole from './PortfolioConsole';
 import HelpdeskChat from './HelpdeskChat';
 import Icon from './Icon';
-import { ThreatsView, AlertsView, TrainingView, ReportsView } from './pages/SecurityTabs';
+import { ThreatsView, AlertsView, TrainingView, ReportsView, SettingsView } from './pages/SecurityTabs';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -1029,13 +1029,7 @@ function Dashboard() {
   const renderReportsPage = () => <ReportsView />;
 
   const renderSettingsPage = () => (
-    <div className="page-content">
-      <h1>⚙️ Settings</h1>
-      <p className="page-subtitle">Dashboard settings and preferences</p>
-      <div className="content-placeholder">
-        <p>Settings dashboard coming soon...</p>
-      </div>
-    </div>
+    <SettingsView company={displayCompanyName} onToggleTheme={toggleTheme} darkMode={darkMode} />
   );
 
   return (

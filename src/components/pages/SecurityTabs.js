@@ -221,3 +221,62 @@ export function ReportsView() {
     </div>
   );
 }
+
+// ------------------------------ Settings ------------------------------
+const INTEGRATIONS = [
+  { name: 'SentinelOne (via N-able)', kind: 'EDR / threat feed', status: 'simulated', icon: 'shield' },
+  { name: 'Microsoft Defender', kind: 'Endpoint & identity protection', status: 'simulated', icon: 'monitor' },
+  { name: 'Microsoft Sentinel', kind: 'SIEM / alerts', status: 'simulated', icon: 'alert' },
+  { name: 'N-able MSP Manager', kind: 'Helpdesk / ticketing', status: 'setup', icon: 'ticket' },
+];
+const STATUS_LABEL = { connected: 'Connected', simulated: 'Simulated', setup: 'Setup pending' };
+
+export function SettingsView({ company = 'Cyproteck Technologies', onToggleTheme, darkMode }) {
+  const [notify, setNotify] = useState(true);
+  const [autoAssign, setAutoAssign] = useState(true);
+  return (
+    <div className="tab">
+      <TabHead icon="clipboard" title="Settings" subtitle="Integrations, data sources, and preferences" />
+
+      <div className="tab-panel">
+        <div className="panel-hd"><h2><Icon name="shield" size={14} className="hd-ic" />Data Sources &amp; Integrations</h2><span className="panel-note">Connect live feeds to replace simulated data</span></div>
+        <div className="rules">
+          {INTEGRATIONS.map((it) => (
+            <div key={it.name} className="rule" style={{ cursor: 'default' }}>
+              <span className="rule-sev" />
+              <div className="rule-main">
+                <div className="rule-behavior">{it.name}</div>
+                <div className="rule-cond">{it.kind}</div>
+              </div>
+              <div />
+              <div className={`int-status ${it.status}`}>{STATUS_LABEL[it.status]}</div>
+            </div>
+          ))}
+        </div>
+        <div className="peak-note"><Icon name="key" size={13} /><span>Connect these in Azure → your Static Web App → Configuration (keys stay server-side, never in the browser).</span></div>
+      </div>
+
+      <div className="tab-panel">
+        <div className="panel-hd"><h2><Icon name="users" size={14} className="hd-ic" />Preferences</h2></div>
+        <div className="set-rows">
+          <div className="set-row"><div><div className="set-t">Appearance</div><div className="set-d">Light or dark theme</div></div>
+            <button className="set-toggle-btn" onClick={onToggleTheme}><Icon name={darkMode ? 'sun' : 'moon'} size={15} /> {darkMode ? 'Switch to light' : 'Switch to dark'}</button></div>
+          <div className="set-row"><div><div className="set-t">Email notifications</div><div className="set-d">Critical alerts &amp; weekly summary</div></div>
+            <button className={`toggle ${notify ? 'on' : ''}`} onClick={() => setNotify((v) => !v)}><span /></button></div>
+          <div className="set-row"><div><div className="set-t">Auto-assign training</div><div className="set-d">Assign courses automatically on risky behavior</div></div>
+            <button className={`toggle ${autoAssign ? 'on' : ''}`} onClick={() => setAutoAssign((v) => !v)}><span /></button></div>
+        </div>
+      </div>
+
+      <div className="tab-panel">
+        <div className="panel-hd"><h2><Icon name="building" size={14} className="hd-ic" />Organization</h2></div>
+        <div className="report-rows" style={{ padding: '4px 14px 14px' }}>
+          <div className="rr"><span>Organization</span><b>{company}</b></div>
+          <div className="rr"><span>Product</span><b>CyproSecure 360</b></div>
+          <div className="rr"><span>Primary domain</span><b>app.cyproteck.com</b></div>
+          <div className="rr"><span>Plan</span><b>MSSP · Standard</b></div>
+        </div>
+      </div>
+    </div>
+  );
+}
