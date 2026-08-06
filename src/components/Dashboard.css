@@ -64,8 +64,11 @@
 }
 
 .sidebar-header {
-  padding: 25px 20px;
+  padding: 22px 20px;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .logo {
@@ -100,8 +103,7 @@
 .logo-tagline {
   font-size: 10px;
   color: var(--text-secondary);
-  text-align: center;
-  margin-top: 8px;
+  text-align: left;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -139,8 +141,11 @@
 }
 
 .nav-icon {
-  font-size: 20px;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
 }
 
 .nav-label {

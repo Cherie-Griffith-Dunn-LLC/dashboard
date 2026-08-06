@@ -3,6 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import PortfolioConsole from './PortfolioConsole';
 import HelpdeskChat from './HelpdeskChat';
 import Icon from './Icon';
+import CyproteckLogo from './CyproteckLogo';
 import { ThreatsView, AlertsView, TrainingView, ReportsView, SettingsView, MobileView } from './pages/SecurityTabs';
 import './Dashboard.css';
 
@@ -1038,34 +1039,8 @@ function Dashboard() {
     <div className={`dashboard ${darkMode ? 'dark' : 'light'}`}>
       <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
-          <div className="logo">
-            <span className="logo-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 56" width="34" height="40" role="img" aria-label="CyproSecure 360 shield">
-                <path
-                  d="M24 2 L44 10 V26 C44 40 35 50 24 54 C13 50 4 40 4 26 V10 Z"
-                  fill="var(--accent-primary)"
-                />
-                <path
-                  d="M24 6.5 L39.5 12.7 V26 C39.5 37.5 32 46 24 49.4 C16 46 8.5 37.5 8.5 26 V12.7 Z"
-                  fill="var(--bg-secondary)"
-                />
-                <path
-                  d="M16 27 l6 6 l11 -13"
-                  fill="none"
-                  stroke="var(--accent-primary)"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-            {!sidebarCollapsed && (
-              <span className="logo-text">
-                CYPRO<span className="logo-accent">SECURE</span> 360
-              </span>
-            )}
-          </div>
-          {!sidebarCollapsed && <div className="logo-tagline">Visibility Network Security</div>}
+          <CyproteckLogo height={sidebarCollapsed ? 30 : 30} tone={darkMode ? 'light' : 'dark'} showText={!sidebarCollapsed} />
+          {!sidebarCollapsed && <div className="logo-tagline">CyproSecure 360 · Network Security</div>}
         </div>
 
         <nav className="sidebar-nav">
@@ -1074,7 +1049,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('dashboard'); }}
           >
-            <span className="nav-icon">📊</span>
+            <span className="nav-icon"><Icon name="grid" size={18} /></span>
             {!sidebarCollapsed && <span className="nav-label">Dashboard</span>}
           </a>
 
@@ -1083,7 +1058,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'threats' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('threats'); }}
           >
-            <span className="nav-icon">⚠️</span>
+            <span className="nav-icon"><Icon name="shield" size={18} /></span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Threats</span>
@@ -1097,7 +1072,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'training' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('training'); }}
           >
-            <span className="nav-icon">🎓</span>
+            <span className="nav-icon"><Icon name="book" size={18} /></span>
             {!sidebarCollapsed && <span className="nav-label">Training</span>}
           </a>
 
@@ -1106,7 +1081,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'alerts' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('alerts'); }}
           >
-            <span className="nav-icon">🚨</span>
+            <span className="nav-icon"><Icon name="alert" size={18} /></span>
             {!sidebarCollapsed && (
               <>
                 <span className="nav-label">Alerts</span>
@@ -1120,7 +1095,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'mobile' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('mobile'); }}
           >
-            <span className="nav-icon">📱</span>
+            <span className="nav-icon"><Icon name="phone" size={18} /></span>
             {!sidebarCollapsed && <span className="nav-label">Mobile Security</span>}
           </a>
 
@@ -1129,7 +1104,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('reports'); }}
           >
-            <span className="nav-icon">📈</span>
+            <span className="nav-icon"><Icon name="clipboard" size={18} /></span>
             {!sidebarCollapsed && <span className="nav-label">Reports</span>}
           </a>
 
@@ -1138,7 +1113,7 @@ function Dashboard() {
             className={`nav-item ${currentPage === 'settings' ? 'active' : ''}`}
             onClick={(e) => { e.preventDefault(); navigateTo('settings'); }}
           >
-            <span className="nav-icon">⚙️</span>
+            <span className="nav-icon"><Icon name="settings" size={18} /></span>
             {!sidebarCollapsed && <span className="nav-label">Settings</span>}
           </a>
         </nav>

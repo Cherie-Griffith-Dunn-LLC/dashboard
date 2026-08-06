@@ -29,6 +29,9 @@ const PATHS = {
   dot: <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none" />,
   sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></>,
   moon: <path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" />,
+  grid: <><rect x="4" y="4" width="7" height="7" rx="1.2" /><rect x="13" y="4" width="7" height="7" rx="1.2" /><rect x="4" y="13" width="7" height="7" rx="1.2" /><rect x="13" y="13" width="7" height="7" rx="1.2" /></>,
+  settings: <><path d="M4 7h9M19 7h1" /><circle cx="15.5" cy="7" r="2.2" /><path d="M4 17h5M15 17h5" /><circle cx="11.5" cy="17" r="2.2" /></>,
+  phone: <><rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M10.5 18h3" /></>,
 };
 
 export default function Icon({ name, size = 18, className = '', strokeWidth = 1.6 }) {
