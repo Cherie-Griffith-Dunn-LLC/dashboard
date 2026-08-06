@@ -43,7 +43,7 @@ locationId, issueTypeId, projectId }`. Auth is **Basic** (a service login).
 | `MSPMANAGER_BASE_URL` | `https://api.mspmanager.com/odata` |
 | `MSPMANAGER_AUTH` | `basic` |
 | `MSPMANAGER_USER` / `MSPMANAGER_PASSWORD` | a dedicated MSP Manager service login |
-| `MSPMANAGER_TICKETS_PATH` | `/Tickets` (default) |
+| `MSPMANAGER_TICKETS_PATH` | `/tickets` (default, lowercase) |
 | `MSPMANAGER_DEFAULT_CONTACT_ID` | GUID — default requester contact (from `GET /Contacts`) |
 | `MSPMANAGER_ISSUE_TYPE_ID` | GUID — default issue type (from `GET /IssueTypes`) |
 | `MSPMANAGER_SERVICE_ITEM_ID` | GUID — default service item (from `GET /ServiceItems`) |

@@ -58,7 +58,8 @@ class MspManagerConnector extends BasePsaConnector {
   }
 
   _ticketsPath() {
-    return this.env.MSPMANAGER_TICKETS_PATH || '/Tickets';
+    // OData entity sets are lowercase (confirmed: GET /odata/locations).
+    return this.env.MSPMANAGER_TICKETS_PATH || '/tickets';
   }
 
   _headers() {
