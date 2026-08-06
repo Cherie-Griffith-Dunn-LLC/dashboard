@@ -1026,7 +1026,7 @@ function Dashboard() {
     </div>
   );
 
-  const renderReportsPage = () => <ReportsView />;
+  const renderReportsPage = () => <ReportsView company={displayCompanyName} />;
 
   const renderSettingsPage = () => (
     <SettingsView company={displayCompanyName} onToggleTheme={toggleTheme} darkMode={darkMode} />

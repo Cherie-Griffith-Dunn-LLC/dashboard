@@ -171,3 +171,25 @@ export function getAssignments() {
 export function severityColor(sev) {
   return { critical: '#f0616a', high: '#f0616a', medium: '#e0a72e', low: '#4f8ff7' }[sev] || '#8b93a4';
 }
+
+// A short knowledge check per course (so a course can actually be completed).
+const CHECKS = {
+  'password-mfa': { q: 'What is the best way to protect your accounts?', options: ['Reuse one strong password everywhere', 'Use a password manager + MFA', 'Write passwords on a sticky note'], answer: 1 },
+  'public-wifi': { q: 'You need to work from a coffee shop. What should you do?', options: ['Connect to open Wi-Fi and log in normally', 'Turn on the company VPN first', 'Use any network named "Free Wi-Fi"'], answer: 1 },
+  'removable-media': { q: 'You find a USB drive in the parking lot. What do you do?', options: ['Plug it in to see who it belongs to', 'Hand it to IT — never plug it in', 'Use it for extra storage'], answer: 1 },
+  'data-handling': { q: 'How should you share protected client data?', options: ['Screenshot it and text it', 'Keep it inside approved apps only', 'Email it to your personal account'], answer: 1 },
+  'session-lock': { q: 'You step away for a coffee break. What should you do?', options: ['Leave it — you\'ll be right back', 'Lock the screen (Win+L)', 'Just turn off the monitor'], answer: 1 },
+  'phishing': { q: 'An urgent email asks you to click a link and log in. You should:', options: ['Click quickly before the deadline', 'Slow down, verify the sender, report if unsure', 'Forward it to the whole team'], answer: 1 },
+};
+
+/** Build the lesson slides for the in-app course player. */
+export function courseSlides(courseId) {
+  const c = COURSES[courseId];
+  if (!c) return [];
+  return [
+    { kind: 'read', title: 'Why it matters', body: c.why },
+    { kind: 'read', title: 'The risk to the company', body: c.impact },
+    { kind: 'read', title: 'How to fix the behavior', body: c.fix },
+    { kind: 'check', title: 'Quick check', check: CHECKS[courseId] || { q: 'Ready to apply what you learned?', options: ['Yes'], answer: 0 } },
+  ];
+}
