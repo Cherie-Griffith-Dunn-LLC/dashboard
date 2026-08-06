@@ -54,11 +54,11 @@ class MspManagerConnector extends BasePsaConnector {
   }
 
   _baseUrl() {
-    return String(this.env.MSPMANAGER_BASE_URL || 'https://api.mspmanager.com').replace(/\/$/, '');
+    return String(this.env.MSPMANAGER_BASE_URL || 'https://api.mspmanager.com/odata').replace(/\/$/, '');
   }
 
   _ticketsPath() {
-    return this.env.MSPMANAGER_TICKETS_PATH || '/v1/tickets';
+    return this.env.MSPMANAGER_TICKETS_PATH || '/Tickets';
   }
 
   _headers() {
@@ -86,26 +86,36 @@ class MspManagerConnector extends BasePsaConnector {
   async createTicket(payload) {
     if (!this.isConfigured()) return this._simulateCreate(payload);
 
-    // MSP Manager ticket shape. Field names are isolated here so they can be
-    // reconciled against the Swagger schema without touching the rest of the app.
+    // MSP Manager OData ticket shape (POST /odata/Tickets). Matches the Swagger
+    // create model: title, description, ticketPriorityCode, and the GUID links
+    // (contact/serviceItem/issueType/location/project) that associate the ticket
+    // with a company and category. GUIDs come from the payload or Azure app
+    // settings so they stay out of code.
+    const e = this.env;
     const body = {
-      subject: (payload.subject || 'New support request').slice(0, 200),
+      title: (payload.subject || 'New support request').slice(0, 250),
       description: payload.description || payload.transcript || '',
-      priority: mapPriority(payload.priority),
+      ticketPriorityCode: mapPriorityCode(payload.priority, e),
     };
-    const queue = this._queueFor(payload);
-    if (queue) body.queue = queue;
-    if (payload.customerId) body.companyId = payload.customerId;
-    else if (payload.customerName) body.companyName = payload.customerName;
-    if (payload.contactId) body.contactId = payload.contactId;
-    if (payload.contactEmail) body.contactEmail = payload.contactEmail;
+    if (payload.dueDate) body.dueDate = payload.dueDate;
+    // Tier 2 (security) can route to a different issue type / service item.
+    const tier2 = String(payload.tier || '') === '2' || payload.escalated === true;
+    const contactId = payload.contactId || e.MSPMANAGER_DEFAULT_CONTACT_ID;
+    const locationId = payload.locationId || e.MSPMANAGER_DEFAULT_LOCATION_ID;
+    const serviceItemId = (tier2 && e.MSPMANAGER_TIER2_SERVICE_ITEM_ID) || e.MSPMANAGER_SERVICE_ITEM_ID;
+    const issueTypeId = (tier2 && e.MSPMANAGER_TIER2_ISSUE_TYPE_ID) || e.MSPMANAGER_ISSUE_TYPE_ID;
+    if (contactId) body.contactId = contactId;
+    if (locationId) body.locationId = locationId;
+    if (serviceItemId) body.serviceItemId = serviceItemId;
+    if (issueTypeId) body.issueTypeId = issueTypeId;
+    if (e.MSPMANAGER_PROJECT_ID) body.projectId = e.MSPMANAGER_PROJECT_ID;
 
     const data = await this.request(`${this._baseUrl()}${this._ticketsPath()}`, {
       method: 'POST',
       headers: this._headers(),
       body,
     });
-    const id = data && (data.id || data.ticketId || data.number);
+    const id = data && (data.ticketNumber || data.id || data.ticketId || data.number);
     return {
       externalId: id != null ? String(id) : null,
       url: (data && (data.url || data.href)) || null,
@@ -118,8 +128,8 @@ class MspManagerConnector extends BasePsaConnector {
     if (!this.isConfigured()) return this._simulateUpdate(externalId, patch);
     const body = {};
     if (patch.status) body.status = patch.status;
-    if (patch.priority) body.priority = mapPriority(patch.priority);
-    if (patch.note) body.note = patch.note;
+    if (patch.priority) body.ticketPriorityCode = mapPriorityCode(patch.priority, this.env);
+    if (patch.note) body.description = patch.note;
     const data = await this.request(`${this._baseUrl()}${this._ticketsPath()}/${externalId}`, {
       method: 'PATCH',
       headers: this._headers(),
@@ -145,17 +155,15 @@ class MspManagerConnector extends BasePsaConnector {
   }
 }
 
-function mapPriority(p) {
-  switch (String(p || '').toLowerCase()) {
-    case 'critical':
-      return 'Critical';
-    case 'high':
-      return 'High';
-    case 'medium':
-      return 'Normal';
-    default:
-      return 'Low';
-  }
+// MSP Manager uses an integer ticketPriorityCode. Defaults are a sensible guess
+// (low=0 … critical=3); override any level via MSPMANAGER_PRIORITY_<LEVEL> app
+// settings once you confirm the exact codes in Swagger.
+function mapPriorityCode(p, env = {}) {
+  const key = String(p || 'medium').toLowerCase();
+  const override = env[`MSPMANAGER_PRIORITY_${key.toUpperCase()}`];
+  if (override != null && override !== '') return Number(override);
+  const map = { low: 0, medium: 1, normal: 1, high: 2, critical: 3 };
+  return map[key] != null ? map[key] : 1;
 }
 
 module.exports = { MspManagerConnector };

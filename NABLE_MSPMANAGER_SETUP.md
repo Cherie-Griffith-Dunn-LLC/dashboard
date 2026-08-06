@@ -32,17 +32,31 @@ link). At the top of that page you'll see:
 **Azure Portal → your Static Web App → Settings → Configuration → Application settings.**
 Add:
 
+Confirmed from Swagger: MSP Manager's public API is an **OData** API. Create a
+ticket = `POST https://api.mspmanager.com/odata/Tickets` with this body:
+`{ title, description, dueDate, ticketPriorityCode, serviceItemId, contactId,
+locationId, issueTypeId, projectId }`. Auth is **Basic** (a service login).
+
 | Setting | Value |
 | --- | --- |
-| `PSA_CONNECTOR` | `mspmanager` (makes MSP Manager the authoritative backend) |
-| `MSPMANAGER_BASE_URL` | base URL from step 2 |
-| `MSPMANAGER_AUTH` | `bearer` (default), or `apikey` / `basic` per step 2 |
-| `MSPMANAGER_API_KEY` | your key from step 1 (for `bearer`/`apikey`) |
-| `MSPMANAGER_API_KEY_HEADER` | header name — only if `MSPMANAGER_AUTH=apikey` |
-| `MSPMANAGER_USER` / `MSPMANAGER_PASSWORD` | only if `MSPMANAGER_AUTH=basic` |
-| `MSPMANAGER_TICKETS_PATH` | create path from step 2 (default `/v1/tickets`) |
-| `MSPMANAGER_DEFAULT_QUEUE` | Tier 1 queue/board name (optional) |
-| `MSPMANAGER_TIER2_QUEUE` | Tier 2 / Security queue name (optional) |
+| `PSA_CONNECTOR` | `mspmanager` |
+| `MSPMANAGER_BASE_URL` | `https://api.mspmanager.com/odata` |
+| `MSPMANAGER_AUTH` | `basic` |
+| `MSPMANAGER_USER` / `MSPMANAGER_PASSWORD` | a dedicated MSP Manager service login |
+| `MSPMANAGER_TICKETS_PATH` | `/Tickets` (default) |
+| `MSPMANAGER_DEFAULT_CONTACT_ID` | GUID — default requester contact (from `GET /Contacts`) |
+| `MSPMANAGER_ISSUE_TYPE_ID` | GUID — default issue type (from `GET /IssueTypes`) |
+| `MSPMANAGER_SERVICE_ITEM_ID` | GUID — default service item (from `GET /ServiceItems`) |
+| `MSPMANAGER_DEFAULT_LOCATION_ID` | GUID — optional (from `GET /Locations`) |
+| `MSPMANAGER_TIER2_ISSUE_TYPE_ID` / `MSPMANAGER_TIER2_SERVICE_ITEM_ID` | optional — route security tickets differently |
+| `MSPMANAGER_PROJECT_ID` | optional GUID |
+| `MSPMANAGER_PRIORITY_LOW/MEDIUM/HIGH/CRITICAL` | optional — override the `ticketPriorityCode` number per level |
+
+**How to get the GUIDs:** in the same Swagger page, expand `GET /IssueTypes`,
+`GET /ServiceItems`, `GET /Contacts`, `GET /Locations` → **Try it out → Execute**
+→ copy the `id` of the one you want. Those `id` values are the GUIDs above.
+(Priority codes: defaults are low=0, medium=1, high=2, critical=3 — confirm in the
+Swagger enum and override with the `MSPMANAGER_PRIORITY_*` settings if different.)
 
 The API key lives **only** in Azure. The browser never receives it — the chat
 calls `/api/tickets`, and the Azure Function calls MSP Manager server-side.
