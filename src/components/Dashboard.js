@@ -3,7 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import PortfolioConsole from './PortfolioConsole';
 import HelpdeskChat from './HelpdeskChat';
 import Icon from './Icon';
-import { ThreatsView, AlertsView, TrainingView, ReportsView, SettingsView } from './pages/SecurityTabs';
+import { ThreatsView, AlertsView, TrainingView, ReportsView, SettingsView, MobileView } from './pages/SecurityTabs';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -961,7 +961,9 @@ function Dashboard() {
 
   const renderAlertsPage = () => <AlertsView />;
 
-  const renderMobilePage = () => (
+  const renderMobilePage = () => <MobileView />;
+  // eslint-disable-next-line no-unused-vars
+  const _legacyMobilePage = () => (
     <div className="mobile-security-page">
       <div className="mobile-hero">
         <h1>📱 Mobile Security</h1>

@@ -361,6 +361,49 @@ export function ReportDocument({ report, company, onClose }) {
   );
 }
 
+// ------------------------------ Mobile Security ------------------------------
+const APPLE = <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>;
+const ANDROID = <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.28-.55-.37-.84-.22-.3.16-.42.54-.26.85L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52M7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5m10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5"/></svg>;
+
+export function MobileView() {
+  const steps = [
+    ['Download the app', 'Get Microsoft Defender from the App Store or Google Play.'],
+    ['Sign in', 'Use your company Microsoft account to sign in.'],
+    ['Enable permissions', 'Grant the permissions Defender needs to protect the device.'],
+    ["You're protected", 'The device is now monitored automatically.'],
+  ];
+  return (
+    <div className="tab">
+      <TabHead icon="monitor" title="Mobile Security" subtitle="Protect mobile devices with Microsoft Defender" source="Microsoft Defender" />
+      <div className="mob-grid">
+        <div className="mob-card">
+          <div className="mob-ic">{APPLE}</div>
+          <div className="mob-t">iOS App</div>
+          <div className="mob-d">iPhone &amp; iPad · Requires iOS 15+</div>
+          <a className="mob-btn" href="https://apps.apple.com/app/microsoft-defender/id1526737990" target="_blank" rel="noreferrer">Download on App Store</a>
+        </div>
+        <div className="mob-card">
+          <div className="mob-ic">{ANDROID}</div>
+          <div className="mob-t">Android App</div>
+          <div className="mob-d">Android devices · Requires Android 8+</div>
+          <a className="mob-btn" href="https://play.google.com/store/apps/details?id=com.microsoft.scmx" target="_blank" rel="noreferrer">Get it on Google Play</a>
+        </div>
+      </div>
+      <div className="tab-panel">
+        <div className="panel-hd"><h2><Icon name="monitor" size={14} className="hd-ic" />Setup — 4 steps</h2></div>
+        <div className="mob-steps">
+          {steps.map((s, i) => (
+            <div className="mob-step" key={i}>
+              <div className="mob-step-n">{i + 1}</div>
+              <div><div className="mob-step-t">{s[0]}</div><div className="mob-step-d">{s[1]}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ------------------------------ Settings ------------------------------
 const INTEGRATIONS = [
   { name: 'SentinelOne (via N-able)', kind: 'EDR / threat feed', status: 'simulated', icon: 'shield' },
