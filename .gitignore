@@ -23,3 +23,6 @@ build/
 scratchpad-artifact/
 
 
+
+# Generated isolated customer API deployment package
+/dist/

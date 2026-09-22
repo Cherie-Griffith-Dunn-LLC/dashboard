@@ -1,8 +1,13 @@
-import React from 'react';
-import { MsalProvider, AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import './App.css';
+import React from "react";
+import {
+  MsalProvider,
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+} from "@azure/msal-react";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import CustomerPortal from "./components/customer/CustomerPortal";
+import "./App.css";
 
 /**
  * Simple App - Just Login and Dashboard
@@ -12,9 +17,13 @@ function AppContent() {
   return (
     <div className="App">
       <AuthenticatedTemplate>
-        <Dashboard />
+        {process.env.REACT_APP_CUSTOMER_PORTAL_ENABLED === "true" ? (
+          <CustomerPortal />
+        ) : (
+          <Dashboard />
+        )}
       </AuthenticatedTemplate>
-      
+
       <UnauthenticatedTemplate>
         <Login />
       </UnauthenticatedTemplate>
